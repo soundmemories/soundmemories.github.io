@@ -14,7 +14,7 @@
 
 <link rel="stylesheet" href="/css/main.css">
 
-<link rel="stylesheet" href="https://fonts.loli.net/css?family=Zhi+Mang+Xing:300,300italic,400,400italic,700,700italic|Noto+Serif+SC:300,300italic,400,400italic,700,700italic|Crimson+Text:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
@@ -33,7 +33,7 @@
 <meta property="og:description" content="标准库datetime 常用操作： 1234567import datetime#datetime类：返回的都是datetime对象d1 &#x3D; datetime.datetime.now()#当前时间(的datetime对象)d2 &#x3D; datetime.datetime.utcnow()#格林威治时间(的datetime对象)d3 &#x3D; datetime.datetime.today()#本地当前时">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-01-17T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-11-12T12:10:27.388Z">
+<meta property="article:modified_time" content="2020-11-12T14:28:45.927Z">
 <meta property="article:author" content="SoundMemories">
 <meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
@@ -373,8 +373,8 @@
 <li>迭代器是一个可以记住遍历的位置的对象。</li>
 <li>迭代器对象从集合的第一个元素开始访问，直到所有的元素被访问完结束。迭代器只能往前不会后退。</li>
 <li>迭代器有两个基本的方法：<br />
-iter(iterable)：迭代对象包装成迭代器。迭代器是惰性的。<br />
-next(iterator[, default])：从迭代器中取元素。</li>
+<code>iter(iterable)</code>：迭代对象包装成迭代器。迭代器是惰性的。<br />
+<code>next(iterator[, default])</code>：从迭代器中取元素。</li>
 <li>必须是迭代器才能用next方法。但可迭代对象不一定是迭代器。</li>
 <li>字符串，列表或元组对象都可用于创建迭代器。</li>
 </ol>
@@ -396,7 +396,7 @@ next(iterator[, default])：从迭代器中取元素。</li>
 </ol>
 </blockquote>
 <blockquote>
-<p>range非迭代器，enumerate是迭代器，xrange是生成器（在Python3.5中range和xrange合并为range了）。</p>
+<p>range非迭代器，enumerate是迭代器，xrange是生成器（在Python3.5中range和xrange合并为range）。</p>
 </blockquote>
 <p>优先考虑使用生成器，用到尾之前可以重置生成器循环使用。</p>
 <p>生成对象&lt;迭代器&lt;可迭代对象</p>
@@ -436,16 +436,16 @@ next(iterator[, default])：从迭代器中取元素。</li>
       <div class="popular-posts-title"><a href="\2019\01\13\Python-bytes和bytearray\" rel="bookmark">Python-bytes和bytearray</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2019\01\12\Python-列表、元组、随机数\" rel="bookmark">Python-列表、元组、随机数</a></div>
-    </li>
-    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2019\01\15\Python-切片\" rel="bookmark">Python-切片</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2019\01\11\Python-基础语法\" rel="bookmark">Python-基础语法</a></div>
+      <div class="popular-posts-title"><a href="\2019\01\12\Python-列表、元组、随机数\" rel="bookmark">Python-列表、元组、随机数</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2019\01\14\Python-字符串\" rel="bookmark">Python-字符串、常用命令</a></div>
+      <div class="popular-posts-title"><a href="\2019\01\17\Python-字典\" rel="bookmark">Python-字典</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\01\11\Python-基础语法\" rel="bookmark">Python-基础语法</a></div>
     </li>
   </ul>
 

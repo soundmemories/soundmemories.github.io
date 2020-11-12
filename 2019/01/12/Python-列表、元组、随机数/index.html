@@ -14,7 +14,7 @@
 
 <link rel="stylesheet" href="/css/main.css">
 
-<link rel="stylesheet" href="https://fonts.loli.net/css?family=Zhi+Mang+Xing:300,300italic,400,400italic,700,700italic|Noto+Serif+SC:300,300italic,400,400italic,700,700italic|Crimson+Text:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
@@ -25,15 +25,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.0.2","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="Python-列表、元组、随机数 数值分类：int、float、bool、complex 序列对象：字符串str、列表list、元组tuple 键值对：集合set、字典dict 数值型：      int、float、bool、complex都是对象，都是对象即实例：      int：python3的int就是长整型，且没有大小限制，受限于内存区域的大小。      float：有整数部分和小">
+  <meta name="description" content="列表、元组、随机数 数值分类：int、float、bool、complex 序列对象：字符串str、列表list、元组tuple 键值对：集合set、字典dict 数值型：      int、float、bool、complex都是对象，都是对象即实例：      int：python3的int就是长整型，且没有大小限制，受限于内存区域的大小。      float：有整数部分和小数部分组成。支">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python-列表、元组、随机数">
 <meta property="og:url" content="http://example.com/2019/01/12/Python-%E5%88%97%E8%A1%A8%E3%80%81%E5%85%83%E7%BB%84%E3%80%81%E9%9A%8F%E6%9C%BA%E6%95%B0/index.html">
 <meta property="og:site_name" content="SoundMemories">
-<meta property="og:description" content="Python-列表、元组、随机数 数值分类：int、float、bool、complex 序列对象：字符串str、列表list、元组tuple 键值对：集合set、字典dict 数值型：      int、float、bool、complex都是对象，都是对象即实例：      int：python3的int就是长整型，且没有大小限制，受限于内存区域的大小。      float：有整数部分和小">
+<meta property="og:description" content="列表、元组、随机数 数值分类：int、float、bool、complex 序列对象：字符串str、列表list、元组tuple 键值对：集合set、字典dict 数值型：      int、float、bool、complex都是对象，都是对象即实例：      int：python3的int就是长整型，且没有大小限制，受限于内存区域的大小。      float：有整数部分和小数部分组成。支">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-01-11T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-11-12T07:21:49.174Z">
+<meta property="article:modified_time" content="2020-11-12T14:24:27.454Z">
 <meta property="article:author" content="SoundMemories">
 <meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
@@ -213,7 +213,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#font-size5-python-%E5%88%97%E8%A1%A8-%E5%85%83%E7%BB%84-%E9%9A%8F%E6%9C%BA%E6%95%B0font"><span class="nav-number">1.</span> <span class="nav-text"> Python-列表、元组、随机数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#font-size5-2-%E5%88%97%E8%A1%A8-font"><span class="nav-number">2.</span> <span class="nav-text"> 2 列表 </span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#21-%E5%88%97%E8%A1%A8%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.</span> <span class="nav-text"> 2.1 列表定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#21-%E5%88%97%E8%A1%A8%E8%A1%A8%E7%A4%BA"><span class="nav-number">2.2.</span> <span class="nav-text"> 2.1 列表表示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-%E5%88%97%E8%A1%A8%E7%B4%A2%E5%BC%95"><span class="nav-number">2.3.</span> <span class="nav-text"> 2.2 列表索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#23-%E5%88%97%E8%A1%A8%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.4.</span> <span class="nav-text"> 2.3 列表查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#24-%E5%88%97%E8%A1%A8%E5%85%83%E7%B4%A0%E4%BF%AE%E6%94%B9"><span class="nav-number">2.5.</span> <span class="nav-text"> 2.4 列表元素修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#25-%E5%88%97%E8%A1%A8%E5%85%B6%E4%BB%96%E6%93%8D%E4%BD%9C"><span class="nav-number">2.6.</span> <span class="nav-text"> 2.5 列表其他操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#26-%E5%A4%8D%E5%88%B6"><span class="nav-number">2.7.</span> <span class="nav-text"> 2.6 复制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#font-size5-3-%E5%85%83%E7%BB%84-font"><span class="nav-number">3.</span> <span class="nav-text"> 3 元组 </span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#31-%E5%85%83%E7%BB%84%E5%AE%9A%E4%B9%89"><span class="nav-number">3.1.</span> <span class="nav-text"> 3.1 元组定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#32-%E5%85%83%E7%BB%84%E7%B4%A2%E5%BC%95"><span class="nav-number">3.2.</span> <span class="nav-text"> 3.2 元组索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#33-%E5%85%83%E7%BB%84%E6%9F%A5%E8%AF%A2"><span class="nav-number">3.3.</span> <span class="nav-text"> 3.3 元组查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#34-%E5%85%83%E7%BB%84%E5%85%B6%E4%BB%96%E6%93%8D%E4%BD%9C"><span class="nav-number">3.4.</span> <span class="nav-text"> 3.4 元组其他操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#font-size5-4-%E9%9A%8F%E6%9C%BA%E6%95%B0-font"><span class="nav-number">4.</span> <span class="nav-text"> 4 随机数 </span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#font-size5-%E5%88%97%E8%A1%A8-%E5%85%83%E7%BB%84-%E9%9A%8F%E6%9C%BA%E6%95%B0font"><span class="nav-number">1.</span> <span class="nav-text"> 列表、元组、随机数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#font-size5-2-%E5%88%97%E8%A1%A8-font"><span class="nav-number">2.</span> <span class="nav-text"> 2 列表 </span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#21-%E5%88%97%E8%A1%A8%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.</span> <span class="nav-text"> 2.1 列表定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#21-%E5%88%97%E8%A1%A8%E8%A1%A8%E7%A4%BA"><span class="nav-number">2.2.</span> <span class="nav-text"> 2.1 列表表示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-%E5%88%97%E8%A1%A8%E7%B4%A2%E5%BC%95"><span class="nav-number">2.3.</span> <span class="nav-text"> 2.2 列表索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#23-%E5%88%97%E8%A1%A8%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.4.</span> <span class="nav-text"> 2.3 列表查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#24-%E5%88%97%E8%A1%A8%E5%85%83%E7%B4%A0%E4%BF%AE%E6%94%B9"><span class="nav-number">2.5.</span> <span class="nav-text"> 2.4 列表元素修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#25-%E5%88%97%E8%A1%A8%E5%85%B6%E4%BB%96%E6%93%8D%E4%BD%9C"><span class="nav-number">2.6.</span> <span class="nav-text"> 2.5 列表其他操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#26-%E5%A4%8D%E5%88%B6"><span class="nav-number">2.7.</span> <span class="nav-text"> 2.6 复制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#font-size5-3-%E5%85%83%E7%BB%84-font"><span class="nav-number">3.</span> <span class="nav-text"> 3 元组 </span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#31-%E5%85%83%E7%BB%84%E5%AE%9A%E4%B9%89"><span class="nav-number">3.1.</span> <span class="nav-text"> 3.1 元组定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#32-%E5%85%83%E7%BB%84%E7%B4%A2%E5%BC%95"><span class="nav-number">3.2.</span> <span class="nav-text"> 3.2 元组索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#33-%E5%85%83%E7%BB%84%E6%9F%A5%E8%AF%A2"><span class="nav-number">3.3.</span> <span class="nav-text"> 3.3 元组查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#34-%E5%85%83%E7%BB%84%E5%85%B6%E4%BB%96%E6%93%8D%E4%BD%9C"><span class="nav-number">3.4.</span> <span class="nav-text"> 3.4 元组其他操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#font-size5-4-%E9%9A%8F%E6%9C%BA%E6%95%B0-font"><span class="nav-number">4.</span> <span class="nav-text"> 4 随机数 </span></a></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -336,7 +336,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>4.1k</span>
+      <span>4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -354,7 +354,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="font-size5-python-列表-元组-随机数font"><a class="markdownIt-Anchor" href="#font-size5-python-列表-元组-随机数font"></a> <font  size="5" >Python-列表、元组、随机数</font></h2>
+        <h2 id="font-size5-列表-元组-随机数font"><a class="markdownIt-Anchor" href="#font-size5-列表-元组-随机数font"></a> <font  size="5" >列表、元组、随机数</font></h2>
 <p>数值分类：int、float、bool、complex<br />
 序列对象：字符串str、列表list、元组tuple<br />
 键值对：集合set、字典dict<br />
@@ -375,8 +375,7 @@
 <p>进制函数（返回值是字符串）：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">bin</span>(x)<span class="comment">#x转成二进制</span></span><br><span class="line"><span class="built_in">oct</span>(x)<span class="comment">#x转成八进制</span></span><br><span class="line"><span class="built_in">hex</span>(x)<span class="comment">#x转成十六进制</span></span><br></pre></td></tr></table></figure>
 <p>类型判断：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">type</span>(obj)<span class="comment">#返回obj的类型，不是字符串。</span></span><br><span class="line">isinstance(obj,class_or_tuple)-&gt;bool#obj是不是class_or_tuple的类型，类型多种必须用()括起来，返回布尔值。</span><br><span class="line"></span><br><span class="line"><span class="built_in">type</span>(<span class="number">1</span>+<span class="literal">True</span>+<span class="number">2.0</span>) <span class="comment"># 是什么？注意这里有隐式转换。</span></span><br></pre></td></tr></table></figure>
-<p>isinstance(obj,class_or_tuple)类型判断，前面obj是不是后面的类型，多个类型必须用元组()，返回bool值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">type</span>(obj)<span class="comment">#返回obj的类型，不是字符串。</span></span><br><span class="line">isinstance(obj,class_or_tuple)-&gt;bool#obj是不是class_or_tuple的类型，类型多种必须用()括起来。</span><br><span class="line"></span><br><span class="line"><span class="built_in">type</span>(<span class="number">1</span>+<span class="literal">True</span>+<span class="number">2.0</span>) <span class="comment"># 是什么？注意这里有隐式转换。</span></span><br></pre></td></tr></table></figure>
 <h2 id="font-size5-2-列表-font"><a class="markdownIt-Anchor" href="#font-size5-2-列表-font"></a> <font  size="5" >2 列表 </font></h2>
 <h3 id="21-列表定义"><a class="markdownIt-Anchor" href="#21-列表定义"></a> 2.1 <strong>列表定义</strong></h3>
 <p>列表list（不要循环自己还增删自己！）：<br />
@@ -391,8 +390,8 @@
 queue队列：先进先出、只能对两端操作，一种是列表实现，一种是链表实现<br />
 stack栈：只能对一端进行操作</p>
 <h3 id="21-列表表示"><a class="markdownIt-Anchor" href="#21-列表表示"></a> 2.1 <strong>列表表示</strong></h3>
-<p>list() -&gt; new empty list<br />
-list(iterable) -&gt; new list initialized from iterable’s items<br />
+<p><code>list() -&gt; new empty list</code><br />
+<code>list(iterable) -&gt; new list initialized from iterable's items</code><br />
 注意列表不能一开始就定义大小！</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[]、<span class="built_in">list</span>()<span class="comment">#空列表2种定义方式。</span></span><br><span class="line"><span class="built_in">list</span>(<span class="built_in">range</span>())<span class="comment">#列表里面可以是可迭代对象。</span></span><br></pre></td></tr></table></figure>
 <blockquote>
@@ -460,16 +459,16 @@ tuple(iterable) -&gt; tuple initialized from iterable’s items<br />
       <div class="popular-posts-title"><a href="\2019\01\13\Python-bytes和bytearray\" rel="bookmark">Python-bytes和bytearray</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2019\01\18\Python-datetime模块、解析式、生成器、内建函数\" rel="bookmark">Python-datetime模块、解析式、生成器、内建函数</a></div>
-    </li>
-    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2019\01\15\Python-切片\" rel="bookmark">Python-切片</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2019\01\11\Python-基础语法\" rel="bookmark">Python-基础语法</a></div>
+      <div class="popular-posts-title"><a href="\2019\01\18\Python-datetime模块、解析式、生成器、内建函数\" rel="bookmark">Python-datetime模块、解析式、生成器、内建函数</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2019\01\14\Python-字符串\" rel="bookmark">Python-字符串、常用命令</a></div>
+      <div class="popular-posts-title"><a href="\2019\01\17\Python-字典\" rel="bookmark">Python-字典</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\01\11\Python-基础语法\" rel="bookmark">Python-基础语法</a></div>
     </li>
   </ul>
 
