@@ -25,36 +25,31 @@
     var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.0.2","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="bytes和bytearray   1.1 bytes和bytearray Python3引入两个新类型，bytes和bytearray都是字节序列 bytes：不可变字节序列。 bytearray：字节数组、可变。 字符串与bytes：   可字符串是字符组成的有序序列，字符可以使用编码来理解   bytes是字节组成的有序的不可变序列   bytearray是字节组成的有序的可变序列">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Python-bytes和bytearray">
-<meta property="og:url" content="http://example.com/2019/01/13/Python-bytes%E5%92%8Cbytearray/index.html">
+  <meta name="description" content="今日事，今日毕">
+<meta property="og:type" content="website">
+<meta property="og:title" content="SoundMemories">
+<meta property="og:url" content="http://example.com/page/2/index.html">
 <meta property="og:site_name" content="SoundMemories">
-<meta property="og:description" content="bytes和bytearray   1.1 bytes和bytearray Python3引入两个新类型，bytes和bytearray都是字节序列 bytes：不可变字节序列。 bytearray：字节数组、可变。 字符串与bytes：   可字符串是字符组成的有序序列，字符可以使用编码来理解   bytes是字节组成的有序的不可变序列   bytearray是字节组成的有序的可变序列">
+<meta property="og:description" content="今日事，今日毕">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike150%2C5%2C5%2C150%2C50/sign=c05506e79482d158af8f51e3e16372bd/c2fdfc039245d688c56332adacc27d1ed21b2451.jpg">
-<meta property="article:published_time" content="2019-01-12T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-11-12T14:35:54.133Z">
 <meta property="article:author" content="SoundMemories">
-<meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike150%2C5%2C5%2C150%2C50/sign=c05506e79482d158af8f51e3e16372bd/c2fdfc039245d688c56332adacc27d1ed21b2451.jpg">
 
 
-<link rel="canonical" href="http://example.com/2019/01/13/Python-bytes%E5%92%8Cbytearray/">
+<link rel="canonical" href="http://example.com/page/2/">
 
 
 <script data-pjax class="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : false,
-    isPost : true,
+    isHome : true,
+    isPost : false,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>Python-bytes和bytearray | SoundMemories</title>
+  <title>SoundMemories</title>
   
 
 
@@ -202,7 +197,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+    <div class="sidebar-inner sidebar-overview-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -215,7 +210,6 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#font-size5-bytes%E5%92%8Cbytearray-font"><span class="nav-number">1.</span> <span class="nav-text"> bytes和bytearray </span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#11-bytes%E5%92%8Cbytearray"><span class="nav-number">1.1.</span> <span class="nav-text"> 1.1 bytes和bytearray</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-%E7%BC%96%E7%A0%81%E5%92%8C%E8%A7%A3%E7%A0%81"><span class="nav-number">1.2.</span> <span class="nav-text"> 1.2 编码和解码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-bytes%E5%AE%9A%E4%B9%89"><span class="nav-number">1.3.</span> <span class="nav-text"> 1.3 bytes定义</span></a></li></ol></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -230,7 +224,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -281,12 +275,11 @@
 </noscript>
 
 
-    <div class="main-inner post posts-expand">
+    <div class="main-inner index posts-expand">
       
 
       
-
-  
+    
 
 
 <div class="post-block">
@@ -294,7 +287,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/01/13/Python-bytes%E5%92%8Cbytearray/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/01/13/03.Python-bytes%E5%92%8Cbytearray/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
@@ -306,9 +299,10 @@
       <meta itemprop="name" content="SoundMemories">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          Python-bytes和bytearray
-        </h1>
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/01/13/03.Python-bytes%E5%92%8Cbytearray/" class="post-title-link" itemprop="url">Python-bytes和bytearray</a>
+        </h2>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -356,7 +350,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="font-size5-bytes和bytearray-font"><a class="markdownIt-Anchor" href="#font-size5-bytes和bytearray-font"></a> <font  size="5" >bytes和bytearray </font></h2>
+          <h2 id="font-size5-bytes和bytearray-font"><a class="markdownIt-Anchor" href="#font-size5-bytes和bytearray-font"></a> <font  size="5" >bytes和bytearray </font></h2>
 <h3 id="11-bytes和bytearray"><a class="markdownIt-Anchor" href="#11-bytes和bytearray"></a> 1.1 <strong>bytes和bytearray</strong></h3>
 <p>Python3引入两个新类型，bytes和bytearray都是字节序列<br />
 bytes：不可变字节序列。<br />
@@ -365,96 +359,256 @@ bytearray：字节数组、可变。</p>
   可字符串是字符组成的有序序列，字符可以使用编码来理解<br />
   bytes是字节组成的有序的不可变序列<br />
   bytearray是字节组成的有序的可变序列</p>
-<a id="more"></a>
-<h3 id="12-编码和解码"><a class="markdownIt-Anchor" href="#12-编码和解码"></a> 1.2 <strong>编码和解码</strong></h3>
-<p>编码与解码：<br />
-字符串按照不同的字符集编码encode返回字节序列bytes</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">encode(encoding=&#x27;utf-8&#x27;, errors=&#x27;strict&#x27;) -&gt; bytes</span><br></pre></td></tr></table></figure>
-<p>字节序列按照不同的字符集解码decode返回字符串</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bytes.decode(encoding=&quot;utf-8&quot;, errors=&quot;strict&quot;) -&gt; str</span><br><span class="line"></span><br><span class="line">bytearray.decode(encoding=&quot;utf-8&quot;, errors=&quot;strict&quot;) -&gt; str</span><br></pre></td></tr></table></figure>
-<p>编码：字符-&gt;bytes<br />
-解码：bytes-&gt;字符</p>
-<p>英文编码：<br />
-ASCII码表是指对<code>字符</code>的编码：</p>
-<div  align=center> 
-<img src="https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike150%2C5%2C5%2C150%2C50/sign=c05506e79482d158af8f51e3e16372bd/c2fdfc039245d688c56332adacc27d1ed21b2451.jpg" width=90%" height="90%">  
-</div> 
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x31</span><span class="comment"># 1</span></span><br><span class="line"><span class="number">0x41</span><span class="comment"># A</span></span><br><span class="line"><span class="number">0x61</span><span class="comment"># a</span></span><br><span class="line"></span><br><span class="line"><span class="number">0x9</span><span class="comment"># \t</span></span><br><span class="line"><span class="number">0xA</span><span class="comment"># \n</span></span><br><span class="line"><span class="number">0xD</span><span class="comment"># \r</span></span><br></pre></td></tr></table></figure>
-<p>十进制：0~9（48~57）、A~Z（65~90）、a~z（97~122）</p>
-<p>汉字编码：utf-8：3个字节1个汉字；gbk：2个字节1个汉字；</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;中国&quot;</span>.encode(encoding=<span class="string">&#x27;utf-8&#x27;</span>)<span class="comment">#utf-8编码</span></span><br><span class="line"><span class="string">&quot;中国&quot;</span>.encode(encoding=<span class="string">&#x27;gbk&#x27;</span>)<span class="comment">#gbk编码</span></span><br><span class="line"></span><br><span class="line"><span class="string">b&#x27;\xe4\xb8\xad\xe5\x9b\xbd&#x27;</span>.decode()<span class="comment">#解码成&#x27;中国&#x27;</span></span><br></pre></td></tr></table></figure>
-<h3 id="13-bytes定义"><a class="markdownIt-Anchor" href="#13-bytes定义"></a> 1.3 <strong>bytes定义</strong></h3>
-<p>定义：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">bytes</span>()<span class="comment">#空bytes</span></span><br><span class="line"><span class="built_in">bytes</span>(<span class="built_in">int</span>)<span class="comment">#指定字节的bytes，被0填充</span></span><br><span class="line">bytes(iterable_of_ints) -&gt; bytes#[0,255]的int组成的可迭代对象</span><br><span class="line">bytes(string, encoding[, errors]) -&gt; bytes #等价于string.encode()</span><br><span class="line">bytes(bytes_or_buffer) -&gt; immutable copy of bytes_or_buffer #从一个字节序列或者buffer复制出一个新的不可变的bytes对象</span><br><span class="line"></span><br><span class="line"><span class="comment">#使用b前缀定义</span></span><br><span class="line">只允许基本ASCII使用字符形式：<span class="string">b&#x27;abc9&#x27;</span></span><br><span class="line">使用<span class="number">16</span>进制表示：<span class="string">b&quot;\x41\x61&quot;</span></span><br></pre></td></tr></table></figure>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/01/13/03.Python-bytes%E5%92%8Cbytearray/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
     </div>
 
     
     
     
       
-  <div class="popular-posts-header">相关文章</div>
-  <ul class="popular-posts">
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2019\01\15\Python-切片\" rel="bookmark">Python-切片</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2019\01\12\Python-列表、元组、随机数\" rel="bookmark">Python-列表、元组、随机数</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2019\01\18\Python-datetime模块、解析式、生成器、内建函数\" rel="bookmark">Python-datetime模块、解析式、生成器、内建函数</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2019\01\17\Python-字典\" rel="bookmark">Python-字典</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2019\01\11\Python-基础语法\" rel="bookmark">Python-基础语法</a></div>
-    </li>
-  </ul>
 
 
     <footer class="post-footer">
-          
-
-<div class="post-copyright">
-<ul>
-  <li class="post-copyright-author">
-      <strong>本文作者： </strong>SoundMemories
-  </li>
-  <li class="post-copyright-link">
-      <strong>本文链接：</strong>
-      <a href="http://example.com/2019/01/13/Python-bytes%E5%92%8Cbytearray/" title="Python-bytes和bytearray">http://example.com/2019/01/13/Python-bytes和bytearray/</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
-  </li>
-</ul>
-</div>
-
-          <div class="post-tags">
-              <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
-          </div>
-
-        
-
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/2019/01/12/Python-%E5%88%97%E8%A1%A8%E3%80%81%E5%85%83%E7%BB%84%E3%80%81%E9%9A%8F%E6%9C%BA%E6%95%B0/" rel="prev" title="Python-列表、元组、随机数">
-                  <i class="fa fa-chevron-left"></i> Python-列表、元组、随机数
-                </a>
-            </div>
-            <div class="post-nav-item">
-                <a href="/2019/01/14/Python-%E5%AD%97%E7%AC%A6%E4%B8%B2/" rel="next" title="Python-字符串、常用命令">
-                  Python-字符串、常用命令 <i class="fa fa-chevron-right"></i>
-                </a>
-            </div>
-          </div>
+        <div class="post-eof"></div>
+      
     </footer>
   </article>
 </div>
 
 
 
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/01/12/02.Python-%E5%88%97%E8%A1%A8%E3%80%81%E5%85%83%E7%BB%84%E3%80%81%E9%9A%8F%E6%9C%BA%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/01/12/02.Python-%E5%88%97%E8%A1%A8%E3%80%81%E5%85%83%E7%BB%84%E3%80%81%E9%9A%8F%E6%9C%BA%E6%95%B0/" class="post-title-link" itemprop="url">Python-列表、元组、随机数</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-01-12 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-12T00:00:00+08:00">2019-01-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="font-size5-列表-元组-随机数font"><a class="markdownIt-Anchor" href="#font-size5-列表-元组-随机数font"></a> <font  size="5" >列表、元组、随机数</font></h2>
+<p>数值分类：int、float、bool、complex<br />
+序列对象：字符串str、列表list、元组tuple<br />
+键值对：集合set、字典dict<br />
+数值型：<br />
+     int、float、bool、complex都是对象，都是对象即实例：<br />
+     int：python3的int就是长整型，且没有大小限制，受限于内存区域的大小。<br />
+     float：有整数部分和小数部分组成。支持十进制和科学计数法表示。 C的双精度型实现。<br />
+     complex：有实数和虚数部分组成，实数和虚数部分都是浮点数。<br />
+     bool：int的子类，仅有2个实例True、 False对应1和0，可以和整数直接运算。<br />
+类型转换（built-in）：<br />
+    int(x)： 返回一个整数<br />
+    float(x)： 返回一个浮点数<br />
+    complex(x)、 complex(x,y) ：返回一个复数<br />
+    bool(x)： 返回布尔值，前面讲过False等价的对象</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/01/12/02.Python-%E5%88%97%E8%A1%A8%E3%80%81%E5%85%83%E7%BB%84%E3%80%81%E9%9A%8F%E6%9C%BA%E6%95%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/01/11/01.Python-%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/01/11/01.Python-%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" class="post-title-link" itemprop="url">Python-基础语法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-01-11 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-11T00:00:00+08:00">2019-01-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="font-size5-1-基础语法font"><a class="markdownIt-Anchor" href="#font-size5-1-基础语法font"></a> <font  size="5" >1 基础语法</font></h2>
+<blockquote>
+<p>以下内容基于Python 3.6.6版本编写！</p>
+</blockquote>
+<h3 id="11-注释"><a class="markdownIt-Anchor" href="#11-注释"></a> 1.1 <strong>注释</strong></h3>
+<p>    和大多数语言一样，在Python中<code>#</code>表示注释的意思：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">&quot;Hello World!&quot;</span>)<span class="comment">#输出Hello World!   </span></span><br><span class="line">[Out]:Hello World!                                 </span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/01/11/01.Python-%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
 
 
 
@@ -507,7 +661,6 @@ ASCII码表是指对<code>字符</code>的编码：</p>
   </footer>
 
   
-  <script size="300" alpha="0.3" zIndex="2" src="//cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
@@ -613,7 +766,7 @@ document.querySelectorAll('.pdfobject-container').forEach(element => {
       quicklink.listen({
         timeout : 3000,
         priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'http://example.com/2019/01/13/Python-bytes%E5%92%8Cbytearray/',]
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://example.com/page/2/',]
       });
       });
   </script>

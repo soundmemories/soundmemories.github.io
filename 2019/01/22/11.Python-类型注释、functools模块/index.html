@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.0.2","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="1 Python类型注解   1.1 函数定义的弊端 1. Python是动态语言，变量随时可以被赋值，且能赋值为不同的类型； 2. Python不是静态编译型语言，变量类型是在运行期决定的； 3. 动态语言很灵活，但是这种特性也是弊端； 123456def add(x, y):    return x + yprint(add(4, 5))#计算4+5print(add(&amp;#x27;hello">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python-类型注解、functools模块">
+<meta property="og:url" content="http://example.com/2019/01/22/11.Python-%E7%B1%BB%E5%9E%8B%E6%B3%A8%E9%87%8A%E3%80%81functools%E6%A8%A1%E5%9D%97/index.html">
+<meta property="og:site_name" content="SoundMemories">
+<meta property="og:description" content="1 Python类型注解   1.1 函数定义的弊端 1. Python是动态语言，变量随时可以被赋值，且能赋值为不同的类型； 2. Python不是静态编译型语言，变量类型是在运行期决定的； 3. 动态语言很灵活，但是这种特性也是弊端； 123456def add(x, y):    return x + yprint(add(4, 5))#计算4+5print(add(&amp;#x27;hello">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190120105419472.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTMzNDAyMTY=,size_16,color_FFFFFF,t_70">
+<meta property="article:published_time" content="2019-01-21T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-11-14T09:10:35.458Z">
+<meta property="article:author" content="SoundMemories">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190120105419472.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTMzNDAyMTY=,size_16,color_FFFFFF,t_70">
+
+
+<link rel="canonical" href="http://example.com/2019/01/22/11.Python-%E7%B1%BB%E5%9E%8B%E6%B3%A8%E9%87%8A%E3%80%81functools%E6%A8%A1%E5%9D%97/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Python-类型注解、functools模块 | SoundMemories</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">SoundMemories</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-主页">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>主页</a>
+
+  </li>
+        <li class="menu-item menu-item-分类">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-标签">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-归档">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-关于">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#font-size5-1-python%E7%B1%BB%E5%9E%8B%E6%B3%A8%E8%A7%A3-font"><span class="nav-number">1.</span> <span class="nav-text"> 1 Python类型注解 </span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#11-%E5%87%BD%E6%95%B0%E5%AE%9A%E4%B9%89%E7%9A%84%E5%BC%8A%E7%AB%AF"><span class="nav-number">1.1.</span> <span class="nav-text"> 1.1 函数定义的弊端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-%E5%87%BD%E6%95%B0%E6%96%87%E6%A1%A3%E5%92%8C%E6%B3%A8%E9%87%8A"><span class="nav-number">1.2.</span> <span class="nav-text"> 1.2 函数文档和注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-inspect%E6%A8%A1%E5%9D%97"><span class="nav-number">1.3.</span> <span class="nav-text"> 1.3 inspect模块</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#font-size5-2-functools%E6%A8%A1%E5%9D%97-font"><span class="nav-number">2.</span> <span class="nav-text"> 2 functools模块 </span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#21-functoolsreduce"><span class="nav-number">2.1.</span> <span class="nav-text"> 2.1 functools.reduce()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-functoolspartial"><span class="nav-number">2.2.</span> <span class="nav-text"> 2.2 functools.partial()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#23-functoolslru_cache"><span class="nav-number">2.3.</span> <span class="nav-text"> 2.3 functools.lru_cache()</span></a></li></ol></li></ol></div>
+        </section>
+        <!--/noindex-->
+
+        <section class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SoundMemories"
+      src="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+  <p class="site-author-name" itemprop="name">SoundMemories</p>
+  <div class="site-description" itemprop="description">今日事，今日毕</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NvdW5kbWVtb3JpZXM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;soundmemories"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNvdW5kbWVtb3JpZXNAMTYzLmNvbQ==" title="E-Mail → mailto:soundmemories@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+        </section>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/01/22/11.Python-%E7%B1%BB%E5%9E%8B%E6%B3%A8%E9%87%8A%E3%80%81functools%E6%A8%A1%E5%9D%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python-类型注解、functools模块
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-01-22 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-22T00:00:00+08:00">2019-01-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="font-size5-1-python类型注解-font"><a class="markdownIt-Anchor" href="#font-size5-1-python类型注解-font"></a> <font  size="5" >1 Python类型注解 </font></h2>
+<h3 id="11-函数定义的弊端"><a class="markdownIt-Anchor" href="#11-函数定义的弊端"></a> 1.1 <strong>函数定义的弊端</strong></h3>
+<p>1. Python是动态语言，变量随时可以被赋值，且能赋值为不同的类型；<br />
+2. Python不是静态编译型语言，变量类型是在运行期决定的；<br />
+3. 动态语言很灵活，但是这种特性也是弊端；</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line">print(add(<span class="number">4</span>, <span class="number">5</span>))<span class="comment">#计算4+5</span></span><br><span class="line">print(add(<span class="string">&#x27;hello&#x27;</span>, <span class="string">&#x27;world&#x27;</span>))<span class="comment">#字符串拼接</span></span><br><span class="line">add(<span class="number">4</span>, <span class="string">&#x27;hello&#x27;</span>) <span class="comment">#错误，不同类型不能+</span></span><br></pre></td></tr></table></figure>
+<p>通过上面示例发现：<br />
+1. 难发现：由于不做任何类型检查，直到运行期问题才显现出来，或者线上运行时才能暴露出问题；<br />
+2. 难使用：函数的使用者看到函数的时候，并不知道你的函数的设计，并不知道应该传入什么类型的数据；</p>
+<p>如何解决这种动态语言定义的弊端呢？<br />
+1. 增加文档（Documentation String）；<br />
+2. 这只是一个惯例，不是强制标准，不能要求程序员一定为函数提供说明文档；<br />
+3. 有缺陷：函数定义更新了，文档未必同步更新；</p>
+<a id="more"></a>
+<h3 id="12-函数文档和注释"><a class="markdownIt-Anchor" href="#12-函数文档和注释"></a> 1.2 <strong>函数文档和注释</strong></h3>
+<p>如何加文档：函数内直接使用引号书写，或者使用Pycharm，在函数定义下输入三引号后回车，自动提示文档注释：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">x, y</span>):</span><span class="comment">#下面的名字是Pycharm自动添加的，方便了文档编写</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    :param x: #这里填写对参数x的说明</span></span><br><span class="line"><span class="string">    :param y: #这里填写对参数y的说明</span></span><br><span class="line"><span class="string">    :return: #这里填写对返回值的说明</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line">print(<span class="built_in">help</span>(add))<span class="comment">#使用help就可以查看文档注释</span></span><br></pre></td></tr></table></figure>
+<p>虽然文档帮助理解函数的功能，但并不适合参数类型的检查，Python对此引用了函数注释（Function Annotations）：<br />
+1. 对函数的参数、返回值进行类型注解；<br />
+2. 只对函数参数做的一个辅助说明，并不对函数参数进行类型检查；<br />
+3. 提供第三方工具，做代码分析，发现隐藏的bug；<br />
+4. 函数注解的信息，保存在__annotations__属性中；<br />
+！此外Python也可以使用变量注解，变量注解在3.6版本中引入；函数注解在3.5版本引入。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#函数注释(3.5之后才支持)：</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">x:<span class="built_in">int</span>, y:<span class="built_in">int</span></span>):</span><span class="comment">#对x和y注释，它们为int类型</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"><span class="comment">#变量注释(3.6之后才支持)：</span></span><br><span class="line">i:<span class="built_in">list</span> = [] </span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：所有注释都不会影响程序执行，它只是提示功能；<br />
+在Pycharm中设置了变量类型注释后，<code>.</code> 功能会自动匹配它类型的操作，非常实用；</p>
+</blockquote>
+<h3 id="13-inspect模块"><a class="markdownIt-Anchor" href="#13-inspect模块"></a> 1.3 <strong>inspect模块</strong></h3>
+<p>inspect模块主要提供以下功能：<br />
+1. 对是否是模块，框架，函数等进行类型检查；<br />
+2. 获取源码；<br />
+3. 提供获取对象的函数，可以检查函数和类、类型；<br />
+4. 解析堆栈；</p>
+<p>inspect模块中有很多is函数：<br />
+1. inspect.isfunction(object)：是否是函数；<br />
+2. inspect.ismethod(object))：是否是类的方法；<br />
+3. inspect.isgenerator(object)：是否是生成器对象；<br />
+4. inspect.isgeneratorfunction(object)：是否是生成器函数；<br />
+5. inspect.isclass(object)：是否是类；<br />
+6. inspect.ismodule(object)：是否是模块；<br />
+7. inspect.isbuiltin(object)：是否是内建对象；<br />
+8. inspect.isgeneratorfunction(object)：是否是生成器函数；<br />
+9. inspect.isgenerator(object)：是否是生成器；<br />
+其他is函数，请在需要的时候查阅inspect模块帮助。</p>
+<p>最常用的就是第3种功能，如需求：需要对函数参数类型检查？<br />
+思路：<br />
+1. 函数参数的检查，一定是在函数外；<br />
+2. 函数应该作为参数，擦混入到检查函数中；<br />
+3. 检查函数拿到函数传入的实际参数，与形参声明对比；<br />
+4. __annotations__属性是一个字典，其中包括返回值类型的声明。假设要做位置参数的判断，无法和字典中的声明对应。可以使用inspect模块；</p>
+<p><code>inspect.signature(callable, *, follow_wrapped=True)</code>：获取签名；函数签名包含了一个函数的信息：函数名、它的参数类型、它所在的类和名称空间及其他信息。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> inspect</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">x:<span class="built_in">int</span>, y:<span class="built_in">int</span>, *args, **kwargs</span>) -&gt; int:</span><span class="comment">#只对x、y和返回值进行类型注释</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line">sig = inspect.signature(add)<span class="comment">#获取add函数签名</span></span><br><span class="line"></span><br><span class="line">print(sig)</span><br><span class="line"><span class="comment">#查看sig:</span></span><br><span class="line"><span class="comment">#(x:int, y:int, *args, **kwargs) -&gt; int</span></span><br><span class="line">print(<span class="built_in">type</span>(sig))</span><br><span class="line"><span class="comment">#查看sig的类型:</span></span><br><span class="line"><span class="comment">#&lt;class &#x27;inspect.Signature&#x27;&gt; </span></span><br><span class="line">print(sig.return_annotation)</span><br><span class="line"><span class="comment">#查看返回值注释：</span></span><br><span class="line"><span class="comment">#&lt;class &#x27;int&#x27;&gt;</span></span><br><span class="line">print(sig.parameters)</span><br><span class="line"><span class="comment">#parameters:参数名称到相应参数对象的有序映射；</span></span><br><span class="line"><span class="comment">#查看签名参数，是个有序字典(OrderedDict)：</span></span><br><span class="line"><span class="comment">#OrderedDict([(&#x27;x&#x27;, &lt;Parameter &quot;x:int&quot;&gt;), (&#x27;y&#x27;, &lt;Parameter &quot;y:int&quot;&gt;), (&#x27;args&#x27;, &lt;Parameter &quot;*args&quot;&gt;), (&#x27;kwargs&#x27;, &lt;Parameter &quot;**kwargs&quot;&gt;)])</span></span><br><span class="line">print(sig.parameters[<span class="string">&#x27;y&#x27;</span>],<span class="built_in">type</span>(sig.parameters[<span class="string">&#x27;y&#x27;</span>]),sig.parameters[<span class="string">&#x27;y&#x27;</span>].annotation)</span><br><span class="line"><span class="comment">#查看参数中的y、签名参数中y的类型、y的注解：</span></span><br><span class="line"><span class="comment">#y:int &lt;class &#x27;inspect.Parameter&#x27;&gt; &lt;class &#x27;int&#x27;&gt;</span></span><br><span class="line">print(sig.parameters[<span class="string">&#x27;args&#x27;</span>],sig.parameters[<span class="string">&#x27;args&#x27;</span>].annotation)</span><br><span class="line"><span class="comment">#查看参数中args、args的注解：</span></span><br><span class="line"><span class="comment">#*args &lt;class &#x27;inspect._empty&#x27;&gt;</span></span><br></pre></td></tr></table></figure>
+<p>上面示例中y有注释，返回<code>&lt;class 'int'&gt;</code>，而*args没有注释类型，返回<code>&lt;class 'inspect._empty'&gt;</code>。<br />
+注意：可变类型不需要写注解，它们默认把数据包装成固定类型，*args是元组，**kwargs是字典。</p>
+<p>Parameter对象（保存在元组中，是只读的）：<br />
+1. name：参数的名字；<br />
+2. annotation：参数的注解，可能没有定义；<br />
+3. default：参数的缺省值，可能没有定义；<br />
+4. empty：特殊的类，用来标记default属性或者注释annotation属性的空值；<br />
+5. kind：实参如何绑定到形参，就是形参的类型；<br />
+  5.1 POSITIONAL_ONLY，值必须是位置参数提供；<br />
+  5.2 POSITIONAL_OR_KEYWORD，值可以作为关键字或者位置参数提供；<br />
+  5.3 VAR_POSITIONAL，可变位置参数，对应<code>*args</code>；<br />
+  5.4 KEYWORD_ONLY， keyword-only参数，对应<code>*</code>或者<code>*args</code>之后的出现的非可变关键字参数；<br />
+  5.5 VAR_KEYWORD，可变关键字参数，对应<code>**kwargs</code>；</p>
+<p>inspect模块中使用的属性具体关系：</p>
+<div  align=center> 
+<img src="https://img-blog.csdnimg.cn/20190120105419472.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTMzNDAyMTY=,size_16,color_FFFFFF,t_70" width=80%" height="80%">  
+</div>   
+<p>使用add函数，检查用户输入是否符合参数注解的要求？<br />
+思路：<br />
+1. 调用时，判断用户输入的实参是否符合要求；<br />
+2. 调用时，用户感觉上还是在调用add函数；<br />
+3. 对用户输入的数据和声明的类型进行对比，如果不符合，提示用户；</p>
+<p>先使用简单的方法做一下，可预先写成柯里化形式，方便后面做成装饰器，熟练些可以直接写成装饰器：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> inspect</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check</span>(<span class="params">fn</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">        <span class="comment">#完成参数检查</span></span><br><span class="line">        sig = inspect.signature(fn)</span><br><span class="line">        params= sig.parameters<span class="comment">#有序字典 &#123;变量名:参数对象&#125;</span></span><br><span class="line">        values = <span class="built_in">list</span>(params.values())</span><br><span class="line">        <span class="keyword">for</span> i,x <span class="keyword">in</span> <span class="built_in">enumerate</span>(args):<span class="comment">#处理*args接收的参数</span></span><br><span class="line">            <span class="comment">#*args形成元组，要从元组中取出值和其对应params字典中的类型判断</span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">isinstance</span>(x,values[i].annotation):</span><br><span class="line">                print(x,<span class="string">&quot;correct!&quot;</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                print(x,<span class="string">&quot;error!&quot;</span>)</span><br><span class="line">        <span class="keyword">for</span> k,v <span class="keyword">in</span> kwargs.items():<span class="comment">#处理**kwargs接收的参数</span></span><br><span class="line">            <span class="comment">#**kwargs形成字典，只需key就可以匹配</span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">isinstance</span>(v,params[k].annotation):</span><br><span class="line">                print(v, <span class="string">&quot;correct!&quot;</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                print(v, <span class="string">&quot;error!&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> fn(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="meta">@check</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">x:<span class="built_in">int</span>, y:<span class="built_in">int</span></span>) -&gt; int:</span><span class="comment">#这里不考虑没变量注释的情况</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line">add(<span class="number">4</span>,<span class="number">5</span>)</span><br><span class="line"><span class="comment">#4 correct!</span></span><br><span class="line"><span class="comment">#5 correct!</span></span><br><span class="line">add(<span class="string">&#x27;b&#x27;</span>,<span class="string">&#x27;a&#x27;</span>)</span><br><span class="line"><span class="comment">#b error!</span></span><br><span class="line"><span class="comment">#a error!</span></span><br><span class="line">add(<span class="number">4</span>,y=<span class="number">5</span>)</span><br><span class="line"><span class="comment">#4 correct!</span></span><br><span class="line"><span class="comment">#5 correct!</span></span><br><span class="line">add(x=<span class="string">&#x27;b&#x27;</span>,y=<span class="string">&#x27;a&#x27;</span>)</span><br><span class="line"><span class="comment">#b error!</span></span><br><span class="line"><span class="comment">#a error!</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>上面示例使用isinstance类型判断完成，因为涉及到元组和字典匹配，所以先将字典的value转化成list类型再用下标去遍历即可。注意这里使用的是wrapper的签名。<br />
+上面示例有些缺陷，如果不写变量注释呢？应该不进行类型比较了，那么在上面示例基础上改进一下，顺便加上装饰器使签名和fn的一致，wrapper只判断是否错误即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"><span class="comment">#核心部分优化：</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check</span>(<span class="params">fn</span>):</span></span><br><span class="line"><span class="meta">    @functools.wraps(fn)#加上属性装饰</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">        <span class="comment">#完成参数检查</span></span><br><span class="line">        sig = inspect.signature(fn)</span><br><span class="line">        params= sig.parameters<span class="comment">#有序字典 &#123;变量名:参数对象&#125;</span></span><br><span class="line">        values = <span class="built_in">list</span>(params.values())</span><br><span class="line">        <span class="keyword">for</span> i,x <span class="keyword">in</span> <span class="built_in">enumerate</span>(args):<span class="comment">#处理*args接收的参数</span></span><br><span class="line">            <span class="comment">#参数注释不为空且类型不正确才报错</span></span><br><span class="line">            <span class="keyword">if</span> values[i].annotation != inspect._empty <span class="keyword">and</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(x,values[i].annotation):</span><br><span class="line">                print(x,<span class="string">&quot;error!&quot;</span>)</span><br><span class="line">                <span class="comment">#raise ValueError(&#x27;Param Error&#x27;)</span></span><br><span class="line">        <span class="keyword">for</span> k,v <span class="keyword">in</span> kwargs.items():<span class="comment">#处理**kwargs接收的参数</span></span><br><span class="line">            <span class="comment">#参数注释不为空且类型不正确才报错</span></span><br><span class="line">            <span class="keyword">if</span> params[k].annotation != params[k].empty <span class="keyword">and</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(v,params[k].annotation):</span><br><span class="line">                print(v, <span class="string">&quot;error!&quot;</span>)</span><br><span class="line">                <span class="comment">#raise ValueError(&#x27;Param Error&#x27;)</span></span><br><span class="line">        <span class="keyword">return</span> fn(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>inspect._empty、params[k].empty、inspect.Parameter.empty三者等价；</p>
+</blockquote>
+<h2 id="font-size5-2-functools模块-font"><a class="markdownIt-Anchor" href="#font-size5-2-functools模块-font"></a> <font  size="5" >2 functools模块 </font></h2>
+<p>在装饰器那篇文章中已经使用过functools模块中的wraps函数，这次再讲几个比较常用的函数并解释下其中的原理：</p>
+<h3 id="21-functoolsreduce"><a class="markdownIt-Anchor" href="#21-functoolsreduce"></a> 2.1 <strong>functools.reduce()</strong></h3>
+<p>1. <code>functools.reduce(function, iterable[, initializer]) -&gt; value</code>：<br />
+  1.1 使用函数方法累计，上一次的累计值作为下一次的参数，直到只剩一个值；<br />
+  1.2 有初始值时，第一个值为初始值，然后再从iterable中取值；<br />
+  1.3 无初始值时，iterable不能为空，第一个值从iterable中取；<br />
+下面是Python 3.6.6 Manuals给出的解释：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;Apply function of two arguments cumulatively to the items of sequence, from left to right, so as to reduce the sequence to a single value. For example, reduce(lambda x, y: x+y, [1, 2, 3, 4, 5]) calculates ((((1+2)+3)+4)+5). The left argument, x, is the accumulated value and the right argument, y, is the update value from the sequence. If the optional initializer is present, it is placed before the items of the sequence in the calculation, and serves as a default when the sequence is empty. If initializer is not given and sequence contains only one item, the first item is returned.&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="string">&quot;序列传给函数2个参数进行计算，计算方向是从左到右，直到序列只剩下一个值。例如：reduce(lambda x, y: x+y, [1, 2, 3, 4, 5]) 等价于计算： ((((1+2)+3)+4)+5)。左边参数x可以是累计值和从序列从取出的值，右边参数y是从序列中取出的值。如果可选项初始值存在，则将它位于从序列取值之前，并在序列为空时用作默认值。&quot;</span></span><br></pre></td></tr></table></figure>
+<p>这方便了一些功能的实现，比如累加求和、求阶乘：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#累加求和：</span></span><br><span class="line">functools.reduce(<span class="keyword">lambda</span> x,y:x + y,<span class="built_in">range</span>(<span class="number">1</span>,<span class="number">5</span>))<span class="comment">#10</span></span><br><span class="line"><span class="comment">#阶乘：</span></span><br><span class="line">functools.reduce(<span class="keyword">lambda</span> x,y:x * y,<span class="built_in">range</span>(<span class="number">1</span>,<span class="number">5</span>))<span class="comment">#24</span></span><br></pre></td></tr></table></figure>
+<h3 id="22-functoolspartial"><a class="markdownIt-Anchor" href="#22-functoolspartial"></a> 2.2 <strong>functools.partial()</strong></h3>
+<p>2. <code>functools.partial(func, *args, **keywords)</code>：<br />
+  2.1 偏函数，把函数<code>部分的参数固定</code>下来，相当于为部分的参数添加了一个固定的缺省值，形成一个<code>新的函数</code>并返回；<br />
+  2.2 partial生成的新函数，是对原函数的封装；<br />
+  2.3 相当于<code>f(x0,x1,x2...)-&gt;f'(x2..)</code>这里<code>x0，x1</code>变成有参数的被固定下来，注意<code>f'</code>是对<code>f</code>的包装，<code>f'</code>是内部包括了<code>f</code>而生成的新的函数；</p>
+<p>有兴趣的可以观看Manuals文档，这里不再介绍，接下来看下partial的原理函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">partial</span>(<span class="params">func, *args, **keywords</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">newfunc</span>(<span class="params">*fargs, **fkeywords</span>):</span></span><br><span class="line">        newkeywords = keywords.copy()<span class="comment">#newkeywords是对旧函数的keywords拷贝</span></span><br><span class="line">        newkeywords.update(fkeywords)</span><br><span class="line">        <span class="comment">#keywords是partial传的，是更新旧函数的&quot;缺省值&quot;</span></span><br><span class="line">        <span class="comment">#fkeywords是新函数调用时传的关键字参数</span></span><br><span class="line">        <span class="comment">#newkeywords和fkeywords都是字典，使用update更新，也就是有相同的key会被覆盖掉，新的覆盖旧的</span></span><br><span class="line">        <span class="keyword">return</span> func(*args, *fargs, **newkeywords)</span><br><span class="line">        <span class="comment">#func的*args和newfunc的*fargs都存下来（所以位置传参一次就固定了）</span></span><br><span class="line">        <span class="comment">#**keywords和**fkeywords组成没有重复key的**newkeywords（keyword-only就可以多次赋值）</span></span><br><span class="line">    newfunc.func = func<span class="comment">#保留旧函数名</span></span><br><span class="line">    newfunc.args = args<span class="comment">#保留旧函数args参数</span></span><br><span class="line">    newfunc.keywords = keywords<span class="comment">#保留旧函数旧函数kwwords参数</span></span><br><span class="line">    <span class="keyword">return</span> newfunc<span class="comment">#newfunc记住了func函数的所有属性，是其复制品，以后的操作都对这个复制品进行</span></span><br></pre></td></tr></table></figure>
+<p>使用add函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">x,y=<span class="number">4</span></span>):</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line">newadd = functools.partial(add,y=<span class="number">5</span>)<span class="comment">#返回的新函数本质是newfunc </span></span><br><span class="line">newadd(<span class="number">1</span>,y=<span class="number">6</span>)<span class="comment">#相当于newfunc(1,6)</span></span><br><span class="line"><span class="comment">#执行过程中相当于y=5被y=6覆盖掉了</span></span><br></pre></td></tr></table></figure>
+<p>总结下partial：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"><span class="keyword">import</span> inspect</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">x,y=<span class="number">4</span>,*args</span>):</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line">newadd = functools.partial(add,x=<span class="number">3</span>,y=<span class="number">5</span>)<span class="comment">#关键字传参不是固定，而是缺省值，可以重新赋值但只能是keyword-only</span></span><br><span class="line"><span class="comment">#signature：(*, x=3, y=5)</span></span><br><span class="line">newadd = functools.partial(add,<span class="number">1</span>,<span class="number">6</span>)<span class="comment">#位置传参是固定，不能再给x、y赋值了，只有*args才能接收新值；</span></span><br><span class="line"><span class="comment">#同理**kwargs也能接收新keyword-only传参，这里没有添加</span></span><br><span class="line"><span class="comment">#signature：(*args)</span></span><br><span class="line">print(inspect.signature(newadd))<span class="comment">#上面newadd单个执行后看签名</span></span><br></pre></td></tr></table></figure>
+<p>分析functools.warps()的实现：<br />
+在前面装饰器讲解中我们使用过，它是用来拷贝函数签名信息的装饰器，但它内部是使用了偏函数实现的，把需要的函数都放在一起解读：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#partial</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">partial</span>(<span class="params">func, *args, **keywords</span>):</span><span class="comment">#3.(func=update_wrapper)-&gt;newfunc</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">newfunc</span>(<span class="params">*fargs, **fkeywords</span>):</span></span><br><span class="line">        newkeywords = keywords.copy()</span><br><span class="line">        newkeywords.update(fkeywords)</span><br><span class="line">        <span class="keyword">return</span> func(*args, *fargs, **newkeywords)</span><br><span class="line">    newfunc.func = func</span><br><span class="line">    newfunc.args = args</span><br><span class="line">    newfunc.keywords = keywords</span><br><span class="line">    <span class="keyword">return</span> newfunc</span><br><span class="line"></span><br><span class="line"><span class="comment">#wraps</span></span><br><span class="line">        <span class="comment">#1.wraps(fn)(wrapper)-&gt; 5.newfunc(wrapper)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wraps</span>(<span class="params">wrapped,</span></span></span><br><span class="line"><span class="function"><span class="params">          assigned = WRAPPER_ASSIGNMENTS,</span></span></span><br><span class="line"><span class="function"><span class="params">          updated = WRAPPER_UPDATES</span>):</span></span><br><span class="line">                    <span class="comment">#4.update_wrapper-&gt;newfunc，newfunc相当于固定参数后的update_wrapper</span></span><br><span class="line">    <span class="keyword">return</span> partial(update_wrapper, wrapped=wrapped,</span><br><span class="line">                   assigned=assigned, updated=updated)</span><br><span class="line">            <span class="comment">#2.把update_wrapper的4参固定3个，只剩下wrapper</span></span><br><span class="line">            <span class="comment">#2.update_wrapper是做属性包装的函数</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#update_wrapper</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update_wrapper</span>(<span class="params">wrapper,</span></span></span><br><span class="line"><span class="function"><span class="params">                   wrapped,</span></span></span><br><span class="line"><span class="function"><span class="params">                   assigned = WRAPPER_ASSIGNMENTS,</span></span></span><br><span class="line"><span class="function"><span class="params">                   updated = WRAPPER_UPDATES</span>):</span></span><br><span class="line">                    <span class="comment">#属性包装，略    </span></span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="comment">#外部调用</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">logger</span>(<span class="params">fn</span>):</span></span><br><span class="line">    <span class="comment">#6.functools.wraps(fn)==functools.wraps(fn)(wrapper)-&gt;newfunc(wrapper)</span></span><br><span class="line">    <span class="comment">#7.newfunc相当于固定了一个wrapped参数的update_wrapper</span></span><br><span class="line"><span class="meta">    @functools.wraps(fn)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span>():</span></span><br><span class="line">        ...</span><br></pre></td></tr></table></figure>
+<h3 id="23-functoolslru_cache"><a class="markdownIt-Anchor" href="#23-functoolslru_cache"></a> 2.3 <strong>functools.lru_cache()</strong></h3>
+<p>3. <code>@functools.lru_cache(maxsize=128, typed=False)</code>：<br />
+  3.1 Least-recently-used装饰器。lru：最近最少使用，cache：缓存；<br />
+  3.2 如果<code>maxsize设置为None，则禁用LRU功能</code>，并且缓存可以“无限制”增长。当maxsize是2的幂时，LRU功能执行得最好；<br />
+  3.3 如果<code>typed设置为True，则不同类型的函数参数将单独缓存</code>。例如：f(3)和f(3.0)将被视为具有不同结果的不同调用；</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="meta">@functools.lru_cache()#对add函数缓存 add = functools.lru_cache()(add)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">x,y</span>):</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)<span class="comment">#增加时间测试用</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"><span class="comment">#试试执行2次的效果，哪些是从缓存中取？    </span></span><br><span class="line">print(add(<span class="number">4</span>,<span class="number">5</span>))</span><br><span class="line">print(add(<span class="number">4.0</span>,<span class="number">5.0</span>))<span class="comment">#如果typed为True呢？</span></span><br><span class="line">print(add(<span class="number">4</span>,y=<span class="number">5</span>))</span><br><span class="line">print(add(x=<span class="number">4</span>,y=<span class="number">5</span>))</span><br><span class="line">print(add(y=<span class="number">4</span>,x=<span class="number">5</span>))</span><br></pre></td></tr></table></figure>
+<p>通过上面示例，大致了解了这个函数功能是把计算过的情况缓存，等下次遇到相同情况就可以直接从缓存中取出使用。<br />
+上面示例中print函数都应该属于同一种情况，但只有前两个被判断是相同的，也就是说它判断几乎一模一样才从缓存取值。<br />
+当<code>typed设置为True时</code>，唯一被认为是相同的<code>add(4.0,5.0)</code>也被判断为不同了，真正的是一模一样才从缓存中取值。</p>
+<p>它判断哪些情况是属于同一种呢？这里我们只关心key是如何判断的，阅读下部分原码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lru_cache</span>(<span class="params">maxsize=<span class="number">128</span>, typed=<span class="literal">False</span></span>):</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">decorating_function</span>(<span class="params">user_function</span>):</span><span class="comment">#2.调用_lru_cache_wrapper函数</span></span><br><span class="line">        wrapper = _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo)</span><br><span class="line">        <span class="keyword">return</span> update_wrapper(wrapper, user_function)</span><br><span class="line">    <span class="keyword">return</span> decorating_function<span class="comment">#1.返回的是内部函数名</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_lru_cache_wrapper</span>(<span class="params">user_function, maxsize, typed, _CacheInfo</span>):</span></span><br><span class="line">    </span><br><span class="line">    sentinel = <span class="built_in">object</span>()          </span><br><span class="line">    make_key = _make_key         <span class="comment"># 3.用_make_key函数做key判断</span></span><br><span class="line">    PREV, NEXT, KEY, RESULT = <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>  </span><br><span class="line"></span><br><span class="line">    cache = &#123;&#125;<span class="comment">#4.用字典缓存</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_make_key</span>(<span class="params">args, kwds, typed,</span></span></span><br><span class="line"><span class="function"><span class="params">             kwd_mark = (<span class="params"><span class="built_in">object</span>(<span class="params"></span>),</span>),</span></span></span><br><span class="line"><span class="function"><span class="params">             fasttypes = &#123;<span class="built_in">int</span>, <span class="built_in">str</span>, <span class="built_in">frozenset</span>, <span class="built_in">type</span>(<span class="params"><span class="literal">None</span></span>)&#125;,</span></span></span><br><span class="line"><span class="function"><span class="params">             <span class="built_in">tuple</span>=<span class="built_in">tuple</span>, <span class="built_in">type</span>=<span class="built_in">type</span>, <span class="built_in">len</span>=<span class="built_in">len</span></span>):</span><span class="comment">#5.假设args:(4,),kwds:&#123;&#x27;y&#x27;:5&#125;</span></span><br><span class="line"></span><br><span class="line">    key = args<span class="comment">#6.位置传参给key，key==(4,)</span></span><br><span class="line">    <span class="keyword">if</span> kwds:<span class="comment">#7.关键字传参不为空进入</span></span><br><span class="line">        key += kwd_mark<span class="comment">#8.在位置传参后加上一个分界符，key==(4,object())</span></span><br><span class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> kwds.items(): </span><br><span class="line">            key += item  <span class="comment">#9.key==(4,object(),&#x27;y&#x27;,5) 这里有个小问题，如果value是不可hash的，那么最终放到cache中将失效，因为cache是字典</span></span><br><span class="line">    <span class="keyword">if</span> typed:</span><br><span class="line">        key += <span class="built_in">tuple</span>(<span class="built_in">type</span>(v) <span class="keyword">for</span> v <span class="keyword">in</span> args)<span class="comment">#10.尾部追加args参数类型，key==(4,object(),&#x27;y&#x27;,5,int)</span></span><br><span class="line">        <span class="keyword">if</span> kwds:</span><br><span class="line">            key += <span class="built_in">tuple</span>(<span class="built_in">type</span>(v) <span class="keyword">for</span> v <span class="keyword">in</span> kwds.values())<span class="comment">#11.尾部追加kwds参数类型，key==(4,object(),&#x27;y&#x27;,5,int,int)</span></span><br><span class="line">    <span class="keyword">elif</span> <span class="built_in">len</span>(key) == <span class="number">1</span> <span class="keyword">and</span> <span class="built_in">type</span>(key[<span class="number">0</span>]) <span class="keyword">in</span> fasttypes:</span><br><span class="line">        <span class="keyword">return</span> key[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">return</span> _HashedSeq(key)<span class="comment">#12.返回的key用可hash列表包裹，变成[4,object(),&#x27;y&#x27;,5,int,int]</span></span><br></pre></td></tr></table></figure>
+<p>理解了上面代码执行过程，测试一下具体key会形成什么：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">functools._make_key((<span class="number">4</span>,<span class="number">5</span>),&#123;&#125;,<span class="literal">True</span>)</span><br><span class="line"><span class="comment">#[4, 5, int, int]</span></span><br><span class="line">functools._make_key((<span class="number">4</span>,),&#123;<span class="string">&#x27;y&#x27;</span>:<span class="number">5</span>&#125;,<span class="literal">True</span>)</span><br><span class="line"><span class="comment">#[4, &lt;object at 0x202c3feb0b0&gt;, &#x27;y&#x27;, 5, int, int]</span></span><br><span class="line">functools._make_key((),&#123;<span class="string">&#x27;x&#x27;</span>:<span class="number">4</span>,<span class="string">&#x27;y&#x27;</span>:<span class="number">5</span>&#125;,<span class="literal">True</span>)</span><br><span class="line"><span class="comment">#[&lt;object at 0x202c3feb0b0&gt;, &#x27;x&#x27;, 4, &#x27;y&#x27;, 5, int, int]</span></span><br></pre></td></tr></table></figure>
+<p>通过上面示例，发现生成的key都不一样，所以当然就不能当成一种情况从缓存取值了。<br />
+还记得递归写的菲波那切数列数列吗？每次计算都是很耗时的，因为它并不缓存上次的结果，所以每次执行都是重新计算，这次使用<code>lru_cache</code>来解决这个问题：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"></span><br><span class="line"><span class="meta">@functools.lru_cache()</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib</span>():</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> <span class="keyword">if</span> n &lt; <span class="number">3</span> <span class="keyword">else</span> fib(n<span class="number">-1</span>) + fib(n<span class="number">-2</span>)</span><br></pre></td></tr></table></figure>
+<p>这次计算大的值就会很快了，因为缓存了上次执行结果。</p>
+<p>使用前提：<br />
+1. 同样的函数参数一定得到同样的结果；<br />
+2. 函数执行时间很长，且要多次执行；<br />
+其本质是函数调用的参数=&gt;返回值<br />
+缺点：<br />
+1. 不支持缓存过期，key无法过期、失效；<br />
+2. 不支持清除操作；<br />
+3. 不支持分布式，是一个单机的缓存；<br />
+适用场景：单机上需要空间换时间的地方，可以用缓存来将计算变成快速的查询</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\01\12\02.Python-列表、元组、随机数\" rel="bookmark">Python-列表、元组、随机数</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\01\11\01.Python-基础语法\" rel="bookmark">Python-基础语法</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\01\13\03.Python-bytes和bytearray\" rel="bookmark">Python-bytes和bytearray</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\01\14\04.Python-字符串\" rel="bookmark">Python-字符串、常用命令</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\01\15\05.Python-切片\" rel="bookmark">Python-切片</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>SoundMemories
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2019/01/22/11.Python-%E7%B1%BB%E5%9E%8B%E6%B3%A8%E9%87%8A%E3%80%81functools%E6%A8%A1%E5%9D%97/" title="Python-类型注解、functools模块">http://example.com/2019/01/22/11.Python-类型注释、functools模块/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/01/21/10.Python-%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0%E3%80%81%E6%9F%AF%E9%87%8C%E5%8C%96%E3%80%81%E8%A3%85%E9%A5%B0%E5%99%A8%E5%92%8Cfunctools.wraps()/" rel="prev" title="Python-高阶函数、柯里化、装饰器和functools.wraps()">
+                  <i class="fa fa-chevron-left"></i> Python-高阶函数、柯里化、装饰器和functools.wraps()
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/01/25/12.Python-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80/" rel="next" title="Python-面向对象-基础">
+                  Python-面向对象-基础 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SoundMemories</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  const url = element.dataset.target;
+  const pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  const pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  const fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+      <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@2.0.0/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink.listen({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://example.com/2019/01/22/11.Python-%E7%B1%BB%E5%9E%8B%E6%B3%A8%E9%87%8A%E3%80%81functools%E6%A8%A1%E5%9D%97/',]
+      });
+      });
+  </script>
+
+    </div>
+</body>
+</html>
