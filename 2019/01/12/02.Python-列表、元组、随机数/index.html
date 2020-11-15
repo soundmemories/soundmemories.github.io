@@ -25,15 +25,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.0.2","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="列表、元组、随机数 数值分类：int、float、bool、complex 序列对象：字符串str、列表list、元组tuple 键值对：集合set、字典dict 数值型：      int、float、bool、complex都是对象，都是对象即实例：      int：python3的int就是长整型，且没有大小限制，受限于内存区域的大小。      float：有整数部分和小数部分组成。支">
+  <meta name="description" content="##列表、元组、随机数 数值分类：int、float、bool、complex 序列对象：字符串str、列表list、元组tuple 键值对：集合set、字典dict 数值型：  int、float、bool、complex都是对象，都是对象即实例： int：python3的int就是长整型，且没有大小限制，受限于内存区域的大小。 float：有整数部分和小数部分组成。支持十进制和科学计数法表示。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python-列表、元组、随机数">
 <meta property="og:url" content="http://example.com/2019/01/12/02.Python-%E5%88%97%E8%A1%A8%E3%80%81%E5%85%83%E7%BB%84%E3%80%81%E9%9A%8F%E6%9C%BA%E6%95%B0/index.html">
 <meta property="og:site_name" content="SoundMemories">
-<meta property="og:description" content="列表、元组、随机数 数值分类：int、float、bool、complex 序列对象：字符串str、列表list、元组tuple 键值对：集合set、字典dict 数值型：      int、float、bool、complex都是对象，都是对象即实例：      int：python3的int就是长整型，且没有大小限制，受限于内存区域的大小。      float：有整数部分和小数部分组成。支">
+<meta property="og:description" content="##列表、元组、随机数 数值分类：int、float、bool、complex 序列对象：字符串str、列表list、元组tuple 键值对：集合set、字典dict 数值型：  int、float、bool、complex都是对象，都是对象即实例： int：python3的int就是长整型，且没有大小限制，受限于内存区域的大小。 float：有整数部分和小数部分组成。支持十进制和科学计数法表示。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-01-11T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-11-15T06:54:20.907Z">
+<meta property="article:modified_time" content="2020-11-15T07:54:17.452Z">
 <meta property="article:author" content="SoundMemories">
 <meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
@@ -213,7 +213,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#font-size5-%E5%88%97%E8%A1%A8-%E5%85%83%E7%BB%84-%E9%9A%8F%E6%9C%BA%E6%95%B0font"><span class="nav-number">1.</span> <span class="nav-text"> 列表、元组、随机数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#font-size5-2-%E5%88%97%E8%A1%A8-font"><span class="nav-number">2.</span> <span class="nav-text"> 2 列表 </span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#21-%E5%88%97%E8%A1%A8%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.</span> <span class="nav-text"> 2.1 列表定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#21-%E5%88%97%E8%A1%A8%E8%A1%A8%E7%A4%BA"><span class="nav-number">2.2.</span> <span class="nav-text"> 2.1 列表表示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-%E5%88%97%E8%A1%A8%E7%B4%A2%E5%BC%95"><span class="nav-number">2.3.</span> <span class="nav-text"> 2.2 列表索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#23-%E5%88%97%E8%A1%A8%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.4.</span> <span class="nav-text"> 2.3 列表查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#24-%E5%88%97%E8%A1%A8%E5%85%83%E7%B4%A0%E4%BF%AE%E6%94%B9"><span class="nav-number">2.5.</span> <span class="nav-text"> 2.4 列表元素修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#25-%E5%88%97%E8%A1%A8%E5%85%B6%E4%BB%96%E6%93%8D%E4%BD%9C"><span class="nav-number">2.6.</span> <span class="nav-text"> 2.5 列表其他操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#26-%E5%A4%8D%E5%88%B6"><span class="nav-number">2.7.</span> <span class="nav-text"> 2.6 复制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#font-size5-3-%E5%85%83%E7%BB%84-font"><span class="nav-number">3.</span> <span class="nav-text"> 3 元组 </span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#31-%E5%85%83%E7%BB%84%E5%AE%9A%E4%B9%89"><span class="nav-number">3.1.</span> <span class="nav-text"> 3.1 元组定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#32-%E5%85%83%E7%BB%84%E7%B4%A2%E5%BC%95"><span class="nav-number">3.2.</span> <span class="nav-text"> 3.2 元组索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#33-%E5%85%83%E7%BB%84%E6%9F%A5%E8%AF%A2"><span class="nav-number">3.3.</span> <span class="nav-text"> 3.3 元组查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#34-%E5%85%83%E7%BB%84%E5%85%B6%E4%BB%96%E6%93%8D%E4%BD%9C"><span class="nav-number">3.4.</span> <span class="nav-text"> 3.4 元组其他操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#font-size5-4-%E9%9A%8F%E6%9C%BA%E6%95%B0-font"><span class="nav-number">4.</span> <span class="nav-text"> 4 随机数 </span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%97%E8%A1%A8"><span class="nav-number">1.</span> <span class="nav-text"> 列表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%97%E8%A1%A8%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text"> 列表定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%97%E8%A1%A8%E8%A1%A8%E7%A4%BA"><span class="nav-number">1.2.</span> <span class="nav-text"> 列表表示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%97%E8%A1%A8%E7%B4%A2%E5%BC%95"><span class="nav-number">1.3.</span> <span class="nav-text"> 列表索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%97%E8%A1%A8%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.4.</span> <span class="nav-text"> 列表查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%97%E8%A1%A8%E5%85%83%E7%B4%A0%E4%BF%AE%E6%94%B9"><span class="nav-number">1.5.</span> <span class="nav-text"> 列表元素修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%97%E8%A1%A8%E5%85%B6%E4%BB%96%E6%93%8D%E4%BD%9C"><span class="nav-number">1.6.</span> <span class="nav-text"> 列表其他操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6"><span class="nav-number">1.7.</span> <span class="nav-text"> 复制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%83%E7%BB%84"><span class="nav-number">2.</span> <span class="nav-text"> 元组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%83%E7%BB%84%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.</span> <span class="nav-text"> 元组定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%83%E7%BB%84%E7%B4%A2%E5%BC%95"><span class="nav-number">2.2.</span> <span class="nav-text"> 元组索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%83%E7%BB%84%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.3.</span> <span class="nav-text"> 元组查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%83%E7%BB%84%E5%85%B6%E4%BB%96%E6%93%8D%E4%BD%9C"><span class="nav-number">2.4.</span> <span class="nav-text"> 元组其他操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9A%8F%E6%9C%BA%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text"> 随机数</span></a></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -336,7 +336,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>4.1k</span>
+      <span>4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -354,21 +354,25 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="font-size5-列表-元组-随机数font"><a class="markdownIt-Anchor" href="#font-size5-列表-元组-随机数font"></a> <font  size="5" >列表、元组、随机数</font></h2>
-<p>数值分类：int、float、bool、complex<br />
+        <p>##列表、元组、随机数<br />
+数值分类：int、float、bool、complex<br />
 序列对象：字符串str、列表list、元组tuple<br />
 键值对：集合set、字典dict<br />
-数值型：<br />
-     int、float、bool、complex都是对象，都是对象即实例：<br />
-     int：python3的int就是长整型，且没有大小限制，受限于内存区域的大小。<br />
-     float：有整数部分和小数部分组成。支持十进制和科学计数法表示。 C的双精度型实现。<br />
-     complex：有实数和虚数部分组成，实数和虚数部分都是浮点数。<br />
-     bool：int的子类，仅有2个实例True、 False对应1和0，可以和整数直接运算。<br />
-类型转换：<br />
-    int(x)： 返回一个整数。<br />
-    float(x)： 返回一个浮点数。<br />
-    complex(x)、 complex(x,y) ：返回一个复数。<br />
-    bool(x)： 返回布尔值，前面讲过False等价的对象。</p>
+数值型：</p>
+<ul>
+<li>int、float、bool、complex都是对象，都是对象即实例：</li>
+<li>int：python3的int就是长整型，且没有大小限制，受限于内存区域的大小。</li>
+<li>float：有整数部分和小数部分组成。支持十进制和科学计数法表示。 C的双精度型实现。</li>
+<li>complex：有实数和虚数部分组成，实数和虚数部分都是浮点数。</li>
+<li>bool：int的子类，仅有2个实例True、 False对应1和0，可以和整数直接运算。</li>
+</ul>
+<p>类型转换：</p>
+<ul>
+<li>int(x)： 返回一个整数。</li>
+<li>float(x)： 返回一个浮点数。</li>
+<li>complex(x)、 complex(x,y) ：返回一个复数。</li>
+<li>bool(x)： 返回布尔值，前面讲过False等价的对象。</li>
+</ul>
 <a id="more"></a>
 <p>数学简单语句：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line">math.floor()<span class="comment">#向下取整</span></span><br><span class="line">math.ceil()<span class="comment">#向上取整</span></span><br><span class="line">math.sqrt()<span class="comment">#开根号</span></span><br><span class="line">math.<span class="built_in">pow</span>(x,y)<span class="comment">#x的y次幂，等同于x**y</span></span><br><span class="line">math.pi <span class="comment"># π</span></span><br><span class="line">math.e <span class="comment"># 自如常数</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">max</span>(iterable,*[,key,default])<span class="comment">#可迭代对象的最大值</span></span><br><span class="line"><span class="built_in">min</span>(iterable,*[,key,default])<span class="comment">#可迭代对象的最小值</span></span><br><span class="line"><span class="built_in">round</span>(number[,ndigits])<span class="comment">#四舍六入，五取偶（取离他最近的偶数)</span></span><br><span class="line"><span class="built_in">divmod</span>()<span class="comment">#求商求余，输出2个</span></span><br><span class="line"><span class="built_in">int</span>()<span class="comment">#不论正负只取整数部分</span></span><br><span class="line">//<span class="comment">#向下取整</span></span><br></pre></td></tr></table></figure>
@@ -376,8 +380,8 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">bin</span>(x)<span class="comment">#x转成二进制</span></span><br><span class="line"><span class="built_in">oct</span>(x)<span class="comment">#x转成八进制</span></span><br><span class="line"><span class="built_in">hex</span>(x)<span class="comment">#x转成十六进制</span></span><br></pre></td></tr></table></figure>
 <p>类型判断：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">type</span>(obj)<span class="comment">#返回obj的类型，不是字符串。</span></span><br><span class="line">isinstance(obj,class_or_tuple)-&gt;bool#obj是不是class_or_tuple的类型，类型多种必须用()括起来。</span><br><span class="line"></span><br><span class="line"><span class="built_in">type</span>(<span class="number">1</span>+<span class="literal">True</span>+<span class="number">2.0</span>) <span class="comment"># 是什么？注意这里有隐式转换。</span></span><br></pre></td></tr></table></figure>
-<h2 id="font-size5-2-列表-font"><a class="markdownIt-Anchor" href="#font-size5-2-列表-font"></a> <font  size="5" >2 列表 </font></h2>
-<h3 id="21-列表定义"><a class="markdownIt-Anchor" href="#21-列表定义"></a> 2.1 <strong>列表定义</strong></h3>
+<h2 id="列表"><a class="markdownIt-Anchor" href="#列表"></a> 列表</h2>
+<h3 id="列表定义"><a class="markdownIt-Anchor" href="#列表定义"></a> 列表定义</h3>
 <p>列表list：</p>
 <ul>
 <li>有顺序、可索引、内存地址连续，随机查找，不便于在中间插入和删除</li>
@@ -399,7 +403,7 @@
 <li>stack栈：只能对一端进行操作。</li>
 </ol>
 </blockquote>
-<h3 id="21-列表表示"><a class="markdownIt-Anchor" href="#21-列表表示"></a> 2.1 <strong>列表表示</strong></h3>
+<h3 id="列表表示"><a class="markdownIt-Anchor" href="#列表表示"></a> 列表表示</h3>
 <p><code>list() -&gt; new empty list</code><br />
 <code>list(iterable) -&gt; new list initialized from iterable's items</code><br />
 注意列表不能一开始就定义大小！</p>
@@ -407,7 +411,7 @@
 <blockquote>
 <p>和 <code>[range( )]</code> 区别：<code>list()</code>把数据全输出，第二个显示<code>range()</code>，表示<code>range()</code>是列表的一个元素。列表中有引用类型时，复制时对引用类型是浅拷贝！可以使用深拷贝递归拷贝。</p>
 </blockquote>
-<h3 id="22-列表索引"><a class="markdownIt-Anchor" href="#22-列表索引"></a> 2.2 <strong>列表索引</strong></h3>
+<h3 id="列表索引"><a class="markdownIt-Anchor" href="#列表索引"></a> 列表索引</h3>
 <p>索引，也叫下标：</p>
 <ul>
 <li>正索引：从左至右，从0开始，为列表中每一个元素编号。</li>
@@ -418,7 +422,7 @@
 <p>方便理解，可认为列表是从左至右排列的，左边是头部，右边是尾部，左边是下界，右边是上界。</p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># index就是索引，使用中括号访问。</span></span><br><span class="line"><span class="built_in">list</span>[index]</span><br></pre></td></tr></table></figure>
-<h3 id="23-列表查询"><a class="markdownIt-Anchor" href="#23-列表查询"></a> 2.3 <strong>列表查询</strong></h3>
+<h3 id="列表查询"><a class="markdownIt-Anchor" href="#列表查询"></a> 列表查询</h3>
 <p>列表查询：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 匹配到第一个就立即返回索引，找不到异常，O(n)</span></span><br><span class="line">.index(value,[start,[stop]])</span><br><span class="line"><span class="comment"># 判断value是否在list中，比如`22 in list1`，返回bool值</span></span><br><span class="line">value in list-&gt;bool </span><br><span class="line"><span class="comment"># 返回列表中匹配sub的次数，O(n)</span></span><br><span class="line">.count(sub[,start[,end]])-&gt;int</span><br><span class="line"><span class="comment"># ()里面是容器，直接取长度计数，O(1)</span></span><br><span class="line"><span class="built_in">len</span>(s)</span><br></pre></td></tr></table></figure>
 <blockquote>
@@ -426,19 +430,19 @@
 如何返回列表元素的个数？如何遍历？如何设计高效？使用<code>len()</code>函数。<br />
 官方文档(Python 3.x Manuals)可以查看函数的具体用法，也可以去官网查阅。</p>
 </blockquote>
-<h3 id="24-列表元素修改"><a class="markdownIt-Anchor" href="#24-列表元素修改"></a> 2.4 <strong>列表元素修改</strong></h3>
+<h3 id="列表元素修改"><a class="markdownIt-Anchor" href="#列表元素修改"></a> 列表元素修改</h3>
 <p>列表增加、插入元素：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 列表增加，索引不要超界</span></span><br><span class="line"><span class="built_in">list</span>[index] = value</span><br><span class="line"></span><br><span class="line">.append(object)-&gt;None</span><br><span class="line"><span class="comment">#尾部追加1个元素，因为是list所以追加数据量大会要连续的空间可能会引起GC，时间消耗大，尽量避免追加大量数据。</span></span><br><span class="line"><span class="comment">#返回None就意味着没有新的列表产生，就地修改</span></span><br><span class="line"><span class="comment">#时间复杂度是O(1)</span></span><br><span class="line"></span><br><span class="line">.insert(index, object) -&gt; None</span><br><span class="line"><span class="comment">#在指定的索引index处插入元素object，就地修改</span></span><br><span class="line"><span class="comment">#时间复杂度是O(n)，效率低，能不用则不用</span></span><br><span class="line"><span class="comment">#索引能超上下界吗？超越上界，尾部追加,超越下界，头部追加</span></span><br><span class="line"></span><br><span class="line">.extend(iteratable)-&gt;None</span><br><span class="line"><span class="comment">#将可迭代对象的元素追加进来，就地修改，初始化可以用，别的就不用了。</span></span><br><span class="line"></span><br><span class="line">+ -&gt; list</span><br><span class="line"><span class="comment">#连接操作，将两个列表连接起来</span></span><br><span class="line"><span class="comment">#产生新的列表，原列表不变</span></span><br><span class="line"><span class="comment">#本质上调用的是__add__()方法</span></span><br><span class="line"><span class="comment">#注意和 += 执行过程不同，这个是就地修改。</span></span><br><span class="line"></span><br><span class="line">* -&gt; list</span><br><span class="line"><span class="comment">#重复操作，将本列表元素重复n次</span></span><br><span class="line"><span class="comment">#产生新的列表，原列表不变</span></span><br><span class="line"><span class="comment">#（有风险!）重复的其实是地址！</span></span><br></pre></td></tr></table></figure>
 <p>列表删除元素：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">.remove(value) -&gt; None</span><br><span class="line"><span class="comment">#从左至右查找第一个匹配value的值，移除该元素，返回None，就地修改，需要遍历，效率低。</span></span><br><span class="line"></span><br><span class="line">.pop([index]) -&gt; item</span><br><span class="line"><span class="comment">#不指定索引index，就从列表尾部弹出一个元素</span></span><br><span class="line"><span class="comment">#指定索引index，就从索引处弹出一个元素，索引超界抛出IndexError错误</span></span><br><span class="line"><span class="comment">#效率？指定索引的的时间复杂度？不指定索引呢？都是，O(1)，效率高。</span></span><br><span class="line"></span><br><span class="line">clear() -&gt; None</span><br><span class="line"><span class="comment">#清除列表所有元素，剩下一个空列表</span></span><br><span class="line"><span class="comment">#GC会执行操作，数据量大，时间会长，不要频繁使用，而且数据很重要，不要轻易清空！</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="25-列表其他操作"><a class="markdownIt-Anchor" href="#25-列表其他操作"></a> 2.5 <strong>列表其他操作</strong></h3>
+<h3 id="列表其他操作"><a class="markdownIt-Anchor" href="#列表其他操作"></a> 列表其他操作</h3>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">reverse() -&gt; None</span><br><span class="line"><span class="comment">#将列表元素反转，返回None，就地修改</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">reversed</span>(seq)</span><br><span class="line"><span class="comment"># 返回一个反转的迭代器，非就地修改</span></span><br><span class="line"></span><br><span class="line">sort(key=None, reverse=False) -&gt; None</span><br><span class="line"><span class="comment">#对列表元素进行排序，就地修改，默认升序</span></span><br><span class="line"><span class="comment">#reverse为True，反转，降序</span></span><br><span class="line"><span class="comment">#key一个函数，指定key如何排序`lst.sort(key=function)`</span></span><br></pre></td></tr></table></figure>
-<h3 id="26-复制"><a class="markdownIt-Anchor" href="#26-复制"></a> 2.6 <strong>复制</strong></h3>
+<h3 id="复制"><a class="markdownIt-Anchor" href="#复制"></a> 复制</h3>
 <p>shadow copy：影子拷贝，也叫浅拷贝，遇到引用类型，只是复制了一个引用而已。<br />
 deep copy：深拷贝，copy模块提供了deepcopy，真正的拷贝了一遍，生成全新的对象。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.copy()<span class="comment">#浅拷贝</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> copy</span><br><span class="line">copy.deepcopy(x)<span class="comment">#深拷贝x</span></span><br></pre></td></tr></table></figure>
-<h2 id="font-size5-3-元组-font"><a class="markdownIt-Anchor" href="#font-size5-3-元组-font"></a> <font  size="5" >3 元组 </font></h2>
-<h3 id="31-元组定义"><a class="markdownIt-Anchor" href="#31-元组定义"></a> 3.1 <strong>元组定义</strong></h3>
+<h2 id="元组"><a class="markdownIt-Anchor" href="#元组"></a> 元组</h2>
+<h3 id="元组定义"><a class="markdownIt-Anchor" href="#元组定义"></a> 元组定义</h3>
 <p><code>tuple() -&gt; empty tuple</code><br />
 <code>tuple(iterable) -&gt; tuple initialized from iterable's items</code></p>
 <ul>
@@ -448,7 +452,7 @@ deep copy：深拷贝，copy模块提供了deepcopy，真正的拷贝了一遍�
 <li>元组是只读的，所以增、改、删方法都没有！</li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">()、<span class="built_in">tuple</span>()<span class="comment">#空元组</span></span><br><span class="line">(<span class="number">1</span>,)<span class="comment">#注意一个元素后面加`,`才是元组</span></span><br></pre></td></tr></table></figure>
-<h3 id="32-元组索引"><a class="markdownIt-Anchor" href="#32-元组索引"></a> 3.2 <strong>元组索引</strong></h3>
+<h3 id="元组索引"><a class="markdownIt-Anchor" href="#元组索引"></a> 元组索引</h3>
 <p>支持索引（下标）：</p>
 <ul>
 <li>正索引：从左至右，从0开始，为列表中每一个元素编号。</li>
@@ -456,15 +460,15 @@ deep copy：深拷贝，copy模块提供了deepcopy，真正的拷贝了一遍�
 <li>正负索引不可以超界，否则引发异常IndexError。</li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">tuple</span>[index]</span><br><span class="line"><span class="comment"># index就是索引，使用中括号访问</span></span><br></pre></td></tr></table></figure>
-<h3 id="33-元组查询"><a class="markdownIt-Anchor" href="#33-元组查询"></a> 3.3 <strong>元组查询</strong></h3>
+<h3 id="元组查询"><a class="markdownIt-Anchor" href="#元组查询"></a> 元组查询</h3>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">index(value,[start,[stop]])-&gt;index</span><br><span class="line"><span class="comment">#通过值value，从指定区间查找列表内的元素是否匹配，匹配第一个就立即返回索引，匹配不到，抛出异常ValueError</span></span><br><span class="line"></span><br><span class="line">count(value)</span><br><span class="line"><span class="comment">#返回列表中匹配value的次数</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#index和count方法都是O(n)，随着列表数据规模的增大，而效率下降</span></span><br><span class="line"><span class="comment">#多使用len(tuple)：返回元素的个数，O(n)。</span></span><br></pre></td></tr></table></figure>
-<h3 id="34-元组其他操作"><a class="markdownIt-Anchor" href="#34-元组其他操作"></a> 3.4 <strong>元组其他操作</strong></h3>
+<h3 id="元组其他操作"><a class="markdownIt-Anchor" href="#元组其他操作"></a> 元组其他操作</h3>
 <p>命名元组：</p>
 <ul>
 <li><code>namedtuple()</code>：创建的是tuple类型，创建后不许修改，返回的是类型。</li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> namedtuple</span><br><span class="line">a = namedtuple(<span class="string">&#x27;b&#x27;</span>,<span class="string">&#x27;name&#x27;</span>)</span><br><span class="line">tom = a(name=<span class="string">&#x27;san&#x27;</span>)</span><br><span class="line">print(tom) <span class="comment"># 输出：b(name=&#x27;san&#x27;)</span></span><br></pre></td></tr></table></figure>
-<h2 id="font-size5-4-随机数-font"><a class="markdownIt-Anchor" href="#font-size5-4-随机数-font"></a> <font  size="5" >4 随机数 </font></h2>
+<h2 id="随机数"><a class="markdownIt-Anchor" href="#随机数"></a> 随机数</h2>
 <p>随机数：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line">random.choice(seq)</span><br><span class="line"><span class="comment">#从非空序列的元素中随机挑选一个元素。</span></span><br><span class="line"><span class="comment">#比如random.choice(range(10))，从0到9中随机挑选一个整数。</span></span><br><span class="line"></span><br><span class="line">random.shuffle(x[,random]))-&gt;None</span><br><span class="line"><span class="comment">#洗牌，就地打乱列表元素,就地修改。</span></span><br><span class="line"></span><br><span class="line">random.randrange(start,stop[,step])</span><br><span class="line"><span class="comment">#[)左闭右开，从指定范围内，按指定基数递增的集合中获取一个随机数，基数缺省值为1。</span></span><br><span class="line"></span><br><span class="line">random.randrange(stop)</span><br><span class="line"><span class="comment">#[)左闭右开，从0~stop取一个数。</span></span><br><span class="line"></span><br><span class="line">random.randint(a,b)</span><br><span class="line"><span class="comment"># 返回[a, b]之间的整数。</span></span><br><span class="line"></span><br><span class="line">random.sample(population,k)</span><br><span class="line"><span class="comment">#从样本空间或总体（序列或者集合类型）中随机取出k个`不同的元素`，返回一个新的列表。</span></span><br><span class="line"><span class="comment">#`不同元素`指的是是不同索引！</span></span><br></pre></td></tr></table></figure>
     </div>
@@ -479,13 +483,13 @@ deep copy：深拷贝，copy模块提供了deepcopy，真正的拷贝了一遍�
       <div class="popular-posts-title"><a href="\2019\01\11\01.Python-基础语法\" rel="bookmark">Python-基础语法</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2019\01\14\04.Python-字符串\" rel="bookmark">Python-字符串、常用命令</a></div>
-    </li>
-    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2019\01\13\03.Python-bytes和bytearray\" rel="bookmark">Python-Bytes和Bytearray</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2019\01\15\05.Python-切片\" rel="bookmark">Python-切片</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\01\14\04.Python-字符串\" rel="bookmark">Python-字符串、常用命令</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2019\01\16\06.Python-封装解构、集合\" rel="bookmark">Python-封装结构、集合</a></div>

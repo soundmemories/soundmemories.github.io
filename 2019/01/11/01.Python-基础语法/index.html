@@ -25,15 +25,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.0.2","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="1 基础语法  以下内容基于Python 3.6.6版本编写！   1.1 注释     和大多数语言一样，在Python中#表示注释的意思： 12print(&quot;Hello World!&quot;)#输出Hello World!   [Out]:Hello World!">
+  <meta name="description" content="基础语法  以下内容基于Python 3.6.6版本编写！   注释 和大多数语言一样，在Python中#表示注释的意思： 12print(&quot;Hello World!&quot;)#输出Hello World!   [Out]:Hello World!">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python-基础语法">
 <meta property="og:url" content="http://example.com/2019/01/11/01.Python-%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/index.html">
 <meta property="og:site_name" content="SoundMemories">
-<meta property="og:description" content="1 基础语法  以下内容基于Python 3.6.6版本编写！   1.1 注释     和大多数语言一样，在Python中#表示注释的意思： 12print(&quot;Hello World!&quot;)#输出Hello World!   [Out]:Hello World!">
+<meta property="og:description" content="基础语法  以下内容基于Python 3.6.6版本编写！   注释 和大多数语言一样，在Python中#表示注释的意思： 12print(&quot;Hello World!&quot;)#输出Hello World!   [Out]:Hello World!">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-01-10T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-11-15T02:21:33.624Z">
+<meta property="article:modified_time" content="2020-11-15T08:00:47.518Z">
 <meta property="article:author" content="SoundMemories">
 <meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
@@ -213,7 +213,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#font-size5-1-%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95font"><span class="nav-number">1.</span> <span class="nav-text"> 1 基础语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#11-%E6%B3%A8%E9%87%8A"><span class="nav-number">1.1.</span> <span class="nav-text"> 1.1 注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-%E6%95%B0%E5%AD%97"><span class="nav-number">1.2.</span> <span class="nav-text"> 1.2 数字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">1.3.</span> <span class="nav-text"> 1.3 字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-%E8%BD%AC%E4%B9%89%E5%BA%8F%E5%88%97"><span class="nav-number">1.4.</span> <span class="nav-text"> 1.4 转义序列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-%E7%BC%A9%E8%BF%9B"><span class="nav-number">1.5.</span> <span class="nav-text"> 1.5 缩进</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-%E7%BB%AD%E8%A1%8C"><span class="nav-number">1.6.</span> <span class="nav-text"> 1.6 续行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-%E6%A0%87%E8%AF%86%E7%AC%A6"><span class="nav-number">1.7.</span> <span class="nav-text"> 1.7 标识符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-%E5%B8%B8%E9%87%8F%E5%92%8C%E5%8F%98%E9%87%8F"><span class="nav-number">1.8.</span> <span class="nav-text"> 1.8 常量和变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#19-%E5%8A%A8%E6%80%81%E5%BC%BA%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.9.</span> <span class="nav-text"> 1.9 动态强类型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#font-size5-2-%E5%AD%A6%E4%BC%9A%E8%BF%90%E7%AE%97%E7%AC%A6font"><span class="nav-number">2.</span> <span class="nav-text"> 2 学会运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#21-%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.1.</span> <span class="nav-text"> 2.1 运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-%E4%BD%8D%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.2.</span> <span class="nav-text"> 2.2 位运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#23-%E6%AF%94%E8%BE%83%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.3.</span> <span class="nav-text"> 2.3 比较运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#24-%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.4.</span> <span class="nav-text"> 2.4 逻辑运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#25-%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.5.</span> <span class="nav-text"> 2.5 赋值运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#26-%E6%88%90%E5%91%98%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.6.</span> <span class="nav-text"> 2.6 成员运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#26-%E8%BA%AB%E4%BB%BD%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.7.</span> <span class="nav-text"> 2.6 身份运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#27-%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">2.8.</span> <span class="nav-text"> 2.7 运算符优先级</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#font-size5-3-%E5%88%9D%E5%AD%A6%E8%AF%AD%E5%8F%A5-font"><span class="nav-number">3.</span> <span class="nav-text"> 3 初学语句 </span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#31-%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">3.1.</span> <span class="nav-text"> 3.1 表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#32-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-number">3.2.</span> <span class="nav-text"> 3.2 内存管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#33-%E7%A8%8B%E5%BA%8F%E6%8E%A7%E5%88%B6"><span class="nav-number">3.3.</span> <span class="nav-text"> 3.3 程序控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#34-%E5%8D%95%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84"><span class="nav-number">3.4.</span> <span class="nav-text"> 3.4 单分支结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#35-%E5%A4%9A%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84"><span class="nav-number">3.5.</span> <span class="nav-text"> 3.5 多分支结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#35-%E5%88%86%E6%94%AF%E5%B5%8C%E5%A5%97"><span class="nav-number">3.6.</span> <span class="nav-text"> 3.5 分支嵌套</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#36-%E5%BE%AA%E7%8E%AF"><span class="nav-number">3.7.</span> <span class="nav-text"> 3.6 循环</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text"> 基础语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E9%87%8A"><span class="nav-number">1.1.</span> <span class="nav-text"> 注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E5%AD%97"><span class="nav-number">1.2.</span> <span class="nav-text"> 数字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">1.3.</span> <span class="nav-text"> 字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AC%E4%B9%89%E5%BA%8F%E5%88%97"><span class="nav-number">1.4.</span> <span class="nav-text"> 转义序列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%A9%E8%BF%9B"><span class="nav-number">1.5.</span> <span class="nav-text"> 缩进</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%AD%E8%A1%8C"><span class="nav-number">1.6.</span> <span class="nav-text"> 续行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E8%AF%86%E7%AC%A6"><span class="nav-number">1.7.</span> <span class="nav-text"> 标识符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E9%87%8F%E5%92%8C%E5%8F%98%E9%87%8F"><span class="nav-number">1.8.</span> <span class="nav-text"> 常量和变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%BC%BA%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.9.</span> <span class="nav-text"> 动态强类型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%A6%E4%BC%9A%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.</span> <span class="nav-text"> 学会运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.1.</span> <span class="nav-text"> 运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%8D%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.2.</span> <span class="nav-text"> 位运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AF%94%E8%BE%83%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.3.</span> <span class="nav-text"> 比较运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.4.</span> <span class="nav-text"> 逻辑运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.5.</span> <span class="nav-text"> 赋值运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%88%90%E5%91%98%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.6.</span> <span class="nav-text"> 成员运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BA%AB%E4%BB%BD%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.7.</span> <span class="nav-text"> 身份运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">2.8.</span> <span class="nav-text"> 运算符优先级</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E5%AD%A6%E8%AF%AD%E5%8F%A5"><span class="nav-number">3.</span> <span class="nav-text"> 初学语句</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">3.1.</span> <span class="nav-text"> 表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-number">3.2.</span> <span class="nav-text"> 内存管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E6%8E%A7%E5%88%B6"><span class="nav-number">3.3.</span> <span class="nav-text"> 程序控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84"><span class="nav-number">3.4.</span> <span class="nav-text"> 单分支结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84"><span class="nav-number">3.5.</span> <span class="nav-text"> 多分支结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E5%B5%8C%E5%A5%97"><span class="nav-number">3.6.</span> <span class="nav-text"> 分支嵌套</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF"><span class="nav-number">3.7.</span> <span class="nav-text"> 循环</span></a></li></ol></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -336,14 +336,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>6.1k</span>
+      <span>6k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>6 分钟</span>
+      <span>5 分钟</span>
     </span>
 </div>
 
@@ -354,32 +354,32 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="font-size5-1-基础语法font"><a class="markdownIt-Anchor" href="#font-size5-1-基础语法font"></a> <font  size="5" >1 基础语法</font></h2>
+        <h2 id="基础语法"><a class="markdownIt-Anchor" href="#基础语法"></a> 基础语法</h2>
 <blockquote>
 <p>以下内容基于Python 3.6.6版本编写！</p>
 </blockquote>
-<h3 id="11-注释"><a class="markdownIt-Anchor" href="#11-注释"></a> 1.1 <strong>注释</strong></h3>
-<p>    和大多数语言一样，在Python中<code>#</code>表示注释的意思：</p>
+<h3 id="注释"><a class="markdownIt-Anchor" href="#注释"></a> 注释</h3>
+<p>和大多数语言一样，在Python中<code>#</code>表示注释的意思：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">&quot;Hello World!&quot;</span>)<span class="comment">#输出Hello World!   </span></span><br><span class="line">[Out]:Hello World!                                 </span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 <blockquote>
 <p>通过上面示例可以看到<code>#</code>后面的字变成了斜体，这这些斜体的字就是我们的注释文本了。<code>#</code>后面的内容都会被Python解释器忽略。</p>
 </blockquote>
-<h3 id="12-数字"><a class="markdownIt-Anchor" href="#12-数字"></a> 1.2 <strong>数字</strong></h3>
-<p>    Python中支持整数、浮点数、复数。</p>
+<h3 id="数字"><a class="markdownIt-Anchor" href="#数字"></a> 数字</h3>
+<p>Python中支持整数、浮点数、复数。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">type</span>(<span class="number">1</span>) <span class="comment">#整型  </span></span><br><span class="line">[Out]:<span class="built_in">int</span>  </span><br><span class="line"><span class="built_in">type</span>(<span class="number">1.1</span>) <span class="comment">#浮点型  </span></span><br><span class="line">[Out]:<span class="built_in">float</span>  </span><br><span class="line"><span class="built_in">type</span>(<span class="number">1</span>+<span class="number">2j</span>) <span class="comment">#复数   </span></span><br><span class="line">[Out]:<span class="built_in">complex</span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>上面使用type询问数据是什么类型。<br />
 注：Python是动态强类型语言，所以无法初始时定义类型。</p>
 </blockquote>
-<h3 id="13-字符串"><a class="markdownIt-Anchor" href="#13-字符串"></a> 1.3 <strong>字符串</strong></h3>
-<p>    Python中可以使用<code>'</code>单引号、<code>&quot;</code>双引号、<code>'''</code>三引号来表示字符串。</p>
+<h3 id="字符串"><a class="markdownIt-Anchor" href="#字符串"></a> 字符串</h3>
+<p>ython中可以使用<code>'</code>单引号、<code>&quot;</code>双引号、<code>'''</code>三引号来表示字符串。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;This is a string.&quot;</span></span><br><span class="line"><span class="string">&#x27;This is also a string.&#x27;</span></span><br><span class="line"><span class="string">&#x27;I told my friend, &quot;Python is my favorite language!&quot;&#x27;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;select from usr where name = &#x27;Tom&#x27;&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>注：若是在字符串前面加上<code>r</code>或<code>R</code>前缀，表示该字符串不做特殊处理。3.6版本开始，新增<code>f</code>前缀，格式字符串：<code>f'&#123;s1&#125;'</code>输出的是变量s1里的东西而不是字符s1。</p>
 </blockquote>
-<h3 id="14-转义序列"><a class="markdownIt-Anchor" href="#14-转义序列"></a> 1.4 <strong>转义序列</strong></h3>
-<p>    Python中有 <code>\t</code> <code>\r</code> <code>\n</code> <code>\\</code> <code>\'</code> <code>\&quot;</code>常用转义序列。</p>
+<h3 id="转义序列"><a class="markdownIt-Anchor" href="#转义序列"></a> 转义序列</h3>
+<p>Python中有 <code>\t</code> <code>\r</code> <code>\n</code> <code>\\</code> <code>\'</code> <code>\&quot;</code>常用转义序列。</p>
 <ul>
 <li><code>\t</code>：转义成一个Tab键</li>
 <li><code>\r</code>：转义成一个Enter键</li>
@@ -392,21 +392,21 @@
 <blockquote>
 <p>上面列出了一些转义序列的示例。</p>
 </blockquote>
-<h3 id="15-缩进"><a class="markdownIt-Anchor" href="#15-缩进"></a> 1.5 <strong>缩进</strong></h3>
-<p>    Python根据缩进来判断代码行与前一个代码行的关系。Python通过使用缩进让代码更易读，简单地说，它要求你使用缩进让代码整洁而结构清晰。</p>
+<h3 id="缩进"><a class="markdownIt-Anchor" href="#缩进"></a> 缩进</h3>
+<p>Python根据缩进来判断代码行与前一个代码行的关系。Python通过使用缩进让代码更易读，简单地说，它要求你使用缩进让代码整洁而结构清晰。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>):</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>注：显示消息的print代码行是for循环的一部分，因为它缩进了。在Python中使用缩进来解释程序的，所以缩进在Python中尤为重要！在较长的Python程序中，你将看到缩进程度各不相同的代码块，这让你对程序的组织结构有大致的认识。</p>
 </blockquote>
-<h3 id="16-续行"><a class="markdownIt-Anchor" href="#16-续行"></a> 1.6 <strong>续行</strong></h3>
-<p>    在Python中可能遇到一行写不完代码或为了使结构清晰在代码未写完时需要换行写的情况，这就需要续行。</p>
+<h3 id="续行"><a class="markdownIt-Anchor" href="#续行"></a> 续行</h3>
+<p>在Python中可能遇到一行写不完代码或为了使结构清晰在代码未写完时需要换行写的情况，这就需要续行。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">s1 = <span class="string">&quot;You cannot improve your past, but you can improve\</span></span><br><span class="line"><span class="string">your future. Once time is wasted, life is wasted.&quot;</span></span><br><span class="line">print(s1)  </span><br><span class="line">[Out]:<span class="string">&quot;You cannot improve your past, but you can improveyour future. Once time is wasted, life is wasted.&quot;</span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>上面使用了<code>\</code>来续行，输出的是完整的一段话。<br />
 注：如果是在各种括号里面，内部是不需要续行的，认为括号内是一个整体。</p>
 </blockquote>
-<h3 id="17-标识符"><a class="markdownIt-Anchor" href="#17-标识符"></a> 1.7 <strong>标识符</strong></h3>
-<p>    标识符是指我们用自定义的名字来代表一个或一组值，就比如上面的例子中定义的是<code>s1</code>就是标识符，它指代的是后面的字符串。当然和其他语言一样，定义的时候要遵循它的规则，否则会报错。规则如下：</p>
+<h3 id="标识符"><a class="markdownIt-Anchor" href="#标识符"></a> 标识符</h3>
+<p>标识符是指我们用自定义的名字来代表一个或一组值，就比如上面的例子中定义的是<code>s1</code>就是标识符，它指代的是后面的字符串。当然和其他语言一样，定义的时候要遵循它的规则，否则会报错。规则如下：</p>
 <ul>
 <li>开头只能以字母或下划线</li>
 <li>除开头只能是字母、下划线和数字</li>
@@ -416,17 +416,19 @@
 <blockquote>
 <p>上面是基本规定，但为了避免和内部代码定义的名字相同出现误读，请尽量不要使用下划线开头作为标识符。</p>
 </blockquote>
-<h3 id="18-常量和变量"><a class="markdownIt-Anchor" href="#18-常量和变量"></a> 1.8 <strong>常量和变量</strong></h3>
-<p>    在了解变量前我们先来了解什么是常量，如果你有C语言基础，那么你需要注意Python中的“常量”和C语言的区别。<br />
-    常量：在Python中表示一旦复制就不能改变值的标识符，由于Python是动态类型语言，所以Python中无法定义常量。<br />
-    字面常量：一个单独的量，比如<code>12</code> <code>&quot;abc&quot;</code> <code>'123.03e-9'</code>。<br />
-    变量：通常指赋值后可以改变值得标识符。</p>
+<h3 id="常量和变量"><a class="markdownIt-Anchor" href="#常量和变量"></a> 常量和变量</h3>
+<p>在了解变量前我们先来了解什么是常量，如果你有C语言基础，那么你需要注意Python中的“常量”和C语言的区别。</p>
+<ul>
+<li>常量：在Python中表示一旦复制就不能改变值的标识符，由于Python是动态类型语言，所以Python中无法定义常量。</li>
+<li>字面常量：一个单独的量，比如<code>12</code> <code>&quot;abc&quot;</code> <code>'123.03e-9'</code>。</li>
+<li>变量：通常指赋值后可以改变值得标识符。</li>
+</ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Number = <span class="number">1</span></span><br><span class="line">print(Number)</span><br><span class="line">Number = <span class="number">2</span></span><br><span class="line">print(Number)</span><br><span class="line">[Out]:</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>上面示例中标识符<code>Number</code>可以在第二次赋值时改变，所以是变量。</p>
 </blockquote>
-<h3 id="19-动态强类型"><a class="markdownIt-Anchor" href="#19-动态强类型"></a> 1.9 <strong>动态强类型</strong></h3>
-<p>    Python是属于动态强类型语言，是和C语言有区别的。这里详细解释下语言类型的定义，以便于你区别它们之间的不同。</p>
+<h3 id="动态强类型"><a class="markdownIt-Anchor" href="#动态强类型"></a> 动态强类型</h3>
+<p>Python是属于动态强类型语言，是和C语言有区别的。这里详细解释下语言类型的定义，以便于你区别它们之间的不同。</p>
 <ul>
 <li>静态编译语言：实现声明变量类型，类型不能再改变，编译时检查。</li>
 <li>动态编译语言：不用事先声明类型，随时可以复制成为其他类型，编程时它不知道是什么类型，执行时才能确定。</li>
@@ -444,9 +446,9 @@
 编译型语言的首先将源代码编译生成机器语言，再由机器运行机器码；<br />
 程序在执行之前需要一个专门的编译过程，把程序编译成 为机器语言的文件，运行时不需要重新翻译，直接使用编译的结果就行了。程序执行效率高，依赖编译器，跨平台性差；</li>
 </ul>
-<h2 id="font-size5-2-学会运算符font"><a class="markdownIt-Anchor" href="#font-size5-2-学会运算符font"></a> <font  size="5" >2 学会运算符</font></h2>
-<h3 id="21-运算符"><a class="markdownIt-Anchor" href="#21-运算符"></a> 2.1 <strong>运算符</strong></h3>
-<p>    算术运算符包括：</p>
+<h2 id="学会运算符"><a class="markdownIt-Anchor" href="#学会运算符"></a> 学会运算符</h2>
+<h3 id="运算符"><a class="markdownIt-Anchor" href="#运算符"></a> 运算符</h3>
+<p>算术运算符包括：</p>
 <ul>
 <li><code>+</code> ：表示加运算。</li>
 <li><code>-</code> ：表示减运算。</li>
@@ -457,10 +459,10 @@
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>/<span class="number">2</span></span><br><span class="line">[Out]:<span class="number">0.5</span></span><br><span class="line"><span class="number">1</span>//<span class="number">2</span></span><br><span class="line">[Out]:</span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>上面例子需要注意自然除  <code>/</code>  结果是浮点数，整除是  <code>//</code>  。注：2.x版本中  <code>/</code>  和   <code>//</code>  都是整除。</p>
+<p>上面例子需要注意自然除 <code>/</code> 结果是浮点数，整除是 <code>//</code> 。注：2.x版本中 <code>/</code> 和  <code>//</code> 都是整除。</p>
 </blockquote>
-<h3 id="22-位运算符"><a class="markdownIt-Anchor" href="#22-位运算符"></a> 2.2 <strong>位运算符</strong></h3>
-<p>    位运算符包括：</p>
+<h3 id="位运算符"><a class="markdownIt-Anchor" href="#位运算符"></a> 位运算符</h3>
+<p>位运算符包括：</p>
 <ul>
 <li><code>&amp;</code> ：表示位与运算。</li>
 <li><code>|</code> ：表示位或运算。</li>
@@ -473,8 +475,8 @@
 <blockquote>
 <p>注意：位操作在计算机中是以二进制补码形式做的，然后才转换成原码显示。注意原码、反码、补码的区别，负数时的情况，这里不做细述。</p>
 </blockquote>
-<h3 id="23-比较运算符"><a class="markdownIt-Anchor" href="#23-比较运算符"></a> 2.3 <strong>比较运算符</strong></h3>
-<p>    比较运算符包括：</p>
+<h3 id="比较运算符"><a class="markdownIt-Anchor" href="#比较运算符"></a> 比较运算符</h3>
+<p>比较运算符包括：</p>
 <ul>
 <li><code>==</code> ：是否等于。</li>
 <li><code>!=</code> ：是否不等于。</li>
@@ -491,8 +493,8 @@
 <blockquote>
 <p>注意：比较可以连续进行，但要记住是从右至左开始。对此不熟悉的不建议这么写。</p>
 </blockquote>
-<h3 id="24-逻辑运算符"><a class="markdownIt-Anchor" href="#24-逻辑运算符"></a> 2.4 <strong>逻辑运算符</strong></h3>
-<p>    逻辑运算符包括：</p>
+<h3 id="逻辑运算符"><a class="markdownIt-Anchor" href="#逻辑运算符"></a> 逻辑运算符</h3>
+<p>逻辑运算符包括：</p>
 <ul>
 <li><code>and</code> ：逻辑与。</li>
 <li><code>or</code> ：逻辑或。</li>
@@ -509,16 +511,16 @@ or： 如果a为真，无需计算b，结果为a的值。<br />
      如果a为假，继续计算b，结果为b的值。<br />
 not：只有两个返回值，True和False。</p>
 </blockquote>
-<h3 id="25-赋值运算符"><a class="markdownIt-Anchor" href="#25-赋值运算符"></a> 2.5 <strong>赋值运算符</strong></h3>
-<p>    赋值运算符主要是 <code>=</code> 号，它是给各种变量赋值的运算符，不是数学意义上的等于。</p>
+<h3 id="赋值运算符"><a class="markdownIt-Anchor" href="#赋值运算符"></a> 赋值运算符</h3>
+<p>赋值运算符主要是 <code>=</code> 号，它是给各种变量赋值的运算符，不是数学意义上的等于。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">2</span></span><br><span class="line">print(a) </span><br><span class="line">[Out]:<span class="number">2</span></span><br><span class="line"></span><br><span class="line">b = <span class="number">1</span></span><br><span class="line">b += <span class="number">2</span> <span class="comment"># b = b + 2</span></span><br><span class="line">print(b)</span><br><span class="line">[Out]:<span class="number">3</span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>上面第一个例子是给变量a赋值，print一下显示2。<br />
 第二个例子是使用了复合赋值的方式，表示<code>#b = b + 2</code>的意思。<br />
-常用的复合表达式：<code>+=</code>   <code>-=</code>   <code>*=</code>   <code>/=</code>   <code>%=</code>  这些基本上都是和算数运算符的结合，相当于简化了算式的写法。</p>
+常用的复合表达式：<code>+=</code>、<code>-=</code>、<code>*=</code>、<code>/=</code>、<code>%=</code> 这些基本上都是和算数运算符的结合，相当于简化了算式的写法。</p>
 </blockquote>
-<h3 id="26-成员运算符"><a class="markdownIt-Anchor" href="#26-成员运算符"></a> 2.6 <strong>成员运算符</strong></h3>
-<p>    成员运算符：</p>
+<h3 id="成员运算符"><a class="markdownIt-Anchor" href="#成员运算符"></a> 成员运算符</h3>
+<p>成员运算符：</p>
 <ul>
 <li><code>in</code> ：如果在指定的序列中找到值返回True，否则返回 False。</li>
 <li><code>not in</code> ：如果在指定的序列中没有找到值返回True，否则返回False。</li>
@@ -527,8 +529,8 @@ not：只有两个返回值，True和False。</p>
 <blockquote>
 <p>上面例子判断变量a的值是否是列表list1的成员，成功返回True。</p>
 </blockquote>
-<h3 id="26-身份运算符"><a class="markdownIt-Anchor" href="#26-身份运算符"></a> 2.6 <strong>身份运算符</strong></h3>
-<p>    身份运算符：</p>
+<h3 id="身份运算符"><a class="markdownIt-Anchor" href="#身份运算符"></a> 身份运算符</h3>
+<p>身份运算符：</p>
 <ul>
 <li><code>is</code> ：判断两个标识符是否引用自一个对象。</li>
 <li><code>is not</code> ：判断两个标识符是否引用自不同对象。</li>
@@ -538,8 +540,8 @@ not：只有两个返回值，True和False。</p>
 <p>上例用1赋值给a和b，所以它们引用的视同一个对象。<br />
 is 与 == 区别：is 用于判断两个变量引用对象是否为同一个， == 用于判断引用变量的值是否相等。</p>
 </blockquote>
-<h3 id="27-运算符优先级"><a class="markdownIt-Anchor" href="#27-运算符优先级"></a> 2.7 <strong>运算符优先级</strong></h3>
-<p>    简单排序就是：</p>
+<h3 id="运算符优先级"><a class="markdownIt-Anchor" href="#运算符优先级"></a> 运算符优先级</h3>
+<p>简单排序就是：</p>
 <ul>
 <li>算术运算符 &gt; 位运算符 &gt; 身份运算符 &gt; 成员运算符 &gt; 逻辑运算符。</li>
 <li>详细排序(优先级由高到低)：</li>
@@ -654,18 +656,18 @@ is 与 == 区别：is 用于判断两个变量引用对象是否为同一个， 
 <blockquote>
 <p>记不住，用括号。长表达式，多用括号，易懂易读。</p>
 </blockquote>
-<h2 id="font-size5-3-初学语句-font"><a class="markdownIt-Anchor" href="#font-size5-3-初学语句-font"></a> <font  size="5" >3 初学语句 </font></h2>
-<h3 id="31-表达式"><a class="markdownIt-Anchor" href="#31-表达式"></a> 3.1 <strong>表达式</strong></h3>
-<p>    表达式：是由数字、符号、括号、变量等的组合。</p>
+<h2 id="初学语句"><a class="markdownIt-Anchor" href="#初学语句"></a> 初学语句</h2>
+<h3 id="表达式"><a class="markdownIt-Anchor" href="#表达式"></a> 表达式</h3>
+<p>达式：是由数字、符号、括号、变量等的组合。</p>
 <ul>
 <li>算数表达式</li>
 <li>逻辑表达式</li>
 <li>赋值表达式</li>
 </ul>
 <blockquote>
-<p>Python中，<font color=#DC143C size=3>赋值即定义</font>！如果一个变量已经定义，赋值相当于重新定义。</p>
+<p>Python中，<strong><mark class="label danger">赋值即定义!</mark></strong> 如果一个变量已经定义，赋值相当于重新定义。</p>
 </blockquote>
-<h3 id="32-内存管理"><a class="markdownIt-Anchor" href="#32-内存管理"></a> 3.2 <strong>内存管理</strong></h3>
+<h3 id="内存管理"><a class="markdownIt-Anchor" href="#内存管理"></a> 内存管理</h3>
 <p>Python使用引用计数记录所有对象的引用数：</p>
 <ul>
 <li>当对象引用数变为0，它就可以被垃圾回收GC。</li>
@@ -675,15 +677,15 @@ is 与 == 区别：is 用于判断两个变量引用对象是否为同一个， 
 <blockquote>
 <p>有关性能的时候，就需要考虑变量的引用问题，但是想释放内存时切忌三思，因为有些数据对企业非常重要！</p>
 </blockquote>
-<h3 id="33-程序控制"><a class="markdownIt-Anchor" href="#33-程序控制"></a> 3.3 <strong>程序控制</strong></h3>
+<h3 id="程序控制"><a class="markdownIt-Anchor" href="#程序控制"></a> 程序控制</h3>
 <p>程序控制包括：顺序、分支、循环。</p>
 <ul>
 <li>顺序：按照先后顺序一条条执行。</li>
 <li>分支：根据不同的情况判断，条件满足执行某条件下的语句。</li>
 <li>循环：条件满足就反复执行，不满足就不执行或不再执行。</li>
 </ul>
-<h3 id="34-单分支结构"><a class="markdownIt-Anchor" href="#34-单分支结构"></a> 3.4 <strong>单分支结构</strong></h3>
-<p>    if语句，格式如下：</p>
+<h3 id="单分支结构"><a class="markdownIt-Anchor" href="#单分支结构"></a> 单分支结构</h3>
+<p>if语句，格式如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> 表达式 :</span><br><span class="line">    代码块</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>if后面必须是一个bool类型，注意这个地方有一个隐式转换<code>bool(表达式结果)</code>。代码块就是一段语句块，由多个代码段组成。<br />
@@ -694,8 +696,8 @@ is 与 == 区别：is 用于判断两个变量引用对象是否为同一个， 
 <p>上面字符a就是被转换成bool值True了。<br />
 隐式转换是根据真值表来做的，这里不详细列表，常用：所有空类型、0、None都是False，除此之外非零数都是True。注意负数也是True。</p>
 </blockquote>
-<h3 id="35-多分支结构"><a class="markdownIt-Anchor" href="#35-多分支结构"></a> 3.5 <strong>多分支结构</strong></h3>
-<p>    if…else…语句，格式如下：</p>
+<h3 id="多分支结构"><a class="markdownIt-Anchor" href="#多分支结构"></a> 多分支结构</h3>
+<p>if…else…语句，格式如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>  表达式 :</span><br><span class="line">    代码块</span><br><span class="line"><span class="keyword">else</span> 表达式 :</span><br><span class="line">    代码块</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>除了上述表达式我们还可以添加多个<code>elif</code>组成多种情况。解释：<code>elif</code>就是elseif的缩写。</p>
@@ -704,18 +706,18 @@ is 与 == 区别：is 用于判断两个变量引用对象是否为同一个， 
 <blockquote>
 <p>上面示例使用了一个elif，规则是和if一样的。</p>
 </blockquote>
-<h3 id="35-分支嵌套"><a class="markdownIt-Anchor" href="#35-分支嵌套"></a> 3.5 <strong>分支嵌套</strong></h3>
-<p>    上面讲的if语句和if…else…语句中代码块部分也可以写这些语句，用以达到嵌套判断的目的。</p>
+<h3 id="分支嵌套"><a class="markdownIt-Anchor" href="#分支嵌套"></a> 分支嵌套</h3>
+<p>上面讲的if语句和if…else…语句中代码块部分也可以写这些语句，用以达到嵌套判断的目的。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#判断54321的位数</span></span><br><span class="line">a = <span class="number">54321</span></span><br><span class="line"><span class="keyword">if</span> a &gt;= <span class="number">1000</span> :</span><br><span class="line">    <span class="keyword">if</span> a &gt;= <span class="number">10000</span> :</span><br><span class="line">        print(<span class="string">&quot;5位数&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">&quot;4位数&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="keyword">if</span> a &gt;= <span class="number">100</span> :</span><br><span class="line">        print(<span class="string">&quot;3位数&quot;</span>)</span><br><span class="line">    <span class="keyword">elif</span> a &gt;= <span class="number">10</span> :</span><br><span class="line">        print(<span class="string">&quot;2位数&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">&quot;1位数&quot;</span>)</span><br><span class="line"> [Out]:<span class="number">5</span>位数   </span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>上面例子使用了多重嵌套。</p>
 </blockquote>
-<h3 id="36-循环"><a class="markdownIt-Anchor" href="#36-循环"></a> 3.6 <strong>循环</strong></h3>
-<p>    循环有两种语句，for循环和while循环。</p>
+<h3 id="循环"><a class="markdownIt-Anchor" href="#循环"></a> 循环</h3>
+<p>循环有两种语句，for循环和while循环。</p>
 <ul>
 <li>for循环用于针对集合中的每个元素都一个代码块，而while循环不断地运行，直到指定的条件不满足为止。</li>
 </ul>
-<p>    第一种while循环，其格式如下：</p>
+<p>第一种while循环，其格式如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> 表达式:</span><br><span class="line">    代码块</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>和if语句一样，表达式含有隐式转换。</p>
@@ -725,7 +727,7 @@ is 与 == 区别：is 用于判断两个变量引用对象是否为同一个， 
 <p>上面例子使用while循环打印1~3的数字。<br />
 while循环侧重知道结束状态！</p>
 </blockquote>
-<p>    第二种for循环，其格式如下：</p>
+<p>第二种for循环，其格式如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> 变量 <span class="keyword">in</span> 可迭代对象:<span class="comment">#range(start,stop,step)</span></span><br><span class="line">    代码块</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>for循环也可以喝C语言一样使用步长方式，Python使用range函数。<br />
@@ -754,13 +756,13 @@ while循环侧重知道结束状态！</p>
       <div class="popular-posts-title"><a href="\2019\01\12\02.Python-列表、元组、随机数\" rel="bookmark">Python-列表、元组、随机数</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2019\01\14\04.Python-字符串\" rel="bookmark">Python-字符串、常用命令</a></div>
-    </li>
-    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2019\01\13\03.Python-bytes和bytearray\" rel="bookmark">Python-Bytes和Bytearray</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2019\01\15\05.Python-切片\" rel="bookmark">Python-切片</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\01\14\04.Python-字符串\" rel="bookmark">Python-字符串、常用命令</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2019\01\16\06.Python-封装解构、集合\" rel="bookmark">Python-封装结构、集合</a></div>
