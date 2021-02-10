@@ -225,18 +225,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">30</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -301,6 +301,26 @@
     <header class="post-header">
       <div class="post-meta-container">
         <time itemprop="dateCreated"
+              datetime="2019-01-14T00:00:00+08:00"
+              content="2019-01-14">
+          01-14
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2019/01/14/Python/04.Python-%E9%9B%86%E5%90%88/" itemprop="url">
+            <span itemprop="name">Python-集合</span>
+          </a>
+      </div>
+
+      
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <div class="post-meta-container">
+        <time itemprop="dateCreated"
               datetime="2019-01-13T00:00:00+08:00"
               content="2019-01-13">
           01-13
@@ -308,8 +328,8 @@
       </div>
 
       <div class="post-title">
-          <a class="post-title-link" href="/2019/01/13/03.Python-bytes%E5%92%8Cbytearray/" itemprop="url">
-            <span itemprop="name">Python-Bytes和Bytearray</span>
+          <a class="post-title-link" href="/2019/01/13/Python/03.Python-%E5%AD%97%E7%AC%A6%E4%B8%B2/" itemprop="url">
+            <span itemprop="name">Python-字符串</span>
           </a>
       </div>
 
@@ -328,8 +348,8 @@
       </div>
 
       <div class="post-title">
-          <a class="post-title-link" href="/2019/01/12/02.Python-%E5%88%97%E8%A1%A8%E3%80%81%E5%85%83%E7%BB%84%E3%80%81%E9%9A%8F%E6%9C%BA%E6%95%B0/" itemprop="url">
-            <span itemprop="name">Python-列表、元组、随机数</span>
+          <a class="post-title-link" href="/2019/01/12/Python/02.Python-%E5%88%97%E8%A1%A8%E3%80%81%E5%85%83%E7%BB%84/" itemprop="url">
+            <span itemprop="name">Python-列表、元组</span>
           </a>
       </div>
 
@@ -348,7 +368,7 @@
       </div>
 
       <div class="post-title">
-          <a class="post-title-link" href="/2019/01/11/01.Python-%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" itemprop="url">
+          <a class="post-title-link" href="/2019/01/11/Python/01.Python-%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" itemprop="url">
             <span itemprop="name">Python-基础语法</span>
           </a>
       </div>
@@ -496,6 +516,19 @@ document.querySelectorAll('.pdfobject-container').forEach(element => {
 </script>
 
 
+<script data-pjax>
+if (document.querySelectorAll('.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8.8.2/dist/mermaid.min.js', () => {
+    mermaid.init({
+      theme    : 'neutral',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    }, '.mermaid');
+  }, window.mermaid);
+}
+</script>
 
 
 
