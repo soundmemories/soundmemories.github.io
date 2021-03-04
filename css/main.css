@@ -214,7 +214,7 @@ body {
   background: var(--body-bg-color);
   color: var(--text-color);
   font-family: Monda, "Noto Serif SC", "PingFang SC", "Microsoft YaHei", sans-serif;
-  font-size: 0.9em;
+  font-size: 0.8em;
   line-height: 2;
   min-height: 100%;
   position: relative;
@@ -1620,7 +1620,6 @@ pre code {
   line-height: 1.8;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
 }
 .post-toc .nav .nav-child {
   display: block;
@@ -2900,7 +2899,7 @@ mark.search-keyword {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #34d130;
+  background: #9f13ff;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
