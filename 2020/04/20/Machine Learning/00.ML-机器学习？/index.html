@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.0.2","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="准备 数据科学领域常用的是Python，因为它的第三方程序包拥有庞大而活跃的生态系统，需要你有一定的 Python 编程经验，而且熟悉Python中的主流科学计算库： （1）Numpy：可以处理同类型数组型数据。 （2）SciPy：可以处理多种类型带标签的数据。 （3）Pandas：可以解决常见的科学计算问题。 （4）Matplotlib：可以绘制可用于印刷的可视化图形。 以及Python机器&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ML-机器学习？">
+<meta property="og:url" content="https://soundmemories.github.io/2020/04/20/Machine%20Learning/00.ML-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%9F/index.html">
+<meta property="og:site_name" content="SoundMemories">
+<meta property="og:description" content="准备 数据科学领域常用的是Python，因为它的第三方程序包拥有庞大而活跃的生态系统，需要你有一定的 Python 编程经验，而且熟悉Python中的主流科学计算库： （1）Numpy：可以处理同类型数组型数据。 （2）SciPy：可以处理多种类型带标签的数据。 （3）Pandas：可以解决常见的科学计算问题。 （4）Matplotlib：可以绘制可用于印刷的可视化图形。 以及Python机器&#x2F;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/05/02/EkNd6trVQY3oKCa.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/02/PvVajUiRoZxcFQd.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/02/lqoyPubFeYR5JMd.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/02/MvkAruUYK7nHEqO.png">
+<meta property="article:published_time" content="2020-04-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-19T13:21:23.219Z">
+<meta property="article:author" content="SoundMemories">
+<meta property="article:tag" content="Machine Learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/05/02/EkNd6trVQY3oKCa.png">
+
+
+<link rel="canonical" href="https://soundmemories.github.io/2020/04/20/Machine%20Learning/00.ML-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%9F/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>ML-机器学习？ | SoundMemories</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">SoundMemories</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-主页">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>主页</a>
+
+  </li>
+        <li class="menu-item menu-item-分类">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-标签">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-归档">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-关于">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+	   
+		  
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87"><span class="nav-number">1.</span> <span class="nav-text"> 准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85"><span class="nav-number">2.</span> <span class="nav-text"> 软件安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%AE%9A%E4%B9%89"><span class="nav-number">3.</span> <span class="nav-text"> 机器学习定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%88%86%E7%B1%BB"><span class="nav-number">4.</span> <span class="nav-text"> 机器学习分类</span></a></li></ol></div>
+        </section>
+        <!--/noindex-->
+
+        <section class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SoundMemories"
+      src="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+  <p class="site-author-name" itemprop="name">SoundMemories</p>
+  <div class="site-description" itemprop="description">今日事，今日毕</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NvdW5kbWVtb3JpZXM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;soundmemories"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNvdW5kbWVtb3JpZXNAMTYzLmNvbQ==" title="E-Mail → mailto:soundmemories@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+        </section>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/04/20/Machine%20Learning/00.ML-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ML-机器学习？
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-04-20 00:00:00" itemprop="dateCreated datePublished" datetime="2020-04-20T00:00:00+08:00">2020-04-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="准备"><a class="markdownIt-Anchor" href="#准备"></a> 准备</h2>
+<p>数据科学领域常用的是Python，因为它的第三方程序包拥有庞大而活跃的生态系统，需要你有一定的 <span class="exturl" data-url="aHR0cHM6Ly9kb2NzLnB5dGhvbi5vcmcvMy8=">Python<i class="fa fa-external-link-alt"></i></span> 编程经验，而且熟悉Python中的主流科学计算库：<br />
+（1）<span class="exturl" data-url="aHR0cHM6Ly9udW1weS5vcmcv">Numpy<i class="fa fa-external-link-alt"></i></span>：可以处理同类型数组型数据。<br />
+（2）<span class="exturl" data-url="aHR0cHM6Ly93d3cuc2NpcHkub3JnLw==">SciPy<i class="fa fa-external-link-alt"></i></span>：可以处理多种类型带标签的数据。<br />
+（3）<span class="exturl" data-url="aHR0cHM6Ly9wYW5kYXMucHlkYXRhLm9yZy8=">Pandas<i class="fa fa-external-link-alt"></i></span>：可以解决常见的科学计算问题。<br />
+（4）<span class="exturl" data-url="aHR0cHM6Ly9tYXRwbG90bGliLm9yZy8=">Matplotlib<i class="fa fa-external-link-alt"></i></span>：可以绘制可用于印刷的可视化图形。<br />
+以及Python机器/深度学习框架：<br />
+（1）<span class="exturl" data-url="aHR0cHM6Ly9zY2lraXQtbGVhcm4ub3JnLw==">Scikit-Learn<i class="fa fa-external-link-alt"></i></span>：实现了众多机器学习算法。<br />
+（2）<span class="exturl" data-url="aHR0cHM6Ly90ZW5zb3JmbG93Lmdvb2dsZS5jbi8=">TensorFlow<i class="fa fa-external-link-alt"></i></span>：使用数据流图进行分布式运算，可在多个GPU服务器上分配运算，针对大型项目和深度学习项目。Google开源框架。<br />
+（3）<span class="exturl" data-url="aHR0cHM6Ly93d3cucGFkZGxlcGFkZGxlLm9yZy5jbi8=">PaddlePaddle<i class="fa fa-external-link-alt"></i></span>：同TensorFlow，Baidu开源框架。</p>
+<p>编程环境建议使用Python的<span class="exturl" data-url="aHR0cHM6Ly9qdXB5dGVyLm9yZy8=">Jupyter Notebook<i class="fa fa-external-link-alt"></i></span>，这是一个非常好用的工具，支持多种语言编程，还可以写笔记。它依托的Python底层环境是IPython，所以IPython的魔法命令也可以用在Jupyter上。</p>
+<p>另外，如果你想深入理解底层的原理，则需要大学水平的数学知识（微积分、线性代数、概率论和统计学）。</p>
+<h2 id="软件安装"><a class="markdownIt-Anchor" href="#软件安装"></a> 软件安装</h2>
+<p>安装 Python 和科学计算程序库的方法有很多，推荐使用Anaconda发行版，Windows、Linux 和 Mac OS操作系统的安装和使用方式类似。</p>
+<p>Anaconda 发行版有两种：<br />
+（1）<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmNvbmRhLmlvL2VuL2xhdGVzdC9taW5pY29uZGEuaHRtbA==">Miniconda<i class="fa fa-external-link-alt"></i></span>：只包含 Python 解释器和一个名为conda 的命令行工具。 conda 是一个跨平台的程序包管理器，可以管理各种 Python 程序包，类似于 Linux 用户熟悉的 apt 和 yum 程序包管理器。<br />
+（2）<span class="exturl" data-url="aHR0cHM6Ly93d3cuYW5hY29uZGEuY29tL3Byb2R1Y3RzL2luZGl2aWR1YWwjRG93bmxvYWRz">Anaconda<i class="fa fa-external-link-alt"></i></span>：除了包含 Python 和 conda 之外，还同时绑定了四五百个科学计算程序包。由于预安装了许多包，因此安装它需要占用几个G字节的存储空间。</p>
+<p>如果安装了 Miniconda，所有程序包（包括 Anaconda）都可以手动安装。因此，我推荐先安装 Miniconda，其他包视情况安装。<br />
+首先，下载并安装 Miniconda 程序包（确认你选择的是适合 Python 3 的版本），然后安装几个重要程序包。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[~]$ conda install numpy pandas scikit-learn matplotlib seaborn ipython-notebook</span><br></pre></td></tr></table></figure>
+<p>若使用其他更专业的 Python 科学计算工具，安装方法同样很简单，就是 conda install 程序包名称。关于 conda 的更多信息，包括 conda 虚拟环境（强烈推荐）的创建和使用，请参考 <span class="exturl" data-url="aHR0cDovL2NvbmRhLnB5ZGF0YS5vcmcvZG9jcy8=">conda 在线文档<i class="fa fa-external-link-alt"></i></span>。</p>
+<a id="more"></a>
+<h2 id="机器学习定义"><a class="markdownIt-Anchor" href="#机器学习定义"></a> 机器学习定义</h2>
+<p>A computer program is said to learn from experience E with respect to some class of tasks T and performance measure P, if its performance at tasks in T, as measured by P, improves with experience E.<br />
+一个计算机程序可以从经验E中学习关于某类任务T和性能度量P的知识，如果它在T任务中的性能（P所度量的），随着经验E的提高而提高。</p>
+<p>即，机器学习能在 经验学习中改善具体算法的性能、用数据或以往的经验优化计算机程序的性能标准。</p>
+<h2 id="机器学习分类"><a class="markdownIt-Anchor" href="#机器学习分类"></a> 机器学习分类</h2>
+<p>机器学习有多种类型，可以根据如下规则进行分类：<br />
+（1）是否在人类监督下进行训练：监督，非监督，半监督和强化学习。<br />
+（2）是否可以动态渐进学习：在线学习，离线学习。<br />
+（3）基于实例or模型：实例学习、模型学习。<br />
+当然，规则并不仅限于以上的，你可以将他们进行组合。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">分类</th>
+<th style="text-align:left">描述</th>
+<th style="text-align:left">算法or实例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><div style="width: 50pt">监督学习</div></td>
+<td style="text-align:left"><div style="width: 270pt">从给定的训练数据集中学习出一个函数，当新的数据到来时，可以根据这个函数预测结果。监督学习的训练集要求是有特征和目标，并且训练集中的目标是由人标注的。</div></td>
+<td style="text-align:left">K近邻算法、线性回归、逻辑回归、支持向量机（SVM）、决策树和随机森林、神经网络。</td>
+</tr>
+<tr>
+<td style="text-align:left">非监督学习</td>
+<td style="text-align:left">有训练集但只有特征无目标，因为训练集没有人为标注的结果。</td>
+<td style="text-align:left"><strong>聚类算法</strong>：K 均值、、层次聚类分析（Hierarchical Cluster Analysis，HCA）、期望最大值。<br><strong>可视化和降维</strong>：主成分分析（Principal Component Analysis，PCA）、核主成分分析、局部线性嵌入（Locally-Linear Embedding，LLE）、t-分布邻域嵌入算法（t-distributed Stochastic Neighbor Embedding，t-SNE）。<br> <strong>关联性规则学习</strong>：Apriori 算法、Eclat 算法。</td>
+</tr>
+<tr>
+<td style="text-align:left">半监督学习</td>
+<td style="text-align:left">介于监督学习与无监督学习之间。有训练集且有特征和目标，但训练集只有小部分有人为标注的结果。</td>
+<td style="text-align:left">深度信念网络（deep belief networks）是基于被称为互相叠加的受限玻尔兹曼机（restricted Boltzmann machines，RBM）的非监督组件。RBM 是先用非监督方法进行训练，再用监督学习方法对整个系统进行微调。</td>
+</tr>
+<tr>
+<td style="text-align:left">强化学习</td>
+<td style="text-align:left">机器为了达成目标，随着环境的变动，而逐步调整其行为，并评估每一个行动之后所到的回馈是正向的或负向的。</td>
+<td style="text-align:left">DeepMind 的 AlphaGo 就是强化学习的例子。</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">分类</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><div style="width: 40pt">在线学习</div></td>
+<td style="text-align:left">用数据实例持续地进行训练，可以一次单个或多个实例（称为小批量）。<strong>每个学习步骤都很快且廉价时</strong>，系统可以动态地学习收到的最新数据。<br>缺点：如果坏数据被用来进行训练，系统的性能就会逐渐下滑。要减小这种风险，你需要密集监测，如果检测到性能下降，要快速关闭（或是滚回到一个之前的状态）。</td>
+</tr>
+<tr>
+<td style="text-align:left"><div style="width: 40pt">离线学习</div></td>
+<td style="text-align:left">系统不能进行持续学习，必须用所有可用数据进行训练。这通常会占用大量时间和计算资源，所以一般是线下做的。首先是进行训练，然后部署在生产环境且停止学习，它只是使用已经学到的策略。这称为离线学习。</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">分类</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><div style="width: 60pt">基于实例学习</div></td>
+<td style="text-align:left">只是通过简单地比较新的数据点和已知的数据点，只有一模一样的数据才能分辨。</td>
+</tr>
+<tr>
+<td style="text-align:left"><div style="width: 60pt">基于模型学习</div></td>
+<td style="text-align:left">在训练数据中进行模式识别，以建立一个预测模型，就像科学家所做的那样。</td>
+</tr>
+</tbody>
+</table>
+<p>传统编程方法：<br />
+<img src="https://i.loli.net/2021/05/02/EkNd6trVQY3oKCa.png" alt="" /><br />
+机器学习解决方法：<br />
+<img src="https://i.loli.net/2021/05/02/PvVajUiRoZxcFQd.png" alt="" /><br />
+自动适应变化：<br />
+<img src="https://i.loli.net/2021/05/02/lqoyPubFeYR5JMd.png" alt="" /><br />
+可以帮助人类学习：<br />
+<img src="https://i.loli.net/2021/05/02/MvkAruUYK7nHEqO.png" alt="" /></p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\09\21\Machine Learning\17.MathBasics\" rel="bookmark">MathBasics</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\09\20\Machine Learning\16.Introduction\" rel="bookmark">Introduction</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\09\25\Machine Learning\18.LinearRegression\" rel="bookmark">LinearRegression</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\09\27\Machine Learning\19.LinearClassification\" rel="bookmark">LinearClassification</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\04\21\Machine Learning\01.ML-IPython和Jupyter\" rel="bookmark">ML-IPython和Jupyter</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>SoundMemories
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://soundmemories.github.io/2020/04/20/Machine%20Learning/00.ML-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%9F/" title="ML-机器学习？">https://soundmemories.github.io/2020/04/20/Machine Learning/00.ML-机器学习？/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Machine-Learning/" rel="tag"><i class="fa fa-tag"></i> Machine Learning</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/03/17/Java/50.Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="prev" title="Java设计模式">
+                  <i class="fa fa-chevron-left"></i> Java设计模式
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/04/21/Machine%20Learning/01.ML-IPython%E5%92%8CJupyter/" rel="next" title="ML-IPython和Jupyter">
+                  ML-IPython和Jupyter <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SoundMemories</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  const url = element.dataset.target;
+  const pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  const pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  const fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+<script data-pjax>
+if (document.querySelectorAll('.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8.8.2/dist/mermaid.min.js', () => {
+    mermaid.init({
+      theme    : 'neutral',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    }, '.mermaid');
+  }, window.mermaid);
+}
+</script>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+      <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@2.0.0/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink.listen({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'https://soundmemories.github.io/2020/04/20/Machine%20Learning/00.ML-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%9F/',]
+      });
+      });
+  </script>
+
+    </div>
+</body>
+</html>

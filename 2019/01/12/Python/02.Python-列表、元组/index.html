@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.0.2","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="数值分类 数值分类：int、float、bool、complex 序列对象：字符串str、列表list、元组tuple 键值对：集合set、字典dict 数值型：  int、float、bool、complex都是对象，都是对象即实例： int：python3的int就是长整型，且没有大小限制，受限于内存区域的大小。 float：有整数部分和小数部分组成。支持十进制和科学计数法表示。 C的双精度">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python-列表、元组">
+<meta property="og:url" content="https://soundmemories.github.io/2019/01/12/Python/02.Python-%E5%88%97%E8%A1%A8%E3%80%81%E5%85%83%E7%BB%84/index.html">
+<meta property="og:site_name" content="SoundMemories">
+<meta property="og:description" content="数值分类 数值分类：int、float、bool、complex 序列对象：字符串str、列表list、元组tuple 键值对：集合set、字典dict 数值型：  int、float、bool、complex都是对象，都是对象即实例： int：python3的int就是长整型，且没有大小限制，受限于内存区域的大小。 float：有整数部分和小数部分组成。支持十进制和科学计数法表示。 C的双精度">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-01-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-02-07T05:51:40.237Z">
+<meta property="article:author" content="SoundMemories">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://soundmemories.github.io/2019/01/12/Python/02.Python-%E5%88%97%E8%A1%A8%E3%80%81%E5%85%83%E7%BB%84/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Python-列表、元组 | SoundMemories</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">SoundMemories</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-主页">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>主页</a>
+
+  </li>
+        <li class="menu-item menu-item-分类">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-标签">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-归档">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-关于">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+	   
+		  
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%80%BC%E5%88%86%E7%B1%BB"><span class="nav-number">1.</span> <span class="nav-text"> 数值分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%97%E8%A1%A8"><span class="nav-number">2.</span> <span class="nav-text"> 列表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%97%E8%A1%A8%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.</span> <span class="nav-text"> 列表定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%97%E8%A1%A8%E8%A1%A8%E7%A4%BA"><span class="nav-number">2.2.</span> <span class="nav-text"> 列表表示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%97%E8%A1%A8%E7%B4%A2%E5%BC%95"><span class="nav-number">2.3.</span> <span class="nav-text"> 列表索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%97%E8%A1%A8%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.4.</span> <span class="nav-text"> 列表查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%97%E8%A1%A8%E5%85%83%E7%B4%A0%E4%BF%AE%E6%94%B9"><span class="nav-number">2.5.</span> <span class="nav-text"> 列表元素修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%97%E8%A1%A8%E5%85%B6%E4%BB%96%E6%93%8D%E4%BD%9C"><span class="nav-number">2.6.</span> <span class="nav-text"> 列表其他操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6"><span class="nav-number">2.7.</span> <span class="nav-text"> 复制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%83%E7%BB%84"><span class="nav-number">3.</span> <span class="nav-text"> 元组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%83%E7%BB%84%E5%AE%9A%E4%B9%89"><span class="nav-number">3.1.</span> <span class="nav-text"> 元组定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%83%E7%BB%84%E7%B4%A2%E5%BC%95"><span class="nav-number">3.2.</span> <span class="nav-text"> 元组索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%83%E7%BB%84%E6%9F%A5%E8%AF%A2"><span class="nav-number">3.3.</span> <span class="nav-text"> 元组查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%83%E7%BB%84%E5%85%B6%E4%BB%96%E6%93%8D%E4%BD%9C"><span class="nav-number">3.4.</span> <span class="nav-text"> 元组其他操作</span></a></li></ol></li></ol></div>
+        </section>
+        <!--/noindex-->
+
+        <section class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SoundMemories"
+      src="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+  <p class="site-author-name" itemprop="name">SoundMemories</p>
+  <div class="site-description" itemprop="description">今日事，今日毕</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NvdW5kbWVtb3JpZXM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;soundmemories"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNvdW5kbWVtb3JpZXNAMTYzLmNvbQ==" title="E-Mail → mailto:soundmemories@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+        </section>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2019/01/12/Python/02.Python-%E5%88%97%E8%A1%A8%E3%80%81%E5%85%83%E7%BB%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python-列表、元组
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-01-12 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-12T00:00:00+08:00">2019-01-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="数值分类"><a class="markdownIt-Anchor" href="#数值分类"></a> 数值分类</h2>
+<p>数值分类：int、float、bool、complex<br />
+序列对象：字符串str、列表list、元组tuple<br />
+键值对：集合set、字典dict<br />
+数值型：</p>
+<ul>
+<li>int、float、bool、complex都是对象，都是对象即实例：</li>
+<li>int：python3的int就是长整型，且没有大小限制，受限于内存区域的大小。</li>
+<li>float：有整数部分和小数部分组成。支持十进制和科学计数法表示。 C的双精度型实现。</li>
+<li>complex：有实数和虚数部分组成，实数和虚数部分都是浮点数。</li>
+<li>bool：int的子类，仅有2个实例True、 False对应1和0，可以和整数直接运算。</li>
+</ul>
+<p>类型转换：</p>
+<ul>
+<li>int(x)： 返回一个整数。</li>
+<li>float(x)： 返回一个浮点数。</li>
+<li>complex(x)、 complex(x,y) ：返回一个复数。</li>
+<li>bool(x)： 返回布尔值，前面讲过False等价的对象。</li>
+</ul>
+<a id="more"></a>
+<p>数学简单语句：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line">math.floor()<span class="comment">#向下取整</span></span><br><span class="line">math.ceil()<span class="comment">#向上取整</span></span><br><span class="line">math.sqrt()<span class="comment">#开根号</span></span><br><span class="line">math.<span class="built_in">pow</span>(x,y)<span class="comment">#x的y次幂，等同于x**y</span></span><br><span class="line">math.pi <span class="comment"># π</span></span><br><span class="line">math.e <span class="comment"># 自如常数</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">max</span>(iterable,*[,key,default])<span class="comment">#可迭代对象的最大值</span></span><br><span class="line"><span class="built_in">min</span>(iterable,*[,key,default])<span class="comment">#可迭代对象的最小值</span></span><br><span class="line"><span class="built_in">round</span>(number[,ndigits])<span class="comment">#四舍六入，五取偶（取离他最近的偶数)</span></span><br><span class="line"><span class="built_in">divmod</span>()<span class="comment">#求商求余，输出2个</span></span><br><span class="line"><span class="built_in">int</span>()<span class="comment">#不论正负只取整数部分</span></span><br><span class="line">//<span class="comment">#向下取整</span></span><br></pre></td></tr></table></figure>
+<p>进制函数（返回值是字符串）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">bin</span>(x)<span class="comment">#x转成二进制</span></span><br><span class="line"><span class="built_in">oct</span>(x)<span class="comment">#x转成八进制</span></span><br><span class="line"><span class="built_in">hex</span>(x)<span class="comment">#x转成十六进制</span></span><br></pre></td></tr></table></figure>
+<p>类型判断：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">type</span>(obj)<span class="comment">#返回obj的类型，不是字符串。</span></span><br><span class="line">isinstance(obj,class_or_tuple)-&gt;bool#obj是不是class_or_tuple的类型，类型多种必须用()括起来。</span><br><span class="line"></span><br><span class="line"><span class="built_in">type</span>(<span class="number">1</span>+<span class="literal">True</span>+<span class="number">2.0</span>) <span class="comment"># 是什么？注意这里有隐式转换。</span></span><br></pre></td></tr></table></figure>
+<h2 id="列表"><a class="markdownIt-Anchor" href="#列表"></a> 列表</h2>
+<h3 id="列表定义"><a class="markdownIt-Anchor" href="#列表定义"></a> 列表定义</h3>
+<p>列表list：</p>
+<ul>
+<li>有顺序、可索引、内存地址连续，随机查找，不便于在中间插入和删除</li>
+<li>列表内的个体称作元素，有若干元素组成列表</li>
+<li>元素可以是任意对象</li>
+<li>线性的数据结构</li>
+<li>使用[ ]表示</li>
+<li>列表是<code>可变的</code></li>
+</ul>
+<blockquote>
+<p>注意：<br />
+使用时，禁止自循环时增删自己!</p>
+</blockquote>
+<blockquote>
+<p>与其他结构的区别：</p>
+<ol>
+<li>链表：有顺序，可索引、内存地址可不连续，顺序查找，便于插入和删除。</li>
+<li>queue队列：先进先出、只能对两端操作，一种是列表实现，一种是链表实现。</li>
+<li>stack栈：只能对一端进行操作。</li>
+</ol>
+</blockquote>
+<h3 id="列表表示"><a class="markdownIt-Anchor" href="#列表表示"></a> 列表表示</h3>
+<p><code>list() -&gt; new empty list</code><br />
+<code>list(iterable) -&gt; new list initialized from iterable's items</code><br />
+注意列表不能一开始就定义大小！</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[]、<span class="built_in">list</span>()</span><br><span class="line"><span class="comment"># 空列表2种定义方式</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">list</span>(<span class="built_in">range</span>(<span class="number">2</span>))</span><br><span class="line"><span class="comment"># 列表里面可以是可迭代对象</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>和 <code>[range( )]</code> 区别：<code>list()</code>把数据全输出，第二个显示<code>range()</code>，表示<code>range()</code>是列表的一个元素。列表中有引用类型时，复制时对引用类型是浅拷贝！可以使用深拷贝递归拷贝。</p>
+</blockquote>
+<h3 id="列表索引"><a class="markdownIt-Anchor" href="#列表索引"></a> 列表索引</h3>
+<p>索引，也叫下标：</p>
+<ul>
+<li>正索引：从左至右，从0开始，为列表中每一个元素编号。</li>
+<li>负索引：从右至左，从-1开始。</li>
+<li>正负索引不可以超界，否则引发异常IndexError。</li>
+</ul>
+<blockquote>
+<p>方便理解，可认为列表是从左至右排列的，左边是头部，右边是尾部，左边是下界，右边是上界。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># index就是索引，使用中括号访问。</span></span><br><span class="line"><span class="built_in">list</span>[index]</span><br></pre></td></tr></table></figure>
+<h3 id="列表查询"><a class="markdownIt-Anchor" href="#列表查询"></a> 列表查询</h3>
+<p>列表查询：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 匹配到第一个就立即返回索引，找不到异常，O(n)</span></span><br><span class="line">.index(value,[start,[stop]])</span><br><span class="line"><span class="comment"># 判断value是否在list中，比如`22 in list1`，返回bool值</span></span><br><span class="line">value in list-&gt;bool </span><br><span class="line"><span class="comment"># 返回列表中匹配sub的次数，O(n)</span></span><br><span class="line">.count(sub[,start[,end]])-&gt;int</span><br><span class="line"><span class="comment"># ()里面是容器，直接取长度计数，O(1)</span></span><br><span class="line"><span class="built_in">len</span>(s)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>时间复杂度O(n)，随着列表数据规模的增大，而效率下降。<br />
+如何返回列表元素的个数？如何遍历？如何设计高效？使用<code>len()</code>函数。<br />
+官方文档(Python 3.x Manuals)可以查看函数的具体用法，也可以去官网查阅。</p>
+</blockquote>
+<h3 id="列表元素修改"><a class="markdownIt-Anchor" href="#列表元素修改"></a> 列表元素修改</h3>
+<p>列表增加、插入元素：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 列表增加，索引不要超界</span></span><br><span class="line"><span class="built_in">list</span>[index] = value</span><br><span class="line"></span><br><span class="line">.append(object)-&gt;None</span><br><span class="line"><span class="comment">#尾部追加1个元素，因为是list所以追加数据量大会要连续的空间可能会引起GC，时间消耗大，尽量避免追加大量数据。</span></span><br><span class="line"><span class="comment">#返回None就意味着没有新的列表产生，就地修改</span></span><br><span class="line"><span class="comment">#时间复杂度是O(1)</span></span><br><span class="line"></span><br><span class="line">.insert(index, object) -&gt; None</span><br><span class="line"><span class="comment">#在指定的索引index处插入元素object，就地修改</span></span><br><span class="line"><span class="comment">#时间复杂度是O(n)，效率低，能不用则不用</span></span><br><span class="line"><span class="comment">#索引能超上下界吗？超越上界，尾部追加,超越下界，头部追加</span></span><br><span class="line"></span><br><span class="line">.extend(iteratable)-&gt;None</span><br><span class="line"><span class="comment">#将可迭代对象的元素追加进来，就地修改，初始化可以用，别的就不用了。</span></span><br><span class="line"></span><br><span class="line">+ -&gt; list</span><br><span class="line"><span class="comment">#连接操作，将两个列表连接起来</span></span><br><span class="line"><span class="comment">#产生新的列表，原列表不变</span></span><br><span class="line"><span class="comment">#本质上调用的是__add__()方法</span></span><br><span class="line"><span class="comment">#注意和 += 执行过程不同，这个是就地修改。</span></span><br><span class="line"></span><br><span class="line">* -&gt; list</span><br><span class="line"><span class="comment">#重复操作，将本列表元素重复n次</span></span><br><span class="line"><span class="comment">#产生新的列表，原列表不变</span></span><br><span class="line"><span class="comment">#（有风险!）重复的其实是地址！</span></span><br></pre></td></tr></table></figure>
+<p>列表删除元素：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">.remove(value) -&gt; None</span><br><span class="line"><span class="comment">#从左至右查找第一个匹配value的值，移除该元素，返回None，就地修改，需要遍历，效率低。</span></span><br><span class="line"></span><br><span class="line">.pop([index]) -&gt; item</span><br><span class="line"><span class="comment">#不指定索引index，就从列表尾部弹出一个元素</span></span><br><span class="line"><span class="comment">#指定索引index，就从索引处弹出一个元素，索引超界抛出IndexError错误</span></span><br><span class="line"><span class="comment">#效率？指定索引的的时间复杂度？不指定索引呢？都是，O(1)，效率高。</span></span><br><span class="line"></span><br><span class="line">clear() -&gt; None</span><br><span class="line"><span class="comment">#清除列表所有元素，剩下一个空列表</span></span><br><span class="line"><span class="comment">#GC会执行操作，数据量大，时间会长，不要频繁使用，而且数据很重要，不要轻易清空！</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="列表其他操作"><a class="markdownIt-Anchor" href="#列表其他操作"></a> 列表其他操作</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">reverse() -&gt; None</span><br><span class="line"><span class="comment">#将列表元素反转，返回None，就地修改</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">reversed</span>(seq)</span><br><span class="line"><span class="comment"># 返回一个反转的迭代器，非就地修改</span></span><br><span class="line"></span><br><span class="line">sort(key=None, reverse=False) -&gt; None</span><br><span class="line"><span class="comment">#对列表元素进行排序，就地修改，默认升序</span></span><br><span class="line"><span class="comment">#reverse为True，反转，降序</span></span><br><span class="line"><span class="comment">#key一个函数，指定key如何排序`lst.sort(key=function)`</span></span><br></pre></td></tr></table></figure>
+<h3 id="复制"><a class="markdownIt-Anchor" href="#复制"></a> 复制</h3>
+<p>shadow copy：影子拷贝，也叫浅拷贝，遇到引用类型，只是复制了一个引用而已。<br />
+deep copy：深拷贝，copy模块提供了deepcopy，真正的拷贝了一遍，生成全新的对象。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.copy()<span class="comment">#浅拷贝</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> copy</span><br><span class="line">copy.deepcopy(x)<span class="comment">#深拷贝x</span></span><br></pre></td></tr></table></figure>
+<h2 id="元组"><a class="markdownIt-Anchor" href="#元组"></a> 元组</h2>
+<h3 id="元组定义"><a class="markdownIt-Anchor" href="#元组定义"></a> 元组定义</h3>
+<p><code>tuple() -&gt; empty tuple</code><br />
+<code>tuple(iterable) -&gt; tuple initialized from iterable's items</code></p>
+<ul>
+<li>元组是不可变对象</li>
+<li>元组、列表、字符串都是连续空间存放。</li>
+<li>元组不可以改变，指的非类时：不能改变内容、指的是类时：地址不能改，内容可改。</li>
+<li>元组是只读的，所以增、改、删方法都没有！</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">()、<span class="built_in">tuple</span>()<span class="comment">#空元组</span></span><br><span class="line">(<span class="number">1</span>,)<span class="comment">#注意一个元素后面加`,`才是元组</span></span><br></pre></td></tr></table></figure>
+<h3 id="元组索引"><a class="markdownIt-Anchor" href="#元组索引"></a> 元组索引</h3>
+<p>支持索引（下标）：</p>
+<ul>
+<li>正索引：从左至右，从0开始，为列表中每一个元素编号。</li>
+<li>负索引：从右至左，从-1开始。</li>
+<li>正负索引不可以超界，否则引发异常IndexError。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">tuple</span>[index]</span><br><span class="line"><span class="comment"># index就是索引，使用中括号访问</span></span><br></pre></td></tr></table></figure>
+<h3 id="元组查询"><a class="markdownIt-Anchor" href="#元组查询"></a> 元组查询</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">index(value,[start,[stop]])-&gt;index</span><br><span class="line"><span class="comment">#通过值value，从指定区间查找列表内的元素是否匹配，匹配第一个就立即返回索引，匹配不到，抛出异常ValueError</span></span><br><span class="line"></span><br><span class="line">count(value)</span><br><span class="line"><span class="comment">#返回列表中匹配value的次数</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#index和count方法都是O(n)，随着列表数据规模的增大，而效率下降</span></span><br><span class="line"><span class="comment">#多使用len(tuple)：返回元素的个数，O(n)。</span></span><br></pre></td></tr></table></figure>
+<h3 id="元组其他操作"><a class="markdownIt-Anchor" href="#元组其他操作"></a> 元组其他操作</h3>
+<p>命名元组：</p>
+<ul>
+<li><code>namedtuple()</code>：创建的是tuple类型，创建后不许修改，返回的是类型。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> namedtuple</span><br><span class="line">a = namedtuple(<span class="string">&#x27;b&#x27;</span>,<span class="string">&#x27;name&#x27;</span>)</span><br><span class="line">tom = a(name=<span class="string">&#x27;san&#x27;</span>)</span><br><span class="line">print(tom) <span class="comment"># 输出：b(name=&#x27;san&#x27;)</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\01\09\Python\00.Python-pdb\" rel="bookmark">Python-pdb调试器</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\01\13\Python\03.Python-字符串\" rel="bookmark">Python-字符串</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\01\15\Python\05.Python-封装解构、切片\" rel="bookmark">Python-切片、封装解构</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\01\14\Python\04.Python-集合\" rel="bookmark">Python-集合</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\01\17\Python\06.Python-字典\" rel="bookmark">Python-字典</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>SoundMemories
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://soundmemories.github.io/2019/01/12/Python/02.Python-%E5%88%97%E8%A1%A8%E3%80%81%E5%85%83%E7%BB%84/" title="Python-列表、元组">https://soundmemories.github.io/2019/01/12/Python/02.Python-列表、元组/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/01/11/Python/01.Python-%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" rel="prev" title="Python-基础语法">
+                  <i class="fa fa-chevron-left"></i> Python-基础语法
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/01/13/Python/03.Python-%E5%AD%97%E7%AC%A6%E4%B8%B2/" rel="next" title="Python-字符串">
+                  Python-字符串 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SoundMemories</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  const url = element.dataset.target;
+  const pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  const pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  const fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+<script data-pjax>
+if (document.querySelectorAll('.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8.8.2/dist/mermaid.min.js', () => {
+    mermaid.init({
+      theme    : 'neutral',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    }, '.mermaid');
+  }, window.mermaid);
+}
+</script>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+      <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@2.0.0/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink.listen({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'https://soundmemories.github.io/2019/01/12/Python/02.Python-%E5%88%97%E8%A1%A8%E3%80%81%E5%85%83%E7%BB%84/',]
+      });
+      });
+  </script>
+
+    </div>
+</body>
+</html>
