@@ -25,12 +25,12 @@
     var CONFIG = {"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.0.2","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="数据类型  Java中的数据类型：  基本数据类型（8种） 引用数据类型（今天不讲）">
+  <meta name="description" content="数据类型 Java中的数据类型： 基本数据类型（8种） 引用数据类型（今天不讲）">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java数据类型、进制和补码">
 <meta property="og:url" content="https://soundmemories.github.io/2020/01/23/Java/04.Java%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E3%80%81%E8%BF%9B%E5%88%B6%E5%92%8C%E8%A1%A5%E7%A0%81/index.html">
 <meta property="og:site_name" content="SoundMemories">
-<meta property="og:description" content="数据类型  Java中的数据类型：  基本数据类型（8种） 引用数据类型（今天不讲）">
+<meta property="og:description" content="数据类型 Java中的数据类型： 基本数据类型（8种） 引用数据类型（今天不讲）">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-01-22T16:00:00.000Z">
 <meta property="article:modified_time" content="2021-02-03T15:07:09.014Z">
@@ -214,7 +214,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text"> 数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E5%88%B6"><span class="nav-number">2.</span> <span class="nav-text"> 进制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%8D%A2"><span class="nav-number">2.1.</span> <span class="nav-text"> 进制转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java%E4%B8%AD%E8%BF%9B%E5%88%B6%E8%A1%A8%E7%A4%BA"><span class="nav-number">2.2.</span> <span class="nav-text"> Java中进制表示</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A5%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text"> 补码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%AE%E7%82%B9%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%AD%98%E5%82%A8"><span class="nav-number">4.</span> <span class="nav-text"> 浮点类型的存储</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E5%88%B6"><span class="nav-number">2.</span> <span class="nav-text">进制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%8D%A2"><span class="nav-number">2.1.</span> <span class="nav-text">进制转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java%E4%B8%AD%E8%BF%9B%E5%88%B6%E8%A1%A8%E7%A4%BA"><span class="nav-number">2.2.</span> <span class="nav-text">Java中进制表示</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A5%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text">补码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%AE%E7%82%B9%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%AD%98%E5%82%A8"><span class="nav-number">4.</span> <span class="nav-text">浮点类型的存储</span></a></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -229,18 +229,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-count">85</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -355,66 +355,41 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="数据类型"><a class="markdownIt-Anchor" href="#数据类型"></a> 数据类型</h2>
-<ul>
-<li>Java中的数据类型：
-<ul>
+        <h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><ul>
+<li>Java中的数据类型：<ul>
 <li>基本数据类型（8种）</li>
-<li>引用数据类型（今天不讲）</li>
+<li>引用数据类型（今天不讲）<a id="more"></a></li>
 </ul>
 </li>
-</ul>
-<a id="more"></a>
-<ul>
-<li>整型系列
-<ul>
+<li>整型系列<ul>
 <li>byte: 字节类型，1个字节。范围：-128~127。</li>
-<li>short：短整型，2个字节。范围：-32768~32767。</li>
-<li>int：整型，4个字节。范围：-2^31 ~ 2^31-1。</li>
+<li>short：短整型，2个字节。范围：-32768~32767。      </li>
+<li>int：整型，4个字节。范围：-2^31 ~ 2^31-1。      </li>
 <li>long：长整型，8个字节。范围：-2^63 ~ 2^63-1。常量末尾需要加大写L（建议用大写）或小写l。</li>
 </ul>
 </li>
-<li>浮点型系列
-<ul>
+<li>浮点型系列<ul>
 <li>float：单精度浮点型，4个字节。float类型的常量，常量末尾F或f。</li>
 <li>double：双精度浮点型，8个字节。</li>
 </ul>
 </li>
-<li>字符类型
-<ul>
+<li>字符类型<ul>
 <li>char：单字符类型，2个字节，可以表示汉字。在Java中是使用Unicode编码表表示。（兼容ASCII码）</li>
 </ul>
 </li>
-<li>布尔类型
-<ul>
-<li>boolean：true、false，只能存两个值之一。</li>
+<li>布尔类型<ul>
+<li>boolean：true、false，只能存两个值之一。<!-- more --></li>
+</ul>
+</li>
+<li>如何表示char类型的字符常量呢？<ul>
+<li>转义字符：’\n’（换行）,’\t’（制表位Tab键）,’\\\’（斜杠）,’\”‘（双引号）,’\’’（单引号）,’\b’（删除键Backspace）,’\r’（回车键）。</li>
+<li>‘\u’字符的Unicode编码值的十六进制形式。<figure class="highlight java"><figcaption><span>TestType.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestType</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">		<span class="keyword">boolean</span> marry = <span class="keyword">false</span>;</span><br><span class="line">		<span class="keyword">if</span>(marry)&#123;<span class="comment">//marry中的值为true，就表示条件成立</span></span><br><span class="line">			System.out.println(<span class="string">&quot;已婚&quot;</span>);</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			System.out.println(<span class="string">&quot;未婚&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println(<span class="string">&quot;--------------------------&quot;</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">byte</span> b = <span class="number">127</span>;</span><br><span class="line">		<span class="keyword">long</span> c = <span class="number">19901976096L</span>;<span class="comment">//尾部加上L</span></span><br><span class="line">		</span><br><span class="line">		<span class="keyword">float</span> d = <span class="number">1.2F</span>;<span class="comment">//尾部加上F</span></span><br><span class="line">		</span><br><span class="line">		<span class="keyword">char</span> e = <span class="string">&#x27;&quot;&#x27;</span>;<span class="comment">//这样可以，表示单个字符</span></span><br><span class="line">		System.out.println(e);</span><br><span class="line">		System.out.println(<span class="string">&quot;你说:\&quot;今天天气真好\&quot;&quot;</span>);<span class="comment">//这里要输出双引号，需要转义</span></span><br><span class="line">		</span><br><span class="line">		<span class="keyword">char</span> f = <span class="string">&#x27;\u597d&#x27;</span>;<span class="comment">//字符&#x27;好&#x27;</span></span><br><span class="line">		System.out.println(f);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+计算机表示数据用二进制表示，即0和1。<br>那么一位0或1，用bit（位）表示，是最小单位。<br>计算机中最基本的单位用的byte字节。<br>1字节 = 8位<br>1KB = 1024B<br>1MB = 1024KB<br>1GB = 1024MB<br>1TB = 1024GB<br>…<br>扩展：硬件厂商存储单位用1000进位，不是1024。带宽100Mb中的b是bit。</li>
 </ul>
 </li>
 </ul>
-<!-- more -->
-<ul>
-<li>如何表示char类型的字符常量呢？
-<ul>
-<li>转义字符：’\n’（换行）,’\t’（制表位Tab键）,’\’（斜杠）,’&quot;’（双引号）,’’’（单引号）,’\b’（删除键Backspace）,’\r’（回车键）。</li>
-<li>'\u’字符的Unicode编码值的十六进制形式。</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight java"><figcaption><span>TestType.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestType</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">		<span class="keyword">boolean</span> marry = <span class="keyword">false</span>;</span><br><span class="line">		<span class="keyword">if</span>(marry)&#123;<span class="comment">//marry中的值为true，就表示条件成立</span></span><br><span class="line">			System.out.println(<span class="string">&quot;已婚&quot;</span>);</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			System.out.println(<span class="string">&quot;未婚&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println(<span class="string">&quot;--------------------------&quot;</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">byte</span> b = <span class="number">127</span>;</span><br><span class="line">		<span class="keyword">long</span> c = <span class="number">19901976096L</span>;<span class="comment">//尾部加上L</span></span><br><span class="line">		</span><br><span class="line">		<span class="keyword">float</span> d = <span class="number">1.2F</span>;<span class="comment">//尾部加上F</span></span><br><span class="line">		</span><br><span class="line">		<span class="keyword">char</span> e = <span class="string">&#x27;&quot;&#x27;</span>;<span class="comment">//这样可以，表示单个字符</span></span><br><span class="line">		System.out.println(e);</span><br><span class="line">		System.out.println(<span class="string">&quot;你说:\&quot;今天天气真好\&quot;&quot;</span>);<span class="comment">//这里要输出双引号，需要转义</span></span><br><span class="line">		</span><br><span class="line">		<span class="keyword">char</span> f = <span class="string">&#x27;\u597d&#x27;</span>;<span class="comment">//字符&#x27;好&#x27;</span></span><br><span class="line">		System.out.println(f);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>计算机表示数据用二进制表示，即0和1。<br />
-那么一位0或1，用bit（位）表示，是最小单位。<br />
-计算机中最基本的单位用的byte字节。<br />
-1字节 = 8位<br />
-1KB = 1024B<br />
-1MB = 1024KB<br />
-1GB = 1024MB<br />
-1TB = 1024GB<br />
-…<br />
-扩展：硬件厂商存储单位用1000进位，不是1024。带宽100Mb中的b是bit。</p>
-<h2 id="进制"><a class="markdownIt-Anchor" href="#进制"></a> 进制</h2>
-<ul>
-<li>进制的分类
-<ul>
+<h2 id="进制"><a href="#进制" class="headerlink" title="进制"></a>进制</h2><ul>
+<li>进制的分类<ul>
 <li>二进制：0~1。逢二进一。</li>
 <li>八进制：0~7。逢八进一。</li>
 <li>十进制：0~9。逢十进一。</li>
@@ -423,16 +398,10 @@
 </li>
 </ul>
 <figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">十进制	二进制	八进制	十六进制</span><br><span class="line">0       0       0       0</span><br><span class="line">1       1       1       1</span><br><span class="line">2       10      2       2</span><br><span class="line">3       11      3       3</span><br><span class="line">4       100     4       4</span><br><span class="line">5       101     5       5</span><br><span class="line">6       110     6       6</span><br><span class="line">7       111     7       7</span><br><span class="line">8       1000    10      8</span><br><span class="line">9       1001    11      9</span><br><span class="line">10      1010    12      A</span><br><span class="line">11      1011    13      B</span><br><span class="line">12      1100    14      C</span><br><span class="line">13      1101    15      D</span><br><span class="line">14      1110    16      E</span><br><span class="line">15      1111    17      F</span><br><span class="line">16      10000   20      10</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>计算机使用二进制，人类生活中使用十进制。<br />
-因为在计算机中二进制数字太长了，在代码中去表示二进制很繁琐，引入了八进制和十六进制，为了快速和简短的表示二进制。</p>
-<h3 id="进制转换"><a class="markdownIt-Anchor" href="#进制转换"></a> 进制转换</h3>
-<p>二进制-&gt;八进制：把二进制从最右边开始，三位一组计算，底数为2。如“11001-&gt;31”。<br />
-八进制-&gt;十进制：把八进制从最右边开始，计算和，底数为8。如“31-&gt;25”。<br />
-二进制-&gt;十六进制：把二进制从最右边开始，四位一组计算，底数为2。如“11001-&gt;19”。</p>
-<h3 id="java中进制表示"><a class="markdownIt-Anchor" href="#java中进制表示"></a> Java中进制表示</h3>
-<ul>
-<li>在程序中如何表示某个数字是十进制、二进制、八进制、十六进制？
-<ul>
+<p>计算机使用二进制，人类生活中使用十进制。<br>因为在计算机中二进制数字太长了，在代码中去表示二进制很繁琐，引入了八进制和十六进制，为了快速和简短的表示二进制。</p>
+<h3 id="进制转换"><a href="#进制转换" class="headerlink" title="进制转换"></a>进制转换</h3><p>二进制-&gt;八进制：把二进制从最右边开始，三位一组计算，底数为2。如“11001-&gt;31”。<br>八进制-&gt;十进制：把八进制从最右边开始，计算和，底数为8。如“31-&gt;25”。<br>二进制-&gt;十六进制：把二进制从最右边开始，四位一组计算，底数为2。如“11001-&gt;19”。</p>
+<h3 id="Java中进制表示"><a href="#Java中进制表示" class="headerlink" title="Java中进制表示"></a>Java中进制表示</h3><ul>
+<li>在程序中如何表示某个数字是十进制、二进制、八进制、十六进制？<ul>
 <li>十进制，正常写；</li>
 <li>二进制，在数字前面加0B或0b；</li>
 <li>八进制，在数字前面加0；</li>
@@ -441,38 +410,21 @@
 </li>
 </ul>
 <figure class="highlight java"><figcaption><span>Test01_JinZhi.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test01_JinZhi</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">		System.out.println(<span class="number">10</span>);<span class="comment">//十进制，正常写</span></span><br><span class="line">		System.out.println(<span class="number">0B10</span>);<span class="comment">//二进制，在数字前面加0B或0b</span></span><br><span class="line">		System.out.println(<span class="number">010</span>);<span class="comment">//八进制，在数字前面加0</span></span><br><span class="line">		System.out.println(<span class="number">0X10</span>);<span class="comment">//十六进制，在数字前面加0X或0x</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="补码"><a class="markdownIt-Anchor" href="#补码"></a> 补码</h2>
-<p>计算机中是使用“补码”的形式来存储数据的，为了理解/换算“补码”，我们在引入“原码、反码”。<br />
-规定：<mark class="label success">正数的原码、反码、补码相同；负数的原码、反码、补码是不同的。</mark><br />
-因为计算机中把最高位（最左边的二进制位）定为符号位，0表示正数，1表示负数。</p>
+<h2 id="补码"><a href="#补码" class="headerlink" title="补码"></a>补码</h2><p>计算机中是使用“补码”的形式来存储数据的，为了理解/换算“补码”，我们在引入“原码、反码”。<br>规定：<mark class="label success">正数的原码、反码、补码相同；负数的原码、反码、补码是不同的。</mark><br>因为计算机中把最高位（最左边的二进制位）定为符号位，0表示正数，1表示负数。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">25：</span><br><span class="line">	原码：0001 1001</span><br><span class="line">	反码：0001 1001</span><br><span class="line">	补码：0001 1001</span><br><span class="line">-25：</span><br><span class="line">	原码：1001 1001   &#x2F;&#x2F;最左边的二进制位为1，表示负数</span><br><span class="line">	反码：1110 0110   &#x2F;&#x2F;符号位不变，其余位取反（0变1,1变0）</span><br><span class="line">	补码：1110 0111   &#x2F;&#x2F;在反码上加1</span><br></pre></td></tr></table></figure>
-<p>正数范围：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">正数：</span><br><span class="line">	0000 0001   : 1</span><br><span class="line">		|</span><br><span class="line">	0111 1111   : 127</span><br></pre></td></tr></table></figure>
-<p>负数范围：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">负数：补码</span><br><span class="line">	1000 0001   ： 补码（1000 0001）-&gt; 反码（1000 0000）-&gt; 原码（1111 1111） -127</span><br><span class="line">		|</span><br><span class="line">	1111 1111   ： 补码（1111 1111）-&gt; 反码（1111 1110）-&gt; 原码（1000 0001） -1</span><br></pre></td></tr></table></figure>
-<p>0的表示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">正0: 0000 0000</span><br><span class="line"></span><br><span class="line">负0：1000 0000	&#x2F;&#x2F;如果用它表示负0，就浪费了，所以用它来表示其他的数</span><br><span class="line"></span><br><span class="line">-127的二进制的补码：1000 0001</span><br><span class="line">1的二进制的补码：0000 0001</span><br><span class="line"></span><br><span class="line">-127 - 1 &#x3D; （补码：1000 0001）-（补码：0000 0001） &#x3D; 补码（1000 0000） &#x3D; -128</span><br><span class="line">所以用 补码（1000 0000）表示 -128。</span><br><span class="line">计算机中用符号位来表示正、负，就是为了底层设计的简化，让符号位也参与计算。</span><br></pre></td></tr></table></figure>
-<p>现在能理解byte类型的范围为什么是-128~127了。</p>
-<h2 id="浮点类型的存储"><a class="markdownIt-Anchor" href="#浮点类型的存储"></a> 浮点类型的存储</h2>
-<p>浮点型的float和double在底层如何存储？<br />
-计算机中只有二进制，那么如果存储59.25？<br />
-涉及：（1）整数部分（2）小数部分（3）这个.（4）正负号。</p>
+<p>正数范围：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">正数：</span><br><span class="line">	0000 0001   : 1</span><br><span class="line">		|</span><br><span class="line">	0111 1111   : 127</span><br></pre></td></tr></table></figure><br>负数范围：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">负数：补码</span><br><span class="line">	1000 0001   ： 补码（1000 0001）-&gt; 反码（1000 0000）-&gt; 原码（1111 1111） -127</span><br><span class="line">		|</span><br><span class="line">	1111 1111   ： 补码（1111 1111）-&gt; 反码（1111 1110）-&gt; 原码（1000 0001） -1</span><br></pre></td></tr></table></figure><br>0的表示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">正0: 0000 0000</span><br><span class="line"></span><br><span class="line">负0：1000 0000	&#x2F;&#x2F;如果用它表示负0，就浪费了，所以用它来表示其他的数</span><br><span class="line"></span><br><span class="line">-127的二进制的补码：1000 0001</span><br><span class="line">1的二进制的补码：0000 0001</span><br><span class="line"></span><br><span class="line">-127 - 1 &#x3D; （补码：1000 0001）-（补码：0000 0001） &#x3D; 补码（1000 0000） &#x3D; -128</span><br><span class="line">所以用 补码（1000 0000）表示 -128。</span><br><span class="line">计算机中用符号位来表示正、负，就是为了底层设计的简化，让符号位也参与计算。</span><br></pre></td></tr></table></figure><br>现在能理解byte类型的范围为什么是-128~127了。</p>
+<h2 id="浮点类型的存储"><a href="#浮点类型的存储" class="headerlink" title="浮点类型的存储"></a>浮点类型的存储</h2><p>浮点型的float和double在底层如何存储？<br>计算机中只有二进制，那么如果存储59.25？<br>涉及：（1）整数部分（2）小数部分（3）这个.（4）正负号。</p>
 <ul>
-<li>小数-&gt;二进制：
-<ul>
+<li>小数-&gt;二进制：<ul>
 <li>整数部分：除2倒取余。</li>
 <li>小数部分：乘2取整数部分。</li>
 </ul>
 </li>
-<li>二进制的科学记数法：整数部分永远是1，那这样的话，整数部分就不用存了，小数点也不存了。</li>
+<li>二进制的科学记数法：整数部分永远是1，那这样的话，整数部分就不用存了，小数点也不存了。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">整数部分：</span><br><span class="line"><span class="number">59</span> ÷ <span class="number">2</span> = <span class="number">29</span>余<span class="number">1</span></span><br><span class="line"><span class="number">29</span> ÷ <span class="number">2</span> = <span class="number">14</span>余<span class="number">1</span></span><br><span class="line"><span class="number">14</span> ÷ <span class="number">2</span> = <span class="number">7</span>余<span class="number">0</span></span><br><span class="line"><span class="number">7</span> ÷ <span class="number">2</span> = <span class="number">3</span>余<span class="number">1</span></span><br><span class="line"><span class="number">3</span> ÷ <span class="number">2</span> = <span class="number">1</span>余<span class="number">1</span></span><br><span class="line"><span class="number">1</span> ÷ <span class="number">2</span> = <span class="number">0</span>余<span class="number">1</span></span><br><span class="line">小数部分：</span><br><span class="line"><span class="number">0.25</span> × <span class="number">2</span> = <span class="number">0.5</span></span><br><span class="line"><span class="number">0.5</span> × <span class="number">2</span> = <span class="number">1.0</span></span><br><span class="line">浮点数表示：</span><br><span class="line"><span class="number">59</span> -&gt; <span class="number">111011</span></span><br><span class="line">.<span class="number">25</span> -&gt; <span class="number">01</span></span><br><span class="line"><span class="number">59.25</span> -&gt; <span class="number">111011.0100</span>... -&gt; <span class="number">1.110110100</span>... × n的<span class="number">5</span>次方</span><br></pre></td></tr></table></figure>
+只要存三个内容：（1）正负号（2）二进制的科学计数法，几次方（指数部分）（3）二进制的小数部分（称为尾数）。</li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">整数部分：</span><br><span class="line"><span class="number">59</span> ÷ <span class="number">2</span> = <span class="number">29</span>余<span class="number">1</span></span><br><span class="line"><span class="number">29</span> ÷ <span class="number">2</span> = <span class="number">14</span>余<span class="number">1</span></span><br><span class="line"><span class="number">14</span> ÷ <span class="number">2</span> = <span class="number">7</span>余<span class="number">0</span></span><br><span class="line"><span class="number">7</span> ÷ <span class="number">2</span> = <span class="number">3</span>余<span class="number">1</span></span><br><span class="line"><span class="number">3</span> ÷ <span class="number">2</span> = <span class="number">1</span>余<span class="number">1</span></span><br><span class="line"><span class="number">1</span> ÷ <span class="number">2</span> = <span class="number">0</span>余<span class="number">1</span></span><br><span class="line">小数部分：</span><br><span class="line"><span class="number">0.25</span> × <span class="number">2</span> = <span class="number">0.5</span></span><br><span class="line"><span class="number">0.5</span> × <span class="number">2</span> = <span class="number">1.0</span></span><br><span class="line">浮点数表示：</span><br><span class="line"><span class="number">59</span> -&gt; <span class="number">111011</span></span><br><span class="line">.<span class="number">25</span> -&gt; <span class="number">01</span></span><br><span class="line"><span class="number">59.25</span> -&gt; <span class="number">111011.0100</span>... -&gt; <span class="number">1.110110100</span>... × n的<span class="number">5</span>次方</span><br></pre></td></tr></table></figure>
-<p>只要存三个内容：（1）正负号（2）二进制的科学计数法，几次方（指数部分）（3）二进制的小数部分（称为尾数）。</p>
-<p>float：4个字节，被分为三个部分，最高位是1位符号位，接下来的8位用来存指数部分，然后剩下的23位存尾数，如果存不下的尾数，就舍去了。<br />
-double：8个字节，被分为三个部分，最高位是1位符号位，接下来的11位用来存指数部分，然后剩下52位的存尾数，如果存不下的尾数，就舍去了。</p>
-<p>了解：<br />
-浮点类型不精确，因为十进制的小数部分转二进制会需要舍去。<br />
-float类型的4个字节能表示的数字范围比long类型的8个字节还要大，因为浮点型底层存的是指数。</p>
+<p>float：4个字节，被分为三个部分，最高位是1位符号位，接下来的8位用来存指数部分，然后剩下的23位存尾数，如果存不下的尾数，就舍去了。<br>double：8个字节，被分为三个部分，最高位是1位符号位，接下来的11位用来存指数部分，然后剩下52位的存尾数，如果存不下的尾数，就舍去了。</p>
+<p>了解：<br>浮点类型不精确，因为十进制的小数部分转二进制会需要舍去。<br>float类型的4个字节能表示的数字范围比long类型的8个字节还要大，因为浮点型底层存的是指数。</p>
 
     </div>
 
@@ -492,10 +444,10 @@ float类型的4个字节能表示的数字范围比long类型的8个字节还要
       <div class="popular-posts-title"><a href="\2020\01\22\Java\03.Java标识符和变量\" rel="bookmark">Java标识符和变量</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\01\25\Java\06.Java算术运算符\" rel="bookmark">Java算术运算符</a></div>
+      <div class="popular-posts-title"><a href="\2020\01\24\Java\05.Java类型转换\" rel="bookmark">Java类型转换</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\01\24\Java\05.Java类型转换\" rel="bookmark">Java类型转换</a></div>
+      <div class="popular-posts-title"><a href="\2020\01\25\Java\06.Java算术运算符\" rel="bookmark">Java算术运算符</a></div>
     </li>
   </ul>
 
@@ -702,8 +654,50 @@ if (document.querySelectorAll('.mermaid').length) {
   
 
   
-      <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+      <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
 
+    
 
   
   <script src="//cdn.jsdelivr.net/npm/quicklink@2.0.0/dist/quicklink.umd.js"></script>

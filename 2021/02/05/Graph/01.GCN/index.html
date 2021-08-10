@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.0.2","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="图论最开始是1707年由 Seven bridges 问题而来的，欧拉把这个问题转成图解决。近代图论1959年 Erdos 和 Renyi 发表的 Random Graph 一系列论文建立起来的全新领域。目前学术界和工业界是基于1999年 brabasi 提出的 Scale-free Network 进行的。 degree-distribution度分布，即每个节点按边的数量分类，每类节点占总结点">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Graph Convolutional Network">
+<meta property="og:url" content="https://soundmemories.github.io/2021/02/05/Graph/01.GCN/index.html">
+<meta property="og:site_name" content="SoundMemories">
+<meta property="og:description" content="图论最开始是1707年由 Seven bridges 问题而来的，欧拉把这个问题转成图解决。近代图论1959年 Erdos 和 Renyi 发表的 Random Graph 一系列论文建立起来的全新领域。目前学术界和工业界是基于1999年 brabasi 提出的 Scale-free Network 进行的。 degree-distribution度分布，即每个节点按边的数量分类，每类节点占总结点">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-02-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-08-10T03:48:15.700Z">
+<meta property="article:author" content="SoundMemories">
+<meta property="article:tag" content="Graph">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://soundmemories.github.io/2021/02/05/Graph/01.GCN/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Graph Convolutional Network | SoundMemories</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">SoundMemories</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-主页">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>主页</a>
+
+  </li>
+        <li class="menu-item menu-item-分类">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-标签">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-归档">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-关于">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+	   
+		  
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%BE%E8%AE%BA"><span class="nav-number">1.</span> <span class="nav-text">图论</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#degree-distribution"><span class="nav-number">1.1.</span> <span class="nav-text">degree-distribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#adjacency-matrix"><span class="nav-number">1.2.</span> <span class="nav-text">adjacency matrix</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Distance-Hilbert-Space"><span class="nav-number">1.3.</span> <span class="nav-text">Distance(Hilbert Space)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Clustering-coefficient"><span class="nav-number">1.4.</span> <span class="nav-text">Clustering coefficient</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Betweenness"><span class="nav-number">1.5.</span> <span class="nav-text">Betweenness</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GCN"><span class="nav-number">2.</span> <span class="nav-text">GCN</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Fourier-transform"><span class="nav-number">2.1.</span> <span class="nav-text">Fourier transform</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">3.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+        </section>
+        <!--/noindex-->
+
+        <section class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SoundMemories"
+      src="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+  <p class="site-author-name" itemprop="name">SoundMemories</p>
+  <div class="site-description" itemprop="description">今日事，今日毕</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">85</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NvdW5kbWVtb3JpZXM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;soundmemories"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNvdW5kbWVtb3JpZXNAMTYzLmNvbQ==" title="E-Mail → mailto:soundmemories@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+        </section>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2021/02/05/Graph/01.GCN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Graph Convolutional Network
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-02-05 00:00:00" itemprop="dateCreated datePublished" datetime="2021-02-05T00:00:00+08:00">2021-02-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Graph/" itemprop="url" rel="index"><span itemprop="name">Graph</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="图论"><a href="#图论" class="headerlink" title="图论"></a>图论</h1><p>最开始是1707年由 Seven bridges 问题而来的，欧拉把这个问题转成图解决。近代图论1959年 Erdos 和 Renyi 发表的 Random Graph 一系列论文建立起来的全新领域。目前学术界和工业界是基于1999年 brabasi 提出的 Scale-free Network 进行的。</p>
+<h2 id="degree-distribution"><a href="#degree-distribution" class="headerlink" title="degree-distribution"></a>degree-distribution</h2><p><strong>度分布，即每个节点按边的数量分类，每类节点占总结点比例</strong>。一般 Random Graph 的度分布是 <strong>泊松分布</strong>（poisson，类似正态分布）。但基于 Scale-free Network 的提出，我们发现很多网络结构是 <strong>幂律分布</strong>（power-law）。</p>
+<h2 id="adjacency-matrix"><a href="#adjacency-matrix" class="headerlink" title="adjacency matrix"></a>adjacency matrix</h2><p>邻接矩阵。阶为$n$的图$G$的邻接矩阵$A$是$n\times n$的。将$G$的顶点标签为$v_{1},v_{2},…,v_{n}$。若$(v_{i},v_{j})\in E(G)$，$A_{ij}=1$，否则$A_{ij}=0$。也可以用大于0的值表示边的权值，例如可以用边权值表示一个点到另一个点的距离。</p>
+<h2 id="Distance-Hilbert-Space"><a href="#Distance-Hilbert-Space" class="headerlink" title="Distance(Hilbert Space)"></a>Distance(Hilbert Space)</h2><p>每个节点具有多维features，可以看成多维空间，计算Distance也可看作Similarity。为什么在 Hilbert Space ，因为要方便后面约束优化。</p>
+<p>GCN要求：<br>（1）weights $\geq$ 0<br>（2）linear calculation<br>（3）Inner product</p>
+<p>Hilbert Space：<br>（1）对称性：$&lt;\vec{y}, \vec{x}&gt;$ = $&lt;\vec{x}, \vec{y}&gt;$ </p>
+<p>（2）线性：$&lt; a\vec{x_1}+b \vec{x_2}, \vec{y}&gt;$ = $a&lt;\vec{x_1}, \vec{y}&gt;+b&lt;\vec{x_2}, \vec{y}&gt;$</p>
+<p>（3）半正定性：$&lt;\vec{x}, \vec{x}&gt; \geq 0$，if $\vec{x}=\vec{0}$，$&lt;\vec{x}, \vec{x}&gt; = 0$</p>
+<p>Distance：$d(\vec{x}, \vec{y})=||\vec{x}-\vec{y}||=\sqrt{&lt;\vec{x}-\vec{y}, \vec{x}-\vec{y}&gt;}$</p>
+<h2 id="Clustering-coefficient"><a href="#Clustering-coefficient" class="headerlink" title="Clustering coefficient"></a>Clustering coefficient</h2><p>聚类系数，一个图中的顶点之间结集成团的程度的系数。集聚系数分为整体与局部两种。整体集聚系数可以给出一个图中整体的集聚程度的评估，而局部集聚系数则可以测量图中每一个结点附近的集聚程度。</p>
+<p>分子：闭三点组（邻近三点组成“三角形”）数量。分母：闭三点组（邻近三点组成“三角形”）数量 + 开三点组（邻近三点组成“缺一条边的三角形”）数量。</p>
+<p>整体聚类系数：对每个节点的聚类系数求和取均值。如果该值很大，表示图是很稠密的，节点和节点之间联系紧密。</p>
+<h2 id="Betweenness"><a href="#Betweenness" class="headerlink" title="Betweenness"></a>Betweenness</h2><p>也叫Betweenness centrality，分node Betweenness 和 edge Betweenness。这个值很大，表示此node或edge很重要，因为很多最短路径都要经过它，表现流通性。</p>
+<p>node Betweenness：计算经过一个点的最短路径的数量占所有最短路径数量比例。两点一组，遍历所有组，计算每组中经过一个点的最短路径的数量占该组最短路径数量比例，最后求和。<br>edge Betweenness：node Betweenness 换成边即可。</p>
+<p>缺点：需要遍历所有点找到所有最短路径，一般的算法有 迪杰斯特拉算法（Dijkstra） 和 弗洛伊德算法（Floyd），时间复杂度都为 $O(n^3)$。</p>
+<h1 id="GCN"><a href="#GCN" class="headerlink" title="GCN"></a>GCN</h1><p>GCN（Graph Convolutional Networks，图卷积神经网络），实际上跟CNN的作用一样，就是一个特征提取器，只不过它的对象是图数据。GCN精妙地设计了一种从图数据中提取特征的方法，从而让我们可以使用这些特征去对图数据进行节点分类（node classification）、图分类（graph classification）、边预测（link prediction），还可以顺便得到图的嵌入表示（graph embedding）。</p>
+<p>简单说一下GCN发展历史，那么肯定绕不过下面三篇论文：<br><span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzEzMTIuNjIwMy5wZGY=">Spectral Networks and Deep Locally Connected Networks on Graphs<i class="fa fa-external-link-alt"></i></span> 2014年<br><span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE2MDYuMDkzNzUucGRm">Convolutional Neural Networks on Graphs with Fast Localized Spectral Filtering<i class="fa fa-external-link-alt"></i></span> 2016年<br><span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE2MDkuMDI5MDcucGRm">Semi-Supervised Classification with Graph Convolutional Networks<i class="fa fa-external-link-alt"></i></span> 2017年</p>
+<p>在计算机科学领域、理论物理复杂网络领域的研究者在图（Graph）的空间域（spatial domain）和频谱域（spectral domain）分别提出了不同形式的图神经网络，并最终在2017年实现了空间域模型和频谱域模型的融合，即目前我们使用的第三代GCN。</p>
+<p>对于其中理论和公式非常感兴趣的参考<span class="exturl" data-url="aHR0cDovL3h0ZjYxNS5jb20vMjAxOS8wMi8yNC9nY24v">图卷积神经网络理论基础<i class="fa fa-external-link-alt"></i></span>。</p>
+<h2 id="Fourier-transform"><a href="#Fourier-transform" class="headerlink" title="Fourier transform"></a>Fourier transform</h2><p>时域上的卷积-&gt;频域上的相乘。从而方便计算，可以看作一种Mapping方式，把时域信号转成频域信号处理。</p>
+<script type="math/tex; mode=display">
+F(w) = \frac{1}{2\pi}\int_{-\infty}^{+\infty} f(t)e^{-j\omega t}\, {\rm d}t</script><p>$F(\omega)$ 就是<strong>傅里叶变换</strong>，得到的就是<strong>频域曲线</strong>。每个频率$\omega$下都有对应的振幅$F(\omega)$。从几何上来看，$f(t)$ 以 $e^{-j\omega t}$ 为基函数投影，$F(w)$ 就是以频率 $\omega$ 对应基上的投影的坐标。</p>
+<p>从数学角度来看，$f(x)$ 是函数 $f$ 在 $t$ 处的取值，所有基都对该处取值有贡献，即把每个$F(w)$ 投影到 $e^{-j\omega t}$ 基方向上分量累加起来，得到的就是该点处的函数值。</p>
+<script type="math/tex; mode=display">
+f(t) = \int_{-\infty}^{+\infty}F(w)e^{-j\omega t}\, {\rm d}\omega=\sum_{\omega}F(w)e^{-j\omega t}</script><p>上面简化了一下，用 $w$ 代表频率。这个公式也叫做<strong>逆傅里叶变换</strong>。</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p><span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU5JTlBJThGJUU2JTlDJUJBJUU1JTlCJUJF">随机图<i class="fa fa-external-link-alt"></i></span>，<span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU2JTk3JUEwJUU1JUIwJUJBJUU1JUJBJUE2JUU3JUJEJTkxJUU3JUJCJTlD">无尺度网络<i class="fa fa-external-link-alt"></i></span>，<span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vbGVlengvcC85NDM2ODIwLmh0bWw=">Scale Free Network<i class="fa fa-external-link-alt"></i></span></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU1JUJBJUE2JUU1JTg4JTg2JUU1JUI4JTgz">度分布<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvQ2x1c3RlcmluZ19jb2VmZmljaWVudA==">Clustering coefficient<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvQmV0d2Vlbm5lc3M=">Betweenness<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3F1ZXN0aW9uLzE5OTY3Nzc4">如何理解希尔伯特空间？<i class="fa fa-external-link-alt"></i></span>，<span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU1JUI4JThDJUU1JUIwJTk0JUU0JUJDJUFGJUU3JTg5JUI5JUU3JUE5JUJBJUU5JTk3JUI0">希尔伯特空间<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvRm91cmllcl90cmFuc2Zvcm0=">Fourier transform<i class="fa fa-external-link-alt"></i></span>，<span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU1JTgyJTg1JUU5JTg3JThDJUU1JThGJUI2JUU1JThGJTk4JUU2JThEJUEy">傅里叶变换<i class="fa fa-external-link-alt"></i></span></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly93d3cuc29odS5jb20vYS8zNDI2MzQyOTFfNjUxODkz">跳出公式，看清全局，图神经网络（GCN）原理详解<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zODYxMjg2Mw==">图卷积网络(Graph Convolutional networks, GCN) 简述<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmdiaW5feHUvYXJ0aWNsZS9kZXRhaWxzLzg5NjcwMDk2">论文笔记：Semi-Supervised Classification with Graph Convolutional Networks<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vbnhmLXJhYmJpdDc1L3AvMTEzMDYxOTguaHRtbA==">GCN总结<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cDovL3h0ZjYxNS5jb20vMjAxOS8wMi8yNC9nY24v">图卷积神经网络理论基础<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cDovL3RraXBmLmdpdGh1Yi5pby9ncmFwaC1jb252b2x1dGlvbmFsLW5ldHdvcmtzLw==">GRAPH CONVOLUTIONAL NETWORKS<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC83NjAwMTA4MA==">GNN综述——从入门到入门<i class="fa fa-external-link-alt"></i></span></p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\02\03\Graph\00.图深度表示\" rel="bookmark">图深度表示</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>SoundMemories
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://soundmemories.github.io/2021/02/05/Graph/01.GCN/" title="Graph Convolutional Network">https://soundmemories.github.io/2021/02/05/Graph/01.GCN/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Graph/" rel="tag"><i class="fa fa-tag"></i> Graph</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/02/03/Graph/00.%E5%9B%BE%E6%B7%B1%E5%BA%A6%E8%A1%A8%E7%A4%BA/" rel="prev" title="图深度表示">
+                  <i class="fa fa-chevron-left"></i> 图深度表示
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/06/19/NLP/00.NLP%E5%85%A5%E9%97%A8/" rel="next" title="NLP入门">
+                  NLP入门 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SoundMemories</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  const url = element.dataset.target;
+  const pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  const pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  const fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+<script data-pjax>
+if (document.querySelectorAll('.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8.8.2/dist/mermaid.min.js', () => {
+    mermaid.init({
+      theme    : 'neutral',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    }, '.mermaid');
+  }, window.mermaid);
+}
+</script>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+      <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@2.0.0/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink.listen({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'https://soundmemories.github.io/2021/02/05/Graph/01.GCN/',]
+      });
+      });
+  </script>
+
+    </div>
+</body>
+</html>

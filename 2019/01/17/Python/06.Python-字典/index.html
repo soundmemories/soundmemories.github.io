@@ -25,12 +25,12 @@
     var CONFIG = {"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.0.2","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="字典dict：  key-value键值对的数据的集合 可变！无序！key不重复，必须是可hash的类型！ key重复会覆盖！无序，不一定谁覆盖谁。">
+  <meta name="description" content="字典dict： key-value键值对的数据的集合 可变！无序！key不重复，必须是可hash的类型！ key重复会覆盖！无序，不一定谁覆盖谁。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python-字典">
 <meta property="og:url" content="https://soundmemories.github.io/2019/01/17/Python/06.Python-%E5%AD%97%E5%85%B8/index.html">
 <meta property="og:site_name" content="SoundMemories">
-<meta property="og:description" content="字典dict：  key-value键值对的数据的集合 可变！无序！key不重复，必须是可hash的类型！ key重复会覆盖！无序，不一定谁覆盖谁。">
+<meta property="og:description" content="字典dict： key-value键值对的数据的集合 可变！无序！key不重复，必须是可hash的类型！ key重复会覆盖！无序，不一定谁覆盖谁。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-01-16T16:00:00.000Z">
 <meta property="article:modified_time" content="2021-02-07T05:51:47.079Z">
@@ -214,7 +214,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E5%85%B8dict"><span class="nav-number">1.</span> <span class="nav-text"> 字典dict：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%97%E5%85%B8%E9%81%8D%E5%8E%86%E5%92%8C%E7%A7%BB%E9%99%A4"><span class="nav-number">1.1.</span> <span class="nav-text"> 字典遍历和移除：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%BA%E7%9C%81%E5%AD%97%E5%85%B8defaultdict"><span class="nav-number">1.2.</span> <span class="nav-text"> 缺省字典：defaultdict</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%89%E5%BA%8F%E5%AD%97%E5%85%B8ordereddict"><span class="nav-number">1.3.</span> <span class="nav-text"> 有序字典：OrderedDict</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E5%85%B8dict%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">字典dict：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%97%E5%85%B8%E9%81%8D%E5%8E%86%E5%92%8C%E7%A7%BB%E9%99%A4%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">字典遍历和移除：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%BA%E7%9C%81%E5%AD%97%E5%85%B8%EF%BC%9Adefaultdict"><span class="nav-number">1.2.</span> <span class="nav-text">缺省字典：defaultdict</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%89%E5%BA%8F%E5%AD%97%E5%85%B8%EF%BC%9AOrderedDict"><span class="nav-number">1.3.</span> <span class="nav-text">有序字典：OrderedDict</span></a></li></ol></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -229,18 +229,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-count">85</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -355,19 +355,15 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h3 id="字典dict"><a class="markdownIt-Anchor" href="#字典dict"></a> 字典dict：</h3>
-<ul>
+        <h3 id="字典dict："><a href="#字典dict：" class="headerlink" title="字典dict："></a>字典dict：</h3><ul>
 <li>key-value键值对的数据的集合</li>
 <li>可变！无序！key不重复，必须是可hash的类型！</li>
-<li>key重复会覆盖！无序，不一定谁覆盖谁。</li>
+<li>key重复会覆盖！无序，不一定谁覆盖谁。<a id="more"></a>
+创建：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 空字典:</span></span><br><span class="line">&#123;&#125;、<span class="built_in">dict</span>()</span><br><span class="line"><span class="comment"># 非空字典：</span></span><br><span class="line">&#123;<span class="string">&#x27;a&#x27;</span>:<span class="number">1</span>&#125;、<span class="built_in">dict</span>(a=<span class="number">1</span>,b=<span class="number">2</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 等号前面必须是`标识符`，出来会转化成字符串。1=1这种只能&#123;1:1&#125;这样写，此时1是key。</span></span><br><span class="line">In:<span class="built_in">dict</span>(a=<span class="number">1</span>,b=<span class="number">2</span>)</span><br><span class="line">Out:&#123;<span class="string">&#x27;a&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;b&#x27;</span>: <span class="number">2</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建多个键值对</span></span><br><span class="line">In:<span class="built_in">dict</span>.fromkeys([<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;b&#x27;</span>,<span class="string">&#x27;c&#x27;</span>],<span class="number">1</span>)</span><br><span class="line">Out:&#123;<span class="string">&#x27;a&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;b&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;c&#x27;</span>: <span class="number">1</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">del</span>：删除，其实是引用计数的改变，pop也一样。</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
-<a id="more"></a>
-<p>创建：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 空字典:</span></span><br><span class="line">&#123;&#125;、<span class="built_in">dict</span>()</span><br><span class="line"><span class="comment"># 非空字典：</span></span><br><span class="line">&#123;<span class="string">&#x27;a&#x27;</span>:<span class="number">1</span>&#125;、<span class="built_in">dict</span>(a=<span class="number">1</span>,b=<span class="number">2</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 等号前面必须是`标识符`，出来会转化成字符串。1=1这种只能&#123;1:1&#125;这样写，此时1是key。</span></span><br><span class="line">In:<span class="built_in">dict</span>(a=<span class="number">1</span>,b=<span class="number">2</span>)</span><br><span class="line">Out:&#123;<span class="string">&#x27;a&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;b&#x27;</span>: <span class="number">2</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建多个键值对</span></span><br><span class="line">In:<span class="built_in">dict</span>.fromkeys([<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;b&#x27;</span>,<span class="string">&#x27;c&#x27;</span>],<span class="number">1</span>)</span><br><span class="line">Out:&#123;<span class="string">&#x27;a&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;b&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;c&#x27;</span>: <span class="number">1</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">del</span>：删除，其实是引用计数的改变，pop也一样。</span><br></pre></td></tr></table></figure>
-<p>操作：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#按key索引</span></span><br><span class="line">dict[key]-&gt;value-异常</span><br><span class="line"></span><br><span class="line"><span class="comment"># key存在就是赋值，key不存在则添加新的kv对</span></span><br><span class="line"><span class="built_in">dict</span>[key] = value</span><br><span class="line"></span><br><span class="line"><span class="comment">#获取key对应的value</span></span><br><span class="line">.get(key[,default])-&gt;value-defaul-None</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置缺省值，没有这个key才设置</span></span><br><span class="line">.setdefault(key[,default])-&gt;value-default-None</span><br><span class="line"></span><br><span class="line"><span class="comment"># 就地修改，更新</span></span><br><span class="line">.update([other])-&gt;None</span><br><span class="line"></span><br><span class="line"><span class="comment"># 有key就返回它的value并弹出kv，没有就返回default，无defaul返回异常。O(1)</span></span><br><span class="line">.pop(key[,default])-&gt;value-default-异常</span><br><span class="line"></span><br><span class="line">.popitem() <span class="comment"># 随机弹出kv，空的就报异常。   </span></span><br><span class="line">.clear() <span class="comment"># 清空。</span></span><br></pre></td></tr></table></figure>
-<h4 id="字典遍历和移除"><a class="markdownIt-Anchor" href="#字典遍历和移除"></a> 字典遍历和移除：</h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># i是key</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">dict</span>：print(i)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">dict</span>.keys(): print(i)</span><br><span class="line"></span><br><span class="line"><span class="comment"># i是key,dict[i]是value</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">dict</span>：print(<span class="built_in">dict</span>[i])</span><br><span class="line"><span class="comment"># i是value</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">dict</span>.values(): print(i)</span><br><span class="line"></span><br><span class="line"><span class="comment"># kv对在python中叫item，在java中叫entry</span></span><br><span class="line"><span class="comment"># i返回kv对组成的2元组，(key,value)</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">dict</span>.items(): print(i) </span><br><span class="line"><span class="comment"># i[0]key,i[1]value</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">dict</span>.items(): print(i[<span class="number">0</span>],i[<span class="number">1</span>])</span><br><span class="line"><span class="comment"># 解构，i,j==k,v </span></span><br><span class="line"><span class="keyword">for</span> i,j <span class="keyword">in</span> <span class="built_in">dict</span>.items(): print(i,j)</span><br><span class="line"><span class="comment"># 可多次解构</span></span><br><span class="line"><span class="keyword">for</span> k,(_,v) <span class="keyword">in</span> <span class="built_in">dict</span>.items(): print(k,v)</span><br><span class="line"></span><br><span class="line">key <span class="keyword">in</span> <span class="built_in">dict</span> <span class="comment"># 快，key是hash</span></span><br><span class="line">value <span class="keyword">in</span> <span class="built_in">dict</span>.values() <span class="comment"># 慢</span></span><br></pre></td></tr></table></figure>
+<p>操作：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#按key索引</span></span><br><span class="line">dict[key]-&gt;value-异常</span><br><span class="line"></span><br><span class="line"><span class="comment"># key存在就是赋值，key不存在则添加新的kv对</span></span><br><span class="line"><span class="built_in">dict</span>[key] = value</span><br><span class="line"></span><br><span class="line"><span class="comment">#获取key对应的value</span></span><br><span class="line">.get(key[,default])-&gt;value-defaul-None</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置缺省值，没有这个key才设置</span></span><br><span class="line">.setdefault(key[,default])-&gt;value-default-None</span><br><span class="line"></span><br><span class="line"><span class="comment"># 就地修改，更新</span></span><br><span class="line">.update([other])-&gt;None</span><br><span class="line"></span><br><span class="line"><span class="comment"># 有key就返回它的value并弹出kv，没有就返回default，无defaul返回异常。O(1)</span></span><br><span class="line">.pop(key[,default])-&gt;value-default-异常</span><br><span class="line"></span><br><span class="line">.popitem() <span class="comment"># 随机弹出kv，空的就报异常。   </span></span><br><span class="line">.clear() <span class="comment"># 清空。</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="字典遍历和移除："><a href="#字典遍历和移除：" class="headerlink" title="字典遍历和移除："></a>字典遍历和移除：</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># i是key</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">dict</span>：print(i)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">dict</span>.keys(): print(i)</span><br><span class="line"></span><br><span class="line"><span class="comment"># i是key,dict[i]是value</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">dict</span>：print(<span class="built_in">dict</span>[i])</span><br><span class="line"><span class="comment"># i是value</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">dict</span>.values(): print(i)</span><br><span class="line"></span><br><span class="line"><span class="comment"># kv对在python中叫item，在java中叫entry</span></span><br><span class="line"><span class="comment"># i返回kv对组成的2元组，(key,value)</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">dict</span>.items(): print(i) </span><br><span class="line"><span class="comment"># i[0]key,i[1]value</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">dict</span>.items(): print(i[<span class="number">0</span>],i[<span class="number">1</span>])</span><br><span class="line"><span class="comment"># 解构，i,j==k,v </span></span><br><span class="line"><span class="keyword">for</span> i,j <span class="keyword">in</span> <span class="built_in">dict</span>.items(): print(i,j)</span><br><span class="line"><span class="comment"># 可多次解构</span></span><br><span class="line"><span class="keyword">for</span> k,(_,v) <span class="keyword">in</span> <span class="built_in">dict</span>.items(): print(k,v)</span><br><span class="line"></span><br><span class="line">key <span class="keyword">in</span> <span class="built_in">dict</span> <span class="comment"># 快，key是hash</span></span><br><span class="line">value <span class="keyword">in</span> <span class="built_in">dict</span>.values() <span class="comment"># 慢</span></span><br></pre></td></tr></table></figure>
 <p>python2中，上面方法返回一个新的列表，占据新的内存空间。所以2中建议使用<code>iterkeys</code>、<code>itervalues</code>、<code>iterterms</code>返回一个迭代器，而不是一个copy。</p>
 <p>python3中，<code>keys()</code>、<code>values()</code>、<code>items()</code>（kv对的2元组）方法返回一个类似生成器的可迭代对象，不会把函数的返回结果赋值到内存中。</p>
 <ul>
@@ -379,11 +375,9 @@
 <blockquote>
 <p>注意用for边循环自己，边删除自己时，不能从头删（删除当前后面会前进，会乱掉），要从尾部删除！</p>
 </blockquote>
-<h4 id="缺省字典defaultdict"><a class="markdownIt-Anchor" href="#缺省字典defaultdict"></a> 缺省字典：defaultdict</h4>
-<p><code>collections.defaultdict([default_factory[,...]])</code>]</p>
+<h4 id="缺省字典：defaultdict"><a href="#缺省字典：defaultdict" class="headerlink" title="缺省字典：defaultdict"></a>缺省字典：defaultdict</h4><p><code>collections.defaultdict([default_factory[,...]])</code>]</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#随机生成5个kv对,value是不同个数的1~100的set。</span></span><br><span class="line">    <span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line">        d3  = defaultdict(<span class="built_in">set</span>)<span class="comment">#d3的key找不到时自动创建kv对，value用set类型，()里面填类型名。相当下面注释的2句。</span></span><br><span class="line">        <span class="keyword">for</span> k <span class="keyword">in</span> <span class="string">&quot;abcde&quot;</span>:</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(random.randint(<span class="number">1</span>,<span class="number">5</span>)):</span><br><span class="line">                <span class="comment">#if k not in d3.keys():</span></span><br><span class="line">                <span class="comment">#   d3[k] = set()</span></span><br><span class="line">                d3[k].add(random.randint(<span class="number">1</span>,<span class="number">100</span>))<span class="comment">#k是key,d[3]是value(key没有value用缺省值是set)</span></span><br></pre></td></tr></table></figure>
-<h4 id="有序字典ordereddict"><a class="markdownIt-Anchor" href="#有序字典ordereddict"></a> 有序字典：OrderedDict</h4>
-<p><code>collections.OrderedDict([items])</code></p>
+<h4 id="有序字典：OrderedDict"><a href="#有序字典：OrderedDict" class="headerlink" title="有序字典：OrderedDict"></a>有序字典：OrderedDict</h4><p><code>collections.OrderedDict([items])</code></p>
 <ul>
 <li>字典无序，可以使用OrderedDict记录插入顺序，3.6版本字典就是记录key插入顺序，但2.x版本不是。建议使用这种方式记录顺序！</li>
 </ul>
@@ -404,10 +398,10 @@
       <div class="popular-posts-title"><a href="\2019\01\12\Python\02.Python-列表、元组\" rel="bookmark">Python-列表、元组</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2019\01\13\Python\03.Python-字符串\" rel="bookmark">Python-字符串</a></div>
+      <div class="popular-posts-title"><a href="\2019\01\14\Python\04.Python-集合\" rel="bookmark">Python-集合</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2019\01\14\Python\04.Python-集合\" rel="bookmark">Python-集合</a></div>
+      <div class="popular-posts-title"><a href="\2019\01\13\Python\03.Python-字符串\" rel="bookmark">Python-字符串</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2019\01\15\Python\05.Python-封装解构、切片\" rel="bookmark">Python-切片、封装解构</a></div>
@@ -617,8 +611,50 @@ if (document.querySelectorAll('.mermaid').length) {
   
 
   
-      <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+      <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
 
+    
 
   
   <script src="//cdn.jsdelivr.net/npm/quicklink@2.0.0/dist/quicklink.umd.js"></script>

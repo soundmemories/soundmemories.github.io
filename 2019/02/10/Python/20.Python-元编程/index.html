@@ -25,12 +25,12 @@
     var CONFIG = {"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.0.2","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="元编程 元编程概念来自LISP和smalltalk。 我们写程序是直接写代码，是否能够用代码来生成未来我们需要的代码吗？这就是元编程。 用来生成代码的程序称为元程序metaprogram，编写这种程序就称为元编程metaprogramming。 Python中： （1）所有非object类都继承自object类。 （2）所有类的类型包括type类都是type。 （3）type类继承自object">
+  <meta name="description" content="元编程元编程概念来自LISP和smalltalk。我们写程序是直接写代码，是否能够用代码来生成未来我们需要的代码吗？这就是元编程。用来生成代码的程序称为元程序metaprogram，编写这种程序就称为元编程metaprogramming。 Python中：（1）所有非object类都继承自object类。（2）所有类的类型包括type类都是type。（3）type类继承自object类，objec">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python-元编程">
 <meta property="og:url" content="https://soundmemories.github.io/2019/02/10/Python/20.Python-%E5%85%83%E7%BC%96%E7%A8%8B/index.html">
 <meta property="og:site_name" content="SoundMemories">
-<meta property="og:description" content="元编程 元编程概念来自LISP和smalltalk。 我们写程序是直接写代码，是否能够用代码来生成未来我们需要的代码吗？这就是元编程。 用来生成代码的程序称为元程序metaprogram，编写这种程序就称为元编程metaprogramming。 Python中： （1）所有非object类都继承自object类。 （2）所有类的类型包括type类都是type。 （3）type类继承自object">
+<meta property="og:description" content="元编程元编程概念来自LISP和smalltalk。我们写程序是直接写代码，是否能够用代码来生成未来我们需要的代码吗？这就是元编程。用来生成代码的程序称为元程序metaprogram，编写这种程序就称为元编程metaprogramming。 Python中：（1）所有非object类都继承自object类。（2）所有类的类型包括type类都是type。（3）type类继承自object类，objec">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-02-09T16:00:00.000Z">
 <meta property="article:modified_time" content="2021-04-20T14:06:22.227Z">
@@ -214,7 +214,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%83%E7%BC%96%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text"> 元编程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#type"><span class="nav-number">2.</span> <span class="nav-text"> type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%83%E7%B1%BBmetaclass"><span class="nav-number">3.</span> <span class="nav-text"> 元类metaclass</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%83%E7%BC%96%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">元编程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#type"><span class="nav-number">2.</span> <span class="nav-text">type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%83%E7%B1%BBmetaclass"><span class="nav-number">3.</span> <span class="nav-text">元类metaclass</span></a></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -229,18 +229,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-count">85</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -355,45 +355,20 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="元编程"><a class="markdownIt-Anchor" href="#元编程"></a> 元编程</h2>
-<p>元编程概念来自LISP和smalltalk。<br />
-我们写程序是直接写代码，是否能够用代码来生成未来我们需要的代码吗？这就是元编程。<br />
-用来生成代码的程序称为元程序metaprogram，编写这种程序就称为元编程metaprogramming。</p>
-<p>Python中：<br />
-（1）所有非object类都继承自object类。<br />
-（2）所有类的类型包括type类都是type。<br />
-（3）type类继承自object类，object类的类型也是type类。</p>
+        <h2 id="元编程"><a href="#元编程" class="headerlink" title="元编程"></a>元编程</h2><p>元编程概念来自LISP和smalltalk。<br>我们写程序是直接写代码，是否能够用代码来生成未来我们需要的代码吗？这就是元编程。<br>用来生成代码的程序称为元程序metaprogram，编写这种程序就称为元编程metaprogramming。</p>
+<p>Python中：<br>（1）所有非object类都继承自object类。<br>（2）所有类的类型包括type类都是type。<br>（3）type类继承自object类，object类的类型也是type类。</p>
 <p>Python语言能够通过反射实现元编程。</p>
-<h2 id="type"><a class="markdownIt-Anchor" href="#type"></a> type</h2>
-<p>动态语言和静态语言最大的不同，就是函数和类的定义，不是编译时定义的，而是运行时动态创建的。<br />
-比方说我们要定义一个Hello的class，就写一个hello.py模块：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hello</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">hello</span>(<span class="params">self, name=<span class="string">&#x27;world&#x27;</span></span>):</span></span><br><span class="line">        print(<span class="string">&#x27;Hello, %s.&#x27;</span> % name)</span><br><span class="line"></span><br><span class="line">h = Hello()</span><br><span class="line">h.hello() <span class="comment"># Hello, world.</span></span><br><span class="line">print(<span class="built_in">type</span>(Hello)) <span class="comment">#&lt;class &#x27;type&#x27;&gt;</span></span><br><span class="line">print(<span class="built_in">type</span>(h)) <span class="comment">#&lt;class &#x27;hello.Hello&#x27;&gt;</span></span><br></pre></td></tr></table></figure>
-<p>当Python解释器载入hello模块时，就会依次执行该模块的所有语句，执行结果就是动态创建出一个Hello的class对象。</p>
+<h2 id="type"><a href="#type" class="headerlink" title="type"></a>type</h2><p>动态语言和静态语言最大的不同，就是函数和类的定义，不是编译时定义的，而是运行时动态创建的。<br>比方说我们要定义一个Hello的class，就写一个hello.py模块：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hello</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">hello</span>(<span class="params">self, name=<span class="string">&#x27;world&#x27;</span></span>):</span></span><br><span class="line">        print(<span class="string">&#x27;Hello, %s.&#x27;</span> % name)</span><br><span class="line"></span><br><span class="line">h = Hello()</span><br><span class="line">h.hello() <span class="comment"># Hello, world.</span></span><br><span class="line">print(<span class="built_in">type</span>(Hello)) <span class="comment">#&lt;class &#x27;type&#x27;&gt;</span></span><br><span class="line">print(<span class="built_in">type</span>(h)) <span class="comment">#&lt;class &#x27;hello.Hello&#x27;&gt;</span></span><br></pre></td></tr></table></figure><br>当Python解释器载入hello模块时，就会依次执行该模块的所有语句，执行结果就是动态创建出一个Hello的class对象。</p>
 <p>type()函数可以查看一个类型或变量的类型，Hello是一个class，它的类型就是type，而h是一个实例，它的类型就是class Hello。</p>
 <p><strong>class的定义是运行时动态创建的，而创建class的方法就是使用type()函数。</strong></p>
-<p>type()函数既可以返回一个对象的类型，又可以创建出新的类型，比如，我们可以通过type()函数创建出Hello类，而无需通过class Hello(object)…的定义：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fn</span>(<span class="params">self, name=<span class="string">&#x27;world&#x27;</span></span>):</span> <span class="comment"># 先定义函数</span></span><br><span class="line">      print(<span class="string">&#x27;Hello, %s.&#x27;</span> % name)</span><br><span class="line"></span><br><span class="line">Hello = <span class="built_in">type</span>(<span class="string">&#x27;Hello&#x27;</span>, (<span class="built_in">object</span>,), <span class="built_in">dict</span>(hello=fn)) <span class="comment"># 创建Hello class</span></span><br><span class="line">h = Hello()</span><br><span class="line">h.hello()<span class="comment"># Hello, world.</span></span><br><span class="line">print(<span class="built_in">type</span>(Hello)) <span class="comment">#&lt;class &#x27;type&#x27;&gt;</span></span><br><span class="line">print(<span class="built_in">type</span>(h)) <span class="comment">#&lt;class &#x27;__main__.Hello&#x27;&gt;</span></span><br></pre></td></tr></table></figure>
-<p><code>type(name, bases, dict)</code>：返回一个name类。name为class的名称，bases为继承的父类集合（注意Python支持多重继承，如果只有一个父类，别忘了tuple的单元素写法），dict为class的方法名与函数绑定。</p>
+<p>type()函数既可以返回一个对象的类型，又可以创建出新的类型，比如，我们可以通过type()函数创建出Hello类，而无需通过class Hello(object)…的定义：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fn</span>(<span class="params">self, name=<span class="string">&#x27;world&#x27;</span></span>):</span> <span class="comment"># 先定义函数</span></span><br><span class="line">      print(<span class="string">&#x27;Hello, %s.&#x27;</span> % name)</span><br><span class="line"></span><br><span class="line">Hello = <span class="built_in">type</span>(<span class="string">&#x27;Hello&#x27;</span>, (<span class="built_in">object</span>,), <span class="built_in">dict</span>(hello=fn)) <span class="comment"># 创建Hello class</span></span><br><span class="line">h = Hello()</span><br><span class="line">h.hello()<span class="comment"># Hello, world.</span></span><br><span class="line">print(<span class="built_in">type</span>(Hello)) <span class="comment">#&lt;class &#x27;type&#x27;&gt;</span></span><br><span class="line">print(<span class="built_in">type</span>(h)) <span class="comment">#&lt;class &#x27;__main__.Hello&#x27;&gt;</span></span><br></pre></td></tr></table></figure><br><code>type(name, bases, dict)</code>：返回一个name类。name为class的名称，bases为继承的父类集合（注意Python支持多重继承，如果只有一个父类，别忘了tuple的单元素写法），dict为class的方法名与函数绑定。</p>
 <p>通过type()函数创建的类和直接写class是完全一样的，因为Python解释器遇到class定义时，仅仅是扫描一下class定义的语法，然后调用type()函数创建出class。</p>
 <p>正常情况下，我们都用class Xxx…来定义类，但是，type()函数也允许我们动态创建出类来，也就是说，动态语言本身支持运行期动态创建类，这和静态语言有非常大的不同，要在静态语言运行期创建类，必须构造源代码字符串再调用编译器，或者借助一些工具生成字节码实现，本质上都是动态编译，会非常复杂，比如Java的反射。</p>
-<h2 id="元类metaclass"><a class="markdownIt-Anchor" href="#元类metaclass"></a> 元类metaclass</h2>
-<p>除了使用type()动态创建类以外，要控制类的创建行为，还可以使用metaclass元类。</p>
-<p>当我们定义了类以后，就可以根据这个类创建出实例，若是想用类创建类呢？那就必须用元类。<br />
-换句话说，你可以把类，看成是元类创建出来的“实例”。</p>
-<p>比如用元类，创建一个MyList类（继承了list类），MyList类中新增一个add()方法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ListMetaclass是元类（类的模板），所以必须从`type`类型派生：</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ListMetaclass</span>(<span class="params"><span class="built_in">type</span></span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span>(<span class="params">cls, name, bases, attrs</span>):</span></span><br><span class="line">        attrs[<span class="string">&#x27;add&#x27;</span>] = <span class="keyword">lambda</span> self, value: self.append(value)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">type</span>.__new__(cls, name, bases, attrs)</span><br></pre></td></tr></table></figure>
-<p>有了ListMetaclass这个元类，在定义MyList类的时候还要指示使用ListMetaclass来定制类，传入关键字参数metaclass：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyList</span>(<span class="params"><span class="built_in">list</span>, metaclass=ListMetaclass</span>):</span><span class="comment">#metaclass是关键字参数</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">L = MyList()</span><br><span class="line">L.add(<span class="number">1</span>)</span><br><span class="line">print(L) <span class="comment">#[1]</span></span><br></pre></td></tr></table></figure>
-<p>当传入关键字参数metaclass时，魔术就生效了，它指示Python解释器在创建MyList时，要通过ListMetaclass.__new__()来创建，在__new__()魔术方法中，可以修改类的定义、加上新的方法等，然后，返回修改后的定义。</p>
-<p>__new__()方法接收到的参数依次是：<br />
-（1）当前准备创建的类的对象。<br />
-（2）类的名字。<br />
-（3）类继承的父类集合。<br />
-（4）类的方法集合。</p>
-<p>而且元类是可以被继承的：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyList2</span>(<span class="params">MyList</span>):</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">L = MyList2()</span><br><span class="line">L.add(<span class="number">2</span>)</span><br><span class="line">print(L) <span class="comment">#[2]</span></span><br></pre></td></tr></table></figure>
-<p>元编程一般用于框架开发中。<br />
-Django、SQLAlchemy使用了元类，让我们使用起来很方便。</p>
+<h2 id="元类metaclass"><a href="#元类metaclass" class="headerlink" title="元类metaclass"></a>元类metaclass</h2><p>除了使用type()动态创建类以外，要控制类的创建行为，还可以使用metaclass元类。</p>
+<p>当我们定义了类以后，就可以根据这个类创建出实例，若是想用类创建类呢？那就必须用元类。<br>换句话说，你可以把类，看成是元类创建出来的“实例”。</p>
+<p>比如用元类，创建一个MyList类（继承了list类），MyList类中新增一个add()方法：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ListMetaclass是元类（类的模板），所以必须从`type`类型派生：</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ListMetaclass</span>(<span class="params"><span class="built_in">type</span></span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span>(<span class="params">cls, name, bases, attrs</span>):</span></span><br><span class="line">        attrs[<span class="string">&#x27;add&#x27;</span>] = <span class="keyword">lambda</span> self, value: self.append(value)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">type</span>.__new__(cls, name, bases, attrs)</span><br></pre></td></tr></table></figure><br>有了ListMetaclass这个元类，在定义MyList类的时候还要指示使用ListMetaclass来定制类，传入关键字参数metaclass：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyList</span>(<span class="params"><span class="built_in">list</span>, metaclass=ListMetaclass</span>):</span><span class="comment">#metaclass是关键字参数</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">L = MyList()</span><br><span class="line">L.add(<span class="number">1</span>)</span><br><span class="line">print(L) <span class="comment">#[1]</span></span><br></pre></td></tr></table></figure><br>当传入关键字参数metaclass时，魔术就生效了，它指示Python解释器在创建MyList时，要通过ListMetaclass.__new__()来创建，在__new__()魔术方法中，可以修改类的定义、加上新的方法等，然后，返回修改后的定义。</p>
+<p>__new__()方法接收到的参数依次是：<br>（1）当前准备创建的类的对象。<br>（2）类的名字。<br>（3）类继承的父类集合。<br>（4）类的方法集合。</p>
+<p>而且元类是可以被继承的：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyList2</span>(<span class="params">MyList</span>):</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">L = MyList2()</span><br><span class="line">L.add(<span class="number">2</span>)</span><br><span class="line">print(L) <span class="comment">#[2]</span></span><br></pre></td></tr></table></figure><br>元编程一般用于框架开发中。<br>Django、SQLAlchemy使用了元类，让我们使用起来很方便。</p>
 <p>元类是Python中非常具有魔术性的对象，它可以改变类创建时的行为。这种强大的功能使用起来务必小心。</p>
 
     </div>
@@ -411,10 +386,10 @@ Django、SQLAlchemy使用了元类，让我们使用起来很方便。</p>
       <div class="popular-posts-title"><a href="\2019\01\12\Python\02.Python-列表、元组\" rel="bookmark">Python-列表、元组</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2019\01\13\Python\03.Python-字符串\" rel="bookmark">Python-字符串</a></div>
+      <div class="popular-posts-title"><a href="\2019\01\14\Python\04.Python-集合\" rel="bookmark">Python-集合</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2019\01\14\Python\04.Python-集合\" rel="bookmark">Python-集合</a></div>
+      <div class="popular-posts-title"><a href="\2019\01\13\Python\03.Python-字符串\" rel="bookmark">Python-字符串</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2019\01\15\Python\05.Python-封装解构、切片\" rel="bookmark">Python-切片、封装解构</a></div>
@@ -624,8 +599,50 @@ if (document.querySelectorAll('.mermaid').length) {
   
 
   
-      <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+      <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
 
+    
 
   
   <script src="//cdn.jsdelivr.net/npm/quicklink@2.0.0/dist/quicklink.umd.js"></script>

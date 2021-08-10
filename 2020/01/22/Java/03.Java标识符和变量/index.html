@@ -25,12 +25,12 @@
     var CONFIG = {"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.0.2","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="标识符  标识符的命名规则（必须遵守，否则编译或运行错误）  Java的标识符必须用26个英文字母的大小写、数字0-9，美元符号$，下划线_。 Java的标识符不能使用关键字（包含保留字）和特殊值。 不能用的有50个关键字+3个特殊值。 不能使用空格。 数字不能开头。 Java的标识符严格区分大小写。">
+  <meta name="description" content="标识符 标识符的命名规则（必须遵守，否则编译或运行错误） Java的标识符必须用26个英文字母的大小写、数字0-9，美元符号$，下划线_。 Java的标识符不能使用关键字（包含保留字）和特殊值。 不能用的有50个关键字+3个特殊值。 不能使用空格。 数字不能开头。 Java的标识符严格区分大小写。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java标识符和变量">
 <meta property="og:url" content="https://soundmemories.github.io/2020/01/22/Java/03.Java%E6%A0%87%E8%AF%86%E7%AC%A6%E5%92%8C%E5%8F%98%E9%87%8F/index.html">
 <meta property="og:site_name" content="SoundMemories">
-<meta property="og:description" content="标识符  标识符的命名规则（必须遵守，否则编译或运行错误）  Java的标识符必须用26个英文字母的大小写、数字0-9，美元符号$，下划线_。 Java的标识符不能使用关键字（包含保留字）和特殊值。 不能用的有50个关键字+3个特殊值。 不能使用空格。 数字不能开头。 Java的标识符严格区分大小写。">
+<meta property="og:description" content="标识符 标识符的命名规则（必须遵守，否则编译或运行错误） Java的标识符必须用26个英文字母的大小写、数字0-9，美元符号$，下划线_。 Java的标识符不能使用关键字（包含保留字）和特殊值。 不能用的有50个关键字+3个特殊值。 不能使用空格。 数字不能开头。 Java的标识符严格区分大小写。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-01-21T16:00:00.000Z">
 <meta property="article:modified_time" content="2021-01-30T09:23:40.252Z">
@@ -214,7 +214,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%87%E8%AF%86%E7%AC%A6"><span class="nav-number">1.</span> <span class="nav-text"> 标识符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%98%E9%87%8F"><span class="nav-number">2.</span> <span class="nav-text"> 变量</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%87%E8%AF%86%E7%AC%A6"><span class="nav-number">1.</span> <span class="nav-text">标识符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%98%E9%87%8F"><span class="nav-number">2.</span> <span class="nav-text">变量</span></a></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -229,18 +229,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-count">85</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -355,23 +355,17 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="标识符"><a class="markdownIt-Anchor" href="#标识符"></a> 标识符</h2>
-<ul>
-<li>标识符的命名规则（必须遵守，否则编译或运行错误）
-<ul>
+        <h2 id="标识符"><a href="#标识符" class="headerlink" title="标识符"></a>标识符</h2><ul>
+<li>标识符的命名规则（必须遵守，否则编译或运行错误）<ul>
 <li>Java的标识符必须用26个英文字母的大小写、数字0-9，美元符号$，下划线_。</li>
 <li>Java的标识符不能使用关键字（包含保留字）和特殊值。</li>
 <li>不能用的有50个关键字+3个特殊值。</li>
 <li>不能使用空格。</li>
 <li>数字不能开头。</li>
-<li>Java的标识符严格区分大小写。</li>
+<li>Java的标识符严格区分大小写。<a id="more"></a></li>
 </ul>
 </li>
-</ul>
-<a id="more"></a>
-<ul>
-<li>标识符的命名规范（建议遵守，不遵守会被鄙视）
-<ul>
+<li>标识符的命名规范（建议遵守，不遵守会被鄙视）<ul>
 <li>见名知意：别人一看就知道这个类、变量、方法的意义在哪里。</li>
 <li>类名、接口名等：要求每一个单词的首字母大写。</li>
 <li>变量名、方法名等：要求从第二个单词开始，首字母大写，其余字母小写。</li>
@@ -380,43 +374,34 @@
 </ul>
 </li>
 </ul>
-<h2 id="变量"><a class="markdownIt-Anchor" href="#变量"></a> 变量</h2>
-<p>作用：用来存储值（数据）。<br />
-在Java中，变量本质上，就是代表一块内存区域。<br />
-变量中的数据是存储在JVM内存中。</p>
+<h2 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h2><p>作用：用来存储值（数据）。<br>在Java中，变量本质上，就是代表一块内存区域。<br>变量中的数据是存储在JVM内存中。</p>
 <ul>
-<li>变量有三个要素：
-<ul>
-<li>数据类型：字符串、小数、整数、单个字符、布尔值、对象…等。</li>
+<li>变量有三个要素：<ul>
+<li>数据类型：字符串、小数、整数、单个字符、布尔值、对象..等。</li>
 <li>变量名：在程序中，通过变量名来进行访问这块内存及其里面的数据。</li>
 <li>值：变量中存的具体的值，这个值是可以变的。</li>
 </ul>
 </li>
 </ul>
 <figure class="highlight java"><figcaption><span>TestVariable.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestVariable</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">		<span class="comment">//想要用一个变量，来存储年龄</span></span><br><span class="line">		<span class="comment">//int就是数据类型</span></span><br><span class="line">		<span class="comment">//age就是变量名</span></span><br><span class="line">		<span class="comment">//18就是变量的值</span></span><br><span class="line">		<span class="keyword">int</span> age = <span class="number">18</span>;</span><br><span class="line">		System.out.println(age);</span><br><span class="line">		</span><br><span class="line">		age = age + <span class="number">1</span>;</span><br><span class="line">		</span><br><span class="line">		System.out.println(age);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Define：定义，声明。<br />
-Use：使用。<br />
-Variable：变量。</p>
+<p>Define：定义，声明。<br>Use：使用。<br>Variable：变量。</p>
 <ul>
-<li>变量使用的原则：
-<ul>
+<li>变量使用的原则：<ul>
 <li>先声明后使用，包括后面用到的类、方法等，都是遵循先声明后使用。</li>
 <li>变量必须先初始化（第一次赋值）后再访问它的值（打印、计算、比较操作）。</li>
 <li>变量的声明，在同一个作用域中，只能声明一次，但是赋值可以很多次。作用域：从变量声明处开始，到它所属的{}结束。</li>
 </ul>
 </li>
-<li>变量如何声明？
-<ul>
+<li>变量如何声明？<ul>
 <li>格式：数据类型 变量名;</li>
 </ul>
 </li>
-<li>变量如何赋值？
-<ul>
-<li>格式：变量名 = 变量值;</li>
+<li>变量如何赋值？<ul>
+<li>格式：变量名 = 变量值;<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DefineAndUseVariable</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">		<span class="comment">//int age;//声明</span></span><br><span class="line">		<span class="comment">//age = 18;//赋值</span></span><br><span class="line">		</span><br><span class="line">		<span class="comment">//也可以把声明和第一次赋值合并成一句</span></span><br><span class="line">		<span class="keyword">int</span> age = <span class="number">18</span>;</span><br><span class="line">		<span class="comment">//int age = 19;//错误的，第二次赋值不用再加数据类型</span></span><br><span class="line">		age = <span class="number">19</span>;<span class="comment">//第二次赋值</span></span><br><span class="line">		System.out.println(age);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">			<span class="keyword">int</span> num = <span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//System.out.println(num);//错误的，出了num的作用域</span></span><br><span class="line">		</span><br><span class="line">		String name = <span class="string">&quot;Memories&quot;</span>;<span class="comment">//字符串的常量必须用&quot;&quot;（双引号）</span></span><br><span class="line">		<span class="keyword">char</span> gender = <span class="string">&#x27;男&#x27;</span>;<span class="comment">//单字符的常量，必须用&#x27;&#x27;（单引号）</span></span><br><span class="line">		<span class="keyword">double</span> weight = <span class="number">50</span>;<span class="comment">//小数类型</span></span><br><span class="line">		<span class="keyword">boolean</span> marry = <span class="keyword">true</span>;<span class="comment">//布尔类型    true真的，成立；false假的，，不成立</span></span><br><span class="line">		</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
 </li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DefineAndUseVariable</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">		<span class="comment">//int age;//声明</span></span><br><span class="line">		<span class="comment">//age = 18;//赋值</span></span><br><span class="line">		</span><br><span class="line">		<span class="comment">//也可以把声明和第一次赋值合并成一句</span></span><br><span class="line">		<span class="keyword">int</span> age = <span class="number">18</span>;</span><br><span class="line">		<span class="comment">//int age = 19;//错误的，第二次赋值不用再加数据类型</span></span><br><span class="line">		age = <span class="number">19</span>;<span class="comment">//第二次赋值</span></span><br><span class="line">		System.out.println(age);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">			<span class="keyword">int</span> num = <span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//System.out.println(num);//错误的，出了num的作用域</span></span><br><span class="line">		</span><br><span class="line">		String name = <span class="string">&quot;Memories&quot;</span>;<span class="comment">//字符串的常量必须用&quot;&quot;（双引号）</span></span><br><span class="line">		<span class="keyword">char</span> gender = <span class="string">&#x27;男&#x27;</span>;<span class="comment">//单字符的常量，必须用&#x27;&#x27;（单引号）</span></span><br><span class="line">		<span class="keyword">double</span> weight = <span class="number">50</span>;<span class="comment">//小数类型</span></span><br><span class="line">		<span class="keyword">boolean</span> marry = <span class="keyword">true</span>;<span class="comment">//布尔类型    true真的，成立；false假的，，不成立</span></span><br><span class="line">		</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
     </div>
 
     
@@ -432,13 +417,13 @@ Variable：变量。</p>
       <div class="popular-posts-title"><a href="\2020\01\21\Java\02.第一个Java程序\" rel="bookmark">第一个Java程序</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\01\25\Java\06.Java算术运算符\" rel="bookmark">Java算术运算符</a></div>
+      <div class="popular-posts-title"><a href="\2020\01\23\Java\04.Java数据类型、进制和补码\" rel="bookmark">Java数据类型、进制和补码</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2020\01\24\Java\05.Java类型转换\" rel="bookmark">Java类型转换</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\01\23\Java\04.Java数据类型、进制和补码\" rel="bookmark">Java数据类型、进制和补码</a></div>
+      <div class="popular-posts-title"><a href="\2020\01\25\Java\06.Java算术运算符\" rel="bookmark">Java算术运算符</a></div>
     </li>
   </ul>
 
@@ -645,8 +630,50 @@ if (document.querySelectorAll('.mermaid').length) {
   
 
   
-      <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+      <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
 
+    
 
   
   <script src="//cdn.jsdelivr.net/npm/quicklink@2.0.0/dist/quicklink.umd.js"></script>
