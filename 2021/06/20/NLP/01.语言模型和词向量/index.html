@@ -25,12 +25,12 @@
     var CONFIG = {"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.0.2","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="语言模型模型指的是对事物的数学抽象，那么语言模型指的就是对语言现象的数学抽象。准确的讲，给定一个句子 $w$ ，语言模型就是计算句子的出现概率 $p(w)$ 的模型，而统计的对象就是人工标注而成的语料库。 假设构建如下的小型语料库：123商品 和 服务商品 和服 物美价廉服务 和 货币每个句子出现的概率都是 $\footnotesize\dfrac{1}{3}$，因为样本空间为 3 ，这 3 次基">
+  <meta name="description" content="语言模型模型指的是对事物的数学抽象，那么语言模型指的就是对语言现象的数学抽象。准确的讲，给定一个句子 $w$ ，语言模型就是计算句子的出现概率 $p(w)$ 的模型，而统计的对象就是人工标注而成的语料库。 假设构建如下的小型语料库：123商品 和 服务商品 和服 物美价廉服务 和 货币每个句子出现的概率都是 $\dfrac{1}{3}$，因为样本空间为 3 ，这 3 次基数平均分给了 3 个句子，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="语言模型和词向量">
 <meta property="og:url" content="https://soundmemories.github.io/2021/06/20/NLP/01.%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E5%92%8C%E8%AF%8D%E5%90%91%E9%87%8F/index.html">
 <meta property="og:site_name" content="SoundMemories">
-<meta property="og:description" content="语言模型模型指的是对事物的数学抽象，那么语言模型指的就是对语言现象的数学抽象。准确的讲，给定一个句子 $w$ ，语言模型就是计算句子的出现概率 $p(w)$ 的模型，而统计的对象就是人工标注而成的语料库。 假设构建如下的小型语料库：123商品 和 服务商品 和服 物美价廉服务 和 货币每个句子出现的概率都是 $\footnotesize\dfrac{1}{3}$，因为样本空间为 3 ，这 3 次基">
+<meta property="og:description" content="语言模型模型指的是对事物的数学抽象，那么语言模型指的就是对语言现象的数学抽象。准确的讲，给定一个句子 $w$ ，语言模型就是计算句子的出现概率 $p(w)$ 的模型，而统计的对象就是人工标注而成的语料库。 假设构建如下的小型语料库：123商品 和 服务商品 和服 物美价廉服务 和 货币每个句子出现的概率都是 $\dfrac{1}{3}$，因为样本空间为 3 ，这 3 次基数平均分给了 3 个句子，">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://soundmemories.github.io/images/语言模型和词向量/CBOW和Skip-gram.png">
 <meta property="og:image" content="https://soundmemories.github.io/images/语言模型和词向量/one-word.png">
@@ -43,7 +43,7 @@
 <meta property="og:image" content="https://soundmemories.github.io/images/语言模型和词向量/good_embedding2.png">
 <meta property="og:image" content="https://soundmemories.github.io/images/语言模型和词向量/sigmoid.png">
 <meta property="article:published_time" content="2021-06-19T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-07-20T02:40:18.772Z">
+<meta property="article:modified_time" content="2021-08-17T07:28:33.120Z">
 <meta property="article:author" content="SoundMemories">
 <meta property="article:tag" content="NLP">
 <meta name="twitter:card" content="summary">
@@ -240,7 +240,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">85</span>
+          <span class="site-state-item-count">109</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -348,14 +348,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>6.7k</span>
+      <span>5.7k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>6 分钟</span>
+      <span>5 分钟</span>
     </span>
 </div>
 
@@ -367,8 +367,8 @@
     
     <div class="post-body" itemprop="articleBody">
         <h1 id="语言模型"><a href="#语言模型" class="headerlink" title="语言模型"></a>语言模型</h1><p><strong>模型</strong>指的是对事物的数学抽象，那么<strong>语言模型</strong>指的就是对语言现象的数学抽象。准确的讲，给定一个句子 $w$ ，语言模型就是计算句子的出现概率 $p(w)$ 的模型，而统计的对象就是人工标注而成的语料库。</p>
-<p>假设构建如下的小型语料库：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">商品 和 服务</span><br><span class="line">商品 和服 物美价廉</span><br><span class="line">服务 和 货币</span><br></pre></td></tr></table></figure><br>每个句子出现的概率都是 $\footnotesize\dfrac{1}{3}$，因为样本空间为 3 ，这 3 次基数平均分给了 3 个句子，所以它们的概率都为$\footnotesize\dfrac{1}{3}$，既然它们的概率之和为 1 ，那么其他句子的概率自然为 0 了，这就是语言模型。然而 $p(w)$ 的计算非常难：句子数量无穷无尽，无法枚举。即便是大型语料库，也只能“枚举”有限的数百万个句子。实际遇到的句子大部分都在语料库之外，意味着它们的概率都被当作 0，这种现象被称为<strong>数据稀疏</strong>。枚举不可行，我们需要一种可计算的、更合理的概率估计方法。</p>
-<p>考虑到句子由单词构成，句子无限，单词有限。于是我们从单词构成句子的角度出发去建模句子，把句子表示为单词列表 $\textbf{w}=w_1w_2…w_k$，每个 $w_t,\footnotesize t\in[1,k]$都是一个单词，然后定义<strong>语言模型</strong>：</p>
+<p>假设构建如下的小型语料库：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">商品 和 服务</span><br><span class="line">商品 和服 物美价廉</span><br><span class="line">服务 和 货币</span><br></pre></td></tr></table></figure><br>每个句子出现的概率都是 $\dfrac{1}{3}$，因为样本空间为 3 ，这 3 次基数平均分给了 3 个句子，所以它们的概率都为$\dfrac{1}{3}$，既然它们的概率之和为 1 ，那么其他句子的概率自然为 0 了，这就是语言模型。然而 $p(w)$ 的计算非常难：句子数量无穷无尽，无法枚举。即便是大型语料库，也只能“枚举”有限的数百万个句子。实际遇到的句子大部分都在语料库之外，意味着它们的概率都被当作 0，这种现象被称为<strong>数据稀疏</strong>。枚举不可行，我们需要一种可计算的、更合理的概率估计方法。</p>
+<p>考虑到句子由单词构成，句子无限，单词有限。于是我们从单词构成句子的角度出发去建模句子，把句子表示为单词列表 $\textbf{w}=w_1w_2…w_k$，每个 $w_t, t\in[1,k]$都是一个单词，然后定义<strong>语言模型</strong>：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
 p(\textbf{w})&=p(w_1w_2...w_k)\\&=p(w_1|w_0)\times p(w_2|w_0w_1)\times...\times p(w_{k+1}|w_0w_1...w_k)\\&=
@@ -378,7 +378,7 @@ p(\textbf{w})&=p(w_1w_2...w_k)\\&=p(w_1|w_0)\times p(w_2|w_0w_1)\times...\times 
 \begin{aligned}
 p(w_{t}|w_0w_1...w_{t-1})=p_{MLE}(w_{t}|w_0w_1...w_{t-1})=\dfrac{c(w_0...w_t)}{c(w_0...w_{t-1})}
 \end{aligned}</script><p>其中，$c(w_0…w_t)$表示$w_0…w_t$的计数。</p>
-<p>以上面小型语料库为例，计算$p(\textnormal{\footnotesize商品 和 服务})$出现的概率？<br>（1）$p(\textnormal{\footnotesize商品|BOS}) =\frac{2}{3}$（“商品”作为第一个词出现的次数为2，所有单词作为第一个词出现的次数为3）；<br>（2）$p(\textnormal{\footnotesize和|BOS 商品}) =\frac{1}{2}$（“BOS 商品 和”出现的次数为1，“BOS 商品”出现的次数为2）；<br>（3）$p(\textnormal{\footnotesize 服务|BOS 商品 和}) =\frac{1}{1}$（“BOS 商品 和 服务”出现的次数为1，“BOS 商品 和”出现的次数为1）；<br>（4）$p(\textnormal{\footnotesize EOS|BOS 商品 和 服务}) =\frac{1}{1}$（“BOS 商品 和 服务 EOS”出现的次数为1，“BOS 商品 和 服务”出现的次数为1）；<br>整个句子的概率是4者乘积：$p(\textnormal{\footnotesize商品 和 服务})=\frac{2}{3}\times \frac{1}{2}\times \frac{1}{1}\times \frac{1}{1}=\frac{1}{3}$。</p>
+<p>以上面小型语料库为例，计算$p(商品 和 服务)$出现的概率？<br>（1）$p(商品|BOS) =\frac{2}{3}$（“商品”作为第一个词出现的次数为2，所有单词作为第一个词出现的次数为3）；<br>（2）$p(和|BOS 商品) =\frac{1}{2}$（“BOS 商品 和”出现的次数为1，“BOS 商品”出现的次数为2）；<br>（3）$p(服务|BOS 商品 和) =\frac{1}{1}$（“BOS 商品 和 服务”出现的次数为1，“BOS 商品 和”出现的次数为1）；<br>（4）$p(EOS|BOS 商品 和 服务) =\frac{1}{1}$（“BOS 商品 和 服务 EOS”出现的次数为1，“BOS 商品 和 服务”出现的次数为1）；<br>整个句子的概率是4者乘积：$p(商品 和 服务)=\frac{2}{3}\times \frac{1}{2}\times \frac{1}{1}\times \frac{1}{1}=\frac{1}{3}$。</p>
 <p>但是随着句子长度增大，语言模型会遇到如下问题：<br>（1）<strong>数据稀疏</strong>。指长度越大的句子越难出现，语料库中极有可能统计不到长句子的频次，导致$p(w_{t}|w_0w_1…w_{t-1})$为0。<br>（2）<strong>计算代价大</strong>。t越大，需要存储的$p(w_{t}|w_0w_1…w_{t-1})$就越多。</p>
 <h2 id="n元语法"><a href="#n元语法" class="headerlink" title="n元语法"></a>n元语法</h2><p>为了解决上面两个问题，使用<strong>马尔可夫假设</strong>（Markov Assumption）来简化语言模型：给定时间线上有一串事件顺序发生，假设每个事件的发生概率只取决于前一个事件，那么这串事件构成的因果链被称作<strong>马尔可夫链</strong>。</p>
 <p>在语言模型中，第t个事件指的是$w_t$作为第t个单词出现。也就是说，马尔科夫链假设每个单词出现的概率只取决于前一个单词：</p>
@@ -395,65 +395,66 @@ p(\textbf{w})&=p(w_1w_2...w_k)\\&=p(w_1|w_0)\times p(w_2|w_1)\times...\times p(w
 \begin{aligned}
 p(\textbf{w})=\prod\limits_{t=1}^{k+n-1}p(w_{t}|w_{t-(n-1)}...w_{t-1})
 \end{aligned}</script><p>当$\text{n=1}$时（即出现在第t位的词$w_t$独立于历史时），称为<strong>一元语法</strong>（uni-gram）；当$\text{n=2}$时（即出现在第t位的词$w_t$仅与它前面的一个历史词$w_{t-1}$有关），称为<strong>二元语法</strong>（bi-gram），也叫<strong>一阶马尔科夫链</strong>；当$\text{n=3}$时（即出现在第t位的词$w_t$仅与它前面的两个历史词$w_{t-1}w_{t-2}$有关），称为<strong>三元语法</strong>（tri-gram），也叫<strong>二阶马尔科夫链</strong>。当$n\geqslant 4$时数据稀疏和计算代价又变的显著了，实际工程中几乎不使用。另外，深度学习带了一种递归神经网络语言模型（RNN Language Model），理论上可以记忆无限个单词，可以看作“无穷元语法”（∞-gram）。</p>
-<p>以<strong>二元语法</strong>（bi-gram）为例，计算$p(\textnormal{\footnotesize商品 和 服务})$出现的概率？<br>（1）$p(\textnormal{\footnotesize商品|BOS}) =\frac{2}{3}$；<br>（2）$p(\textnormal{\footnotesize和|商品}) =\frac{1}{2}$；<br>（3）$p(\textnormal{\footnotesize 服务|和}) =\frac{1}{2}$；<br>（4）$p(\textnormal{\footnotesize EOS|服务}) =\frac{1}{1}$；<br>整个句子的概率是4者乘积：$p(\textnormal{\footnotesize商品 和 服务})=\frac{2}{3}\times \frac{1}{2}\times \frac{1}{2}\times \frac{1}{1}=\frac{1}{6}$。</p>
-<p>这次的概率比上次的$\footnotesize\dfrac{1}{3}$要小一半，剩下的概率到哪里去了呢？来算算语料库之外的新句子$p(\textnormal{\footnotesize商品 和 货币})$就知道了：<br>（1）$p(\textnormal{\footnotesize商品|BOS}) =\frac{2}{3}$；<br>（2）$p(\textnormal{\footnotesize和|商品}) =\frac{1}{2}$；<br>（3）$p(\textnormal{\footnotesize 货币|和}) =\frac{1}{2}$；<br>（4）$p(\textnormal{\footnotesize EOS|货币}) =\frac{1}{1}$；<br>整个句子的概率是4者乘积：$p(\textnormal{\footnotesize商品 和 货币})=\frac{2}{3}\times \frac{1}{2}\times \frac{1}{2}\times \frac{1}{1}=\frac{1}{6}$。<br>原来剩下的$\footnotesize\dfrac{1}{6}$分配给了语料库之外的句子，它们的概率终于不是0了，这样就缓解了一部分数据稀疏的问题。</p>
+<p>以<strong>二元语法</strong>（bi-gram）为例，计算$p(商品 和 服务)$出现的概率？<br>（1）$p(商品|BOS) =\frac{2}{3}$；<br>（2）$p(和|商品) =\frac{1}{2}$；<br>（3）$p(服务|和) =\frac{1}{2}$；<br>（4）$p(EOS|服务) =\frac{1}{1}$；<br>整个句子的概率是4者乘积：$p(商品 和 服务)=\frac{2}{3}\times \frac{1}{2}\times \frac{1}{2}\times \frac{1}{1}=\frac{1}{6}$。</p>
+<p>这次的概率比上次的$\dfrac{1}{3}$要小一半，剩下的概率到哪里去了呢？来算算语料库之外的新句子$p(商品 和 货币)$就知道了：<br>（1）$p(商品|BOS) =\frac{2}{3}$；<br>（2）$p(和|商品) =\frac{1}{2}$；<br>（3）$p(货币|和) =\frac{1}{2}$；<br>（4）$p(EOS|货币) =\frac{1}{1}$；<br>整个句子的概率是4者乘积：$p(商品 和 货币)=\frac{2}{3}\times \frac{1}{2}\times \frac{1}{2}\times \frac{1}{1}=\frac{1}{6}$。<br>原来剩下的$\dfrac{1}{6}$分配给了语料库之外的句子，它们的概率终于不是0了，这样就缓解了一部分数据稀疏的问题。</p>
 <h2 id="模型评估：困惑度"><a href="#模型评估：困惑度" class="headerlink" title="模型评估：困惑度"></a>模型评估：困惑度</h2><p>在理想情况下，对两个语言模型A，B进行评估，选定一个特定的任务比如拼写纠错系统，把两个模型A，B都应用在此任务中，最后比较准确率，从而判断A，B的表现。这种评估方法是以应用为中心的度量方法，通过在下游任务中的性能来进行评估。那有没有更简单的评估方法？不需要放在特定的任务中验证？——————<strong>困惑度</strong>（Perplexity）。</p>
 <p><strong>困惑度</strong>（Perplexity）是一种信息论测度，用来测量一个概率模型预测样本的好坏，困惑度越低越好。给定一个包含k个词的文本预料$\textbf{w}=w_1w_2…w_k$，和一个基于历史行为的语言模型，其预测结果为$p(\textbf{w})$，则这个语言模型在这个语料的困惑度是：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-pp(\textbf{w})=2^{-\footnotesize\dfrac{1}{k}\log p(\textbf{w})}
-\end{aligned}</script><p>以二元语法（bi-gram）为例，此时困惑度可以表示为：</p>
+pp(\textbf{w})=2^{-\dfrac{1}{k}\log p(\textbf{w})}
+\end{aligned}</script><p>以二元语法（bi-gram）为例，使用平均交叉熵，此时困惑度可以表示为：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-pp(\textbf{w})&=2^{-\footnotesize\dfrac{1}{k}\log p(\textbf{w})}\\&=2^{-\footnotesize\dfrac{1}{k}\log \prod\limits _{t=1}^{k+1}p(w_{t}|w_{t-1})}\\&=
-2^{-\footnotesize\dfrac{1}{k}\sum\limits_{t=1}^{k+1}\log p(w_{t}|w_{t-1})}
-\end{aligned}</script><p>计算”商品 和 服务”的困惑度？<br>（1）$p(\textnormal{\footnotesize商品|BOS}) =\frac{2}{3}$；<br>（2）$p(\textnormal{\footnotesize和|商品}) =\frac{1}{2}$；<br>（3）$p(\textnormal{\footnotesize 服务|和}) =\frac{1}{2}$；<br>（4）$p(\textnormal{\footnotesize EOS|服务}) =\frac{1}{1}$；<br>整个句子的困惑度：$pp(\textnormal{\footnotesize商品 和 服务})=2^{-\footnotesize\dfrac{1}{3}(log\frac{2}{3}+log\frac{1}{2}+log\frac{1}{2}+log\frac{1}{1})}$。</p>
+pp(\textbf{w})&=2^{-\dfrac{1}{k}\log p(\textbf{w})}\\&=2^{-\dfrac{1}{k}\log \prod\limits _{t=1}^{k+1}p(w_{t}|w_{t-1})}\\&=
+2^{-\dfrac{1}{k}\sum\limits_{t=1}^{k+1}\log p(w_{t}|w_{t-1})}
+\end{aligned}</script><p>模型的困惑度越小越好。</p>
+<p>计算”商品 和 服务”的困惑度？<br>（1）$p(商品|BOS) =\frac{2}{3}$；<br>（2）$p(和|商品) =\frac{1}{2}$；<br>（3）$p(服务|和) =\frac{1}{2}$；<br>（4）$p(EOS|服务) =\frac{1}{1}$；<br>整个句子的困惑度：$pp(商品 和 服务)=2^{-\dfrac{1}{3}(log\frac{2}{3}+log\frac{1}{2}+log\frac{1}{2}+log\frac{1}{1})}$。</p>
 <h2 id="数据平滑"><a href="#数据平滑" class="headerlink" title="数据平滑"></a>数据平滑</h2><p>n元语法虽然有效，但它有一大不足，以二元语法为例，如果$c(w_tw_{t-1})\text{=0}$，因为计算句子概率时的乘法计算，导致整个语料的0-概率分配。0概率会造成非常大的困惑度，这是一种很糟糕的情况。一种避免0-概率事件的方法是使用平滑技术，确保为每个可能的情况都分配一个概率（可能非常小）。</p>
 <h3 id="加法平滑"><a href="#加法平滑" class="headerlink" title="加法平滑"></a>加法平滑</h3><p>最简单的一类方法是<strong>加法平滑</strong>（Additive Smoothing），以下公式都以二元语法（bi-gram）为例。</p>
 <p>不加平滑时：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-p_{\textnormal{\tiny MLE}}(w_tw_{t-1})=\dfrac{c(w_{t-1}w_t)}{c(w_t)}
+p_{ MLE}(w_tw_{t-1})=\dfrac{c(w_{t-1}w_t)}{c(w_t)}
 \end{aligned}</script><p><strong>加一平滑</strong>（Add-one Smoothing/Laplace Smoothing）：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-p_{\textnormal{\tiny add-one}}(w_t|w_{t-1})=\dfrac{c(w_{t-1}w_t)+\textcolor{red}{1}}{c(w_t)+\textcolor{red}{V}}, \quad \textnormal{\textcolor{red}{V}\footnotesize是词表大小，即语料库中所有单词去重的总数}
+p_{ add-one}(w_t|w_{t-1})=\dfrac{c(w_{t-1}w_t)+\textcolor{red}{1}}{c(w_t)+\textcolor{red}{V}}, \quad \textcolor{red}{V}是词表大小，即语料库中所有单词去重的总数
 \end{aligned}</script><p><strong>加K平滑</strong>（Add-K Smoothing/Laplace Smoothing）：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-p_{\textnormal{\tiny add-k}}(w_t|w_{t-1})=\dfrac{c(w_{t-1}w_t)+\textcolor{red}{k}}{c(w_t)+\textcolor{red}{kV}}, \quad \textnormal{\textcolor{red}{V}\footnotesize是词表大小，即语料库中所有单词去重的总数}
+p_{ add-k}(w_t|w_{t-1})=\dfrac{c(w_{t-1}w_t)+\textcolor{red}{k}}{c(w_t)+\textcolor{red}{kV}}, \quad \textcolor{red}{V}是词表大小，即语料库中所有单词去重的总数
 \end{aligned}</script><h3 id="插值法"><a href="#插值法" class="headerlink" title="插值法"></a>插值法</h3><p>另外一类方法使用back-off策略，即如果没有观测到n元语法，那么就基于n-1元语法计算，利用低阶n元语法平滑高阶n元语法，这就产生了很多方案，最简单的一种是<strong>线性插值法</strong>（Linear Interpolation）。</p>
 <p>三元语法（tri-gram）的线性插值法：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-p_{\textnormal{\tiny Int}}(w_t|w_{t-2}w_{t-1})=\lambda_1 p(w_t|w_{t-2}w_{t-1})+\lambda_2p(w_t|w_{t-1})+\lambda_3p(w_t),\quad \lambda_1+\lambda_2+\lambda_3\textnormal{=1}
+p_{tiny Int}(w_t|w_{t-2}w_{t-1})=\lambda_1 p(w_t|w_{t-2}w_{t-1})+\lambda_2p(w_t|w_{t-1})+\lambda_3p(w_t),\quad \lambda_1+\lambda_2+\lambda_3=1
 \end{aligned}</script><p>二元语法（bi-gram）的线性插值法：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-p_{\textnormal{\tiny Int}}(w_t|w_{t-1})=\lambda_1 p(w_t|w_{t-1})+\lambda_2 p(w_t),\quad \lambda_1+\lambda_2\textnormal{=1}
+p_{ Int}(w_t|w_{t-1})=\lambda_1 p(w_t|w_{t-1})+\lambda_2 p(w_t),\quad \lambda_1+\lambda_2=1
 \end{aligned}</script><p>一元语法（uni-gram）的线性插值法：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-p_{\textnormal{\tiny Int}}(w_t)=\lambda_1 p(w_t)+\lambda_2\frac{1}{V},\quad \lambda_1+\lambda_2\textnormal{=1}
+p_{ Int}(w_t)=\lambda_1 p(w_t)+\lambda_2\frac{1}{V},\quad \lambda_1+\lambda_2=1
 \end{aligned}</script><p>其中，V是词表大小，即语料库中所有单词去重的总数。</p>
 <h3 id="古德-图灵平滑"><a href="#古德-图灵平滑" class="headerlink" title="古德-图灵平滑"></a>古德-图灵平滑</h3><p><strong>古德-图灵平滑</strong>（Good-Turing Smoothing）：对于任何一个出现 $r$ 次n元语法，都假设它出现了$r^*$次：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-r^*=\frac{(r+1)N_{r+1}}{N_r} ,\quad  N_r\textnormal{\footnotesize表示训练预料中出现}r\textnormal{\footnotesize次的n元语法的数目}
+r^*=\frac{(r+1)N_{r+1}}{N_r} ,\quad  N_r表示训练预料中出现 r次的n元语法的数目
 \end{aligned}</script><p>要把整个统计数转化为概率，只需要进行归一化处理：对于统计数为$r$的n元语法，其概率为：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-p_r=\frac{r^*}{N}=\frac{(r+1)N_{r+1}}{N_r*N},\quad \footnotesize \textnormal{N=}\sum\limits_{r=1}^{\infty}r^* N_r
+p_r=\frac{r^*}{N}=\frac{(r+1)N_{r+1}}{N_r*N},\quad  N=\sum\limits_{r=1}^{\infty}r^* N_r
 \end{aligned}</script><p>注意到：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-\textnormal{N=}\sum\limits_{r=1}^{\infty}r^* N_r=\sum\limits_{r=1}^{\infty}(r+1)N_{r+1}=\sum\limits_{r=1}^{\infty}rN_r
+N=\sum\limits_{r=1}^{\infty}r^* N_r=\sum\limits_{r=1}^{\infty}(r+1)N_{r+1}=\sum\limits_{r=1}^{\infty}rN_r
 \end{aligned}</script><p>也就是说，N等于整个分布中的最初的计数。这样，样本中所有事件的概率之和为：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
 \sum\limits_{r>0}N_rp_r=1-\frac{N_1}{N}<1
-\end{aligned}</script><p>因此，有$\footnotesize N_1/N$的概率剩余量可以分配给所有未见事件（$\textnormal{r=0}$的事件）。</p>
-<p>但古德-图灵平滑也有其缺陷，比如某一个 $\footnotesize N_{r+1}$ 为0，此时就无法计算 $p_{r}$ 了，一般这种情况，我们使用机器学习算法去拟合 $\footnotesize N_{r}$，这样就可以把缺失的部分补上。</p>
+\end{aligned}</script><p>因此，有$ N_1/N$的概率剩余量可以分配给所有未见事件（$r=0$的事件）。</p>
+<p>但古德-图灵平滑也有其缺陷，比如某一个 $ N_{r+1}$ 为0，此时就无法计算 $p_{r}$ 了，一般这种情况，我们使用机器学习算法去拟合 $ N_{r}$，这样就可以把缺失的部分补上。</p>
 <h1 id="词向量"><a href="#词向量" class="headerlink" title="词向量"></a>词向量</h1><p>主要考虑单词或句子，甚至是文章的表示，一般把它们进行向量化处理。</p>
 <h2 id="相似度"><a href="#相似度" class="headerlink" title="相似度"></a>相似度</h2><h3 id="距离"><a href="#距离" class="headerlink" title="距离"></a>距离</h3><p>单词/句子用向量表示后，可以计算它们的<strong>距离</strong>来判断相似度（距离越大，相似度越低），$i$为向量下标：<br>（1）<strong>欧氏距离</strong>：$d=||A-B||_2=\sqrt{\sum \limits_{i=1}^n(A_{i} - B_{i})^2}$，两个点的直线距离。<br>（2）<strong>曼哈顿距离</strong>：$d=||A-B||_1=\sum \limits_{i=1}^{n}|A_{i}-B_{i}|$，各个维度的长度差进行累加。常用计算城市间到达距离计算。<br>（3）<strong>闵科夫斯基距离</strong>：$d=||A-B||_P=\sqrt[p]{\sum \limits_{i=1}^n|A_{i}-B_{i}|^p}$，可以根据p来决定距离，如果p=1就是曼哈顿距离；p=2就是欧氏距离；当p趋近无穷时，就会变为长度差最大那个距离。</p>
 <h3 id="方向"><a href="#方向" class="headerlink" title="方向"></a>方向</h3><p>但是向量不光有大小还有<strong>方向</strong>的，两个向量之间是有夹角的，从这个角度发现了<strong>余弦相似度</strong>（值越大，相似度越高），$i$为向量下标：</p>
@@ -480,7 +481,7 @@ cos(A,B)=\frac{A \cdot B}{|A||B|}=\frac{\sum \limits_{i=1}^{n}A_iB_i}{\sqrt{\sum
 <script type="math/tex; mode=display">
 \begin{aligned}
 \text{TF}(t_i,d_j)=\frac{n_{i,j}}{\sum_k n_{k,j}}
-\end{aligned}</script><p>其中，$n_{i,j}$ 是该词在文件 $d_j$ 中的出现次数，而分母则是在文件 $d_j$ 中所有字词的出现次数之和。<br>有时 $\footnotesize\text{TF}(t_i,d_j)$ 也可以直接采用词频 $n_{i,j}$ 计算，不进行归一化处理。</p>
+\end{aligned}</script><p>其中，$n_{i,j}$ 是该词在文件 $d_j$ 中的出现次数，而分母则是在文件 $d_j$ 中所有字词的出现次数之和。<br>有时 $\text{TF}(t_i,d_j)$ 也可以直接采用词频 $n_{i,j}$ 计算，不进行归一化处理。</p>
 <p><strong>逆向文件频率</strong>（inverse document frequency，IDF）是一个词语普遍重要性的度量（在整体文件的重要程度，和文件频率反比关系）。某一特定词语的IDF———总文件数目除以包含该词语的文件数目，再取对数（防止它的值过大）：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
@@ -494,7 +495,7 @@ cos(A,B)=\frac{A \cdot B}{|A||B|}=\frac{\sum \limits_{i=1}^{n}A_iB_i}{\sqrt{\sum
 <h3 id="Skip-Gram"><a href="#Skip-Gram" class="headerlink" title="Skip-Gram"></a>Skip-Gram</h3><p><strong>Skip-Gram</strong>核心思想是：用中心词（输入）预测上下文词（输出）。输入的中心词使用One-Hot向量表示，引入一个大小为 $c$ 的窗口，那么上下文词就是由中心词左 $c$ 个词和右 $c$ 个词构成（一般用$2c$表示上下文）我们希望模型输出的就是这些上下文词，而通过<strong>神经网络输出+softmax</strong>计算得到的是所有词的概率，那么只需要优化上下文词的概率最大即可达到我们的目的。</p>
 <p>把这个核心思想转化成数学表示，假设有如下一句话：</p>
 <script type="math/tex; mode=display">
-[w_1...w_{t-1}w_tw_{t+1}...w_V]</script><p>其中 $w_t$ 代表第 $t$ 个词，总共有$\footnotesize V$个词。我们要计算的就是：</p>
+[w_1...w_{t-1}w_tw_{t+1}...w_V]</script><p>其中 $w_t$ 代表第 $t$ 个词，总共有$ V$个词。我们要计算的就是：</p>
 <script type="math/tex; mode=display">
 \prod\limits_{t=1}^Vp(\text{context}(w_t)|w_t)</script><p>每一个 $p(\text{context}(w_t)|w_t)$ 是相互独立的。<br>此时引入窗口参数 $i\in \text{[-c,c]}$，$c$ 为窗口大小。中心词 $w_t$ 的上下文词 $\text{context}(w_t)$ 就是其左 $c$ 个词和右 $c$ 个词构成，上式变为：</p>
 <script type="math/tex; mode=display">
@@ -515,11 +516,11 @@ cos(A,B)=\frac{A \cdot B}{|A||B|}=\frac{\sum \limits_{i=1}^{n}A_iB_i}{\sqrt{\sum
 <p>$\text{V}$：词汇表的长度;<br>$\text{N}$：隐层神经元个数（词向量维度，需要我们自己指定）;<br>$\text{W}$：输入层到隐层的权重矩阵（词向量矩阵，每一行代表一个词的词向量），维度是$\small [V,N]$;<br>$\text{W}^\prime$：隐层到输出层的权重矩阵（词向量矩阵，每一列代表一个词的词向量），维度是$\small [N,V]$;</p>
 <p>我们需要做的是用输入的词去预测输出的词（方便书写这里用行向量表示一个词）：<br>（1）输入层的一个单词 $w_t$ 使用One-Hot表示：</p>
 <script type="math/tex; mode=display">
-w_t=[x_1...x_t...x_V]</script><p>其中，只有 $x_t$ 为1，其余为0，其中t是输入单词在词汇表中的索引下标，它的维度是$\small [1,V]$。<br>（2）输入的词 $w_t$ 和词向量矩阵 $\footnotesize W$ 相乘，得到一个维度为$\small [1,N]$的隐层向量 $h$。此过程可看作从词向量矩阵 $\footnotesize W$取对应的词向量。</p>
+w_t=[x_1...x_t...x_V]</script><p>其中，只有 $x_t$ 为1，其余为0，其中t是输入单词在词汇表中的索引下标，它的维度是$\small [1,V]$。<br>（2）输入的词 $w_t$ 和词向量矩阵 $ W$ 相乘，得到一个维度为$\small [1,N]$的隐层向量 $h$。此过程可看作从词向量矩阵 $ W$取对应的词向量。</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
 h=w_t\cdot\text{W}
-\end{aligned}</script><p>（3）隐层向量 $h$ 和 词向量矩阵 $\footnotesize W^\prime$ 相乘，得到一个维度为$\small [1,V]$的输出向量 $y$。此过程可看作计算当前词向量和所有词向量的相似度。从这个过程可看出<strong>word2vec中隐藏层没有用激活函数</strong>。</p>
+\end{aligned}</script><p>（3）隐层向量 $h$ 和 词向量矩阵 $ W^\prime$ 相乘，得到一个维度为$\small [1,V]$的输出向量 $y$。此过程可看作计算当前词向量和所有词向量的相似度。从这个过程可看出<strong>word2vec中隐藏层没有用激活函数</strong>。</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
 y=h\cdot\text{W}^\prime
@@ -537,7 +538,7 @@ y=h\cdot\text{W}^\prime
 \begin{aligned}
 \mathop{argmax}\limits_{W,W^{\prime}}\dfrac{1}{\text{V}} \sum\limits_{t=1}^V \sum\limits_{i=-c}^c \log p(w_{t+i}|w_t;\scriptsize{W,W^{\prime}})\normalsize
 =\mathop{argmin}\limits_{W,W^{\prime}}-\dfrac{1}{\text{V}} \sum\limits_{t=1}^V \sum\limits_{i=-c}^c \log p(w_{t+i}|w_t;\scriptsize{W,W^{\prime}})
-\end{aligned}</script><p>其中，损失函数选择对数损失函数（$log$），全局损失定义为所有训练样本上的平均损失。<br>上式损失函数优化过程就可以通过反向传播方法优化（基于梯度的优化），这里不再赘述。所有的中心词都训练一遍后，得到的$\footnotesize\text{W}$和$\footnotesize\text{W}^\prime$就是我们需要的词向量，可选其中一个作为V个词的N维向量表示（word2vec中一般选择$\footnotesize\text{W}$作为词向量）。</p>
+\end{aligned}</script><p>其中，损失函数选择对数损失函数（$log$），全局损失定义为所有训练样本上的平均损失。<br>上式损失函数优化过程就可以通过反向传播方法优化（基于梯度的优化），这里不再赘述。所有的中心词都训练一遍后，得到的$\text{W}$和$\text{W}^\prime$就是我们需要的词向量，可选其中一个作为V个词的N维向量表示（word2vec中一般选择$\text{W}$作为词向量）。</p>
 <h3 id="CBOW"><a href="#CBOW" class="headerlink" title="CBOW"></a>CBOW</h3><p><img src="/images/语言模型和词向量/cbow.png" width="40%"></p>
 <p><strong>CBOW</strong>核心思想：用上下文词（输入）预测中心词（输出）。<br>（1）输入是多个词（上下文词）的One-Hot表示。在计算隐层的向量前，对输入向量和取均值即可。</p>
 <script type="math/tex; mode=display">
@@ -615,7 +616,7 @@ p(w|context(w))&=\sum\limits_{w\in C}log\prod\limits_{j=2}^{n^w}\{[\sigma(h_w\cd
 <li>如果梯度收敛，则结束梯度迭代，否则回到（3）继续迭代。</li>
 </ul>
 <p><strong>优点</strong>：在前面的<strong>CBOW</strong>和<strong>Skip-gram</strong>模型中，softmax计算时分母时需要对所有词的值进行计算求和，word2vec的<strong>Hierarchical Softmax</strong>采用了霍夫曼二叉树来替代从隐藏层到输出softmax层的过程，<strong>之前softmax计算量为$V$，现在为$log_2V$</strong>。</p>
-<p><strong>为什么word2vec中用$\footnotesize\text{W}$作为词向量？</strong><br>在之前讲的三层网络中我们可以选择词向量是$\{\footnotesize\text{W},\text{W}^\prime\normalsize\}$，word2vec这中$\footnotesize\text{W}^\prime$替换成$\large\theta$了，所以word2vec一般采用$\footnotesize\text{W}$作为词向量而不用$\footnotesize\text{W}^\prime$作为词向量。除此原因外，输入矩阵$\footnotesize\text{W}$和输出矩阵$\footnotesize\text{W}^\prime$可以看作<strong>所有词作为中心词</strong>或<strong>所有词作为上下文词</strong>而产生的词向量，它们侧重点不同，在不同算法作用也不同，比如在Skip-gram中$\footnotesize\text{W}$可看作所有词作为中心词而产生的词向量，在CBOW中$\footnotesize\text{W}$可看作所有词作为上下文词产生的词向量。对于<strong>于Hierarchical Softmax</strong>和后面的<strong>Negative Sampling</strong>都代替了$\footnotesize\text{W}^\prime$，从而都是选择$\footnotesize\text{W}$作为词向量，而$\footnotesize\text{W}$作为中心词而得到词向量是Skip-gram中实现，所以word2vec中选择Skip-gram效果会更好。</p>
+<p><strong>为什么word2vec中用$\text{W}$作为词向量？</strong><br>在之前讲的三层网络中我们可以选择词向量是$\{\text{W},\text{W}^\prime\normalsize\}$，word2vec这中$\text{W}^\prime$替换成$\large\theta$了，所以word2vec一般采用$\text{W}$作为词向量而不用$\text{W}^\prime$作为词向量。除此原因外，输入矩阵$\text{W}$和输出矩阵$\text{W}^\prime$可以看作<strong>所有词作为中心词</strong>或<strong>所有词作为上下文词</strong>而产生的词向量，它们侧重点不同，在不同算法作用也不同，比如在Skip-gram中$\text{W}$可看作所有词作为中心词而产生的词向量，在CBOW中$\text{W}$可看作所有词作为上下文词产生的词向量。对于<strong>于Hierarchical Softmax</strong>和后面的<strong>Negative Sampling</strong>都代替了$\text{W}^\prime$，从而都是选择$\text{W}$作为词向量，而$\text{W}$作为中心词而得到词向量是Skip-gram中实现，所以word2vec中选择Skip-gram效果会更好。</p>
 <h3 id="Negative-Sampling"><a href="#Negative-Sampling" class="headerlink" title="Negative Sampling"></a>Negative Sampling</h3><p>在讲基于<strong>Negative Sampling</strong>的word2vec模型前，我们先看看<strong>Hierarchical Softmax</strong>的的缺点。HS使用了霍夫曼树，不难发现对于词频高的词计算很快，但对于词频低的词计算很慢。如果我们的训练样本里的中心词$w$是一个很生僻的词，那么就得在霍夫曼树中辛苦的向下走很久了。能不能不用搞这么复杂的一颗霍夫曼树，将模型变的更加简单呢？这就是<strong>Negative Sampling</strong>（负采样）。</p>
 <p><strong>Negative Sampling</strong>就是这么一种求解word2vec模型的方法，它<strong>摒弃了霍夫曼树</strong>，采用了Negative Sampling（负采样）的方法来求解，下面我们就来讲述NS中下预测一个词过程：<br>（1）已知词$w$的上下文$context(w)$，需要预测$w$，那么认为词$w$作为中心词就是一个正样本$(context(w),w)$，其他词作为中心词就是负样本$(context(w),w_i)$，其中$i\in[1,\text{neg}]$。通过<strong>负采样</strong>得到 $\text{neg}$ （自己指定）个负样本 + 一个正样本，用$u$表示它们的集合。<br>（2）利用这一个正例$(context(w),w)$和 $\text{neg}$ 个负例$(context(w),w_i)$进行逻辑回归二分类，我们希望正样本分类概率最大化，可以通过梯度优化完成。这个就是预测一个词的过程。</p>
 <p>整个过程要明白两个核心问题：1）如何利用$u$来做逻辑回归二分类？ 2）如何进行负采样？</p>
@@ -682,7 +683,7 @@ L=log\prod\limits_{C}g(w)=\sum\limits_{C}log(g(w))&=\sum\limits_{C}log\prod\limi
 len(w)=\frac{count(w)}{\sum\limits_{u\in D}count(u)}</script><p>其中，分子表示一个词在语料中出现的次数（分母中的求和项用来做归一化）。将这些线段连接起来（共$V$个线段），形成一个长度为 1 的单位线段。如果随机的往这个线段上打点，则其中长度越长的线段（对应高频词）被打中的概率越大。</p>
 <p>word2vec中词典$D$的词设置权值时，不是直接使用$count(w)$，而是对其做了$\alpha$次幂，其中$\alpha=\large\frac{3}{4}$，即上式变为：</p>
 <script type="math/tex; mode=display">
-len(w)=\frac{[count(w)]^{\large\frac{3}{4}}}{\normalsize\sum\limits_{u\in D}[count(u)]^{\large\frac{3}{4}}}</script><p>word2vec中具体做法是：把上面长度为 1 的单位线段分成<strong>等距离</strong>的M份（$\footnotesize \text{M&gt;&gt;V}$），把这M份映射到前面讲的<strong>非等距离</strong>的V份中去。然后每次生成一个$[1,M]$间的随机整数，代表选择$M$份中的一份，然后按映射找到对应$V$份中的一份，此时它对应的单词就是我们选择的负样本了。这样重复取$neg$次，就得到所有负样本了。word2vec中$M=10^8$（对应源码中变量table_size）。</p>
+len(w)=\frac{[count(w)]^{\large\frac{3}{4}}}{\normalsize\sum\limits_{u\in D}[count(u)]^{\large\frac{3}{4}}}</script><p>word2vec中具体做法是：把上面长度为 1 的单位线段分成<strong>等距离</strong>的M份（$ \text{M&gt;&gt;V}$），把这M份映射到前面讲的<strong>非等距离</strong>的V份中去。然后每次生成一个$[1,M]$间的随机整数，代表选择$M$份中的一份，然后按映射找到对应$V$份中的一份，此时它对应的单词就是我们选择的负样本了。这样重复取$neg$次，就得到所有负样本了。word2vec中$M=10^8$（对应源码中变量table_size）。</p>
 <h3 id="a-good-word-embedding"><a href="#a-good-word-embedding" class="headerlink" title="a good word embedding"></a>a good word embedding</h3><p><span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE1MDcuMDU1MjMucGRmJTIwaHR0cDovL2llZWV4cGxvcmUuaWVlZS5vcmcvZG9jdW1lbnQvNzQ3ODQxNy8=">How to Generate a Good Word Embedding?<i class="fa fa-external-link-alt"></i></span>论文中对比了不同模型，总结了选择word embedding经验。<br>不同模型之间主要区别有两点：<br>1、目标词和上下文关系。上下文来预测目标词（这类模型更能够捕获单词之间的可替代关系）、目标词来预测上下文<br>2、上下文表示方法。<br><img src="/images/语言模型和词向量/good_embedding1.png"></p>
 <p>不同模型之间上下文表示：<br><img src="/images/语言模型和词向量/good_embedding2.png"></p>
 <p>据研究估计，<strong>文本含义信息的20%来自于词序，剩下的来自于词的选择</strong>。所以忽略词序信息的模型，将会损失约20%的信息。</p>
@@ -699,7 +700,7 @@ len(w)=\frac{[count(w)]^{\large\frac{3}{4}}}{\normalsize\sum\limits_{u\in D}[cou
 <h1 id="softmax"><a href="#softmax" class="headerlink" title="softmax"></a>softmax</h1><script type="math/tex; mode=display">
 \begin{aligned}
 S_i=\dfrac{e^{V_i}}{\sum_j e^{V_j}}
-\end{aligned}</script><p>其中，一个向量$\footnotesize V$共有$j$个值，$V_i$表示第$i$个值。<br>首先对所有值进行$e^x$计算，保证所有值都是大于0的。其次进行归一化，保证所有值的和为1。这些特点非常符合概率的要求，所以经常把softmax处理后的值当成概率。</p>
+\end{aligned}</script><p>其中，一个向量$ V$共有$j$个值，$V_i$表示第$i$个值。<br>首先对所有值进行$e^x$计算，保证所有值都是大于0的。其次进行归一化，保证所有值的和为1。这些特点非常符合概率的要求，所以经常把softmax处理后的值当成概率。</p>
 <h1 id="sigmoid"><a href="#sigmoid" class="headerlink" title="sigmoid"></a>sigmoid</h1><script type="math/tex; mode=display">
 \sigma(x)=\dfrac{1}{1+e^{-x}}</script><p>定义域为$(-\infty,+\infty)$，值域为$(0,1)$，下图给出了sigmoid的图像：<br><img src="/images/语言模型和词向量/sigmoid.png" width="40%"></p>
 <p>sigmoid函数<strong>导函数</strong>具有性质：</p>
@@ -720,10 +721,19 @@ S_i=\dfrac{e^{V_i}}{\sum_j e^{V_j}}
   <div class="popular-posts-header">相关文章</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\07\21\NLP\04.信息检索常见指标\" rel="bookmark">信息检索常见指标</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\07\16\NLP\03.基于LSTM的机器翻译\" rel="bookmark">基于LSTM的机器翻译</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\07\18\Paper\03.Get To The Point. Summarization with Pointer-Generator Networks\" rel="bookmark">Get To The Point. Summarization with Pointer-Generator Networks</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2021\06\19\NLP\00.NLP入门\" rel="bookmark">NLP入门</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\06\17\Machine Learning\12.ML-特征工程\" rel="bookmark">ML-特征工程</a></div>
+      <div class="popular-posts-title"><a href="\2021\07\15\NLP\02.基于LSTM的情感分类\" rel="bookmark">基于LSTM的情感分类</a></div>
     </li>
   </ul>
 

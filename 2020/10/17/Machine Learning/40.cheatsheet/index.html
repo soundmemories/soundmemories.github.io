@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.0.2","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="总结Math MLE \theta_{MLE}&#x3D;\mathop{argmax}\limits _{\theta}\log p(X|\theta)\mathop{&#x3D;}\limits _{iid}\mathop{argmax}\limits _{\theta}\sum\limits _{i&#x3D;1}^{N}\log p(x_{i}|\theta)   MAP  \theta_{MAP}&#x3D;\mathop{a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cheatsheet">
+<meta property="og:url" content="https://soundmemories.github.io/2020/10/17/Machine%20Learning/40.cheatsheet/index.html">
+<meta property="og:site_name" content="SoundMemories">
+<meta property="og:description" content="总结Math MLE \theta_{MLE}&#x3D;\mathop{argmax}\limits _{\theta}\log p(X|\theta)\mathop{&#x3D;}\limits _{iid}\mathop{argmax}\limits _{\theta}\sum\limits _{i&#x3D;1}^{N}\log p(x_{i}|\theta)   MAP  \theta_{MAP}&#x3D;\mathop{a">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-10-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-08-22T13:46:17.854Z">
+<meta property="article:author" content="SoundMemories">
+<meta property="article:tag" content="Machine Learning">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://soundmemories.github.io/2020/10/17/Machine%20Learning/40.cheatsheet/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>cheatsheet | SoundMemories</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">SoundMemories</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-主页">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>主页</a>
+
+  </li>
+        <li class="menu-item menu-item-分类">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-标签">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-归档">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-关于">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+	   
+		  
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Math"><span class="nav-number">1.1.</span> <span class="nav-text">Math</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linear-Regression"><span class="nav-number">1.2.</span> <span class="nav-text">Linear Regression</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Model"><span class="nav-number">1.2.1.</span> <span class="nav-text">Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Loss-Function"><span class="nav-number">1.2.2.</span> <span class="nav-text">Loss Function</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AD%E5%BC%8F%E8%A7%A3"><span class="nav-number">1.2.3.</span> <span class="nav-text">闭式解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A3%E5%88%99%E5%8C%96"><span class="nav-number">1.2.4.</span> <span class="nav-text">正则化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linear-Classification"><span class="nav-number">1.3.</span> <span class="nav-text">Linear Classification</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Hard"><span class="nav-number">1.3.1.</span> <span class="nav-text">Hard</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#PCA"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">PCA</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Fisher"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">Fisher</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Soft"><span class="nav-number">1.3.2.</span> <span class="nav-text">Soft</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A4%E5%88%AB%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">判别模型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Logistic-Regression"><span class="nav-number">1.3.2.1.1.</span> <span class="nav-text">Logistic Regression</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">生成模型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#GDA"><span class="nav-number">1.3.2.2.1.</span> <span class="nav-text">GDA</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Naive-Bayesian"><span class="nav-number">1.3.2.2.2.</span> <span class="nav-text">Naive Bayesian</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dimension-Reduction"><span class="nav-number">1.4.</span> <span class="nav-text">Dimension Reduction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PCA-1"><span class="nav-number">1.4.1.</span> <span class="nav-text">PCA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#p-PCA"><span class="nav-number">1.4.2.</span> <span class="nav-text">p-PCA</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SVM"><span class="nav-number">1.5.</span> <span class="nav-text">SVM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Hard-margin"><span class="nav-number">1.5.1.</span> <span class="nav-text">Hard-margin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Soft-margin"><span class="nav-number">1.5.2.</span> <span class="nav-text">Soft-margin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Kernel"><span class="nav-number">1.5.3.</span> <span class="nav-text">Kernel</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Exp-Family"><span class="nav-number">1.6.</span> <span class="nav-text">Exp Family</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PGM"><span class="nav-number">1.7.</span> <span class="nav-text">PGM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Representation"><span class="nav-number">1.7.1.</span> <span class="nav-text">Representation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Learning"><span class="nav-number">1.7.2.</span> <span class="nav-text">Learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Inference"><span class="nav-number">1.7.3.</span> <span class="nav-text">Inference</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GMM"><span class="nav-number">1.8.</span> <span class="nav-text">GMM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E6%A8%A1%E5%9E%8B-HMM%EF%BC%8CLDS%EF%BC%8CParticle"><span class="nav-number">1.9.</span> <span class="nav-text">序列模型-HMM，LDS，Particle</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A6%BB%E6%95%A3%E7%BA%BF%E6%80%A7%E9%9A%90%E5%8F%98%E9%87%8F-HMM"><span class="nav-number">1.9.1.</span> <span class="nav-text">离散线性隐变量-HMM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E7%BB%AD%E7%BA%BF%E6%80%A7%E9%9A%90%E5%8F%98%E9%87%8F-LDS"><span class="nav-number">1.9.2.</span> <span class="nav-text">连续线性隐变量-LDS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E7%BB%AD%E9%9D%9E%E7%BA%BF%E6%80%A7%E9%9A%90%E5%8F%98%E9%87%8F-%E7%B2%92%E5%AD%90%E6%BB%A4%E6%B3%A2"><span class="nav-number">1.9.3.</span> <span class="nav-text">连续非线性隐变量-粒子滤波</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CRF"><span class="nav-number">1.10.</span> <span class="nav-text">CRF</span></a></li></ol></li></ol></div>
+        </section>
+        <!--/noindex-->
+
+        <section class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SoundMemories"
+      src="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+  <p class="site-author-name" itemprop="name">SoundMemories</p>
+  <div class="site-description" itemprop="description">今日事，今日毕</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NvdW5kbWVtb3JpZXM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;soundmemories"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNvdW5kbWVtb3JpZXNAMTYzLmNvbQ==" title="E-Mail → mailto:soundmemories@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+        </section>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/17/Machine%20Learning/40.cheatsheet/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          cheatsheet
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-17 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-17T00:00:00+08:00">2020-10-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>11k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>10 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><h2 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h2><ol>
+<li>MLE<script type="math/tex; mode=display">
+\theta_{MLE}=\mathop{argmax}\limits _{\theta}\log p(X|\theta)\mathop{=}\limits _{iid}\mathop{argmax}\limits _{\theta}\sum\limits _{i=1}^{N}\log p(x_{i}|\theta)</script></li>
+</ol>
+<ol>
+<li><p>MAP</p>
+<script type="math/tex; mode=display">
+\theta_{MAP}=\mathop{argmax}\limits _{\theta}p(\theta|X)=\mathop{argmax}\limits _{\theta}p(X|\theta)\cdot p(\theta)</script></li>
+<li><p>Gaussian Distribution</p>
+<script type="math/tex; mode=display">
+\begin{align}&p(x|\mu,\Sigma)=\frac{1}{(2\pi)^{p/2}|\Sigma|^{1/2}}e^{-\frac{1}{2}(x-\mu)^{T}\Sigma^{-1}(x-\mu)}\\
+&\Delta=(x-\mu)^{T}\Sigma^{-1}(x-\mu)=\sum\limits _{i=1}^{p}(x-\mu)^{T}u_{i}\frac{1}{\lambda_{i}}u_{i}^{T}(x-\mu)=\sum\limits _{i=1}^{p}\frac{y_{i}^{2}}{\lambda_{i}}
+\end{align}</script></li>
+<li><p>已知 $x\sim\mathcal{N}(\mu,\Sigma), y\sim Ax+b$，有：</p>
+<script type="math/tex; mode=display">
+\begin{align}y\sim\mathcal{N}(A\mu+b, A\Sigma A^T)
+\end{align}</script></li>
+<li><p>记 $x=(x_1, x_2,\cdots,x_p)^T=(x_{a,m\times 1}, x_{b,n\times1})^T,\mu=(\mu_{a,m\times1}, \mu_{b,n\times1}),\Sigma=\begin{pmatrix}\Sigma_{aa}&amp;\Sigma_{ab}\\\Sigma_{ba}&amp;\Sigma_{bb}\end{pmatrix}$，已知 $x\sim\mathcal{N}(\mu,\Sigma)$，则：</p>
+<script type="math/tex; mode=display">
+\begin{align}&x_a\sim\mathcal{N}(\mu_a,\Sigma_{aa})\\
+&x_b|x_a\sim\mathcal{N}(\mu_{b|a},\Sigma_{b|a})\\
+&\mu_{b|a}=\Sigma_{ba}\Sigma_{aa}^{-1}(x_a-\mu_a)+\mu_b\\
+&\Sigma_{b|a}=\Sigma_{bb}-\Sigma_{ba}\Sigma_{aa}^{-1}\Sigma_{ab}
+\end{align}</script></li>
+</ol>
+<h2 id="Linear-Regression"><a href="#Linear-Regression" class="headerlink" title="Linear Regression"></a>Linear Regression</h2><h3 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h3><ol>
+<li><p>Dataset: </p>
+<script type="math/tex; mode=display">
+\mathcal{D}=\{(x_1, y_1),(x_2, y_2),\cdots,(x_N, y_N)\}</script></li>
+<li><p>Notation:</p>
+<script type="math/tex; mode=display">
+X=(x_1,x_2,\cdots,x_N)^T,Y=(y_1,y_2,\cdots,y_N)^T</script></li>
+<li><p>Model:</p>
+<script type="math/tex; mode=display">
+f(w)=w^Tx</script></li>
+</ol>
+<h3 id="Loss-Function"><a href="#Loss-Function" class="headerlink" title="Loss Function"></a>Loss Function</h3><ol>
+<li>最小二乘误差/高斯噪声的MLE<script type="math/tex; mode=display">
+L(w)=\sum\limits_{i=1}^N||w^Tx_i-y_i||^2_2</script></li>
+</ol>
+<h3 id="闭式解"><a href="#闭式解" class="headerlink" title="闭式解"></a>闭式解</h3><script type="math/tex; mode=display">
+\begin{align}\hat{w}=(X^TX)^{-1}X^TY=X^+Y\\
+X=U\Sigma V^T\\
+X^+=V\Sigma^{-1}U^T
+\end{align}</script><h3 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h3><script type="math/tex; mode=display">
+\begin{align}
+L1-Gaussian \ priori&:\mathop{argmin}\limits_wL(w)+\lambda||w||_1,\lambda\gt0\\
+L2-Laplasian\ priori-Sparsity&:\mathop{argmin}\limits_wL(w)+\lambda||w||^2_2,\lambda \gt 0
+\end{align}</script><h2 id="Linear-Classification"><a href="#Linear-Classification" class="headerlink" title="Linear Classification"></a>Linear Classification</h2><h3 id="Hard"><a href="#Hard" class="headerlink" title="Hard"></a>Hard</h3><h4 id="PCA"><a href="#PCA" class="headerlink" title="PCA"></a>PCA</h4><ol>
+<li><p>Idea: 在线性模型上加入激活函数</p>
+</li>
+<li><p>Loss Function:</p>
+</li>
+</ol>
+<script type="math/tex; mode=display">
+L(w)=\sum\limits_{x_i\in\mathcal{D}_{wrong}}-y_iw^Tx_i</script><ol>
+<li>Parameters:</li>
+</ol>
+<script type="math/tex; mode=display">
+w^{t+1}\leftarrow w^{t}+\lambda y_ix_i</script><h4 id="Fisher"><a href="#Fisher" class="headerlink" title="Fisher"></a>Fisher</h4><ol>
+<li><p>Idea: 投影，类内小，类间大。</p>
+</li>
+<li><p>Loss Function:</p>
+<script type="math/tex; mode=display">
+\begin{align}&J(w)=\frac{w^TS_bw}{w^TS_ww}\\
+&S_b=(\overline{x_{c1}}-\overline{x_{c2}})(\overline{x_{c1}}-\overline{x_{c2}})^T\\
+&S_w=S_1+S_2
+\end{align}</script></li>
+<li><p>闭式解，投影方向:</p>
+<script type="math/tex; mode=display">
+S_w^{-1}(\overline{x_{c1}}-\overline{x_{c2}})</script></li>
+</ol>
+<h3 id="Soft"><a href="#Soft" class="headerlink" title="Soft"></a>Soft</h3><h4 id="判别模型"><a href="#判别模型" class="headerlink" title="判别模型"></a>判别模型</h4><h5 id="Logistic-Regression"><a href="#Logistic-Regression" class="headerlink" title="Logistic Regression"></a>Logistic Regression</h5><ol>
+<li><p>Idea，激活函数:</p>
+<script type="math/tex; mode=display">
+\begin{align}p(C_1|x)&=\frac{1}{1+\exp(-a)}\\
+a&=w^Tx
+\end{align}</script></li>
+<li><p>Loss Function(交叉熵):</p>
+<script type="math/tex; mode=display">
+\hat{w}=\mathop{argmax}_wJ(w)=\mathop{argmax}_w\sum\limits_{i=1}^N(y_i\log p_1+(1-y_i)\log p_0)</script></li>
+<li><p>解法，SGD</p>
+<script type="math/tex; mode=display">
+J'(w)=\sum\limits_{i=1}^N(y_i-p_1)x_i</script></li>
+</ol>
+<h4 id="生成模型"><a href="#生成模型" class="headerlink" title="生成模型"></a>生成模型</h4><h5 id="GDA"><a href="#GDA" class="headerlink" title="GDA"></a>GDA</h5><ol>
+<li><p>Model</p>
+<ol>
+<li>$y\sim Bernoulli(\phi)$</li>
+<li>$x|y=1\sim\mathcal{N}(\mu_1,\Sigma)$</li>
+<li>$x|y=0\sim\mathcal{N}(\mu_0,\Sigma)$</li>
+</ol>
+</li>
+<li><p>MAP</p>
+<script type="math/tex; mode=display">
+\begin{align}
+&\mathop{argmax}_{\phi,\mu_0,\mu_1,\Sigma}\log p(X|Y)p(Y)\nonumber\\
+&=\mathop{argmax}_{\phi,\mu_0,\mu_1,\Sigma}\sum\limits_{i=1}^N((1-y_i)\log\mathcal{N}(\mu_0,\Sigma)+y_i\log \mathcal{N}(\mu_1,\Sigma)+y_i\log\phi+(1-y_i)\log(1-\phi))
+\end{align}</script></li>
+<li><p>解</p>
+<script type="math/tex; mode=display">
+\begin{align}\phi&=\frac{N_1}{N}\\
+\mu_1&=\frac{\sum\limits_{i=1}^Ny_ix_i}{N_1}\\
+\mu_0&=\frac{\sum\limits_{i=1}^N(1-y_i)x_i}{N_0}\\
+\Sigma&=\frac{N_1S_1+N_2S_2}{N}
+\end{align}</script></li>
+</ol>
+<h5 id="Naive-Bayesian"><a href="#Naive-Bayesian" class="headerlink" title="Naive Bayesian"></a>Naive Bayesian</h5><ol>
+<li><p>Model, 对单个数据点的各个维度作出限制</p>
+<script type="math/tex; mode=display">
+x_i\perp x_j|y,\forall\  i\ne j</script><ol>
+<li>$x_i$ 为连续变量：$p(x_i|y)=\mathcal{N}(\mu_i,\sigma_i^2)$</li>
+<li>$x_i$ 为离散变量：类别分布（Categorical）：$p(x_i=i|y)=\theta_i,\sum\limits_{i=1}^K\theta_i=1$</li>
+<li>$p(y)=\phi^y(1-\phi)^{1-y}$</li>
+</ol>
+</li>
+<li><p>解：和GDA相同</p>
+</li>
+</ol>
+<h2 id="Dimension-Reduction"><a href="#Dimension-Reduction" class="headerlink" title="Dimension Reduction"></a>Dimension Reduction</h2><p>中心化：</p>
+<script type="math/tex; mode=display">
+\begin{align}S
+&=\frac{1}{N}X^T(E_N-\frac{1}{N}\mathbb{I}_{N1}\mathbb{I}_{1N})(E_N-\frac{1}{N}\mathbb{I}_{N1}\mathbb{I}_{1N})^TX\nonumber\\
+&=\frac{1}{N}X^TH^2X=\frac{1}{N}X^THX
+\end{align}</script><h3 id="PCA-1"><a href="#PCA-1" class="headerlink" title="PCA"></a>PCA</h3><ol>
+<li><p>Idea: 坐标变换，寻找线性无关的新基矢，取信息损失最小的前几个维度</p>
+</li>
+<li><p>Loss Function:</p>
+<script type="math/tex; mode=display">
+\begin{align}J
+&=\sum\limits_{j=1}^qu_j^TSu_j\ ,\ s.t.\ u_j^Tu_j=1
+\end{align}</script></li>
+<li><p>解：</p>
+<ol>
+<li><p>特征分解法</p>
+<script type="math/tex; mode=display">
+S=U\Lambda U^T</script></li>
+<li><p>SVD for X/S</p>
+<script type="math/tex; mode=display">
+\begin{align}HX=U\Sigma V^T\\
+S=\frac{1}{N}V\Sigma^T\Sigma V^T
+\\new\ co=HX\cdot V\end{align}</script></li>
+<li><p>SVD for T</p>
+<script type="math/tex; mode=display">
+\begin{align}T=HXX^TH=U\Sigma\Sigma^TU^T\\
+new\ co=U\Sigma
+\end{align}</script></li>
+</ol>
+</li>
+</ol>
+<h3 id="p-PCA"><a href="#p-PCA" class="headerlink" title="p-PCA"></a>p-PCA</h3><ol>
+<li><p>Model:</p>
+<script type="math/tex; mode=display">
+\begin{align}
+z&\sim\mathcal{N}(\mathbb{O}_{q1},\mathbb{I}_{qq})\\
+x&=Wz+\mu+\varepsilon\\
+\varepsilon&\sim\mathcal{N}(0,\sigma^2\mathbb{I}_{pp})
+\end{align}</script></li>
+<li><p>Learning: E-M</p>
+</li>
+<li><p>Inference:</p>
+<script type="math/tex; mode=display">
+p(z|x)=\mathcal{N}(W^T(WW^T+\sigma^2\mathbb{I})^{-1}(x-\mu),\mathbb{I}-W^T(WW^T+\sigma^2\mathbb{I})^{-1}W)</script></li>
+</ol>
+<h2 id="SVM"><a href="#SVM" class="headerlink" title="SVM"></a>SVM</h2><ol>
+<li>强对偶关系：凸优化+（松弛）Slater 条件-&gt;强对偶。</li>
+<li>参数求解：KKT条件<ol>
+<li>可行域</li>
+<li>互补松弛+梯度为0</li>
+</ol>
+</li>
+</ol>
+<h3 id="Hard-margin"><a href="#Hard-margin" class="headerlink" title="Hard-margin"></a>Hard-margin</h3><ol>
+<li><p>Idea: 最大化间隔</p>
+</li>
+<li><p>Model:</p>
+<script type="math/tex; mode=display">
+\mathop{argmin}_{w,b}\frac{1}{2}w^Tw\ s.t.\ y_i(w^Tx_i+b)\ge1,i=1,2,\cdots,N</script></li>
+<li><p>对偶问题</p>
+<script type="math/tex; mode=display">
+\max_{\lambda}-\frac{1}{2}\sum\limits_{i=1}^N\sum\limits_{j=1}^N\lambda_i\lambda_jy_iy_jx_i^Tx_j+\sum\limits_{i=1}^N\lambda_i,\ s.t.\ \lambda_i\ge0</script></li>
+<li><p>模型参数</p>
+<script type="math/tex; mode=display">
+\hat{w}=\sum\limits_{i=1}^N\lambda_iy_ix_i\\
+\hat{b}=y_k-w^Tx_k=y_k-\sum\limits_{i=1}^N\lambda_iy_ix_i^Tx_k,\exists k,1-y_k(w^Tx_k+b)=0</script></li>
+</ol>
+<h3 id="Soft-margin"><a href="#Soft-margin" class="headerlink" title="Soft-margin"></a>Soft-margin</h3><ol>
+<li><p>Idea:允许少量错误</p>
+</li>
+<li><p>Model:</p>
+<script type="math/tex; mode=display">
+error=\sum\limits_{i=1}^N\max\{0,1-y_i(w^Tx_i+b)\}\\
+\mathop{argmin}_{w,b}\frac{1}{2}w^Tw+C\sum\limits_{i=1}^N\xi_i\ s.t.\ y_i(w^Tx_i+b)\ge1-\xi_i,\xi_i\ge0,i=1,2,\cdots,N</script></li>
+</ol>
+<h3 id="Kernel"><a href="#Kernel" class="headerlink" title="Kernel"></a>Kernel</h3><p>对称的正定函数都可以作为正定核。</p>
+<h2 id="Exp-Family"><a href="#Exp-Family" class="headerlink" title="Exp Family"></a>Exp Family</h2><ol>
+<li><p>表达式</p>
+<script type="math/tex; mode=display">
+p(x|\eta)=h(x)\exp(\eta^T\phi(x)-A(\eta))=\frac{1}{\exp(A(\eta))}h(x)\exp(\eta^T\phi(x))</script></li>
+<li><p>对数配分函数</p>
+<script type="math/tex; mode=display">
+\begin{align} 
+A'(\eta)=\mathbb{E}_{p(x|\eta)}[\phi(x)]\\
+A''(\eta)=Var_{p(x|\eta)}[\phi(x)]
+\end{align}</script></li>
+<li><p>指数族分布满足最大熵定理</p>
+</li>
+</ol>
+<h2 id="PGM"><a href="#PGM" class="headerlink" title="PGM"></a>PGM</h2><h3 id="Representation"><a href="#Representation" class="headerlink" title="Representation"></a>Representation</h3><ol>
+<li>有向图<script type="math/tex; mode=display">
+p(x_1,x_2,\cdots,x_p)=\prod\limits_{i=1}^pp(x_i|x_{parent(i)})</script>D-separation<script type="math/tex; mode=display">
+p(x_i|x_{-i})=\frac{p(x)}{\int p(x)dx_{i}}=\frac{\prod\limits_{j=1}^pp(x_j|x_{parents(j)})}{\int\prod\limits_{j=1}^pp(x_j|x_{parents(j)})dx_i}=\frac{p(x_i|x_{parents(i)})p(x_{child(i)}|x_i)}{\int p(x_i|x_{parents(i)})p(x_{child(i)}|x_i)dx_i}</script></li>
+</ol>
+<ol>
+<li><p>无向图</p>
+<script type="math/tex; mode=display">
+\begin{align}p(x)=\frac{1}{Z}\prod\limits_{i=1}^{K}\phi(x_{ci})\\
+Z=\sum\limits_{x\in\mathcal{X}}\prod\limits_{i=1}^{K}\phi(x_{ci})\\
+\phi(x_{ci})=\exp(-E(x_{ci}))
+\end{align}</script></li>
+<li><p>有向转无向</p>
+<ol>
+<li>将每个节点的父节点两两相连</li>
+<li>将有向边替换为无向边</li>
+</ol>
+</li>
+</ol>
+<h3 id="Learning"><a href="#Learning" class="headerlink" title="Learning"></a>Learning</h3><p>参数学习-EM</p>
+<ol>
+<li><p>目的：解决具有隐变量的混合模型的参数估计（极大似然估计）</p>
+</li>
+<li><p>参数：</p>
+<script type="math/tex; mode=display">
+\theta_{MLE}=\mathop{argmax}\limits_\theta\log p(x|\theta)</script></li>
+</ol>
+<ol>
+<li><p>迭代求解：</p>
+<script type="math/tex; mode=display">
+\theta^{t+1}=\mathop{argmax}\limits_{\theta}\int_z\log [p(x,z|\theta)]p(z|x,\theta^t)dz=\mathbb{E}_{z|x,\theta^t}[\log p(x,z|\theta)]</script></li>
+<li><p>原理</p>
+<script type="math/tex; mode=display">
+\log p(x|\theta^t)\le\log p(x|\theta^{t+1})</script></li>
+<li><p>广义EM</p>
+<ol>
+<li><p>E step：</p>
+<script type="math/tex; mode=display">
+\hat{q}^{t+1}(z)=\mathop{argmax}_q\int_zq^t(z)\log\frac{p(x,z|\theta)}{q^t(z)}dz,fixed\ \theta</script></li>
+<li><p>M step：</p>
+<script type="math/tex; mode=display">
+\hat{\theta}=\mathop{argmax}_\theta \int_zq^{t+1}(z)\log\frac{p(x,z|\theta)}{q^{t+1}(z)}dz,fixed\ \hat{q}</script></li>
+</ol>
+</li>
+</ol>
+<h3 id="Inference"><a href="#Inference" class="headerlink" title="Inference"></a>Inference</h3><ol>
+<li><p>精确推断</p>
+<ol>
+<li><p>VE</p>
+</li>
+<li><p>BP</p>
+<script type="math/tex; mode=display">
+m_{j\to i}(i)=\sum\limits_j\phi_j(j)\phi_{ij}(ij)\prod\limits_{k\in Neighbour(j)-i}m_{k\to j}(j)</script></li>
+<li><p>MP</p>
+<script type="math/tex; mode=display">
+m_{j\to i}=\max\limits_{j}\phi_j\phi_{ij}\prod\limits_{k\in Neighbour(j)-i}m_{k\to j}</script></li>
+</ol>
+</li>
+<li><p>近似推断</p>
+<ol>
+<li><p>确定性近似，VI</p>
+<ol>
+<li><p>变分表达式</p>
+<script type="math/tex; mode=display">
+\hat{q}(Z)=\mathop{argmax}_{q(Z)}L(q)</script></li>
+<li><p>平均场近似下的 VI-坐标上升</p>
+<script type="math/tex; mode=display">
+\mathbb{E}_{\prod\limits_{i\ne j}q_i(Z_i)}[\log p(X,Z)]=\log \hat{p}(X,Z_j)\\
+q_j(Z_j)=\hat{p}(X,Z_j)</script></li>
+<li><p>SGVI-变成优化问题，重参数法</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\mathop{argmax}_{q(Z)}L(q)=\mathop{argmax}_{\phi}L(\phi)\\
+\nabla_\phi L(\phi)=\mathbb{E}_{q_\phi}[(\nabla_\phi\log q_\phi)(\log p_\theta(x^i,z)-\log q_\phi(z))]\\
+=\mathbb{E}_{p(\varepsilon)}[\nabla_z[\log p_\theta(x^i,z)-\log q_\phi(z)]\nabla_\phi g_\phi(\varepsilon,x^i)]\\
+z=g_\phi(\varepsilon,x^i),\varepsilon\sim p(\varepsilon)
+\end{aligned}</script></li>
+</ol>
+</li>
+<li><p>随机性近似</p>
+<ol>
+<li><p>蒙特卡洛方法采样</p>
+<ol>
+<li><p>CDF 采样</p>
+</li>
+<li><p>拒绝采样， $q(z)$，使得 $\forall z_i,Mq(z_i)\ge p(z_i)$，拒绝因子：$\alpha=\frac{p(z^i)}{Mq(z^i)}\le1$</p>
+</li>
+<li><p>重要性采样</p>
+<script type="math/tex; mode=display">
+\mathbb{E}_{p(z)}[f(z)]=\int p(z)f(z)dz=\int \frac{p(z)}{q(z)}f(z)q(z)dz\simeq\frac{1}{N}\sum\limits_{i=1}^Nf(z_i)\frac{p(z_i)}{q(z_i)}</script></li>
+<li><p>重要性重采样：重要性采样+重采样</p>
+</li>
+</ol>
+</li>
+<li><p>MCMC：构建马尔可夫链概率序列，使其收敛到平稳分布 $p(z)$。</p>
+<ol>
+<li><p>转移矩阵（提议分布）</p>
+<script type="math/tex; mode=display">
+p(z)\cdot Q_{z\to z^*}\alpha(z,z^*)=p(z^*)\cdot Q_{z^*\to z}\alpha(z^*,z)\\
+\alpha(z,z^*)=\min\{1,\frac{p(z^*)Q_{z^*\to z}}{p(z)Q_{z\to z^*}}\}</script></li>
+<li><p>算法（MH）：</p>
+<ol>
+<li>通过在0，1之间均匀分布取点 $u$</li>
+<li>生成 $z^<em>\sim Q(z^</em>|z^{i-1})$</li>
+<li>计算 $\alpha$ 值</li>
+<li>如果 $\alpha\ge u$，则 $z^i=z^*$，否则 $z^{i}=z^{i-1}$</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Gibbs 采样：给定初始值 $z_1^0,z_2^0,\cdots$在 $t+1$ 时刻，采样 $z_i^{t+1}\sim p(z_i|z_{-i})$，从第一个维度一个个采样。</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="GMM"><a href="#GMM" class="headerlink" title="GMM"></a>GMM</h2><ol>
+<li><p>Model</p>
+<script type="math/tex; mode=display">
+p(x)=\sum\limits_{k=1}^Kp_k\mathcal{N}(x|\mu_k,\Sigma_k)</script></li>
+<li><p>求解-EM</p>
+<script type="math/tex; mode=display">
+\begin{align}Q(\theta,\theta^t)&=\sum\limits_z[\log\prod\limits_{i=1}^Np(x_i,z_i|\theta)]\prod \limits_{i=1}^Np(z_i|x_i,\theta^t)\nonumber\\
+&=\sum\limits_z[\sum\limits_{i=1}^N\log p(x_i,z_i|\theta)]\prod \limits_{i=1}^Np(z_i|x_i,\theta^t)\nonumber\\
+&=\sum\limits_{i=1}^N\sum\limits_{z_i}\log p(x_i,z_i|\theta)p(z_i|x_i,\theta^t)\nonumber\\
+&=\sum\limits_{i=1}^N\sum\limits_{z_i}\log p_{z_i}\mathcal{N(x_i|\mu_{z_i},\Sigma_{z_i})}\frac{p_{z_i}^t\mathcal{N}(x_i|\mu_{z_i}^t,\Sigma_{z_i}^t)}{\sum\limits_kp_k^t\mathcal{N}(x_i|\mu_k^t,\Sigma_k^t)}
+\end{align}</script><script type="math/tex; mode=display">
+p_k^{t+1}=\frac{1}{N}\sum\limits_{i=1}^Np(z_i=k|x_i,\theta^t)</script></li>
+</ol>
+<h2 id="序列模型-HMM，LDS，Particle"><a href="#序列模型-HMM，LDS，Particle" class="headerlink" title="序列模型-HMM，LDS，Particle"></a>序列模型-HMM，LDS，Particle</h2><ol>
+<li><p>假设：</p>
+<ol>
+<li><p>齐次 Markov 假设（未来只依赖于当前）：</p>
+<script type="math/tex; mode=display">
+p(i_{t+1}|i_t,i_{t-1},\cdots,i_1,o_t,o_{t-1},\cdots,o_1)=p(i_{t+1}|i_t)</script></li>
+<li><p>观测独立假设：</p>
+<script type="math/tex; mode=display">
+p(o_t|i_t,i_{t-1},\cdots,i_1,o_{t-1},\cdots,o_1)=p(o_t|i_t)</script></li>
+</ol>
+</li>
+<li><p>参数</p>
+<script type="math/tex; mode=display">
+\lambda=(\pi,A,B)</script></li>
+</ol>
+<h3 id="离散线性隐变量-HMM"><a href="#离散线性隐变量-HMM" class="headerlink" title="离散线性隐变量-HMM"></a>离散线性隐变量-HMM</h3><ol>
+<li><p>Evaluation：$p(O|\lambda)$，Forward-Backward 算法</p>
+<script type="math/tex; mode=display">
+p(O|\lambda)=\sum\limits_{i=1}^Np(O,i_T=q_i|\lambda)=\sum\limits_{i=1}^N\alpha_T(i)=\sum\limits_{i=1}^Nb_i(o_1)\pi_i\beta_1(i)\\
+\alpha_{t+1}(j)=\sum\limits_{i=1}^Nb_{j}(o_t)a_{ij}\alpha_t(i)\\
+\beta_t(i)=\sum\limits_{j=1}^Nb_j(o_{t+1})a_{ij}\beta_{t+1}(j)</script></li>
+<li><p>Learning：$\lambda=\mathop{argmax}\limits_{\lambda}p(O|\lambda)$，EM 算法（Baum-Welch）</p>
+<script type="math/tex; mode=display">
+\lambda^{t+1}=\mathop{argmax}_\lambda\sum\limits_I\log p(O,I|\lambda)p(O,I|\lambda^t)\\=\sum\limits_I[\log \pi_{i_1}+\sum\limits_{t=2}^T\log a_{i_{t-1},i_t}+\sum\limits_{t=1}^T\log b_{i_t}(o_t)]p(O,I|\lambda^t)</script></li>
+<li><p>Decoding：$I=\mathop{argmax}\limits_{I}p(I|O,\lambda)$，Viterbi 算法-动态规划</p>
+<script type="math/tex; mode=display">
+\delta_{t}(j)=\max\limits_{i_1,\cdots,i_{t-1}}p(o_1,\cdots,o_t,i_1,\cdots,i_{t-1},i_t=q_i)\\\delta_{t+1}(j)=\max\limits_{1\le i\le N}\delta_t(i)a_{ij}b_j(o_{t+1})\\\psi_{t+1}(j)=\mathop{argmax}\limits_{1\le i\le N}\delta_t(i)a_{ij}</script></li>
+</ol>
+<h3 id="连续线性隐变量-LDS"><a href="#连续线性隐变量-LDS" class="headerlink" title="连续线性隐变量-LDS"></a>连续线性隐变量-LDS</h3><ol>
+<li><p>Model</p>
+<script type="math/tex; mode=display">
+\begin{align}
+p(z_t|z_{t-1})&\sim\mathcal{N}(A\cdot z_{t-1}+B,Q)\\
+p(x_t|z_t)&\sim\mathcal{N}(C\cdot z_t+D,R)\\
+z_1&\sim\mathcal{N}(\mu_1,\Sigma_1)
+\end{align}</script></li>
+<li><p>滤波</p>
+<script type="math/tex; mode=display">
+p(z_t|x_{1:t})=p(x_{1:t},z_t)/p(x_{1:t})\propto p(x_{1:t},z_t)\\=p(x_t|z_t)p(z_t|x_{1:t-1})p(x_{1:t-1})\propto p(x_t|z_t)p(z_t|x_{1:t-1})</script></li>
+<li><p>递推求解-线性高斯模型</p>
+<ol>
+<li><p>Prediction</p>
+<script type="math/tex; mode=display">
+p(z_t|x_{1:t-1})=\int_{z_{t-1}}p(z_t|z_{t-1})p(z_{t-1}|x_{1:t-1})dz_{t-1}=\int_{z_{t-1}}\mathcal{N}(Az_{t-1}+B,Q)\mathcal{N}(\mu_{t-1},\Sigma_{t-1})dz_{t-1}</script></li>
+<li><p>Update:</p>
+<script type="math/tex; mode=display">
+p(z_t|x_{1:t})\propto p(x_t|z_t)p(z_t|x_{1:t-1}</script></li>
+</ol>
+</li>
+</ol>
+<h3 id="连续非线性隐变量-粒子滤波"><a href="#连续非线性隐变量-粒子滤波" class="headerlink" title="连续非线性隐变量-粒子滤波"></a>连续非线性隐变量-粒子滤波</h3><p>通过采样(SIR)解决：</p>
+<script type="math/tex; mode=display">
+\mathbb{E}[f(z)]=\int_zf(z)p(z)dz=\int_zf(z)\frac{p(z)}{q(z)}q(z)dz=\sum\limits_{i=1}^Nf(z_i)\frac{p(z_i)}{q(z_i)}</script><ol>
+<li><p>采样</p>
+<script type="math/tex; mode=display">
+w_t^i\propto\frac{p(x_t|z_t)p(z_t|z_{t-1})}{q(z_t|z_{1:t-1},x_{1:t})}w_{t-1}^i\\
+q(z_t|z_{1:t-1},x_{1:t})=p(z_t|z_{t-1})</script></li>
+<li><p>重采样</p>
+</li>
+</ol>
+<h2 id="CRF"><a href="#CRF" class="headerlink" title="CRF"></a>CRF</h2><ol>
+<li><p>PDF</p>
+<script type="math/tex; mode=display">
+p(Y=y|X=x)=\frac{1}{Z(x,\theta)}\exp[\theta^TH(y_t,y_{t-1},x)]</script></li>
+<li><p>边缘概率</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+p(y_t=i|x)=\sum\limits_{y_{1:t-1}}\sum\limits_{y_{t+1:T}}\frac{1}{Z}\prod\limits_{t'=1}^T\phi_{t'}(y_{t'-1},y_{t'},x)\\
+p(y_t=i|x)=\frac{1}{Z}\Delta_l\Delta_r\\
+\Delta_l=\sum\limits_{y_{1:t-1}}\phi_{1}(y_0,y_1,x)\phi_2(y_1,y_2,x)\cdots\phi_{t-1}(y_{t-2},y_{t-1},x)\phi_t(y_{t-1},y_t=i,x)\\
+\Delta_r=\sum\limits_{y_{t+1:T}}\phi_{t+1}(y_t=i,y_{t+1},x)\phi_{t+2}(y_{t+1},y_{t+2},x)\cdots\phi_T(y_{T-1},y_T,x)
+\end{aligned}</script><script type="math/tex; mode=display">
+\begin{aligned}
+\alpha_t(i)=\Delta_l=\sum\limits_{j\in S}\phi_t(y_{t-1}=j,y_t=i,x)\alpha_{t-1}(j)\\
+\Delta_r=\beta_t(i)=\sum\limits_{j\in S}\phi_{t+1}(y_t=i,y_{t+1}=j,x)\beta_{t+1}(j)
+\end{aligned}</script></li>
+<li><p>学习</p>
+<script type="math/tex; mode=display">
+\nabla_\lambda L=\sum\limits_{i=1}^N\sum\limits_{t=1}^T[f(y_{t-1},y_t,x^i)-\sum\limits_{y_{t-1}}\sum\limits_{y_t}p(y_{t-1},y_t|x^i)f(y_{t-1},y_t,x^i)]</script></li>
+</ol>
+<div class="note info"><p>文章转载自<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDc=">Jie Zhou<i class="fa fa-external-link-alt"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDcvTWFjaGluZS1MZWFybmluZy1TZXNzaW9u">Machine-Learning-Session<i class="fa fa-external-link-alt"></i></span>。</p>
+</div>
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\04\20\Machine Learning\00.ML-机器学习？\" rel="bookmark">ML-机器学习？</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\06\10\Machine Learning\11.ML-数据分析\" rel="bookmark">ML-数据分析</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\09\20\Machine Learning\16.Introduction\" rel="bookmark">Introduction</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\09\21\Machine Learning\17.MathBasics\" rel="bookmark">MathBasics</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\09\25\Machine Learning\18.LinearRegression\" rel="bookmark">LinearRegression</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Machine-Learning/" rel="tag"><i class="fa fa-tag"></i> Machine Learning</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/10/16/Machine%20Learning/39.ApproInference/" rel="prev" title="ApproInference">
+                  <i class="fa fa-chevron-left"></i> ApproInference
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/02/03/Graph/00.%E5%9B%BE%E6%B7%B1%E5%BA%A6%E8%A1%A8%E7%A4%BA/" rel="next" title="图深度表示">
+                  图深度表示 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SoundMemories</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  const url = element.dataset.target;
+  const pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  const pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  const fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+<script data-pjax>
+if (document.querySelectorAll('.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8.8.2/dist/mermaid.min.js', () => {
+    mermaid.init({
+      theme    : 'neutral',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    }, '.mermaid');
+  }, window.mermaid);
+}
+</script>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+      <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@2.0.0/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink.listen({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'https://soundmemories.github.io/2020/10/17/Machine%20Learning/40.cheatsheet/',]
+      });
+      });
+  </script>
+
+    </div>
+</body>
+</html>
