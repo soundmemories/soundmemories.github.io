@@ -33,7 +33,7 @@
 <meta property="og:description" content="马尔可夫链蒙特卡洛MCMC 是一种随机的近似推断，其核心就是基于采样的随机近似方法蒙特卡洛方法。对于采样任务来说，有下面一些常用的场景：  采样作为任务，用于生成新的样本 求和&#x2F;求积分&#x2F;求期望  采样结束后，我们需要评价采样出来的样本点是不是好的样本集：  样本趋向于高概率的区域 样本之间必须独立  具体采样中，采样是一个困难的过程：  无法采样得到归一化因子，即无法直接对概率 $ p(x)&#x3D;\f">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-10-04T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-08-10T02:52:39.673Z">
+<meta property="article:modified_time" content="2021-10-11T04:05:23.447Z">
 <meta property="article:author" content="SoundMemories">
 <meta property="article:tag" content="Machine Learning">
 <meta name="twitter:card" content="summary">
@@ -229,7 +229,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-count">113</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -420,7 +420,7 @@ q^{t+1}(x=j)=\sum\limits_{i=1}^Kq^t(x=i)Q_{ij}\\
 <script type="math/tex; mode=display">
 q^{t+1}=q^1A\Lambda^t A^{-1}</script><p>当 $\Lambda$ 中只有一个特征值的绝对值等于1，其余小于1，即$\Lambda^t=diag(0,0,\cdots,1,\cdots,0)$，如果 $t$ 足够大，那么就会得到 $q^{t+1}=q^{t}$ ，即 $q$ 趋于平稳分布了，从开始到平稳这段时间称为燃烧期。<br>马尔可夫链可能具有平稳分布的性质，所以我们可以构建马尔可夫链使其平稳分布收敛于需要的概率分布（设计转移矩阵）。</p>
 <p>在采样过程中，需要经历一定的时间（燃烧期/混合时间）才能达到平稳分布。但是 MCMC 方法有一些问题：<br>（1）无法判断是否已经收敛。<br>（2）燃烧期过长（维度太高，并且维度之间有关，可能无法采样到某些维度），例如在 GMM 中，可能无法越过低谷采样到其他峰。于是在一些模型中，需要对隐变量之间的关系作出约束，如 RBM 假设隐变量之间无关。<br>（3）样本之间一定是有相关性的，如果每个时刻都取一个点，那么每个样本一定和前一个相关，这可以通过间隔一段时间采样。</p>
-<div class="note info"><p>文章转载自<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDc=">Jie Zhou<i class="fa fa-external-link-alt"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDcvTWFjaGluZS1MZWFybmluZy1TZXNzaW9u">Machine-Learning-Session<i class="fa fa-external-link-alt"></i></span>。</p>
+<div class="note info"><p>文章参考<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDcvTWFjaGluZS1MZWFybmluZy1TZXNzaW9u">Machine-Learning-Session<i class="fa fa-external-link-alt"></i></span>笔记，在其基础上增加细节笔记。</p>
 </div>
     </div>
 
@@ -440,10 +440,10 @@ q^{t+1}=q^1A\Lambda^t A^{-1}</script><p>当 $\Lambda$ 中只有一个特征值�
       <div class="popular-posts-title"><a href="\2020\09\20\Machine Learning\16.Introduction\" rel="bookmark">Introduction</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\09\21\Machine Learning\17.MathBasics\" rel="bookmark">MathBasics</a></div>
+      <div class="popular-posts-title"><a href="\2020\09\28\Machine Learning\20.DimentionReduction\" rel="bookmark">DimentionReduction</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\09\25\Machine Learning\18.LinearRegression\" rel="bookmark">LinearRegression</a></div>
+      <div class="popular-posts-title"><a href="\2020\09\21\Machine Learning\17.MathBasics\" rel="bookmark">MathBasics</a></div>
     </li>
   </ul>
 

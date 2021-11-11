@@ -225,7 +225,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-count">113</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -280,6 +280,522 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2019/01/23/Python/12.Python-%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/01/23/Python/12.Python-%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" class="post-title-link" itemprop="url">Python-文件操作</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-01-23 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-23T00:00:00+08:00">2019-01-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>14k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>13 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="目录访问"><a href="#目录访问" class="headerlink" title="目录访问"></a>目录访问</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="comment">#返回当前工作目录</span></span><br><span class="line">os.getcwd()</span><br><span class="line"><span class="comment">#改变当前工作目录</span></span><br><span class="line">os.chdir(<span class="string">&#x27;/home/aistudio/work&#x27;</span>)</span><br><span class="line"><span class="comment">#返回当前绝对路径</span></span><br><span class="line">os.path.abspath(<span class="string">&#x27;&#x27;</span>)</span><br><span class="line"><span class="comment">#运行mkdir命令</span></span><br><span class="line">os.system(<span class="string">&#x27;mkdir today&#x27;</span>)</span><br><span class="line"><span class="comment">#返回当前路径下文件和文件夹名</span></span><br><span class="line">os.listdir()</span><br><span class="line"><span class="comment">#是否为文件夹</span></span><br><span class="line">os.path.isdir(<span class="string">r&#x27;/home/aistudio/work/today&#x27;</span>)</span><br><span class="line"><span class="comment">#是否为文件</span></span><br><span class="line">os.path.isfile(<span class="string">r&#x27;/home/aistudio/work/today/a.txt&#x27;</span>)</span><br><span class="line"><span class="comment">#获取上上层目录（嵌套调用）</span></span><br><span class="line">os.path.dirname(os.path.dirname(os.getcwd()))</span><br></pre></td></tr></table></figure>
+<div class="tabs" id="fourth-unique-name"><ul class="nav-tabs"><li class="tab active"><a href="#fourth-unique-name-1">Solution 1</a></li><li class="tab"><a href="#fourth-unique-name-2">Solution 2</a></li><li class="tab"><a href="#fourth-unique-name-3">Solution 3</a></li></ul><div class="tab-content"><div class="tab-pane active" id="fourth-unique-name-1"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 显示work路径下的所有类型为txt的文件</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">listdir = os.listdir(<span class="string">&#x27;/home/aistudio/work&#x27;</span>)</span><br><span class="line"></span><br><span class="line">target = []</span><br><span class="line"><span class="keyword">for</span> name <span class="keyword">in</span> listdir:</span><br><span class="line">    <span class="comment">#防止文件名与文件夹名一样的情况</span></span><br><span class="line">    <span class="comment"># print(os.path.isfile(name))</span></span><br><span class="line">    </span><br><span class="line">    temp = name.split(<span class="string">&#x27;.&#x27;</span>)</span><br><span class="line">    (filename,filetype) = (temp.pop(<span class="number">0</span>),temp.pop(<span class="number">0</span>))</span><br><span class="line">    <span class="keyword">if</span> filetype == <span class="string">&#x27;txt&#x27;</span>:</span><br><span class="line">        target.append(name)</span><br><span class="line"> </span><br><span class="line">    <span class="comment"># print(&#x27;name:%s,type:%s&#x27; %(filename,filetype))</span></span><br><span class="line"></span><br><span class="line">print(target)</span><br></pre></td></tr></table></figure></div><div class="tab-pane" id="fourth-unique-name-2"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 显示work路径下的所有类型为txt的文件</span></span><br><span class="line"><span class="comment"># work路径下有很多文件夹，文件夹中也有文件夹...需要循环</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">recur</span>(<span class="params">path</span>):</span></span><br><span class="line">    listdir = os.listdir(path)</span><br><span class="line">    <span class="keyword">for</span> name <span class="keyword">in</span> listdir:</span><br><span class="line">        <span class="comment">#排除.和_开头的文件/文件夹</span></span><br><span class="line">        <span class="keyword">if</span> name[<span class="number">0</span>] <span class="keyword">is</span> <span class="string">&#x27;.&#x27;</span> <span class="keyword">or</span> name[<span class="number">0</span>] <span class="keyword">is</span> <span class="string">&#x27;_&#x27;</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        next_path = os.path.join(path, name)</span><br><span class="line">        <span class="keyword">if</span> os.path.isfile(next_path):</span><br><span class="line">            <span class="comment"># print(next_path + &#x27;isfile&#x27;)</span></span><br><span class="line">            filetype = name.split(<span class="string">&#x27;.&#x27;</span>).pop()</span><br><span class="line">            <span class="keyword">if</span> filetype == <span class="string">&#x27;txt&#x27;</span>:</span><br><span class="line">                target.append(name)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            recur(next_path)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> os.path.dirname(next_path)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    path = <span class="string">&#x27;/home/aistudio/work&#x27;</span></span><br><span class="line">    target = []</span><br><span class="line">    recur(path)</span><br><span class="line">    print(target)</span><br></pre></td></tr></table></figure></div><div class="tab-pane" id="fourth-unique-name-3"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 递归读取当前目录下所有文件</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">allfile</span>(<span class="params">basepath</span>):</span></span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> os.listdir(basepath): <span class="comment">#遍历路径下所有文件和文件夹</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> item.startswith((<span class="string">&#x27;.&#x27;</span>,<span class="string">&#x27;_&#x27;</span>)): <span class="comment">#排除.和_开头的文件/文件夹</span></span><br><span class="line">            path = os.path.join(basepath, item) <span class="comment">#基础地址和文件/文件夹名结合</span></span><br><span class="line">            <span class="keyword">if</span> os.path.isdir(path): <span class="comment"># 如果地址是文件夹，递归</span></span><br><span class="line">                allfile(path)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                print(path) <span class="comment">#不是文件夹就打印出地址</span></span><br><span class="line">            </span><br><span class="line">allfile(os.getcwd())</span><br></pre></td></tr></table></figure></div></div></div>
+<h3 id="pathlib"><a href="#pathlib" class="headerlink" title="pathlib"></a>pathlib</h3><p>pathlib是一个从3.0版本开始就能完全替代os.path的内置库。<br>常用方法：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"><span class="comment">#返回当前工作目录</span></span><br><span class="line">Path.cwd()</span><br><span class="line"><span class="comment">#获取上上层目录（链式调用）</span></span><br><span class="line">Path.cwd().parent.parent</span><br><span class="line"><span class="comment">#返回路径的根目录</span></span><br><span class="line">Path.cwd().root　　</span><br><span class="line"><span class="comment">#返回所有上级目录的列表</span></span><br><span class="line">Path.cwd().parents　</span><br><span class="line"><span class="comment">#分割路径，类似os.path.split(), 返回元组</span></span><br><span class="line">Path.cwd().parts　　</span><br><span class="line"></span><br><span class="line"><span class="comment">#当前目录（绝对路径）</span></span><br><span class="line">Path()</span><br><span class="line"><span class="comment">#当前目录下的etc目录（绝对路径）</span></span><br><span class="line">Path(<span class="string">&#x27;/etc&#x27;</span>)</span><br></pre></td></tr></table></figure><br>判断方法：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">is_dir() <span class="comment">#是否是目录，目录存在返回True</span></span><br><span class="line">is_file() <span class="comment">#是否是普通文件，文件存在返回True</span></span><br><span class="line">is_symlink() <span class="comment">#是否是软链接</span></span><br><span class="line">is_socket() <span class="comment">#是否是socket文件</span></span><br><span class="line">is_block_device() <span class="comment">#是否是块设备</span></span><br><span class="line">is_char_device() <span class="comment">#是否是字符设备</span></span><br><span class="line">is_absolute() <span class="comment">#是否是绝对路径</span></span><br></pre></td></tr></table></figure><br>其他方法：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">resolve() <span class="comment">#返回一个新的路径，这个新路径就是当前Path对象的绝对路径，如果是软链接则直接被解析。</span></span><br><span class="line">absolute() <span class="comment">#获取绝对路径</span></span><br><span class="line">exists() <span class="comment">#目录或文件是否存在</span></span><br><span class="line">touch(mode=<span class="number">0o666</span>, exist_ok=<span class="literal">True</span>) <span class="comment">#创建一个文件</span></span><br><span class="line">as_uri() <span class="comment">#将路径返回成URI，例如&#x27;file:///etc/passwd</span></span><br><span class="line"></span><br><span class="line">Path().iterdir() <span class="comment">#返回当前目录下所有文件名的列表，惰性</span></span><br><span class="line">Path.cwd().iterdir() <span class="comment">#返回当前目录下所有文件地址的列表，惰性</span></span><br><span class="line"></span><br><span class="line">rmdir() <span class="comment">#删除空目录。没有提供判断目录为空的方法</span></span><br><span class="line">mkdir(mode=<span class="number">0o777</span>, parents=<span class="literal">False</span>, exist_ok=<span class="literal">False</span>)</span><br><span class="line"><span class="comment">#parents：是否创建父目录，True等同于mkdir -p；False时，父目录不存在，则抛出FileNotFoundError</span></span><br><span class="line"><span class="comment">#exist_o：在3.5版本加入。False时，路径存在，抛出FileExistsError；True时，FileExistsError被忽略</span></span><br></pre></td></tr></table></figure></p>
+<p>目录的组成：<br>（1）name：文件名，目录的最后一个部分，带扩展名。<br>（2）stem：主干，目录的最后一个部分，不带扩展名。<br>（3）suffix：后缀，目录中最后一个扩展名。<br>（4）suffixes：文件全部后缀组成的列表。<br>（5）with_suffix(suffix)：扩展名替换，返回新路径。<br>（6）with_name(name)：替换name，返回新路径。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">p = Path(<span class="string">&#x27;/mysqlinstall/mysql.tar.gz&#x27;</span>)</span><br><span class="line">print(p.name) <span class="comment"># mysql.tar.gz</span></span><br><span class="line">print(p.suffix)<span class="comment"># .gz</span></span><br><span class="line">print(p.suffixes)<span class="comment"># [&#x27;.tar&#x27;, &#x27;.gz&#x27;]</span></span><br><span class="line">print(p.stem)<span class="comment"># mysql.tar</span></span><br><span class="line">print(p.with_name(<span class="string">&#x27;mysql-5.tgz&#x27;</span>))<span class="comment"># \mysqlinstall\mysql-5.tgz</span></span><br><span class="line">print(p.with_suffix(<span class="string">&#x27;.png&#x27;</span>)) <span class="comment"># \mysqlinstall\mysql.tar.png</span></span><br></pre></td></tr></table></figure><br>通配符（同正则，re模块）：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glob(pattern)<span class="comment"># 通配给定的模式，返回一个生成器</span></span><br><span class="line">rglob(pattern)<span class="comment"># 通配给定的模式，递归目录，返回一个生成器</span></span><br></pre></td></tr></table></figure><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">list</span>(p.glob(<span class="string">&#x27;test*&#x27;</span>)) <span class="comment"># 返回当前目录对象下的test开头的文件</span></span><br><span class="line"><span class="built_in">list</span>(p.glob(<span class="string">&#x27;**/*.py&#x27;</span>)) <span class="comment"># 递归所有目录(包括当前目录)，等同rglob</span></span><br><span class="line"><span class="built_in">list</span>(p.glob(<span class="string">&#x27;**/*&#x27;</span>)) <span class="comment"># 所有文件</span></span><br><span class="line">g = p.rglob(<span class="string">&#x27;*.py&#x27;</span>) <span class="comment"># 生成器，递归</span></span><br><span class="line"><span class="built_in">next</span>(g) <span class="comment"># 是迭代器，可以next</span></span><br><span class="line"><span class="built_in">list</span>(p.rglob(<span class="string">&#x27;*.???&#x27;</span>)) <span class="comment"># 匹配扩展名为3个字符的文件</span></span><br><span class="line"><span class="built_in">list</span>(p1.rglob(<span class="string">&#x27;[a-z]*.???&#x27;</span>)) <span class="comment"># 匹配字母开头的且扩展名是3个字符的文件</span></span><br></pre></td></tr></table></figure><br>文件操作（参考下文open）：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 类似内建函数open，返回一个文件对象</span></span><br><span class="line">Path.<span class="built_in">open</span>(mode=<span class="string">&#x27;r&#x27;</span>, buffering=<span class="number">-1</span>, encoding=<span class="literal">None</span>, errors=<span class="literal">None</span>, newline=<span class="literal">None</span>)</span><br><span class="line"><span class="comment"># 以&#x27;rt&#x27;方式读取路径对应文件，返回文本</span></span><br><span class="line">Path.read_text(encoding=<span class="literal">None</span>, errors=<span class="literal">None</span>)</span><br><span class="line"><span class="comment"># 以&#x27;rb&#x27;读取路径对应文件，并返回二进制流</span></span><br><span class="line">Path.read_bytes()</span><br></pre></td></tr></table></figure><br>os/os.path和pathlib对应操作：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">os.path.abspath()             Path.resolve()</span><br><span class="line">os.chmod()                    Path.chmod()</span><br><span class="line">os.mkdir()                    Path.mkdir()</span><br><span class="line">os.rename()                   Path.rename()</span><br><span class="line">os.replace()                  Path.replace()</span><br><span class="line">os.rmdir()                    Path.rmdir()</span><br><span class="line">os.remove(), os.unlink()      Path.unlink()</span><br><span class="line">os.getcwd()                   Path.cwd()</span><br><span class="line">os.path.exists()              Path.exists()</span><br><span class="line">os.path.expanduser()          Path.expanduser() and Path.home()</span><br><span class="line">os.path.isdir()               Path.is_dir()</span><br><span class="line">os.path.isfile()              Path.is_file()</span><br><span class="line">os.path.islink()              Path.is_symlink()</span><br><span class="line">os.stat()Path.stat()          Path.owner(), Path.group()</span><br><span class="line">os.path.isabs()               PurePath.is_absolute()</span><br><span class="line">os.path.join()                PurePath.joinpath()</span><br><span class="line">os.path.basename()            PurePath.name</span><br><span class="line">os.path.dirname()             PurePath.parent</span><br><span class="line">os.path.samefile()            Path.samefile()</span><br><span class="line">os.path.splitext()            PurePath.suffix</span><br></pre></td></tr></table></figure></p>
+<h2 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h2><p>（1）open：打开。<br>（2）read：读取。<br>（3）write：写入。<br>（4）close：关闭。<br>（5）readline：行读取。<br>（6）readlines：多行读取。<br>（7）seek：文件指针操作。<br>（8）tell：指针位置。</p>
+<h3 id="打开操作"><a href="#打开操作" class="headerlink" title="打开操作"></a>打开操作</h3><p>打开一个文件，返回一个文件对象(流对象)和文件描述符。打开文件失败，则返回异常。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">open</span>(file, mode=<span class="string">&#x27;r&#x27;</span>, buffering=<span class="number">-1</span>, encoding=<span class="literal">None</span>, errors=<span class="literal">None</span>, newline=<span class="literal">None</span>, closefd=<span class="literal">True</span>,opener=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>file：打开或者要创建的文件名。如果不指定路径，默认是当前路径。</li>
+<li>mode：<ul>
+<li>‘r’：缺省的，只读打开。</li>
+<li>‘w’：只写打开。file不存在时新建，file存在时清空内容后打开，每次打开都是空白文件，慎用！</li>
+<li>‘x’：新建file，file存在则报错，只写打开。</li>
+<li>‘a’：file内容末尾追加，只写打开，file不存在则新建。</li>
+<li>‘b’：二进制模式。</li>
+<li>‘t’：缺省的，文本模式。open的默认模式其实是’rt’。</li>
+<li>‘+’：给只读、只写方式追加缺失的读或者写模式。<p id="div-border-left-blue">
+文本模式t：字符流，将文件的字节按照某种字符编码理解，按照字符操作。open的默认mode就是rt。<br>
+二进制模式b：字节流，将文件就按照字节理解，与字符编码无关。二进制模式操作时，字节操作使用bytes类型。
+</p>
+
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 打开test文件，用完关闭</span></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;test&quot;</span>, <span class="string">&#x27;r+&#x27;</span>)<span class="comment"># file对象</span></span><br><span class="line"><span class="comment"># windows &lt;_io.TextIOWrapper name=&#x27;test&#x27; mode=&#x27;r&#x27; encoding=&#x27;cp936&#x27;&gt;</span></span><br><span class="line"><span class="comment"># linux &lt;_io.TextIOWrapper name=&#x27;test&#x27; mode=&#x27;r&#x27; encoding=&#x27;UTF-8&#x27;&gt;</span></span><br><span class="line">print(f.read()) <span class="comment"># 读取文件</span></span><br><span class="line">f.close() <span class="comment"># 关闭文件</span></span><br></pre></td></tr></table></figure>
+<p id="div-border-left-blue">windows中使用codepage代码页，可以认为每一个代码页就是一张编码表。cp936等同于GBK。</p>
+
+<h4 id="文件指针"><a href="#文件指针" class="headerlink" title="文件指针"></a>文件指针</h4><p>文件指针，指向当前字节位置。<br>mode=r，指针起始在0。<br>mode=a，指针起始在EOF。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;test&quot;</span>, <span class="string">&#x27;r+&#x27;</span>)</span><br><span class="line">print(f.read()) <span class="comment"># 正常打印</span></span><br><span class="line"></span><br><span class="line">f.write(<span class="string">&quot;Hello World!&quot;</span>)</span><br><span class="line">print(f.read()) <span class="comment"># 无内容，因为文件指针在read执行前，其位置在文件末尾。</span></span><br></pre></td></tr></table></figure><br>tell()：显示指针当前位置（字节为单位）。<br>seek(offset[, whence]：移动文件指针位置。offest偏移多少字节，whence从哪里开始。</p>
+<ul>
+<li>whence（文本模式）：<ul>
+<li>0：缺省值，表示从头开始，offest只能正整数。</li>
+<li>1：从当前位置，offest只接受0，相当于原地不动，所以没什么用。</li>
+<li>2：从EOF开始，只支持偏移0，相当于移动文件指针到EOF。</li>
+</ul>
+</li>
+<li>whence（二进制模式）：<ul>
+<li>0：缺省值，表示从头开始，offest只能正整数。</li>
+<li>1：从当前位置，offest可正可负。</li>
+<li>2：从EOF开始，offest可正可负。<p id="div-border-left-blue">
+二进制模式支持任意起点的偏移，从头、从尾、从中间位置开始。<br>
+向后seek可以超界，但是向前seek的时候，不能超界，否则抛异常。
+</p>
+
+</li>
+</ul>
+</li>
+</ul>
+<div class="tabs" id="open"><ul class="nav-tabs"><li class="tab active"><a href="#open-1">seek-t</a></li><li class="tab"><a href="#open-2">seek_b</a></li></ul><div class="tab-content"><div class="tab-pane active" id="open-1"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;test&quot;</span>, <span class="string">&#x27;r+&#x27;</span>) <span class="comment"># 文本模式 </span></span><br><span class="line">f.tell() <span class="comment"># 显示指针当前位置</span></span><br><span class="line">f.read() <span class="comment"># 读取文件</span></span><br><span class="line"></span><br><span class="line">f.seek(<span class="number">0</span>) <span class="comment"># 文件指针设置为起始</span></span><br><span class="line">f.read()</span><br><span class="line"></span><br><span class="line">f.seek(<span class="number">0</span>,<span class="number">1</span>) <span class="comment"># offset必须为0，无用</span></span><br><span class="line">f.seek(<span class="number">0</span>,<span class="number">2</span>) <span class="comment"># offset必须为0，从EOF开始</span></span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure></div><div class="tab-pane" id="open-2"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;test&quot;</span>, <span class="string">&#x27;rb+&#x27;</span>) <span class="comment"># 二进制模式 </span></span><br><span class="line">f.tell() <span class="comment"># 显示指针当前位置</span></span><br><span class="line">f.read() <span class="comment"># 读取文件</span></span><br><span class="line">f.write(<span class="string">b&#x27;abc&#x27;</span>) <span class="comment"># 写入字节</span></span><br><span class="line"></span><br><span class="line">f.seek(<span class="number">0</span>) <span class="comment"># 文件指针设置为起始</span></span><br><span class="line">f.read()</span><br><span class="line"></span><br><span class="line">f.seek(<span class="number">2</span>,<span class="number">1</span>) <span class="comment"># 从当前指针开始，向后2</span></span><br><span class="line">f.seek(<span class="number">-2</span>,<span class="number">1</span>) <span class="comment"># 从当前指针开始，向前2</span></span><br><span class="line"></span><br><span class="line">f.seek(<span class="number">2</span>,<span class="number">2</span>) <span class="comment"># 从EOF开始，向后2</span></span><br><span class="line">f.seek(<span class="number">-2</span>,<span class="number">2</span>) <span class="comment"># 从EOF开始，向前2</span></span><br><span class="line">f.read()</span><br><span class="line"></span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure></div></div></div>
+<h4 id="buffering"><a href="#buffering" class="headerlink" title="buffering"></a>buffering</h4><ul>
+<li>buffering缓冲区：<ul>
+<li>-1：使用缺省大小的buffer。<ul>
+<li>b模式时，使用io.DEFAULT_BUFFER_SIZE值，默认是4096或者8192。</li>
+<li>t模式时，若是终端设备则行缓存方式，若不是则使用b模式的策略。</li>
+</ul>
+</li>
+<li>0：<ul>
+<li>b模式时，关buffer。</li>
+<li>t模式不支持。</li>
+</ul>
+</li>
+<li>1：<ul>
+<li>b模式时，一个字节缓冲区。</li>
+<li>t模式时，行缓冲，见到‘\n’就flush全部缓冲区数据。</li>
+</ul>
+</li>
+<li>>1：用于指定buffer大小。<ul>
+<li>b模式时，表示缓冲大小。设定值可以超过io.DEFAULT_BUFFER_SIZE，超出设定值才把缓冲区flush。</li>
+<li>t模式时，缓冲大小是io.DEFAULT_BUFFER_SIZE个字节（缺省缓冲区大小），flush完后把当前字符串也写入磁盘。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>io.DEFAULT_BUFFER_SIZE：缺省缓冲区大小（字节）。<br>buffer缓冲区：缓冲区一个内存空间，一般来说是一个FIFO队列，到缓冲区满了或者达到阈值，数据才会flush到磁盘。<br>flush()将缓冲区数据写入磁盘。<br>close()关闭前会调用flush()。</p>
+<div class="tabs" id="open1"><ul class="nav-tabs"><li class="tab active"><a href="#open1-1">buffering-t</a></li><li class="tab"><a href="#open1-2">buffering_b</a></li></ul><div class="tab-content"><div class="tab-pane active" id="open1-1"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;test&quot;</span>, <span class="string">&#x27;w+&#x27;</span>, <span class="number">1</span>) <span class="comment"># 文本模式, 行缓冲 </span></span><br><span class="line">f.write(<span class="string">&quot;abc&quot;</span>)</span><br><span class="line">f.write(<span class="string">&#x27;\n&#x27;</span>)<span class="comment"># 遇到了换行符flush</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># f.write(&#x27;Hello\nPython&#x27;)# Hello后有\n，把Hello\nPython全部flush</span></span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure></div><div class="tab-pane" id="open1-2"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> io</span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&#x27;test&#x27;</span>,<span class="string">&#x27;wb+&#x27;</span>)</span><br><span class="line">print(io.DEFAULT_BUFFER_SIZE) <span class="comment"># 查看缺省缓冲区大小</span></span><br><span class="line"></span><br><span class="line">f.write(<span class="string">&quot;Hello World&quot;</span>.encode())<span class="comment"># 此时数据在缓冲区中</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#f.seek(0)# 此时指针复零再write，会覆盖掉之前写入的文字</span></span><br><span class="line"></span><br><span class="line">f.flush() <span class="comment"># 执行完后，数据写入test文件</span></span><br><span class="line">f.close() </span><br></pre></td></tr></table></figure></div></div></div>
+<p id="div-border-left-blue">
+文本模式，一般都用默认缓冲区大小。<br>
+二进制模式，字节操作，可以指定buffer的大小。<br>
+编程中，明确知道需要写磁盘了，都会手动调用一次flush，而不是等到自动flush或者close的时候。<br>
+</p>
+
+<h4 id="其他参数"><a href="#其他参数" class="headerlink" title="其他参数"></a>其他参数</h4><p>encoding：编码，仅限t模式。<br>encoding=None 表示使用缺省编码，依赖操作系统。<br>windows下缺省GBK(0xB0A1)，Linux下缺省Utf-8(0xE5 95 8A)。</p>
+<p>errors：什么样的编码错误将被捕获。<br>errors=None/strict 表示有编码错误将抛出ValueError异常；ignore表示忽略。</p>
+<p>newline：指定换行符。<br>t模式中，可以为None、’’、’\r’、’\n’、’\r\n’或其他合法字符。<br>read时，newline=None 会把’\r’、’\n’、’\r\n’转换为’\n’；’’ 不自动转换为’\n’；其它合法字符时，就会按照指这个字符分行。<br>write时，newline=None 会把’\n’替换为系统缺省行分隔符os.linesep；’\n’ 或’’ 表示’\n’不替换；其它合法字符时，’\n’会被替换成这个字符。</p>
+<p>closefd：关闭文件描述符，True关闭，False会在文件关闭后保持这个描述符。fileobj.fileno()查看。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># newline缺省为None，windows下会把\n替换为\r\n</span></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&#x27;test&#x27;</span>, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line"><span class="comment"># 真正写入的是：&#x27;我\r喜\r\n欢\r\r\n你&#x27;</span></span><br><span class="line">f.write(<span class="string">&#x27;我\r喜\n欢\r\n你&#x27;</span>)</span><br><span class="line">f.close()</span><br><span class="line"></span><br><span class="line">newlines = [<span class="literal">None</span>, <span class="string">&#x27;&#x27;</span>, <span class="string">&#x27;\n&#x27;</span>, <span class="string">&#x27;\r\n&#x27;</span>]</span><br><span class="line"><span class="keyword">for</span> nl <span class="keyword">in</span> newlines:</span><br><span class="line">    f = <span class="built_in">open</span>(<span class="string">&#x27;test&#x27;</span>, <span class="string">&#x27;r+&#x27;</span> , newline=nl) <span class="comment"># &#x27;我\r喜\r\n欢\r\r\n你&#x27;</span></span><br><span class="line">    print(f.readlines())</span><br><span class="line">    f.close()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行结果如下</span></span><br><span class="line">[<span class="string">&#x27;我\n&#x27;</span>, <span class="string">&#x27;喜\n&#x27;</span>, <span class="string">&#x27;欢\n&#x27;</span>, <span class="string">&#x27;\n&#x27;</span>, <span class="string">&#x27;你&#x27;</span>]<span class="comment">#None，&#x27;\r&#x27;、&#x27;\n&#x27;、&#x27;\r\n&#x27;都替换为\n</span></span><br><span class="line">[<span class="string">&#x27;我\r&#x27;</span>, <span class="string">&#x27;喜\r\n&#x27;</span>, <span class="string">&#x27;欢\r&#x27;</span>, <span class="string">&#x27;\r\n&#x27;</span>, <span class="string">&#x27;你&#x27;</span>] <span class="comment">#&#x27;&#x27;作为换行符，不进行替换</span></span><br><span class="line">[<span class="string">&#x27;我\r喜\r\n&#x27;</span>, <span class="string">&#x27;欢\r\r\n&#x27;</span>, <span class="string">&#x27;你&#x27;</span>] <span class="comment">#\n 做为换行符</span></span><br><span class="line">[<span class="string">&#x27;我\r喜\r\n&#x27;</span>, <span class="string">&#x27;欢\r\r\n&#x27;</span>, <span class="string">&#x27;你&#x27;</span>] <span class="comment">#\r\n 作为换行符</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="读操作"><a href="#读操作" class="headerlink" title="读操作"></a>读操作</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">read(size=<span class="number">-1</span>) <span class="comment"># size表示读取的多少个字符或字节；负数或者None表示读取到EOF。</span></span><br><span class="line">readline(size=<span class="number">-1</span>) <span class="comment"># 行读取文件内容。size设置一次能读取行内几个字符或字节。</span></span><br><span class="line">readlines(hint=<span class="number">-1</span>) <span class="comment"># 读取所有行的列表。指定hint则读取指定的行数。</span></span><br></pre></td></tr></table></figure>
+<h3 id="写操作"><a href="#写操作" class="headerlink" title="写操作"></a>写操作</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 向文件中写入指定字符串。str：要写入文件的字符串。返回写入的字符串长度。</span></span><br><span class="line"><span class="comment"># 在文件关闭前或缓冲区刷新前，字符串内容存储在缓冲区中，这时你在文件中是看不到写入的内容的。</span></span><br><span class="line"><span class="comment"># 如果文件打开模式带 b，那写入文件内容时，str (参数)要用 encode 方法转为 bytes 形式，\</span></span><br><span class="line"><span class="comment"># 否则报错：TypeError: a bytes-like object is required, not &#x27;str&#x27;。</span></span><br><span class="line">write([<span class="built_in">str</span>]) </span><br><span class="line"></span><br><span class="line"><span class="comment"># 向文件中写入一序列的字符串。无返回值。</span></span><br><span class="line"><span class="comment"># 这一序列字符串可以是由迭代对象产生的，如一个字符串列表。</span></span><br><span class="line"><span class="comment"># 换行需要制定换行符 \n。</span></span><br><span class="line">writelines([<span class="built_in">str</span>]) </span><br></pre></td></tr></table></figure>
+<h3 id="其他操作"><a href="#其他操作" class="headerlink" title="其他操作"></a>其他操作</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">close <span class="comment"># flush并关闭文件对象。</span></span><br><span class="line">closed <span class="comment"># 是否已经关闭。</span></span><br><span class="line">seekable <span class="comment"># 是否可seek。</span></span><br><span class="line">readable <span class="comment"># 是否可读。</span></span><br><span class="line">writable <span class="comment"># 是否可写。</span></span><br></pre></td></tr></table></figure>
+<h3 id="with…as"><a href="#with…as" class="headerlink" title="with…as"></a>with…as</h3><p>（1）使用with … as 关键字。<br>（2）内部语句块不会开启新的作用域。<br>（3）语句块执行完的时候，会自动关闭文件对象。</p>
+<div class="tabs" id="with"><ul class="nav-tabs"><li class="tab active"><a href="#with-1">with1</a></li><li class="tab"><a href="#with-2">with2</a></li></ul><div class="tab-content"><div class="tab-pane active" id="with-1"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;test&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(<span class="string">&quot;abc&quot;</span>) <span class="comment"># 文件只读，写入失败</span></span><br><span class="line"></span><br><span class="line">f.closed <span class="comment"># f是否关闭</span></span><br></pre></td></tr></table></figure></div><div class="tab-pane" id="with-2"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">f =  <span class="built_in">open</span>(<span class="string">&#x27;test&#x27;</span>) </span><br><span class="line"><span class="keyword">with</span> f:</span><br><span class="line">    f.write(<span class="string">&quot;abc&quot;</span>) <span class="comment"># 文件只读，写入失败</span></span><br><span class="line"></span><br><span class="line">f.closed <span class="comment"># f是否关闭</span></span><br></pre></td></tr></table></figure></div></div></div>
+<p>对于类似于文件的IO对象，在不使用的时候关闭、注销，以释放资源。</p>
+<h2 id="shutil模块"><a href="#shutil模块" class="headerlink" title="shutil模块"></a>shutil模块</h2><h3 id="文件拷贝"><a href="#文件拷贝" class="headerlink" title="文件拷贝"></a>文件拷贝</h3><p>使用打开2个文件对象，源文件读取内容，写入目标文件中来完成拷贝过程。但是这样丢失stat数据信息（权限等），因为根本没有复制这些信息过去。<br>Python提供了一个方便的库shutil（高级文件操作）。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 文件对象内容的复制。fsrc源文件的路径，fdst目标文件的路径，length指定buffer的大小。</span></span><br><span class="line"><span class="comment"># copyfile也是文件对象内容的复制，调用的是copyfileobj。</span></span><br><span class="line"><span class="comment"># copyfileobj会打开输入文件进行读写，而不论其类型，所以某些特殊文件不可以用copyfileobj/copyfile复制为新的特殊文件。</span></span><br><span class="line">copyfileobj(fsrc, fdst[, length]) </span><br><span class="line"></span><br><span class="line"><span class="comment"># 仅复制权限。</span></span><br><span class="line">copymode(src, dst, *, follow_symlinks=<span class="literal">True</span>) </span><br><span class="line"><span class="comment"># 复制元数据，stat包含权限。</span></span><br><span class="line">copystat(src, dst, *, follow_symlinks=<span class="literal">True</span>) </span><br><span class="line"><span class="comment"># 复制文件内容、权限和部分元数据，不包括创建时间和修改时间。copy本质上调用的是copyfile和copymode。</span></span><br><span class="line">copy(src, dst, *, follow_symlinks=<span class="literal">True</span>) </span><br><span class="line"><span class="comment"># copy2比copy多了复制全部元数据，但需要平台支持</span></span><br><span class="line">copy2(src, dst, *, follow_symlinks=<span class="literal">True</span>) </span><br><span class="line"></span><br><span class="line"><span class="comment"># 递归复制目录。默认使用copy2，也就是带更多的元数据复制。</span></span><br><span class="line"><span class="comment"># src、dst必须是目录，src必须存在，dst必须不存在。&lt;br&gt;</span></span><br><span class="line"><span class="comment"># ignore=func ，提供一个函数，它会被调用，func遵循callable(src, names)-&gt;ignored_names。</span></span><br><span class="line"><span class="comment"># src是源目录，names是os.listdir(src)的结果，就是列出src中的文件名，返回值是要被过滤的文件名的set类型数据。</span></span><br><span class="line">copytree(src,dst,symlinks=<span class="literal">False</span>,ignore=<span class="literal">None</span>,copy_function=copy2,ignore_dangling_symlinks=<span class="literal">False</span>) </span><br></pre></td></tr></table></figure></p>
+<h3 id="文件删除"><a href="#文件删除" class="headerlink" title="文件删除"></a>文件删除</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 递归删除。如同rm -rf一样危险，慎用。</span></span><br><span class="line"><span class="comment"># 它不是原子操作，有可能删除错误，就会中断，已经删除的就删除了。</span></span><br><span class="line"><span class="comment"># ignore_errors为true，忽略错误。当为False或者omitted时onerror生效。</span></span><br><span class="line"><span class="comment"># onerror为callable，接受函数function、path和execinfo。</span></span><br><span class="line">shutil.rmtree(path, ignore_errors=<span class="literal">False</span>, onerror=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="文件移动"><a href="#文件移动" class="headerlink" title="文件移动"></a>文件移动</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 递归移动文件、目录到目标，返回目标。</span></span><br><span class="line"><span class="comment"># 本身使用的是 os.rename方法。</span></span><br><span class="line"><span class="comment"># 如果不支持rename，如果是目录则copytree再删除源目录。</span></span><br><span class="line"><span class="comment"># 默认使用copy2方法。</span></span><br><span class="line">move(src, dst, copy_function=copy2)</span><br></pre></td></tr></table></figure>
+<p>shutil还有打包功能。生成tar并压缩。支持zip、gz、bz、xz。</p>
+<h2 id="csv模块"><a href="#csv模块" class="headerlink" title="csv模块"></a>csv模块</h2><p>CSV 是一个被行分隔符、列分隔符划分成行和列的文本文件。行称为记录，列称为字段。<br>CSV 不指定字符编码。<br>CSV 行分隔符为\r\n，最后一行可以没有换行符。<br>CSV 列分隔符常为逗号或者制表符。<br>CSV 字段可以使用双引号括起来，也可以不使用。如果字段中出现了双引号、逗号、换行符必须使用双引号括起来。如果字段的值是双引号，使用两个双引号表示一个转义。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 生成一个csv文件</span></span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"></span><br><span class="line">p = Path(<span class="string">&#x27;./test.csv&#x27;</span>)</span><br><span class="line">parent = p.parent</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> parent.exists():</span><br><span class="line">    parent.mkdir(parents=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">csv_body = <span class="string">&#x27;&#x27;&#x27;\</span></span><br><span class="line"><span class="string">          id,name,age,comment</span></span><br><span class="line"><span class="string">          1,zs,18,&quot;I&#x27;m 18&quot;</span></span><br><span class="line"><span class="string">          2,ls,20,&quot;this is a &quot;&quot;test&quot;&quot; string.&quot;3,ww,23,&quot;你好</span></span><br><span class="line"><span class="string">          计算机</span></span><br><span class="line"><span class="string">          &quot;</span></span><br><span class="line"><span class="string">          &#x27;&#x27;&#x27;</span></span><br><span class="line">p.write_text(csv_body)</span><br></pre></td></tr></table></figure></p>
+<h3 id="读操作-1"><a href="#读操作-1" class="headerlink" title="读操作"></a>读操作</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reader(csvfile, dialect=<span class="string">&#x27;excel&#x27;</span>, **fmtparams)</span><br></pre></td></tr></table></figure>
+<p>返回reader对象，是一个行迭代器。<br>dialect：方言，缺省为excel方言。<br>delimiter：列分隔符，缺省为<code>,</code>逗号。<br>lineterminator：行分隔符，缺省为<code>\r\n</code>。<br>quotechar：字段的引用符号，缺省为<code>&quot;</code>双引号。<br>doublequote：双引号的处理，缺省为True。如果碰到数据中有双引号，而quotechar也是双引号，True则使用2个双引号表示；False则使用escapecha作为双引号的前缀。<br>escapechar：一个转义字符，缺省为None。<br>quoting：指定双引号的规则。QUOTE_ALL（所有字段）；QUOTE_MINIMAL（特殊字符字段，Excel方言使用该规则）；QUOTE_NONNUMERIC（非数字字段）；QUOTE_NONE（都不使用引号）。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;./test.csv&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> csv.reader(f):</span><br><span class="line">        print(line)</span><br></pre></td></tr></table></figure></p>
+<h3 id="写操作-1"><a href="#写操作-1" class="headerlink" title="写操作"></a>写操作</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">writer(csvfile, dialect=<span class="string">&#x27;excel&#x27;</span>, **fmtparams)</span><br></pre></td></tr></table></figure>
+<p>返回DictWriter的实例。<br>主要方法有writerow(iterable)、writerows(iterable)。</p>
+<p>windows下在会在每行末尾多出一个\r，解决办法<code>open(&#39;test.csv&#39;, &#39;w&#39;, newline=&#39;&#39;)</code>使用newline参数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"></span><br><span class="line">rows = [</span><br><span class="line">    [<span class="number">4</span>,<span class="string">&#x27;tom&#x27;</span>,<span class="number">22</span>,<span class="string">&#x27;tom&#x27;</span>],</span><br><span class="line">    (<span class="number">5</span>,<span class="string">&#x27;jerry&#x27;</span>,<span class="number">24</span>,<span class="string">&#x27;jerry&#x27;</span>),</span><br><span class="line">    (<span class="number">6</span>,<span class="string">&#x27;justin&#x27;</span>,<span class="number">22</span>,<span class="string">&#x27;just\t&quot;in&#x27;</span>),</span><br><span class="line">    <span class="string">&quot;abcdefghi&quot;</span>,</span><br><span class="line">    ((<span class="number">1</span>,),(<span class="number">2</span>,))</span><br><span class="line">]</span><br><span class="line">row = rows.pop(<span class="number">0</span>)</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;./test.csv&#x27;</span>, <span class="string">&#x27;w+&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        writer = csv.writer(f)</span><br><span class="line">        writer.writerow(row) <span class="comment"># 可迭代的每一个元素，将作为csv行的每一个元素。</span></span><br><span class="line">        writer.writerows(rows)</span><br></pre></td></tr></table></figure>
+<h2 id="json模块"><a href="#json模块" class="headerlink" title="json模块"></a>json模块</h2><p>内存中的字典、列表、集合以及各种对象，如何保存到一个文件中？<br>如果是自己定义的类的实例，如何保存到一个文件中？<br>如何从文件中读取数据，并让它们在内存中再次恢复成自己对应的类的实例？</p>
+<p>要设计一套协议，按照某种规则，把内存中数据保存到文件中。<br>把数据转换成字节序列，输出到文件，这就是序列化。<br>把文件的字节序列恢复到内存并且还是原来的类型，就是反序列化。</p>
+<p>序列化后数据可持久化，或者网络传输；也可以将从文件中或者网络接收到的字节序列反序列化。<br>Python 提供了pickle 库。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dumps <span class="comment"># 对象序列化为bytes对</span></span><br><span class="line">dump <span class="comment"># 对象序列化到文件对象，就是存入文件</span></span><br><span class="line">loads <span class="comment"># 从bytes对象反序列化</span></span><br><span class="line">load <span class="comment"># 对象反序列化，从文件读取数据</span></span><br></pre></td></tr></table></figure><br>Python程序之间还可以都是用pickle解决序列化、反序列化，如果是跨平台、跨语言、跨协议时，pickle就不适合了，就需要公共的协议。例如XML、Json、Protocol Buffer等。</p>
+<p>JSON(JavaScript Object Notation, JS 对象标记) 是一种轻量级的数据交换格式。它基于 ECMAScript (w3c组织制定的JS规范)的一个子集，采用完全独立于编程语言的文本格式来存储和表示数据。<br>本质上来说JSON序列化后就是字符串。</p>
+<p>json的值：string、number、object、array、true/false、null。<br>（1）string：由双引号包围起来的任意字符的组合，可以有转义字符。<br>（2）number：有正负，有整数、浮点数。<br>（3）object：无序的键值对的集合。 例如：{key1:value1, … ,keyn:valulen}，key必须是一个字符串，需要双引号包围这个字符串，value可以是任意合法的值。<br>（4）array：有序的值的集合。例如：[val1,…,valn]。<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="attr">&quot;name&quot;</span>: <span class="string">&quot;james&quot;</span>, <span class="attr">&quot;dob&quot;</span>: <span class="string">&quot;2004-5-21&quot;</span>, <span class="attr">&quot;times&quot;</span>: [<span class="string">&quot;2.34&quot;</span>, <span class="string">&quot;3:21&quot;</span>, <span class="string">&quot;2.34&quot;</span>, <span class="string">&quot;2.45&quot;</span>, <span class="string">&quot;3.01&quot;</span>, <span class="string">&quot;2:01&quot;</span>, <span class="string">&quot;2:01&quot;</span>, <span class="string">&quot;3:10&quot;</span>, <span class="string">&quot;2-22&quot;</span>]&#125;</span><br></pre></td></tr></table></figure><br>常用的方法：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dumps <span class="comment">#json编码</span></span><br><span class="line">dump <span class="comment">#json编码并存入文件</span></span><br><span class="line">loads <span class="comment">#json解码</span></span><br><span class="line">load <span class="comment">#json解码，从文件读取数据</span></span><br></pre></td></tr></table></figure><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line">d = &#123;<span class="string">&#x27;name&#x27;</span>:<span class="string">&#x27;Tom&#x27;</span>, <span class="string">&#x27;age&#x27;</span>:<span class="number">20</span>, <span class="string">&#x27;interest&#x27;</span>:[<span class="string">&#x27;music&#x27;</span>, <span class="string">&#x27;movie&#x27;</span>]&#125;</span><br><span class="line">dps = json.dumps(d)</span><br><span class="line"><span class="comment"># &#123;&quot;name&quot;: &quot;Tom&quot;, &quot;age&quot;: 20, &quot;interest&quot;: [&quot;music&quot;, &quot;movie&quot;]&#125; &lt;class &#x27;str&#x27;&gt;</span></span><br><span class="line">print(dps, <span class="built_in">type</span>(dps)) <span class="comment"># 本质上来说JSON序列化后就是字符串。</span></span><br><span class="line"></span><br><span class="line">lds = json.loads(j)</span><br><span class="line"><span class="comment"># &#123;&#x27;name&#x27;: &#x27;Tom&#x27;, &#x27;age&#x27;: 20, &#x27;interest&#x27;: [&#x27;music&#x27;, &#x27;movie&#x27;]&#125; &lt;class &#x27;dict&#x27;&gt;</span></span><br><span class="line">print(lds, <span class="built_in">type</span>(lds)) <span class="comment"># 反序列化后，回归原来字典类型。</span></span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2019/01/22/Python/11.Python-%E7%B1%BB%E5%9E%8B%E6%B3%A8%E9%87%8A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/01/22/Python/11.Python-%E7%B1%BB%E5%9E%8B%E6%B3%A8%E9%87%8A/" class="post-title-link" itemprop="url">Python-类型注解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-01-22 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-22T00:00:00+08:00">2019-01-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="Python类型注解"><a href="#Python类型注解" class="headerlink" title="Python类型注解"></a>Python类型注解</h2><h3 id="函数定义的弊端"><a href="#函数定义的弊端" class="headerlink" title="函数定义的弊端"></a>函数定义的弊端</h3><ol>
+<li>Python是动态语言，变量随时可以被赋值，且能赋值为不同的类型；    </li>
+<li>Python不是静态编译型语言，变量类型是在运行期决定的；  </li>
+<li>动态语言很灵活，但是这种特性也是弊端；  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line">print(add(<span class="number">4</span>, <span class="number">5</span>))<span class="comment">#计算4+5</span></span><br><span class="line">print(add(<span class="string">&#x27;hello&#x27;</span>, <span class="string">&#x27;world&#x27;</span>))<span class="comment">#字符串拼接</span></span><br><span class="line">add(<span class="number">4</span>, <span class="string">&#x27;hello&#x27;</span>) <span class="comment">#错误，不同类型不能+</span></span><br></pre></td></tr></table></figure>
+通过上面示例发现：   </li>
+<li>难发现：由于不做任何类型检查，直到运行期问题才显现出来，或者线上运行时才能暴露出问题；  </li>
+<li>难使用：函数的使用者看到函数的时候，并不知道你的函数的设计，并不知道应该传入什么类型的数据；</li>
+</ol>
+<p>如何解决这种动态语言定义的弊端呢？  </p>
+<ol>
+<li>增加文档（Documentation String）；  </li>
+<li>这只是一个惯例，不是强制标准，不能要求程序员一定为函数提供说明文档；  </li>
+<li>有缺陷：函数定义更新了，文档未必同步更新；
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/01/22/Python/11.Python-%E7%B1%BB%E5%9E%8B%E6%B3%A8%E9%87%8A/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2019/01/21/Python/10.Python-%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0%E3%80%81%E8%A3%85%E9%A5%B0%E5%99%A8%E3%80%81functools%E6%BA%90%E7%A0%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/01/21/Python/10.Python-%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0%E3%80%81%E8%A3%85%E9%A5%B0%E5%99%A8%E3%80%81functools%E6%BA%90%E7%A0%81/" class="post-title-link" itemprop="url">Python-高阶函数、装饰器、functools源码</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-01-21 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-21T00:00:00+08:00">2019-01-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>17k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>15 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="高阶函数"><a href="#高阶函数" class="headerlink" title="高阶函数"></a>高阶函数</h2><h3 id="高阶函数定义"><a href="#高阶函数定义" class="headerlink" title="高阶函数定义"></a>高阶函数定义</h3><p>First Class Object：<br>函数在Python中是一等公民；<br>函数是对象，可调用的对象；<br>函数可以作为普通变量、参数、返回值等；  </p>
+<p>高阶函数：<br>数学概念：<code>y = g(f(x))</code><br>高阶函数应当是至少满足下面一个条件：  </p>
+<ol>
+<li>接收一个或者多个函数作为参数；  </li>
+<li>输出一个函数；
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/01/21/Python/10.Python-%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0%E3%80%81%E8%A3%85%E9%A5%B0%E5%99%A8%E3%80%81functools%E6%BA%90%E7%A0%81/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2019/01/20/Python/09.Python-%E5%87%BD%E6%95%B0%E3%80%81map_reduce%E3%80%81lambda%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/01/20/Python/09.Python-%E5%87%BD%E6%95%B0%E3%80%81map_reduce%E3%80%81lambda%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">Python-函数、map/reduce、lambda匿名函数</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-01-20 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-20T00:00:00+08:00">2019-01-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>9.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>9 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="函数定义、调用"><a href="#函数定义、调用" class="headerlink" title="函数定义、调用"></a>函数定义、调用</h3><p>函数：可多个输入，但输出是一个<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> 函数名(<span class="params">参数列表</span>)</span></span><br><span class="line"><span class="function">    函数体(<span class="params">代码块</span>)</span></span><br><span class="line"><span class="function">    [<span class="title">return</span> 返回值]</span></span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>函数名是标识符，命名要求一样   </li>
+<li>语句块必须缩进，约定4个空格  </li>
+<li>Python的函数没有return语句，隐式会返回一个None值  </li>
+<li>定义中的参数列表称为形式参数，只是一种符号表达式（表示符），简称<code>形参</code>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/01/20/Python/09.Python-%E5%87%BD%E6%95%B0%E3%80%81map_reduce%E3%80%81lambda%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
@@ -985,331 +1501,10 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2019/01/12/Python/02.Python-%E5%88%97%E8%A1%A8%E3%80%81%E5%85%83%E7%BB%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
-      <meta itemprop="name" content="SoundMemories">
-      <meta itemprop="description" content="今日事，今日毕">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SoundMemories">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/01/12/Python/02.Python-%E5%88%97%E8%A1%A8%E3%80%81%E5%85%83%E7%BB%84/" class="post-title-link" itemprop="url">Python-列表、元组</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2019-01-12 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-12T00:00:00+08:00">2019-01-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3.7k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <blockquote id="fn__^">
-<sup>_^</sup>. &lt;<div class="pdfobject-container" data-target="https://s.zhiyuanyun.com/www.cmdp.org.cn/cms/201905/08/5cd24f37d3493.pdf" data-height="500px"></div>&gt; <a href="#reffn__^" title="Jump back to footnote [_^] in the text."> &#8617;</a>
-</blockquote>
-<blockquote id="fn__^">
-<sup>_^</sup>. <div class="pdfobject-container" data-target="/path/to/your/file.pdf" data-height="600px"></div><a href="#reffn__^" title="Jump back to footnote [_^] in the text."> &#8617;</a>
-</blockquote>
-<h2 id="数值分类"><a href="#数值分类" class="headerlink" title="数值分类"></a>数值分类</h2><p>数值分类：int、float、bool、complex<br>序列对象：字符串str、列表list、元组tuple<br>键值对：集合set、字典dict<br>数值型：      </p>
-<ul>
-<li>int、float、bool、complex都是对象，都是对象即实例：   </li>
-<li>int：python3的int就是长整型，且没有大小限制，受限于内存区域的大小。  </li>
-<li>float：有整数部分和小数部分组成。支持十进制和科学计数法表示。 C的双精度型实现。  </li>
-<li>complex：有实数和虚数部分组成，实数和虚数部分都是浮点数。    </li>
-<li>bool：int的子类，仅有2个实例True、 False对应1和0，可以和整数直接运算。  </li>
-</ul>
-<p>类型转换：    </p>
-<ul>
-<li>int(x)： 返回一个整数。  </li>
-<li>float(x)： 返回一个浮点数。  </li>
-<li>complex(x)、 complex(x,y) ：返回一个复数。  </li>
-<li>bool(x)： 返回布尔值，前面讲过False等价的对象。  </li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/01/12/Python/02.Python-%E5%88%97%E8%A1%A8%E3%80%81%E5%85%83%E7%BB%84/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2019/01/11/Python/01.Python-%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
-      <meta itemprop="name" content="SoundMemories">
-      <meta itemprop="description" content="今日事，今日毕">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SoundMemories">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/01/11/Python/01.Python-%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" class="post-title-link" itemprop="url">Python-基础语法</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2019-01-11 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-11T00:00:00+08:00">2019-01-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>6.5k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>6 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="基础语法"><a href="#基础语法" class="headerlink" title="基础语法"></a>基础语法</h2><p id="div-border-left-blue">
-以下内容基于Python 3.6.6版本编写！
-</p>
-
-<h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><p>和大多数语言一样，在Python中<code>#</code>表示注释的意思：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">&quot;Hello World!&quot;</span>) <span class="comment"># 输出Hello World!   </span></span><br><span class="line">[Out]:Hello World!   </span><br></pre></td></tr></table></figure><br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/01/11/Python/01.Python-%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2019/01/09/Python/00.Python-pdb/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
-      <meta itemprop="name" content="SoundMemories">
-      <meta itemprop="description" content="今日事，今日毕">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SoundMemories">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/01/09/Python/00.Python-pdb/" class="post-title-link" itemprop="url">Python-pdb调试器</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2019-01-09 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-09T00:00:00+08:00">2019-01-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.1k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="pdb调试器"><a href="#pdb调试器" class="headerlink" title="pdb调试器"></a>pdb调试器</h2><p>Python自带一个调试器, 在Python 3.7之后甚至成为内置调试器. 这就是pdb。<br>建议使用jupyter notebook进行练习。<br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/01/09/Python/00.Python-pdb/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span>
+    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 

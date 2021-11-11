@@ -33,7 +33,7 @@
 <meta property="og:description" content="对概率的诠释有两大学派，一种是频率派另一种是贝叶斯派。后面我们对观测集采用下面记号：  X_{N\times p}&#x3D;(x_{1},x_{2},\cdots,x_{N})^{T},x_{i}&#x3D;(x_{i1},x_{i2},\cdots,x_{ip})^{T}这个记号表示有 $N$ 个样本，每个样本都是 $p$ 维向量。其中每个观测都是由 $p(x|\theta)$ 生成的。 频率派的观点频率派认为">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-09-19T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-08-21T04:16:33.992Z">
+<meta property="article:modified_time" content="2021-10-11T04:06:08.626Z">
 <meta property="article:author" content="SoundMemories">
 <meta property="article:tag" content="Machine Learning">
 <meta name="twitter:card" content="summary">
@@ -229,7 +229,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-count">113</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -369,7 +369,7 @@ p(\theta|X)=\frac{p(X|\theta)\cdot p(\theta)}{p(X)}=\frac{p(X|\theta)\cdot p(\th
 p(x_{new}|X)=\int\limits _{\theta}p(x_{new}|\theta)\cdot p(\theta|X)d\theta</script><p> 其中积分中的被乘数是模型，乘数是后验分布。</p>
 <h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>频率派和贝叶斯派分别给出了一系列的机器学习算法。频率派的观点导出了一系列的统计机器学习算法，而贝叶斯派导出了概率图理论。在应用频率派的 MLE 方法时最优化理论占有重要地位。而贝叶斯派的算法无论是后验概率的建模还是应用这个后验进行推断时积分占有重要地位。因此采样积分方法如 MCMC 有很多应用。</p>
 <p>如果对此有疑问的，可以参考知乎这篇文章：<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMjQ4MDgxMA==">聊一聊机器学习的MLE和MAP：最大似然估计和最大后验估计<i class="fa fa-external-link-alt"></i></span>。</p>
-<div class="note info"><p>文章转载自<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDc=">Jie Zhou<i class="fa fa-external-link-alt"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDcvTWFjaGluZS1MZWFybmluZy1TZXNzaW9u">Machine-Learning-Session<i class="fa fa-external-link-alt"></i></span>。</p>
+<div class="note info"><p>文章参考<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDcvTWFjaGluZS1MZWFybmluZy1TZXNzaW9u">Machine-Learning-Session<i class="fa fa-external-link-alt"></i></span>笔记，在其基础上增加细节笔记。</p>
 </div>
 
     </div>
@@ -387,13 +387,13 @@ p(x_{new}|X)=\int\limits _{\theta}p(x_{new}|\theta)\cdot p(\theta|X)d\theta</scr
       <div class="popular-posts-title"><a href="\2020\06\10\Machine Learning\11.ML-数据分析\" rel="bookmark">ML-数据分析</a></div>
     </li>
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\09\28\Machine Learning\20.DimentionReduction\" rel="bookmark">DimentionReduction</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2020\09\21\Machine Learning\17.MathBasics\" rel="bookmark">MathBasics</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2020\09\25\Machine Learning\18.LinearRegression\" rel="bookmark">LinearRegression</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\09\27\Machine Learning\19.LinearClassification\" rel="bookmark">LinearClassification</a></div>
     </li>
   </ul>
 

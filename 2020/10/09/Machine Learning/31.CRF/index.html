@@ -25,15 +25,15 @@
     var CONFIG = {"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.0.2","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="条件随机场我们知道，分类问题可以分为硬分类和软分类两种，其中硬分类有 SVM，PLA，LDA 等。软分类问题大体上可以分为概率生成和概率判别模型，其中较为有名的概率判别模型有 Logistic 回归，生成模型有朴素贝叶斯模型。Logistic 回归模型的损失函数为交叉熵，这类模型也叫对数线性模型，一般地，又叫做最大熵模型，这类模型和指数族分布的概率假设是一致的。对朴素贝叶斯假设，如果将其中的单元素">
+  <meta name="description" content="条件随机场我们知道，分类问题可以分为硬分类和软分类两种。其中硬分类有 SVM（支持向量机），PLA（感知机算法），LDA（线性判别分析） 等。软分类问题大体上可以分为概率生成和概率判别模型，其中较为有名的概率判别模型有 Logistic 回归，生成模型有朴素贝叶斯模型。Logistic 回归模型的损失函数为交叉熵，这类模型也叫对数线性模型，一般地，又叫做最大熵模型，这类模型和指数族分布的概率假设是">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CRF">
 <meta property="og:url" content="https://soundmemories.github.io/2020/10/09/Machine%20Learning/31.CRF/index.html">
 <meta property="og:site_name" content="SoundMemories">
-<meta property="og:description" content="条件随机场我们知道，分类问题可以分为硬分类和软分类两种，其中硬分类有 SVM，PLA，LDA 等。软分类问题大体上可以分为概率生成和概率判别模型，其中较为有名的概率判别模型有 Logistic 回归，生成模型有朴素贝叶斯模型。Logistic 回归模型的损失函数为交叉熵，这类模型也叫对数线性模型，一般地，又叫做最大熵模型，这类模型和指数族分布的概率假设是一致的。对朴素贝叶斯假设，如果将其中的单元素">
+<meta property="og:description" content="条件随机场我们知道，分类问题可以分为硬分类和软分类两种。其中硬分类有 SVM（支持向量机），PLA（感知机算法），LDA（线性判别分析） 等。软分类问题大体上可以分为概率生成和概率判别模型，其中较为有名的概率判别模型有 Logistic 回归，生成模型有朴素贝叶斯模型。Logistic 回归模型的损失函数为交叉熵，这类模型也叫对数线性模型，一般地，又叫做最大熵模型，这类模型和指数族分布的概率假设是">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-10-08T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-08-21T06:51:31.968Z">
+<meta property="article:modified_time" content="2021-10-11T04:52:06.836Z">
 <meta property="article:author" content="SoundMemories">
 <meta property="article:tag" content="Machine Learning">
 <meta name="twitter:card" content="summary">
@@ -214,7 +214,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E9%9A%8F%E6%9C%BA%E5%9C%BA"><span class="nav-number">1.</span> <span class="nav-text">条件随机场</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CRF-%E7%9A%84-PDF"><span class="nav-number">1.1.</span> <span class="nav-text">CRF 的 PDF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%B9%E7%BC%98%E6%A6%82%E7%8E%87"><span class="nav-number">1.2.</span> <span class="nav-text">边缘概率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1"><span class="nav-number">1.3.</span> <span class="nav-text">参数估计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%91%E7%A0%81"><span class="nav-number">1.4.</span> <span class="nav-text">译码</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E9%9A%8F%E6%9C%BA%E5%9C%BA"><span class="nav-number">1.</span> <span class="nav-text">条件随机场</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CRF-%E7%9A%84-PDF"><span class="nav-number">1.1.</span> <span class="nav-text">CRF 的 PDF</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E9%9A%8F%E6%9C%BA%E5%9C%BA%E7%9A%84%E7%AE%80%E5%8C%96"><span class="nav-number">1.1.1.</span> <span class="nav-text">条件随机场的简化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E4%B8%AA%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.2.</span> <span class="nav-text">3个问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%B9%E7%BC%98%E6%A6%82%E7%8E%87"><span class="nav-number">1.2.</span> <span class="nav-text">边缘概率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1"><span class="nav-number">1.3.</span> <span class="nav-text">参数估计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%91%E7%A0%81"><span class="nav-number">1.4.</span> <span class="nav-text">译码</span></a></li></ol></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -229,7 +229,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-count">113</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -337,14 +337,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>5.1k</span>
+      <span>6.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
+      <span>6 分钟</span>
     </span>
 </div>
 
@@ -355,23 +355,23 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="条件随机场"><a href="#条件随机场" class="headerlink" title="条件随机场"></a>条件随机场</h1><p>我们知道，分类问题可以分为硬分类和软分类两种，其中硬分类有 SVM，PLA，LDA 等。软分类问题大体上可以分为概率生成和概率判别模型，其中较为有名的概率判别模型有 Logistic 回归，生成模型有朴素贝叶斯模型。Logistic 回归模型的损失函数为交叉熵，这类模型也叫对数线性模型，一般地，又叫做最大熵模型，这类模型和指数族分布的概率假设是一致的。对朴素贝叶斯假设，如果将其中的单元素的条件独立性做推广到一系列的隐变量，那么，由此得到的模型又被称为动态模型，比较有代表性的如 HMM，从概率意义上，HMM也可以看成是 GMM 在时序上面的推广。</p>
-<p>我们看到，一般地，如果将最大熵模型和 HMM相结合，那么这种模型叫做最大熵 Markov 模型（MEMM）：</p>
+        <h1 id="条件随机场"><a href="#条件随机场" class="headerlink" title="条件随机场"></a>条件随机场</h1><p>我们知道，分类问题可以分为<strong>硬分类</strong>和<strong>软分类</strong>两种。其中硬分类有 SVM（支持向量机），PLA（感知机算法），LDA（线性判别分析） 等。<strong>软分类</strong>问题大体上可以分为<strong>概率生成</strong>和<strong>概率判别</strong>模型，其中较为有名的<strong>概率判别</strong>模型有 Logistic 回归，<strong>生成模型</strong>有朴素贝叶斯模型。Logistic 回归模型的损失函数为交叉熵，这类模型也叫对数线性模型，一般地，又叫做最大熵模型，这类模型和指数族分布的概率假设是一致的。对朴素贝叶斯假设，如果将其中的单元素的条件独立性做推广到一系列的隐变量，那么，由此得到的模型又被称为动态模型，比较有代表性的如 HMM（隐马尔可夫模型），从概率意义上，当HMM的发射矩阵服从高斯分布时，HMM也可以看成是 GMM（高斯混合模型） 在时序上面的推广。</p>
+<p>我们看到，一般地，如果将<strong>最大熵模型</strong>（判别模型）和 <strong>HMM</strong>（生成模型） 相结合，那么这种模型叫做<strong>最大熵 Markov 模型</strong>（MEMM），严格讲它是概率判别模型：</p>
 <div class="mermaid">
 graph LR
 	x4((x4))--&gt;y4
-		x2((x2))--&gt;y2
-			x1((x1))--&gt;y1
-				x3((x3))--&gt;y3
+	x2((x2))--&gt;y2
+	x1((x1))--&gt;y1
+	x3((x3))--&gt;y3
 	y1--&gt;y2;
 	y2--&gt;y3;
 y3--&gt;y4;
 </div>
-<p>这个图就是将 HMM 的图中观测变量和隐变量的边方向反向，应用在分类中，隐变量就是输出的分类，这样 HMM 中的两个假设就不成立了，特别是观测之间不是完全独立的了。</p>
-<p>HMM 是一种生成式模型，其建模对象为 $p(X,Y|\lambda)$，根据 HMM 的概率图，$p(X,Y|\lambda)=\prod\limits_{t=1}^Tp(x_t,y_t|\lambda,y_{t-1})$。我们看到，观测独立性假设是一个很强的假设，如果我们有一个文本样本，那么观测独立性假设就假定了所有的单词之间没有关联。</p>
-<p>在 MEMM 中，建模对象是 $p(Y|X,\lambda)$，我们看概率图，给定 $y_t$，$x_t,x_{t-1}$ 是不独立的，这样，观测独立假设就不成立了。根据概率图，$p(Y|X,\lambda)=\prod\limits_{t=1}^Tp(y_t|y_{t-1},X,\lambda)$。</p>
-<p>MEMM 的缺陷是其必须满足局域的概率归一化（Label Bias Problem），我们看到，在上面的概率图中，$p(y_t|y_{t-1},x_t)$， 这个概率，如果 $p(y_t|y_{t-1})$ 非常接近1，那么事实上，观测变量是什么就不会影响这个概率了。</p>
-<p>对于这个问题，我们将 $y$ 之间的箭头转为直线转为无向图（线性链条件随机场），这样就只要满足全局归一化了（破坏齐次 Markov 假设）。</p>
+<p>这个图就是将 HMM 的观测变量 $x$ 方向反向且是<strong>有向图</strong>，应用在分类中，隐变量就是输出的分类。这样 HMM 中的两个假设就不成立了，特别是观测之间不是完全独立的了。即与HMM的 $x_i$ 只依赖 $y_i$ 不一样，MEMM当前隐藏状态  $y_i$ 应该是依赖当前时刻的观测节点 $x_i$ 和上一时刻的隐藏节点 $y_{i-1}$，依次类推$y_{i-1}$也和 $x_{i-1}$ 有关，所以 $x_i$ 和 $x_{i-1}$ 有关，从而打破了观测独立假设。</p>
+<p>HMM 是一种<strong>生成式模型</strong>，其建模对象为 $p(X,Y|\lambda)$，根据 HMM 的概率图，$p(X,Y|\lambda)=\prod\limits_{t=1}^Tp(x_t,y_t|\lambda,y_{t-1})$。我们看到，观测独立性假设是一个很强的假设，如果我们有一个文本样本，那么观测独立性假设就假定了所有的单词之间没有关联。</p>
+<p>MEMM 是一种<strong>判别式模型</strong>，建模对象是 $p(Y|X,\lambda)$，我们看概率图（有向图），给定 $y_t$，$x_t,x_{t-1}$ 是不独立的，这样，观测独立假设就不成立了。根据概率图，$p(Y|X,\lambda)=\prod\limits_{t=1}^Tp(y_t|y_{t-1},X,\lambda)$。</p>
+<p>MEMM 的缺陷是<strong>标注偏差问题</strong>（Label Bias Problem），其必须满足<strong>局域的概率归一化</strong>，我们看到，在上面的概率图中，$p(y_t|y_{t-1},x_t)$， 这个概率，如果 $p(y_t|y_{t-1})$ 非常接近1，那么事实上，观测变量 $x$ 是什么都不会影响这个概率了，这样观测变量就没用了。</p>
+<p>对于这个问题，我们将 $y$ 之间的箭头转为直线转为无向图（线性链条件随机场），这样就只要满足<strong>全局归一化了</strong>（破坏齐次 Markov 假设）。</p>
 <div class="mermaid">
 graph LR
 	x4((x4))--&gt;y4
@@ -382,46 +382,37 @@ graph LR
 	y2---y3;
 y3---y4;
 </div>
-<h2 id="CRF-的-PDF"><a href="#CRF-的-PDF" class="headerlink" title="CRF 的 PDF"></a>CRF 的 PDF</h2><p>线性链的 CRF 的 PDF 为 $p(Y|X)=\frac{1}{Z}\exp\sum\limits_{t=1}^T(F_t(y_{t-1},y_t,x_{1:T}))$，两两形成了最大团，其中 $y_0$ 是随意外加的一个元素。作为第一个简化，我们假设每个团的势函数相同 $F_t=F$。</p>
-<p>对于这个 $F$，我们进一步，可以将其写为 $ F(y_{t-1},y_t,X)=\Delta_{y_{t-1},X}+\Delta_{y_{t},X}+\Delta_{y_t,y_{t-1},X}$这三个部分，分别表示状态函数已经转移函数，由于整体的求和，可以简化为 $ F(y_{t-1},y_t,X)=\Delta_{y_{t},X}+\Delta_{y_t,y_{t-1},X}$。</p>
-<p>我们可以设计一个表达式将其参数化：</p>
+<h2 id="CRF-的-PDF"><a href="#CRF-的-PDF" class="headerlink" title="CRF 的 PDF"></a>CRF 的 PDF</h2><p>线性链的 CRF 的 PDF 为 $p(Y|X)=\dfrac{1}{Z}\exp\sum\limits_{t=1}^T(F_t(y_{t-1},y_t,x_{1:T}))$，两两形成了最大团，其中 $y_0$ 是随意外加的一个元素作为初始状态。作为第一个简化，我们假设每个团的势函数相同 $F_t=F$。</p>
+<p>对于这个 $F$，我们进一步，可以将其写为 $ F(y_{t-1},y_t,X)=\Delta_{y_{t-1},X}+\Delta_{y_{t},X}+\Delta_{y_t,y_{t-1},X}$这三个部分，前两个部分表示状态函数，最后一个表示转移函数，由于整体的求和，第一部分重复可以省略，可以简化为 $ F(y_{t-1},y_t,X)=\Delta_{y_{t},X}+\Delta_{y_t,y_{t-1},X}$，我们可以设计一个表达式将这两部分参数化：</p>
 <script type="math/tex; mode=display">
 \begin{align}
 \Delta_{y_t,y_{t-1},X}&=\sum\limits_{k=1}^K\lambda_kf_k(y_{t-1},y_t,X)\\
 \Delta_{y_{t},X}&=\sum\limits_{l=1}^L\eta_lg_l(y_t,X)
-\end{align}</script><p>其中 $g,f $ 叫做特征函数，对于 $y$ 有 $S$ 种元素，那么 $K\le S^2,L\le S$。</p>
-<p>代入概率密度函数中：</p>
+\end{align}</script><p>其中 $g,f $ 叫做特征函数，对于 $y$ 有 $S$ 种元素，$K$ 和 $y_{t-1}$ 和 $y_{t}$ 有关，$L$ 和 $y_t$有关，所以 $K\le S^2,L\le S$。</p>
+<p>然后代入概率密度函数中：</p>
 <script type="math/tex; mode=display">
 \begin{align}
 p(Y|X)=\frac{1}{Z}\exp\sum\limits_{t=1}^T[\sum\limits_{k=1}^K\lambda_kf_k(y_{t-1},y_t,X)+\sum\limits_{l=1}^L\eta_lg_l(y_t,X)]
-\end{align}</script><p>对于单个样本，将其写成向量的形式。定义 $y=(y_1,y_2,\cdots,y_T)^T,x=(x_1,x_2,\cdots,x_T)^T,\lambda=(\lambda_1,\lambda_2,\cdots,\lambda_K)^T,\eta=(\eta_1,\eta_2,\cdots,\eta_L)^T$。并且有 $f=(f_1,f_2,\cdots,f_K)^T,g=(g_1,g_2,\cdots,g_L)^T$。于是：</p>
+\end{align}</script><h3 id="条件随机场的简化"><a href="#条件随机场的简化" class="headerlink" title="条件随机场的简化"></a>条件随机场的简化</h3><p>将其写成向量的形式：定义 $y=(y_1,y_2,\cdots,y_T)^T,x=(x_1,x_2,\cdots,x_T)^T,\lambda=(\lambda_1,\lambda_2,\cdots,\lambda_K)^T,\eta=(\eta_1,\eta_2,\cdots,\eta_L)^T$，并且有 $f=(f_1,f_2,\cdots,f_K)^T,g=(g_1,g_2,\cdots,g_L)^T$，于是：</p>
 <script type="math/tex; mode=display">
 \begin{align}
 p(Y=y|X=x)=\frac{1}{Z}\exp\sum\limits_{t=1}^T[\lambda^Tf(y_{t-1},y_t,x)+\eta^Tg(y_t,x)]
-\end{align}</script><p>不妨记：$\theta=(\lambda,\eta)^T,H=(\sum\limits_{t=1}^Tf,\sum\limits_{t=1}^Tg)^T$：</p>
+\end{align}</script><p>不妨记：$\theta=(\lambda,\eta)^T,H=(\sum\limits_{t=1}^Tf,\sum\limits_{t=1}^Tg)^T$，这俩都是 $K+L$ 维度：</p>
 <script type="math/tex; mode=display">
 \begin{align}
 p(Y=y|X=x)=\frac{1}{Z(x,\theta)}\exp[\theta^TH(y_t,y_{t-1},x)]
 \end{align}</script><p>上面这个式子是一个指数族分布，于是 $Z$ 是配分函数。</p>
-<p>CRF 需要解决下面几个问题：</p>
+<h3 id="3个问题"><a href="#3个问题" class="headerlink" title="3个问题"></a>3个问题</h3><p>CRF 需要解决下面几个问题：</p>
 <ol>
-<li><p>Learning：参数估计问题，对 $N$ 个 $T$ 维样本，$\hat{\theta}=\mathop{argmax}\limits_{\theta}\prod\limits_{i=1}^Np(y^i|x^i)$，这里用上标表示样本的编号。</p>
-</li>
-<li><p>Inference：</p>
-<ol>
-<li>边缘概率：<script type="math/tex; mode=display">
-\begin{align}
-p(y_t|x)
-\end{align}</script></li>
+<li>Learning：参数估计问题，CRF是求 $\theta$ 参数。对 $N$ 个 $T$ 维样本，$\hat{\theta}=\mathop{argmax}\limits_{\theta}\prod\limits_{i=1}^Np(y^i|x^i)$，这里用上标表示样本的编号。</li>
+<li>Inference：<ol>
+<li>边缘概率：$p(y_t|x)$  </li>
+<li>条件概率：一般在生成模型中较为关注，CRF中不关注</li>
+<li>MAP 推断(Decoding)：$\hat{y}=\mathop{argmax}\limits_{y}p(y|x)$ 的序列 $y$</li>
 </ol>
 </li>
-<li><p>条件概率：一般在生成模型中较为关注，CRF中不关注</p>
-</li>
-<li>MAP 推断：<script type="math/tex; mode=display">
-\begin{align}
-\hat{y}=\mathop{argmax}p(y|x)
-\end{align}</script></li>
 </ol>
+<p>总体来说3个基本问题：<strong>概率计算问题</strong>(边缘概率)、<strong>学习问题</strong>(参数估计)、<strong>预测问题</strong>(Decoding)。   </p>
 <h2 id="边缘概率"><a href="#边缘概率" class="headerlink" title="边缘概率"></a>边缘概率</h2><p>边缘概率这个问题描述为，根据学习任务得到的参数，给定了 $p(Y=y|X=x)$，求解 $p(y_t=i|x)$。根据无向图可以给出：</p>
 <script type="math/tex; mode=display">
 \begin{align}
@@ -432,7 +423,7 @@ p(y_t=i|x)=\sum\limits_{y_{1:t-1},y_{t+1:T}}p(y|x)=\sum\limits_{y_{1:t-1}}\sum\l
 \begin{align}&p(y_t=i|x)=\frac{1}{Z}\Delta_l\Delta_r\\
 &\Delta_l=\sum\limits_{y_{1:t-1}}\phi_{1}(y_0,y_1,x)\phi_2(y_1,y_2,x)\cdots\phi_{t-1}(y_{t-2},y_{t-1},x)\phi_t(y_{t-1},y_t=i,x)\\
 &\Delta_r=\sum\limits_{y_{t+1:T}}\phi_{t+1}(y_t=i,y_{t+1},x)\phi_{t+2}(y_{t+1},y_{t+2},x)\cdots\phi_T(y_{T-1},y_T,x)
-\end{align}</script><p>对于 $\Delta_l$，从左向右，一步一步将 $y_t$ 消掉：</p>
+\end{align}</script><p>对于 $\Delta_l$：$\phi_{t-1}(y_{t-2},y_{t-1},x)\phi_t(y_{t-1},y_t=i,x)$ 对 $y_{t-1}$ 积分得到 $\sum\limits_{y_{t-1}}\phi_t(y_{t-1},y_t=i,x)$ ，那么从左向右，一步一步积分将 $y_t$ 消掉：</p>
 <script type="math/tex; mode=display">
 \begin{align}
 \Delta_l=\sum\limits_{y_{t-1}}\phi_t(y_{t-1},y_t=i,x)\sum\limits_{y_{t-2}}\phi_{t-1}(y_{t-2},y_{t-1},x)\cdots\sum\limits_{y_0}\phi_1(y_0,y_1,x)
@@ -440,18 +431,25 @@ p(y_t=i|x)=\sum\limits_{y_{1:t-1},y_{t+1:T}}p(y|x)=\sum\limits_{y_{1:t-1}}\sum\l
 <script type="math/tex; mode=display">
 \begin{align}
 \alpha_t(i)=\Delta_l
-\end{align}</script><p>于是：</p>
+\end{align}</script><p>这里 $\alpha_t(i)=y_1y_2…y_{t-1}(y_t=i)$，依此类推 $\alpha_{t-1}(j)=y_1y_2…y_{t-2}(y_{t-1}=j)$，于是：</p>
 <script type="math/tex; mode=display">
 \begin{align}
-\alpha_{t}(i)=\sum\limits_{j\in S}\phi_t(y_{t-1}=j,y_t=i,x)\alpha_{t-1}(j)
+\alpha_{t}(i)&=\sum\limits_{y_{t-1}}\phi_t(y_{t-1}=j,y_t=i,x)\alpha_{t-1}(j)\\
+&=\sum\limits_{j\in S}\phi_t(y_{t-1}=j,y_t=i,x)\alpha_{t-1}(j)
 \end{align}</script><p>这样我们得到了一个递推式。</p>
-<p>类似地，$\Delta_r=\beta_t(i)=\sum\limits_{j\in S}\phi_{t+1}(y_t=i,y_{t+1}=j,x)\beta_{t+1}(j)$。这个方法和 HMM 中的前向后向算法类似，就是概率图模型中精确推断的变量消除算法（信念传播）。</p>
-<h2 id="参数估计"><a href="#参数估计" class="headerlink" title="参数估计"></a>参数估计</h2><p>在进行各种类型的推断之前，还需要对参数进行学习：</p>
+<p>类似地，$\Delta_r=\beta_t(i)=\sum\limits_{j\in S}\phi_{t+1}(y_t=i,y_{t+1}=j,x)\beta_{t+1}(j)$。这个方法和 HMM 中的前向-后向算法类似，就是概率图模型中精确推断的变量消除算法（信念传播）。</p>
+<h2 id="参数估计"><a href="#参数估计" class="headerlink" title="参数估计"></a>参数估计</h2><p>在进行各种类型的推断之前，还需要对参数 $\theta=(\lambda,\eta)$ 进行学习：</p>
 <script type="math/tex; mode=display">
 \begin{align}\hat{\theta}&=\mathop{argmax}_{\theta}\prod\limits_{i=1}^Np(y^i|x^i)\\
 &=\mathop{argmax}_\theta\sum\limits_{i=1}^N\log p(y^i|x^i)\\
-&=\mathop{argmax}_\theta\sum\limits_{i=1}^N[-\log Z(x^i,\lambda,\eta)+\sum\limits_{t=1}^T[\lambda^Tf(y_{t-1},y_t,x)+\eta^Tg(y_t,x)]]
-\end{align}</script><p>上面的式子中，第一项是对数配分函数，根据指数族分布的结论：</p>
+&=\mathop{argmax}_\theta\sum\limits_{i=1}^N\log [\frac{1}{Z(x^i,\lambda,\eta)}\exp\sum\limits_{t=1}^T[\lambda^Tf(y_{t-1}^i,y_t^i,x^i)+\eta^Tg(y_t^i,x^i)]]\\
+&=\mathop{argmax}_\theta\sum\limits_{i=1}^N[-\log Z(x^i,\lambda,\eta)+\sum\limits_{t=1}^T[\lambda^Tf(y_{t-1}^i,y_t^i,x^i)+\eta^Tg(y_t^i,x^i)]]\\
+&=\mathop{argmax}_\theta L(\lambda,\eta,x^i)
+\end{align}</script><p>最优化 $L$ 函数，使用梯度上升法，求 $\nabla_\lambda L$ 和 $\nabla_\eta L$，下面以求 $\nabla_\lambda L$ 为例：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\nabla_\lambda L= \sum\limits_{i=1}^N[-\nabla_\lambda \log Z(x^i,\lambda,\eta)+\sum\limits_{t=1}^T f(y_{t-1}^i,y_t^i,x^i)]
+\end{align}</script><p>上面的式子中，第一项是对数配分函数，根据指数族分布(log-partition function)的结论：</p>
 <script type="math/tex; mode=display">
 \begin{align}
 \nabla_\lambda(\log Z(x^i,\lambda,\eta))=\mathbb{E}_{p(y^i|x^i)}[\sum\limits_{t=1}^Tf(y_{t-1},y_t,x^i)]
@@ -461,16 +459,18 @@ p(y_t=i|x)=\sum\limits_{y_{1:t-1},y_{t+1:T}}p(y|x)=\sum\limits_{y_{1:t-1}}\sum\l
 \mathbb{E}_{p(y^i|x^i)}[\sum\limits_{t=1}^Tf(y_{t-1},y_t,x^i)]=\sum\limits_{y}p(y|x^i)\sum\limits_{t=1}^Tf(y_{t-1},y_t,x^i)
 \end{align}</script><p>第一个求和号的复杂度为 $O(S^T)$，重新排列求和符号：</p>
 <script type="math/tex; mode=display">
-\begin{align}\mathbb{E}_{p(y^i|x^i)}[\sum\limits_{t=1}^Tf(y_{t-1},y_t,x^i)]&=\sum\limits_{t=1}^T\sum\limits_{y_{1:t-2}}\sum\limits_{y_{t-1}}\sum\limits_{y_t}\sum\limits_{y_{t+1:T}}p(y|x^i)f(y_{t-1},y_t,x^i)\nonumber\\
+\begin{align}
+\mathbb{E}_{p(y^i|x^i)}[\sum\limits_{t=1}^Tf(y_{t-1},y_t,x^i)]&=\sum\limits_{t=1}^T\sum\limits_{y_{1:t-2}}\sum\limits_{y_{t-1}}\sum\limits_{y_t}\sum\limits_{y_{t+1:T}}p(y|x^i)f(y_{t-1},y_t,x^i)\nonumber\\
+&=\sum\limits_{t=1}^T\sum\limits_{y_{t-1}}\sum\limits_{y_t}(\sum\limits_{y_{1:t-2}}\sum\limits_{y_{t+1:T}}p(y|x^i)f(y_{t-1},y_t,x^i))\nonumber\\
 &=\sum\limits_{t=1}^T\sum\limits_{y_{t-1}}\sum\limits_{y_t}p(y_{t-1},y_t|x^i)f(y_{t-1},y_t,x^i)
-\end{align}</script><p>和上面的边缘概率类似，也可以通过前向后向算法得到上面式子中的边缘概率。</p>
+\end{align}</script><p>和上面的求边缘概率 $p(y_t|x)$ 类似，这里 $p(y_{t-1},y_t|x^i)$ 的 $y$ 是两个，也可以通过前向后向算法得到上面式子中的边缘概率。</p>
 <p>于是：</p>
 <script type="math/tex; mode=display">
 \begin{align}
 \nabla_\lambda L=\sum\limits_{i=1}^N\sum\limits_{t=1}^T[f(y_{t-1},y_t,x^i)-\sum\limits_{y_{t-1}}\sum\limits_{y_t}p(y_{t-1},y_t|x^i)f(y_{t-1},y_t,x^i)]
 \end{align}</script><p>利用梯度上升算法可以求解。对于 $\eta$ 也是类似的过程。</p>
 <h2 id="译码"><a href="#译码" class="headerlink" title="译码"></a>译码</h2><p>译码问题和 HMM 中的 Viterbi 算法类似，同样采样动态规划的思想一层一层求解最大值。</p>
-<div class="note info"><p>文章转载自<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDc=">Jie Zhou<i class="fa fa-external-link-alt"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDcvTWFjaGluZS1MZWFybmluZy1TZXNzaW9u">Machine-Learning-Session<i class="fa fa-external-link-alt"></i></span>。</p>
+<div class="note info"><p>文章参考<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDcvTWFjaGluZS1MZWFybmluZy1TZXNzaW9u">Machine-Learning-Session<i class="fa fa-external-link-alt"></i></span>笔记，在其基础上增加细节笔记。<br>有关CRF的内容，推荐博客<span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vcGluYXJkL3AvNzA0ODMzMy5odG1s">条件随机场CRF<i class="fa fa-external-link-alt"></i></span>。</p>
 </div>
     </div>
 
@@ -490,10 +490,10 @@ p(y_t=i|x)=\sum\limits_{y_{1:t-1},y_{t+1:T}}p(y|x)=\sum\limits_{y_{1:t-1}}\sum\l
       <div class="popular-posts-title"><a href="\2020\09\20\Machine Learning\16.Introduction\" rel="bookmark">Introduction</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\09\21\Machine Learning\17.MathBasics\" rel="bookmark">MathBasics</a></div>
+      <div class="popular-posts-title"><a href="\2020\09\28\Machine Learning\20.DimentionReduction\" rel="bookmark">DimentionReduction</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\09\25\Machine Learning\18.LinearRegression\" rel="bookmark">LinearRegression</a></div>
+      <div class="popular-posts-title"><a href="\2020\09\21\Machine Learning\17.MathBasics\" rel="bookmark">MathBasics</a></div>
     </li>
   </ul>
 
