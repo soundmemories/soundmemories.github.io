@@ -1204,7 +1204,7 @@ p(x)=\frac{1}{Z}\prod\limits_{i=1}^p\phi_i(x_i)\prod\limits_{i,j\in X}\phi_{i,j}
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="条件随机场"><a href="#条件随机场" class="headerlink" title="条件随机场"></a>条件随机场</h1><p>我们知道，分类问题可以分为<strong>硬分类</strong>和<strong>软分类</strong>两种。其中硬分类有 SVM（支持向量机），PLA（感知机算法），LDA（线性判别分析） 等。<strong>软分类</strong>问题大体上可以分为<strong>概率生成</strong>和<strong>概率判别</strong>模型，其中较为有名的<strong>概率判别</strong>模型有 Logistic 回归，<strong>生成模型</strong>有朴素贝叶斯模型。Logistic 回归模型的损失函数为交叉熵，这类模型也叫对数线性模型，一般地，又叫做最大熵模型，这类模型和指数族分布的概率假设是一致的。对朴素贝叶斯假设，如果将其中的单元素的条件独立性做推广到一系列的隐变量，那么，由此得到的模型又被称为动态模型，比较有代表性的如 HMM（隐马尔可夫模型），从概率意义上，当HMM的发射矩阵服从高斯分布时，HMM也可以看成是 GMM（高斯混合模型） 在时序上面的推广。</p>
+          <h1 id="条件随机场"><a href="#条件随机场" class="headerlink" title="条件随机场"></a>条件随机场</h1><p>我们知道，分类问题可以分为<strong>硬分类</strong>和<strong>软分类</strong>两种。其中<strong>硬分类</strong>有 SVM（支持向量机），PLA（感知机算法），LDA（线性判别分析） 等。<strong>软分类</strong>问题大体上可以分为<strong>概率生成</strong>和<strong>概率判别</strong>模型，其中较为有名的<strong>判别模型</strong>有 Logistic 回归，<strong>生成模型</strong>有朴素贝叶斯模型。Logistic 回归模型的损失函数为交叉熵，这类模型也叫对数线性模型，一般地，又叫做最大熵模型，这类模型和指数族分布的概率假设是一致的。对朴素贝叶斯假设，如果将其中的单元素的条件独立性做推广到一系列的隐变量，那么，由此得到的模型又被称为动态模型，比较有代表性的如 HMM（隐马尔可夫模型），从概率意义上，当HMM的发射矩阵服从高斯分布时，HMM也可以看成是 GMM（高斯混合模型） 在时序上面的推广。</p>
 <p>我们看到，一般地，如果将<strong>最大熵模型</strong>（判别模型）和 <strong>HMM</strong>（生成模型） 相结合，那么这种模型叫做<strong>最大熵 Markov 模型</strong>（MEMM），严格讲它是概率判别模型：</p>
 <div class="mermaid">
 graph LR
@@ -1216,7 +1216,7 @@ graph LR
 	y2--&gt;y3;
 y3--&gt;y4;
 </div>
-<p>这个图就是将 HMM 的观测变量 $x$ 方向反向且是<strong>有向图</strong>，应用在分类中，隐变量就是输出的分类。这样 HMM 中的两个假设就不成立了，特别是观测之间不是完全独立的了。即与HMM的 $x_i$ 只依赖 $y_i$ 不一样，MEMM当前隐藏状态  $y_i$ 应该是依赖当前时刻的观测节点 $x_i$ 和上一时刻的隐藏节点 $y_{i-1}$，依次类推$y_{i-1}$也和 $x_{i-1}$ 有关，所以 $x_i$ 和 $x_{i-1}$ 有关，从而打破了观测独立假设。</p>
+<p>这个图就是将 HMM 的<strong>观测变量 $x$ 方向反向</strong>且是有向图，应用在分类中，隐变量就是输出的分类。这样 HMM 中的两个假设就不成立了，特别是观测之间不是完全独立的了。即与HMM的 $x_i$ 只依赖 $y_i$ 不一样，MEMM当前隐藏状态  $y_i$ 应该是依赖当前时刻的观测节点 $x_i$ 和上一时刻的隐藏节点 $y_{i-1}$，依次类推$y_{i-1}$也和 $x_{i-1}$ 有关，所以 $x_i$ 和 $x_{i-1}$ 有关，从而打破了观测独立假设。</p>
 <p>HMM 是一种<strong>生成式模型</strong>，其建模对象为 $p(X,Y|\lambda)$，根据 HMM 的概率图，$p(X,Y|\lambda)=\prod\limits_{t=1}^Tp(x_t,y_t|\lambda,y_{t-1})$。我们看到，观测独立性假设是一个很强的假设，如果我们有一个文本样本，那么观测独立性假设就假定了所有的单词之间没有关联。</p>
 <p>MEMM 是一种<strong>判别式模型</strong>，建模对象是 $p(Y|X,\lambda)$，我们看概率图（有向图），给定 $y_t$，$x_t,x_{t-1}$ 是不独立的，这样，观测独立假设就不成立了。根据概率图，$p(Y|X,\lambda)=\prod\limits_{t=1}^Tp(y_t|y_{t-1},X,\lambda)$。</p>
 <p>MEMM 的缺陷是<strong>标注偏差问题</strong>（Label Bias Problem），其必须满足<strong>局域的概率归一化</strong>，我们看到，在上面的概率图中，$p(y_t|y_{t-1},x_t)$， 这个概率，如果 $p(y_t|y_{t-1})$ 非常接近1，那么事实上，观测变量 $x$ 是什么都不会影响这个概率了，这样观测变量就没用了。</p>
@@ -1650,7 +1650,7 @@ p(z_t|x_{1:t})\propto p(x_t|z_t)p(z_t|x_{1:t-1})</script><p>同样利用线性�
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>8k</span>
+      <span>8.2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -1669,7 +1669,7 @@ p(z_t|x_{1:t})\propto p(x_t|z_t)p(z_t|x_{1:t-1})</script><p>同样利用线性�
     
     <div class="post-body" itemprop="articleBody">
           <h1 id="隐马尔可夫模型"><a href="#隐马尔可夫模型" class="headerlink" title="隐马尔可夫模型"></a>隐马尔可夫模型</h1><p>隐马尔可夫模型是一种概率图模型。我们知道，机器学习模型可以从频率派和贝叶斯派两个方向考虑，<strong>在频率派的方法中的核心是优化问题</strong>；<strong>而在贝叶斯派的方法中，核心是积分问题（求后验概率）</strong>，贝叶斯派也发展出来了一系列的积分方法如变分推断，MCMC 等。</p>
-<p>概率图模型最基本的模型可以分为有向图（贝叶斯网络）和无向图（马尔可夫随机场）两个方面，例如 GMM。如果在这些基本的模型上，样本之间存在关联，可以认为样本中附带了时序信息，从而样本之间不独立全同分布的，这种模型就叫做动态模型，<strong>隐变量随着时间发生变化</strong>，于是观测变量也发生变化：</p>
+<p>概率图模型最基本的模型可以分为有向图（贝叶斯网络）和无向图（马尔可夫随机场）两个方面，例如 GMM。如果在这些基本的模型上，样本之间存在关联，可以认为样本中附带了时序信息，从而样本之间不独立全同分布的，这种模型就叫做动态模型，<strong>隐变量随着时间发生变化，于是观测变量也发生变化（z为隐状态，x为观测值）</strong>：</p>
 <div class="mermaid">
 graph LR
 z1--&gt;z2--&gt;z3;
@@ -1679,22 +1679,22 @@ z1--&gt;z2--&gt;z3;
 <h1 id="HMM"><a href="#HMM" class="headerlink" title="HMM"></a>HMM</h1><p>HMM 用概率图表示为：</p>
 <div class="mermaid">
 graph TD
-t1--&gt;t2;
+z1--&gt;z2;
 subgraph four
-	t4--&gt;x4((x4))
+	z4--&gt;x4((x4))
 end
 subgraph three
-	t3--&gt;x3((x3))
+	z3--&gt;x3((x3))
 end
 subgraph two
-	t2--&gt;x2((x2))
+	z2--&gt;x2((x2))
 end
 subgraph one
-	t1--&gt;x1((x1))
+	z1--&gt;x1((x1))
 end
 
-t2--&gt;t3;
-t3--&gt;t4;
+z2--&gt;z3;
+z3--&gt;z4;
 </div>
 <p>上图表示了四个时刻的隐变量变化。用参数 $\lambda=(\pi,A,B)$ 来表示，其中 $\pi$ 是开始的概率分布，$A$ 为状态转移矩阵，$B$ 为发射矩阵（观测矩阵）。</p>
 <p>$o_t$ 表示观测变量，$V=\{v_1,v_2,\cdots,v_M\}$ 表示观测变量的值域，$O$ 为观测序列。<br>$i_t$ 表示状态变量，$Q=\{q_1,q_2,\cdots,q_N\}$ 表示状态变量的值域，$I$ 为状态序列。<br>定义 $A=(a_{ij}=p(i_{t+1}=q_j|i_t=q_i))$ 表示状态转移矩阵，$B=(b_j(k)=p(o_t=v_k|i_t=q_j))$ 表示发射矩阵。</p>
@@ -1709,9 +1709,13 @@ p(o_t|i_t,i_{t-1},\cdots,i_1,o_{t-1},\cdots,o_1)=p(o_t|i_t)</script></li>
 </ol>
 <p>HMM 要解决三个问题：</p>
 <ol>
-<li>Evaluation：$p(O|\lambda)$ -&gt; Forward-Backward 算法</li>
-<li>Learning：$\lambda=\mathop{argmax}\limits_{\lambda}p(O|\lambda)$ -&gt; EM 算法（Baum-Welch）</li>
-<li>Decoding：$I=\mathop{argmax}\limits_{I}p(I|O,\lambda)$ -&gt; Vierbi 算法<ol>
+<li>Evaluation：已知模型和观测序列，计算在该模型下观测序列出现的概率。$p(O|\lambda)$ -&gt; Forward-Backward 算法</li>
+<li>Learning：已知观测序列，估计模型参数，使得该模型下观测序列概率最大。$\lambda=\mathop{argmax}\limits_{\lambda}p(O|\lambda)$ <ol>
+<li>有监督学习（训练数据包含状态序列）-&gt; 最大似然估计</li>
+<li>无监督学习（训练数据不包含状态序列）-&gt; EM 算法（Baum-Welch）</li>
+</ol>
+</li>
+<li>Decoding：已知模型参数和观测序列，求最有可能对应的状态序列。$I=\mathop{argmax}\limits_{I}p(I|O,\lambda)$ -&gt; Vierbi 算法<ol>
 <li>预测问题：$p(i_{t+1}|o_1,o_2,\cdots,o_t)$，已知 $t$ 时刻的观测序列，求下一时刻的状态。</li>
 <li>滤波问题：$p(i_t|o_1,o_2,\cdots,o_t)$，已知 $t$ 时刻的观测序列，求 $t$ 时刻的状态。</li>
 </ol>
@@ -1893,7 +1897,7 @@ p(x_{t+1}|x_{1:t})=\sum\limits_{z_{t+1}}p(x_{t+1},z_{t+1}|x_{1:t})=\sum\limits_{
 <div class="copyright">
   
   &copy; 2019 – 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

@@ -33,8 +33,25 @@
 <meta property="og:description" content="介绍word2vec和GloVe都将相同的预训练向量分配给同一个词，而不考虑词的上下文（如果有的话）。考虑到自然语言中丰富的多义现象和复杂的语义，上下文无关表示具有明显的局限性。这推动了“上下文敏感”词表示的发展，其中词的表征取决于它们的上下文。例如，通过将整个序列作为输入，ELMo是为输入序列中的每个单词分配一个表示的函数。具体来说，ELMo将来自预训练的双向长短期记忆网络的所有中间层表示组合为">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://soundmemories.github.io/images/Bert/1.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Bert/10.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Bert/11.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Bert/17.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Bert/14.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Bert/12.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Bert/13.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Bert/17.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Bert/15.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Bert/16.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Bert/2.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Bert/3.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Bert/4.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Bert/5.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Bert/6.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Bert/8.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Bert/7.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Bert/9.png">
 <meta property="article:published_time" content="2021-07-19T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-10-27T14:33:32.105Z">
+<meta property="article:modified_time" content="2021-11-11T17:25:39.597Z">
 <meta property="article:author" content="SoundMemories">
 <meta property="article:tag" content="NLP">
 <meta name="twitter:card" content="summary">
@@ -216,7 +233,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A2%84%E8%AE%AD%E7%BB%83"><span class="nav-number">2.</span> <span class="nav-text">预训练</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MLM"><span class="nav-number">2.1.</span> <span class="nav-text">MLM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NSP"><span class="nav-number">2.2.</span> <span class="nav-text">NSP</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E6%9E%84"><span class="nav-number">3.</span> <span class="nav-text">结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%94%E7%94%A8"><span class="nav-number">4.</span> <span class="nav-text">应用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7"><span class="nav-number">5.</span> <span class="nav-text">使用技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#fine-tune"><span class="nav-number">5.1.</span> <span class="nav-text">fine-tune</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mask%E6%96%B9%E5%BC%8F"><span class="nav-number">5.2.</span> <span class="nav-text">mask方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E4%B9%89%E7%9B%B8%E4%BC%BC%E5%BA%A6%E4%BB%BB%E5%8A%A1"><span class="nav-number">5.3.</span> <span class="nav-text">语义相似度任务</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">6.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A2%84%E8%AE%AD%E7%BB%83"><span class="nav-number">2.</span> <span class="nav-text">预训练</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MLM"><span class="nav-number">2.1.</span> <span class="nav-text">MLM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NSP"><span class="nav-number">2.2.</span> <span class="nav-text">NSP</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E6%9E%84"><span class="nav-number">3.</span> <span class="nav-text">结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%94%E7%94%A8"><span class="nav-number">4.</span> <span class="nav-text">应用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95fine-tune%EF%BC%9F"><span class="nav-number">5.</span> <span class="nav-text">如何fine-tune？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bert%E5%8F%98%E7%A7%8D"><span class="nav-number">6.</span> <span class="nav-text">Bert变种</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#BERT-WWM"><span class="nav-number">6.1.</span> <span class="nav-text">BERT-WWM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ERNIE"><span class="nav-number">6.2.</span> <span class="nav-text">ERNIE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SpanBert"><span class="nav-number">6.3.</span> <span class="nav-text">SpanBert</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XLNet"><span class="nav-number">6.4.</span> <span class="nav-text">XLNet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Albert"><span class="nav-number">6.5.</span> <span class="nav-text">Albert</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RoBerta"><span class="nav-number">6.6.</span> <span class="nav-text">RoBerta</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SBERT"><span class="nav-number">6.7.</span> <span class="nav-text">SBERT</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">7.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -339,14 +356,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>7.8k</span>
+      <span>13k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>7 分钟</span>
+      <span>12 分钟</span>
     </span>
 </div>
 
@@ -435,7 +452,7 @@
 </ul>
 </li>
 </ul>
-<h1 id="使用技巧"><a href="#使用技巧" class="headerlink" title="使用技巧"></a>使用技巧</h1><h2 id="fine-tune"><a href="#fine-tune" class="headerlink" title="fine-tune"></a>fine-tune</h2><ol>
+<h1 id="如何fine-tune？"><a href="#如何fine-tune？" class="headerlink" title="如何fine-tune？"></a>如何fine-tune？</h1><ol>
 <li>固定Bert参数，只训练全连接层。</li>
 <li>Bert+全连接层 全部一起训练。</li>
 <li>Adaptor：对Bert中添加一部分Layer，训练时只调整这些Layer参数。</li>
@@ -445,10 +462,10 @@
 <p>对于文本分类，详情参考<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE5MDUuMDU1ODMucGRm">How to Fine-Tune BERT for Text Classification?<i class="fa fa-external-link-alt"></i></span>。<br>BERT在NLP任务中效果十分优秀，这篇文章对于BERT在文本分类的应用上做了非常丰富的实验，介绍了一些调参以及改进的经验，进一步挖掘BERT的潜力。</p>
 <ul>
 <li>微调（fin-tune）策略<ul>
-<li>对于长文本，尝试了（1）取头部510 tokens，（2）尾部510 tokens，（3）头部128 tokens + 尾部382 tokens，（4）分片并进行最大池化、平均池化、attention，发现方法（3）最好。因为文章的关键信息一般在开头和结尾。</li>
+<li>对于长文本，尝试了（1）取头部510 tokens（2）尾部510 tokens（3）头部128 tokens + 尾部382 tokens（4）分片并进行最大池化、平均池化、attention。发现方法（3）最好。因为文章的关键信息一般在开头和结尾。</li>
 <li>分层训练，上层对文本分类更加重要。</li>
 <li>灾难性遗忘：在下游finetune可能会遗忘预训练的知识。需要设置较小的学习率，如2e-5.</li>
-<li>分层衰减学习率（Layer-wise Decreasing Layer Rate），对下层设置更小的学习率可以得到更高的准确率，在lr=2e-5，衰减率ξ \xiξ=0.95</li>
+<li>分层衰减学习率（Layer-wise Decreasing Layer Rate），对下层设置更小的学习率可以得到更高的准确率，在lr=2e-5，衰减率$\xi$=0.95</li>
 </ul>
 </li>
 <li>继续预训练（Further Pretraining）<ul>
@@ -464,10 +481,9 @@
 </ul>
 </li>
 </ul>
-<h2 id="mask方式"><a href="#mask方式" class="headerlink" title="mask方式"></a>mask方式</h2><p><strong>BERT-WWM</strong>：始版本的 BERT 采用了WordPiece tokenize 来预处理，即把每个单词拆解一些 WordPiece token（比如，loved-&gt;lov ed） ，最初是为了解决谷歌语音识别系统遇到的日语/韩语分割问题。该模型是数据驱动，并且确保任何可能的字符序列的确定性分割。这种预处理为 BERT 带来一个严重的问题：<strong>有可能仅仅对一个单词的某个部分 wordpiece token 执行了 mask。此时 MLM 模型预测的只是单词的一部分，相当于模型对一个错误的目标进行预测。这非常不利于模型的学习</strong>。有鉴于此，谷歌后续发布了 BERT 的 Whole Word Masking:WWM 版本 <strong>BERT-WWM</strong>。在该版本中，一个单词要么没有被 mask、要么该单词所有的 workpiece token 都被 mask 。类似的想法还有ERNIE模型的phrase-level mask和entity-level mask。</p>
+<h1 id="Bert变种"><a href="#Bert变种" class="headerlink" title="Bert变种"></a>Bert变种</h1><h2 id="BERT-WWM"><a href="#BERT-WWM" class="headerlink" title="BERT-WWM"></a>BERT-WWM</h2><p><strong>BERT-WWM</strong>：始版本的 BERT 采用了WordPiece tokenize 来预处理，即把每个单词拆解一些 WordPiece token（比如，loved-&gt;lov ed） ，最初是为了解决谷歌语音识别系统遇到的日语/韩语分割问题。该模型是数据驱动，并且确保任何可能的字符序列的确定性分割。这种预处理为 BERT 带来一个严重的问题：<strong>有可能仅仅对一个单词的某个部分 wordpiece token 执行了 mask。此时 MLM 模型预测的只是单词的一部分，相当于模型对一个错误的目标进行预测。这非常不利于模型的学习</strong>。有鉴于此，谷歌后续发布了 BERT 的 Whole Word Masking:WWM 版本 <strong>BERT-WWM</strong>。在该版本中，一个单词要么没有被 mask、要么该单词所有的 workpiece token 都被 mask 。类似的想法还有ERNIE模型的phrase-level mask和entity-level mask。</p>
 <p><strong>BERT-wwm-ext</strong>：是 BERT-WWM 的中文版本，该模型对中文的<strong>整个汉语单词</strong>而不是单个汉字进行mask ，在最新的中文维基百科上训练。</p>
-<hr>
-<p><strong>ERNIE</strong>：BERT 的 MLM 任务在执行 mask 的时候，未能考虑先验知识，如果有学习到与Mask的单词相关的先验知识，则无需借助很长的上下文就可以很容易的预测出Mask的单词。但是 ERNIE 并没有直接添加先验知识，而是通过引入 <strong>entity-level mask</strong> 和 <strong>phrase-level mask</strong> 来引入先验知识，隐式的学习实体间的关系、实体的属性等知识：</p>
+<h2 id="ERNIE"><a href="#ERNIE" class="headerlink" title="ERNIE"></a>ERNIE</h2><p><strong>ERNIE</strong>：BERT 的 MLM 任务在执行 mask 的时候，未能考虑先验知识，如果有学习到与Mask的单词相关的先验知识，则无需借助很长的上下文就可以很容易的预测出Mask的单词。但是 ERNIE 并没有直接添加先验知识，而是通过引入 <strong>entity-level mask</strong> 和 <strong>phrase-level mask</strong> 来引入先验知识，隐式的学习实体间的关系、实体的属性等知识：</p>
 <ul>
 <li><strong>phrase-level mask</strong>：将一个 phrase 作为一个单元，每个单元通常由几个 token 组成。在训练期间，同一个单元中的所有 token 都会被屏蔽，而不是只有一个 token 被屏蔽。</li>
 <li><strong>entity-level mask</strong>：将一个 entity 作为一个单元，…。</li>
@@ -480,8 +496,29 @@
 <li>第三阶段：Entity-level masking，使用基本语言单元作为训练输入，但是使用 entity-level 的掩码策略。这个阶段模型屏蔽和预测同一个命名实体的所有基本语言单元 。</li>
 </ul>
 <p>ERNIE 编码器和 BERT 相同，但是对于中文语料，ERNIE 把 CJK 编码范围内的字符都添加空格来分隔，然后使用 WordPiece（loved-&gt;lov ed） 来对中文语句词干化，WordPiece参考<span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vaHVhbmd5Yy9wLzEwMjIzMDc1Lmh0bWw=">一文读懂BERT中的WordPiece<i class="fa fa-external-link-alt"></i></span>。</p>
-<hr>
-<p><strong>SpanBert</strong>：提出基于Bert掩码方式，采用不同长度token不同概率的方式（越短的token概率越大）Mask。<br><strong>XLNet</strong>：使用Transformer-XL模型。</p>
+<h2 id="SpanBert"><a href="#SpanBert" class="headerlink" title="SpanBert"></a>SpanBert</h2><p><strong>SpanBert</strong>：一个新的分词级别的预训练方法，提出基于Bert掩码方式，采用不同长度token不同概率的方式（越短的token概率越大）Mask。 其在现有任务中的表现优于 BERT ，并在问答、指代消解等分词选择任务中取得了较大的进展。<br>论文原文：<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE5MDcuMTA1MjkucGRm">SpanBERT: Improving Pre-training by Representing and Predicting Spans<i class="fa fa-external-link-alt"></i></span></p>
+<p>主要优化点：</p>
+<ul>
+<li>Span Masking。</li>
+<li>MLM + SBO。</li>
+<li>Single-Sequence Training。</li>
+</ul>
+<p>模型原理如图所示：<br><img src="/images/Bert/10.png" width="90%"></p>
+<p><strong>Span Masking</strong><br>提出了更好的 Span Mask 方案，SpanBERT 不再对随机的单个 token 添加 mask，而是对随机对邻接分词添加mask。根据几何分布，先随机选择一段（span）的长度，之后再根据均匀分布随机选择这一段的起始位置，最后按照长度mask。作者设定几何分布取 p=0.2，并裁剪最大长度只能是 10（不应当是长度 10 以上修剪，而应当为丢弃），利用此方案获得平均采样长度分布。因此分词的平均长度为 3.8 。作者还测量了词语（word）中的分词程度，使得添加mask的分词更长。如图，展示了分词mask长度的分布情况。<br><img src="/images/Bert/11.png" width="40%"><br>和在 BERT 中一样，作者将 Y 的规模设定为 X 的15%，其中 80% 使用 [MASK] 进行替换，10% 使用随机单词替换，10%保持不变。与之不同的是，作者是在分词级别进行的这一替换，而非将每个单词单独替换。</p>
+<p>不同mask方案对比：<br><img src="/images/Bert/17.png" width="80%"></p>
+<p><strong>SBO</strong><br>Span Boundary Objective。分词选择模型一般使用其边界词创建一个固定长度的分词表示。为了于该模型相适应，作者希望结尾分词的表示的总和与中间分词的内容尽量相同。为此，作者引入了 SBO ，其仅使用观测到的边界词来预测带msak的分词的内容。</p>
+<p>具体做法是，在训练时取 Span 前后边界的两个词，值得指出，这两个词不在 Span 内，然后用这<strong>两个词向量</strong>加上 Span 中被mask掉词的<strong>位置向量</strong>，来预测当前被mask的词。详细做法是将<strong>词向量</strong>和<strong>位置向量</strong>拼接起来，作者使用一个两层的前馈神经网络作为表示函数，该网络使用 GeLu 激活函数，并使用层正则化。和 MLM 一样使用交叉熵作为损失函数，就是 SBO 目标的损失，之后将这个损失和 BERT 的 MLM 的损失加起来，一起用于训练模型。<br><img src="/images/Bert/14.png" width="20%"><br><img src="/images/Bert/12.png" width="30%"><br><img src="/images/Bert/13.png" width="30%"></p>
+<p><strong>Single-Sequence Training</strong><br>没有segment embedding，只有一个长的句子，类似RoBERTa。它没用 Next Sentence Prediction (NSP) 任务，而是直接用 Single-Sequence Training，也就是根本不加入 NSP 任务来判断是否两句是上下句，直接用一句来训练。作者推测其可能原因如下：（a）更长的语境对模型更有利，模型可以获得更长上下文（类似 XLNet 的一部分效果；（b）加入另一个文本的语境信息会给MLM 语言模型带来噪音。</p>
+<p>因此，SpanBERT 就没采用 NSP 任务，仅采样一个单独的邻接片段，该片段长度最多为512个单词，其长度与 BERT 使用的两片段的最大长度总和相同，然后 MLM 加上 SBO 任务来进行预训练。</p>
+<p>其中主要训练细节是：</p>
+<ul>
+<li>训练时用了 Dynamic Masking 而不是像 BERT 在预处理时做 Mask；</li>
+<li>取消 BERT 中随机采样短句的策略；</li>
+<li>对 Adam 优化器中一些参数改变。</li>
+</ul>
+<p><img src="/images/Bert/17.png" width="80%"></p>
+<p>实验结果：<br><img src="/images/Bert/15.png" width="40%"><br><img src="/images/Bert/16.png" width="80%"></p>
+<h2 id="XLNet"><a href="#XLNet" class="headerlink" title="XLNet"></a>XLNet</h2><p><strong>XLNet</strong>：使用Transformer-XL模型。</p>
 <p>当Bert作为seq2seq的encoder时，输入也要Mask：</p>
 <ul>
 <li>随机Mask。</li>
@@ -491,12 +528,66 @@
 <li>插入Mask，Text Infilling。这个效果最好。</li>
 </ul>
 <p>后续 RoBerta和Albert使用 sentence order prediction:SOP 任务来预训练了。</p>
-<h2 id="语义相似度任务"><a href="#语义相似度任务" class="headerlink" title="语义相似度任务"></a>语义相似度任务</h2><p>虽然BERT和RoBERTa在很多句子对形式的回归任务（例如文本语义相似度）上达到了SOTA效果，但是它们还存在一些缺点：在这些任务中，它们均需要将比较的两个句子都传入到模型中计算，计算开销过大。BERT模型在一个1W句子集合中，找出最相近的一个句子对，需要5千万次推断计算（约65小时）才能完成，所以BERT并不适合语义相似度搜索等任务。</p>
+<h2 id="Albert"><a href="#Albert" class="headerlink" title="Albert"></a>Albert</h2><p>Albert主要对Bert参数进行优化，在任务结果下降很低的情况的下，使模型更小更适合部署。<br>论文原文：<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE5MDkuMTE5NDIucGRm">ALBERT: A LITE BERT FOR SELF-SUPERVISED LEARNING OF LANGUAGE REPRESENTATIONS<i class="fa fa-external-link-alt"></i></span></p>
+<p>主要优化点：</p>
+<ul>
+<li>Token Embedding projection block<ul>
+<li>Parameter size $O(V \times E)$ </li>
+</ul>
+</li>
+<li>Attention feed-forward block<ul>
+<li>Parameter size $O(12 \times L \times H \times H)$</li>
+</ul>
+</li>
+</ul>
+<p><strong>优化一：Embedding维度分解</strong><br>Token Embedding 采用 $O(V\times E + E \times H)$ 且 $E \ll H$。由于模型结构的限制，WordePiece embedding的大小 $E$ 总是与隐层大小 $H$ 相同。从建模的角度考虑，词嵌入学习的是单词与上下文无关的表示，而隐层则是学习与上下文相关的表示。显然后者更加复杂，需要更多的参数，也就是说模型应当增大隐层大小 $H$ ，或者说满足 $H \gg E$ 。但实际上词汇表的大小 $V$ 通常非常大，如果 $E=H$ 的话，增加隐层大小 $H$ 后将会使embedding matrix的维度 $V \times E$ 非常巨大。</p>
+<p>因此Albert想要打破 $E$ 与 $H$ 之间的绑定关系，从而减小模型的参数量，同时提升模型表现。具体做法是将embedding matrix分解为两个大小分别为 $V \times E$ 和 $E \times H$ 矩阵，也就是说先将单词投影到一个低维的embedding空间 $E$ ，再将其投影到高维的隐藏空间 $H$ 。这使得embedding matrix的维度从 $O(V \times E)$ 减小到 $O(V\times E + E \times H)$ 。当 $E \ll H$ 时，参数量减少非常明显。在实现时，随机初始化 $V \times E$ 和 $E \times H$ 两个矩阵，计算某个单词的表示需用一个单词的one-hot向量乘以 $V \times E$ 维的矩阵（也就是lookup），再用得到的结果乘 $E \times H$ 维的矩阵即可。两个矩阵的参数通过模型学习。</p>
+<p>从下图实验结果可见，对于不共享参数的情况， $E$ 几乎是越大越好；而共享参数之后， $E$ 太大反而会使模型表现变差， $E=128$ 模型表现最好，因此ALBERT的默认参数设置为此。<br><img src="/images/Bert/2.png" width="90%"></p>
+<p><strong>优化二：层权重共享</strong><br>另一个减少参数量的方法就是层之间的参数共享，即多个层使用相同的参数。因为attention-feedforward操作是重复的，都是自注意力机制，所以考虑使用相同的权重来减少参数量，使得block参数变为$O(12 \times  H \times H)$。</p>
+<p>参数共享有三种方式：</p>
+<ul>
+<li>只共享feed-forward network的参数。</li>
+<li>只共享attention的参数。</li>
+<li>共享全部参数。</li>
+</ul>
+<p>ALBERT默认是共享全部参数的，在后续实验结果中我们可以看到几种方式的模型表现。</p>
+<p>如下图所示，实验表明加入参数共享之后，每一层的输入embedding和输出embedding的L2距离和余弦相似度都比BERT稳定了很多，ALBERT 的结果更加平滑。这证明参数共享能够使模型参数更加稳定。<br><img src="/images/Bert/3.png" width="90%"></p>
+<p>如下图所示，可以看出参数共享几乎也是对模型结果有负面影响的。但是考虑到其能够大幅削减参数量，并且对结果影响不是特别大，因此权衡之下选择了参数共享。<br><img src="/images/Bert/4.png" width="90%"></p>
+<p><strong>优化三：SOP替代NSP</strong><br>除了减少模型参数外，本外还对BERT的预训练任务Next-sentence prediction (NSP)进行了改进。在BERT中，NSP任务的正例是文章中连续的两个句子，而负例则是从两篇文档中各选一个句子构造而成。在先前的研究中，已经证明NSP是并不是一个合适的预训练任务。本文推测其原因是模型在判断两个句子的关系时不仅考虑了两个句子之间的连贯性（coherence），还会考虑到两个句子的话题（topic）。而两篇文档的话题通常不同，模型会更多的通过话题去分析两个句子的关系，而不是句子间的连贯性，这使得NSP任务变成了一个相对简单的任务。</p>
+<p>因此本文提出了Sentence-order prediction (SOP)来取代NSP。具体来说，其正例与NSP相同，但负例是通过选择一篇文档中的两个连续的句子并将它们的顺序交换构造的。这样两个句子就会有相同的话题，模型学习到的就更多是句子间的连贯性。</p>
+<p>如下图实验结果所示，如果不使用NSP或SOP作为预训练任务的话，模型在NSP和SOP两个任务上表现都很差；如果使用NSP作为预训练任务的话，模型确实能很好的解决NSP问题，但是在SOP问题上表现却很差，几乎相当于随机猜，因此说明NSP任务确实很难学到句子间的连贯性；而如果用SOP作为预训练任务，则模型也可以较好的解决NSP问题，同时模型在下游任务上表现也更好。说明SOP确实是更好的预训练任务。<br><img src="/images/Bert/5.png" width="90%"></p>
+<h2 id="RoBerta"><a href="#RoBerta" class="headerlink" title="RoBerta"></a>RoBerta</h2><p>论文原文：<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE5MDcuMTE2OTIucGRm">RoBERTa: A Robustly Optimized BERT Pretraining Approach<i class="fa fa-external-link-alt"></i></span></p>
+<p>预训练模型能够显著的提升任务效果，但是不同预训练模型的比较非常困难。首先，每个预训练模型的训练成本很高，无法一一训练并进行比较。其次，不同预训练模型通常是在不同规模大小的数据集上训练的，难以评估效果的好坏是预训练模型引起的还是预训练数据引起的。最后，超参数的选择对预训练模型的表现影响很大。同一个预训练模型的不同超参数，其比较结果会有很大不同。</p>
+<p>RoBERTa 主要工作是复现 BERT，然后对 BERT 的模型架构、训练目标、训练细节（如数据集大小、训练时间）的重要性进行探索，从而提出了改进方案，这个改进方案称为 RoBERTa 。主要修改：</p>
+<ul>
+<li>更大的 batch size</li>
+<li>更多的数据、更长的预训练时间</li>
+<li>移除 NSP 任务 + 使用更长的输入序列</li>
+<li>使用动态 mask</li>
+<li>使用BPE方式，减少UNK单词出现次数（英文）</li>
+</ul>
+<p><strong>更大的 batch size</strong><br>原本的BERTbase 的batch size是256，训练1M个steps。RoBERTa的batch size为8k。为什么要用更大的batch size呢？（除了因为他们有钱玩得起外）作者借鉴了在机器翻译中，用更大的batch size配合更大学习率能提升模型优化速率和模型性能的现象，并且也用实验证明了确实Bert还能用更大的batch size。<br><img src="/images/Bert/6.png" width="40%"></p>
+<p><strong>更多的数据、更长的预训练时间</strong><br>借鉴XLNet用了比Bert多10倍的数据，RoBERTa也用了更多的数据。性能确实再次彪升。当然，也需要配合更长时间的训练。<br><img src="/images/Bert/8.png" width="80%"></p>
+<p><strong>移除 NSP 任务 + 使用更长的输入序列</strong><br>原本的Bert为了捕捉句子之间的关系，使用了NSP任务进行预训练，就是输入一对句子A和B，判断这两个句子是否是连续的。在训练的数据中，50%的B是A的下一个句子，50%的B是随机抽取的。</p>
+<p>而RoBERTa去除了NSP，而是每次输入连续的多个句子，直到最大长度512（可以跨文章）。这种训练方式叫做（FULL - SENTENCES），而原来的Bert每次只输入两个句子。实验表明在MNLI这种推断句子关系的任务上RoBERTa也能有更好性能。<br><img src="/images/Bert/7.png" width="80%"></p>
+<p><strong>使用动态 mask</strong><br>原来Bert对每一个序列随机选择15%的Tokens替换成[MASK]，为了消除与下游任务的不匹配，还对这15%的Tokens进行（1）80%的时间替换成[MASK]；（2）10%的时间不变；（3）10%的时间替换成其他词。但整个训练过程，这15%的Tokens一旦被选择就不再改变，也就是说从一开始随机选择了这15%的Tokens，之后的N个epoch里都不再改变了。这就叫做静态Masking。</p>
+<p>而RoBERTa一开始把预训练的数据复制10份，每一份都随机选择15%的Tokens进行Masking，也就是说，同样的一句话有10种不同的mask方式。然后每份数据都训练N/10个epoch。这就相当于在这N个epoch的训练中，每个序列的被mask的tokens是会变化的。这就叫做动态Masking。</p>
+<p>那么这样改变是否真的有效果？作者在只将静态Masking改成动态Masking，其他参数不变的情况下做了实验，动态Masking确实能提高性能。<br><img src="/images/Bert/9.png" width="40%"></p>
+<p><strong>使用BPE方式</strong><br>针对的是英文，BERT原型使用的是 character-level BPE vocabulary of size 30K, RoBERTa使用了GPT2的 byte BPE 实现，使用的是byte而不是unicode characters作为subword的单位。</p>
+<p>这些针对Bert的预训练优化都使用起来，最终在GLUE, RACE, SQuAD上都达到了SOTA的性能。</p>
+<p>RoBERTa 采用 160 G 训练文本，远超 BERT 的 16G 文本，其中包括：</p>
+<ul>
+<li>BOOKCORPUS 和英文维基百科：原始 BERT 的训练集，大小 16GB 。</li>
+<li>CC-NEWS：包含2016年9月到2019年2月爬取的6300万篇英文新闻，大小 76 GB（经过过滤之后）。</li>
+<li>OPENWEBTEXT：从 Reddit 上共享的 URL （至少3个点赞）中提取的网页内容，大小 38 GB 。</li>
+<li>STORIES：CommonCrawl 数据集的一个子集，包含 Winograd 模式的故事风格，大小 31GB 。</li>
+</ul>
+<h2 id="SBERT"><a href="#SBERT" class="headerlink" title="SBERT"></a>SBERT</h2><p>虽然BERT和RoBERTa在很多句子对形式的回归任务（例如文本语义相似度）上达到了SOTA效果，但是它们还存在一些缺点：在这些任务中，它们均需要将比较的两个句子都传入到模型中计算，计算开销过大。BERT模型在一个1W句子集合中，找出最相近的一个句子对，需要5千万次推断计算（约65小时）才能完成，所以BERT并不适合语义相似度搜索等任务。</p>
 <p>在该论文中，作者提出了一个新的模型，Sentence-BERT（简称SBERT）。SBERT采用双重或三重BERT网络结构，具体结构介绍会在后文中详细介绍。如果使用的是基于RoBERTa模型，则改造后的模型简称为SRoBERTa。</p>
 <p>通过SBERT模型获取到的句子embedding，可以直接通过cos相似度计算两个句子的相似度，这样就大大减少了计算量。因为在使用BERT模型进行句子间相似度的判断时，需要从句子集合中，选出两个句子进行组合，传入BERT中进行计算，而使用SBERT模型，只需要将集合中每个句子单独传入到模型中，得到每个句子的embeding，计算相似度只需要使用cos函数计算两两embeding的cos距离即可。因此，使用BERT/RoBERTa模型需要65h才能完成的寻找最相似句子对任务，SBERT模型完成仅需5s。</p>
 <p>作者在一些STS任务和迁移学习任务上评估SBERT模型，该模型达到了新的SOTA水平。</p>
-<p>论文原文：<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE5MDguMTAwODQucGRm">Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks<i class="fa fa-external-link-alt"></i></span>。<br>模型地址：<span class="exturl" data-url="aHR0cHM6Ly93d3cuc2JlcnQubmV0Lw==">Sentence-Transformers<i class="fa fa-external-link-alt"></i></span>。<br>详解参考<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Zlbmd4aW5saW51eC9hcnRpY2xlL2RldGFpbHMvMTA5MTk1NzYy">论文阅读Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks<i class="fa fa-external-link-alt"></i></span>。</p>
-<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p><span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE4MTAuMDQ4MDU=">BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE5MDUuMDU1ODMucGRm">How to Fine-Tune BERT for Text Classification?<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9jbG91ZC50ZW5jZW50LmNvbS9kZXZlbG9wZXIvYXJ0aWNsZS8xNTE5MTgw">BERT论文解读<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2RlbmRpX2h1c3QvYXJ0aWNsZS9kZXRhaWxzLzEwNDQ2NTMzNw==">【调优方法】——warmup<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpb24xOTkzMDkyNC9hcnRpY2xlL2RldGFpbHMvMTA0NDY5OTQ0">Bert微调技巧实验大全-How to Fine-Tune BERT for Text Classification<i class="fa fa-external-link-alt"></i></span></p>
+<p>论文原文：<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE5MDguMTAwODQucGRm">Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks<i class="fa fa-external-link-alt"></i></span>。<br>模型地址：<span class="exturl" data-url="aHR0cHM6Ly93d3cuc2JlcnQubmV0Lw==">Sentence-Transformers<i class="fa fa-external-link-alt"></i></span>。<br>详解参考：<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Zlbmd4aW5saW51eC9hcnRpY2xlL2RldGFpbHMvMTA5MTk1NzYy">论文阅读Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks<i class="fa fa-external-link-alt"></i></span>。</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p><span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE4MTAuMDQ4MDU=">BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE5MDUuMDU1ODMucGRm">How to Fine-Tune BERT for Text Classification?<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9jbG91ZC50ZW5jZW50LmNvbS9kZXZlbG9wZXIvYXJ0aWNsZS8xNTE5MTgw">BERT论文解读<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2RlbmRpX2h1c3QvYXJ0aWNsZS9kZXRhaWxzLzEwNDQ2NTMzNw==">【调优方法】——warmup<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpb24xOTkzMDkyNC9hcnRpY2xlL2RldGFpbHMvMTA0NDY5OTQ0">Bert微调技巧实验大全-How to Fine-Tune BERT for Text Classification<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC84NzU2MjkyNg==">【论文阅读】ALBERT<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cuamlhbnNodS5jb20vcC9lZGRmMDRiYTg1NDU=">改进版的RoBERTa到底改进了什么？<i class="fa fa-external-link-alt"></i></span></p>
 
     </div>
 
@@ -516,10 +607,10 @@
       <div class="popular-posts-title"><a href="\2021\07\21\NLP\06.对话系统\" rel="bookmark">对话系统简介</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2021\07\23\NLP\08.蒸馏\" rel="bookmark">蒸馏</a></div>
+      <div class="popular-posts-title"><a href="\2021\07\18\Paper\03.Get To The Point. Summarization with Pointer-Generator Networks\" rel="bookmark">Get To The Point. Summarization with Pointer-Generator Networks</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2021\07\18\Paper\03.Get To The Point. Summarization with Pointer-Generator Networks\" rel="bookmark">Get To The Point. Summarization with Pointer-Generator Networks</a></div>
+      <div class="popular-posts-title"><a href="\2021\06\19\NLP\00.NLP简介\" rel="bookmark">NLP简介</a></div>
     </li>
   </ul>
 
@@ -605,7 +696,7 @@
 <div class="copyright">
   
   &copy; 2019 – 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
