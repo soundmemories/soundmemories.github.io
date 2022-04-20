@@ -225,18 +225,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-count">117</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -280,6 +280,519 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/08/Machine%20Learning/30.particleFilter/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/08/Machine%20Learning/30.particleFilter/" class="post-title-link" itemprop="url">particleFilter</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-08 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-08T00:00:00+08:00">2020-10-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="粒子滤波"><a href="#粒子滤波" class="headerlink" title="粒子滤波"></a>粒子滤波</h1><p>Kalman 滤波根据线性高斯模型可以求得解析解，但是在非线性，非高斯的情况，是无法得到解析解的，对这类一般的情况，我们叫做粒子滤波，我们需要求得概率分布，需要采用采样的方式。</p>
+<p>我们希望应用 Monte Carlo 方法来进行采样，对于一个概率分布，如果我们希望计算依这个分布的某个函数 $f(z)$ 的期望，可以利用某种抽样方法，在这个概率分布中抽取 $N$ 个样本，则 $\mathbb{E}[f(z)]\simeq\frac{1}{N}\sum\limits_{i=1}^Nf(z_i)$。但是如果这个概率十分复杂，那么采样比较困难。对于复杂的概率分布，我们可以通过一个简单的概率分布 $q(z)$ 作为桥梁（重要值采样）:</p>
+<script type="math/tex; mode=display">
+\mathbb{E}[f(z)]=\int_zf(z)p(z)dz=\int_zf(z)\frac{p(z)}{q(z)}q(z)dz=\sum\limits_{i=1}^Nf(z_i)\frac{p(z_i)}{q(z_i)}</script><p>于是直接通过对 $q(z)$ 采样，然后对每一个采样的样本应用权重就得到了期望的近似，当然为了概率分布的特性，我们需要对权重进行归一化。</p>
+<p>在滤波问题中，需要求解 $p(z_t|x_{1:t})$，其权重为：</p>
+<script type="math/tex; mode=display">
+w_t^i=\frac{p(z_t^i|x_{1:t})}{q(z_t^i|x_{1:t})},i=1,2,\cdots,N</script><p>于是在每一个时刻 $t$，都需要采样 $N$ 个点，但是即使采样了这么多点，分子上面的那一项也十分难求，于是希望找到一个关于权重的递推公式。为了解决这个问题，引入序列重要性采样（SIS）。</p>
+<h2 id="SIS"><a href="#SIS" class="headerlink" title="SIS"></a>SIS</h2><p>在 SIS 中，解决的问题是 $p(z_{1:t}|x_{1:t})$。</p>
+<script type="math/tex; mode=display">
+w_t^i\propto\frac{p(z_{1:t}|x_{1:t})}{q(z_{1:t}|x_{1:t})}</script><p>根据 LDS 中的推导：</p>
+<script type="math/tex; mode=display">
+\begin{align}p(z_{1:t}|x_{1:t})\propto p(x_{1:t},z_{1:t})&=p(x_t|z_{1:t},x_{1:t-1})p(z_{1:t},x_{1:t-1})\nonumber\\
+&=p(x_t|z_t)p(z_t|x_{1:t-1},z_{1:t-1})p(x_{1:t-1},z_{1:t-1})\nonumber\\
+&=p(x_t|z_t)p(z_t|z_{t-1})p(x_{1:t-1},z_{1:t-1})\nonumber\\
+&\propto p(x_t|z_t)p(z_t|z_{t-1})p(z_{1:t-1}|x_{1:t-1})
+\end{align}</script><p>于是分子的递推式就得到了。对于提议分布的分母，可以取：</p>
+<script type="math/tex; mode=display">
+q(z_{1:t}|x_{1:t})=q(z_t|z_{1:t-1},x_{1:t})q(z_{1:t-1}|x_{1:t-1})</script><p>所以有：</p>
+<script type="math/tex; mode=display">
+w_t^i\propto\frac{p(z_{1:t}|x_{1:t})}{q(z_{1:t}|x_{1:t})}\propto \frac{p(x_t|z_t)p(z_t|z_{t-1})p(z_{1:t-1}|x_{1:t-1})}{q(z_t|z_{1:t-1},x_{1:t})q(z_{1:t-1}|x_{1:t-1})}=\frac{p(x_t|z_t)p(z_t|z_{t-1})}{q(z_t|z_{1:t-1},x_{1:t})}w_{t-1}^i</script><p>我们得到的对权重的算法为：</p>
+<ol>
+<li>$t-1$ 时刻，采样完成并计算得到权重</li>
+<li>t 时刻，根据 $q(z_t|z_{1:t-1},x_{1:t})$ 进行采样得到 $z_t^i$。然后计算得到 $N$ 个权重。</li>
+<li>最后对权重归一化。</li>
+</ol>
+<p>SIS 算法会出现权值退化的情况，在一定时间后，可能会出现大部分权重都逼近0的情况，这是由于空间维度越来越高，需要的样本也越来越多。解决这个问题的方法有：</p>
+<ol>
+<li>重采样，以权重作为概率分布，重新在已经采样的样本中采样，然后所有样本的权重相同，这个方法的思路是将权重作为概率分布，然后得到累积密度函数，在累积密度上取点（阶梯函数）。</li>
+<li>选择一个合适的提议分布，$q(z_t|z_{1:t-1},x_{1:t})=p(z_t|z_{t-1})$，于是就消掉了一项，并且采样的概率就是 $p(z_t|z_{t-1})$，这就叫做生成与测试方法。</li>
+</ol>
+<p>采用重采样的 SIS 算法就是基本的粒子滤波算法。如果像上面那样选择提议分布，这个算法叫做 SIR 算法。</p>
+
+      
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/07/Machine%20Learning/29.LDS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/07/Machine%20Learning/29.LDS/" class="post-title-link" itemprop="url">LDS</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-07 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-07T00:00:00+08:00">2020-10-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="线性动态系统"><a href="#线性动态系统" class="headerlink" title="线性动态系统"></a>线性动态系统</h1><p>HMM 模型适用于隐变量是离散的值的时候，对于连续隐变量的 HMM，常用线性动态系统描述线性高斯模型的态变量，使用粒子滤波来表述非高斯非线性的态变量。</p>
+<p>LDS 又叫卡尔曼滤波，其中，线性体现在上一时刻和这一时刻的隐变量以及隐变量和观测之间：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+z_t&=A\cdot z_{t-1}+B+\varepsilon\\
+x_t&=C\cdot z_t+D+\delta\\
+\varepsilon&\sim\mathcal{N}(0,Q)\\
+\delta&\sim\mathcal{N}(0,R)
+\end{align}</script><p>类比 HMM 中的几个参数：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+p(z_t|z_{t-1})&\sim\mathcal{N}(A\cdot z_{t-1}+B,Q)\\
+p(x_t|z_t)&\sim\mathcal{N}(C\cdot z_t+D,R)\\
+z_1&\sim\mathcal{N}(\mu_1,\Sigma_1)
+\end{align}</script><p>在含时的概率图中，除了对参数估计的学习问题外，在推断任务中，包括译码，证据概率，滤波，平滑，预测问题，LDS 更关心滤波这个问题：$p(z_t|x_1,x_2,\cdots,x_t)$。类似 HMM 中的前向算法，我们需要找到一个递推关系。</p>
+<script type="math/tex; mode=display">
+p(z_t|x_{1:t})=p(x_{1:t},z_t)/p(x_{1:t})=Cp(x_{1:t},z_t)</script><p>对于 $p(x_{1:t},z_t)$：</p>
+<script type="math/tex; mode=display">
+\begin{align}p(x_{1:t},z_t)&=p(x_t|x_{1:t-1},z_t)p(x_{1:t-1},z_t)=p(x_t|z_t)p(x_{1:t-1},z_t)\nonumber\\
+&=p(x_t|z_t)p(z_t|x_{1:t-1})p(x_{1:t-1})=Cp(x_t|z_t)p(z_t|x_{1:t-1})\\
+\end{align}</script><p>我们看到，右边除了只和观测相关的常数项，还有一项是预测任务需要的概率。对这个值：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+p(z_t|x_{1:t-1})&=\int_{z_{t-1}}p(z_t,z_{t-1}|x_{1:t-1})dz_{t-1}\nonumber\\
+&=\int_{z_{t-1}}p(z_t|z_{t-1},x_{1:t-1})p(z_{t-1}|x_{1:t-1})dz_{t-1}\nonumber\\
+&=\int_{z_{t-1}}p(z_t|z_{t-1})p(z_{t-1}|x_{1:t-1})dz_{t-1}
+\end{align}</script><p>我们看到，这又化成了一个滤波问题。于是我们得到了一个递推公式：</p>
+<ol>
+<li>$t=1$，$p(z_1|x_1)$，称为 update 过程，然后计算 $p(z_2|x_1)$，通过上面的积分进行，称为 prediction 过程。</li>
+<li>$t=2$，$p(z_2|x_2,x_1)$ 和 $p(z_3|x_1,x_2)$</li>
+</ol>
+<p>我们看到，这个过程是一个 Online 的过程，对于我们的线性高斯假设，这个计算过程都可以得到解析解。</p>
+<ol>
+<li><p>Prediction：</p>
+<script type="math/tex; mode=display">
+p(z_t|x_{1:t-1})=\int_{z_{t-1}}p(z_t|z_{t-1})p(z_{t-1}|x_{1:t-1})dz_{t-1}=\int_{z_{t-1}}\mathcal{N}(Az_{t-1}+B,Q)\mathcal{N}(\mu_{t-1},\Sigma_{t-1})dz_{t-1}</script><p>其中第二个高斯分布是上一步的 Update 过程，所以根据线性高斯模型，直接可以写出这个积分：</p>
+<script type="math/tex; mode=display">
+p(z_t|x_{1:t-1})=\mathcal{N}(A\mu_{t-1}+B,Q+A\Sigma_{t-1}A^T)</script></li>
+<li><p>Update:</p>
+<script type="math/tex; mode=display">
+p(z_t|x_{1:t})\propto p(x_t|z_t)p(z_t|x_{1:t-1})</script><p>同样利用线性高斯模型，也可以直接写出这个高斯分布。</p>
+</li>
+</ol>
+<div class="note info"><p>文章转载自<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDc=">Jie Zhou<i class="fa fa-external-link-alt"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDcvTWFjaGluZS1MZWFybmluZy1TZXNzaW9u">Machine-Learning-Session<i class="fa fa-external-link-alt"></i></span>。</p>
+</div>
+      
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/06/Machine%20Learning/28.HMM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/06/Machine%20Learning/28.HMM/" class="post-title-link" itemprop="url">HMM</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-06 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-06T00:00:00+08:00">2020-10-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>8.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="隐马尔可夫模型"><a href="#隐马尔可夫模型" class="headerlink" title="隐马尔可夫模型"></a>隐马尔可夫模型</h1><p>隐马尔可夫模型是一种概率图模型。我们知道，机器学习模型可以从频率派和贝叶斯派两个方向考虑，<strong>在频率派的方法中的核心是优化问题</strong>；<strong>而在贝叶斯派的方法中，核心是积分问题（求后验概率）</strong>，贝叶斯派也发展出来了一系列的积分方法如变分推断，MCMC 等。</p>
+<p>概率图模型最基本的模型可以分为有向图（贝叶斯网络）和无向图（马尔可夫随机场）两个方面，例如 GMM。如果在这些基本的模型上，样本之间存在关联，可以认为样本中附带了时序信息，从而样本之间不独立全同分布的，这种模型就叫做动态模型，<strong>隐变量随着时间发生变化，于是观测变量也发生变化（z为隐状态，x为观测值）</strong>：</p>
+<div class="mermaid">
+graph LR
+z1--&gt;z2--&gt;z3;
+   x1--&gt;x2--&gt;x3;
+</div>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">|-概率图</span><br><span class="line">    |-有向：Bayesiam Network</span><br><span class="line">    |-无向：Markov Random Field(Markov Network)</span><br><span class="line">    </span><br><span class="line">|-概率图+时间time：Dynamic Model</span><br><span class="line">    |-HMM(状态变量（隐变量）是离散的)</span><br><span class="line">    |-Kalman Filter(状态变量是连续的，线性的)</span><br><span class="line">    |-Particle Filter(状态变量是连续的，非线性的)</span><br></pre></td></tr></table></figure>
+<h1 id="HMM"><a href="#HMM" class="headerlink" title="HMM"></a>HMM</h1><p>HMM 用概率图表示为：</p>
+<div class="mermaid">
+graph TD
+z1--&gt;z2;
+subgraph four
+	z4--&gt;x4((x4))
+end
+subgraph three
+	z3--&gt;x3((x3))
+end
+subgraph two
+	z2--&gt;x2((x2))
+end
+subgraph one
+	z1--&gt;x1((x1))
+end
+
+z2--&gt;z3;
+z3--&gt;z4;
+</div>
+<p>上图表示了四个时刻的隐变量变化。用参数 $\lambda=(\pi,A,B)$ 来表示，其中 $\pi$ 是开始的概率分布，$A$ 为状态转移矩阵，$B$ 为发射矩阵（观测矩阵）。</p>
+<p>$o_t$ 表示观测变量，$V=\{v_1,v_2,\cdots,v_M\}$ 表示观测变量的值域，$O$ 为观测序列。<br>$i_t$ 表示状态变量，$Q=\{q_1,q_2,\cdots,q_N\}$ 表示状态变量的值域，$I$ 为状态序列。<br>定义 $A=(a_{ij}=p(i_{t+1}=q_j|i_t=q_i))$ 表示状态转移矩阵，$B=(b_j(k)=p(o_t=v_k|i_t=q_j))$ 表示发射矩阵。</p>
+<p>在 HMM 中，有两个基本假设：</p>
+<ol>
+<li><p>齐次 Markov 假设（未来只依赖于当前）：</p>
+<script type="math/tex; mode=display">
+p(i_{t+1}|i_t,i_{t-1},\cdots,i_1,o_t,o_{t-1},\cdots,o_1)=p(i_{t+1}|i_t)</script></li>
+<li><p>观测独立假设：</p>
+<script type="math/tex; mode=display">
+p(o_t|i_t,i_{t-1},\cdots,i_1,o_{t-1},\cdots,o_1)=p(o_t|i_t)</script></li>
+</ol>
+<p>HMM 要解决三个问题：</p>
+<ol>
+<li>Evaluation：已知模型和观测序列，计算在该模型下观测序列出现的概率。$p(O|\lambda)$ -&gt; Forward-Backward 算法</li>
+<li>Learning：已知观测序列，估计模型参数，使得该模型下观测序列概率最大。$\lambda=\mathop{argmax}\limits_{\lambda}p(O|\lambda)$ <ol>
+<li>有监督学习（训练数据包含状态序列）-&gt; 最大似然估计</li>
+<li>无监督学习（训练数据不包含状态序列）-&gt; EM 算法（Baum-Welch）</li>
+</ol>
+</li>
+<li>Decoding：已知模型参数和观测序列，求最有可能对应的状态序列。$I=\mathop{argmax}\limits_{I}p(I|O,\lambda)$ -&gt; Vierbi 算法<ol>
+<li>预测问题：$p(i_{t+1}|o_1,o_2,\cdots,o_t)$，已知 $t$ 时刻的观测序列，求下一时刻的状态。</li>
+<li>滤波问题：$p(i_t|o_1,o_2,\cdots,o_t)$，已知 $t$ 时刻的观测序列，求 $t$ 时刻的状态。</li>
+</ol>
+</li>
+</ol>
+<h2 id="Evaluation"><a href="#Evaluation" class="headerlink" title="Evaluation"></a>Evaluation</h2><h3 id="直接计算法"><a href="#直接计算法" class="headerlink" title="直接计算法"></a>直接计算法</h3><script type="math/tex; mode=display">
+p(O|\lambda)=\sum\limits_{I}p(I,O|\lambda)=\sum\limits_{I}p(O|I,\lambda)p(I|\lambda)</script><script type="math/tex; mode=display">
+p(I|\lambda)=p(i_1,i_2,\cdots,i_t|\lambda)=p(i_t|i_1,i_2,\cdots,i_{t-1},\lambda)p(i_1,i_2,\cdots,i_{t-1}|\lambda)</script><p>根据齐次 Markov 假设：</p>
+<script type="math/tex; mode=display">
+p(i_t|i_1,i_2,\cdots,i_{t-1},\lambda)=p(i_t|i_{t-1})=a_{i_{t-1}i_t}</script><p>所以：</p>
+<script type="math/tex; mode=display">
+p(I|\lambda)=\pi_1\prod\limits_{t=2}^Ta_{i_{t-1},i_t}</script><p>又由于：</p>
+<script type="math/tex; mode=display">
+p(O|I,\lambda)=\prod\limits_{t=1}^Tb_{i_t}(o_t)</script><p>于是：</p>
+<script type="math/tex; mode=display">
+p(O|\lambda)=\sum\limits_{I}\pi_{i_1}\prod\limits_{t=2}^Ta_{i_{t-1},i_t}\prod\limits_{t=1}^Tb_{i_t}(o_t)</script><p>我们看到，上面的式子中的求和符号是对状态序列求和，于是复杂度为 $O(TN^T)$，这种算法不可行。</p>
+<h3 id="前向算法"><a href="#前向算法" class="headerlink" title="前向算法"></a>前向算法</h3><p>下面，记 $\alpha_t(i)=p(o_1,o_2,\cdots,o_t,i_t=q_i|\lambda)$ 为（$t$ 时刻状态序列+ $t$ 时刻前所有观测序列）的联合概率。<br>所以整个序列最后一项可写为：$\alpha_T(i)=p(O,i_T=q_i|\lambda)$。那么对所有状态序列求和可得：</p>
+<script type="math/tex; mode=display">
+p(O|\lambda)=\sum\limits_{i=1}^Np(O,i_T=q_i|\lambda)=\sum\limits_{i=1}^N\alpha_T(i)</script><p>对 $\alpha_{t+1}(j)$：</p>
+<script type="math/tex; mode=display">
+\begin{align}\alpha_{t}(i) \to \alpha_{t+1}(j)&=p(o_1,o_2,\cdots,o_{t+1},i_{t+1}=q_j|\lambda)\nonumber\\
+&=\sum\limits_{i=1}^Np(o_1,o_2,\cdots,o_{t},o_{t+1},i_t=q_i,i_{t+1}=q_j|\lambda)\nonumber\\
+&=\sum\limits_{i=1}^Np(o_{t+1}|o_1,o_2,\cdots,o_{t},i_t=q_i,i_{t+1}=q_j,\lambda)p(o_1,\cdots,o_t,i_t=q_i,i_{t+1}=q_j|\lambda)
+\end{align}</script><p>利用观测独立假设+齐次 Markov 假设：</p>
+<script type="math/tex; mode=display">
+\begin{align}\alpha_{t}(i) \to \alpha_{t+1}(j)&=\sum\limits_{i=1}^Np(o_{t+1}|i_{t+1}=q_j)p(o_1,\cdots,o_t,i_t=q_i,i_{t+1}=q_j|\lambda)\nonumber\\
+&=\sum\limits_{i=1}^Np(o_{t+1}|i_{t+1}=q_j)p(i_{t+1}=q_j|o_1,\cdots,o_t,i_t=q_i,\lambda)p(o_1,\cdots,o_t,i_t=q_i|\lambda)\nonumber\\
+&=\sum\limits_{i=1}^Np(o_{t+1}|i_{t+1}=q_j)p(i_{t+1}=q_j|i_{t}=q_i)\alpha_t(i)\nonumber\\
+&=\sum\limits_{i=1}^Nb_{j}(o_{t+1})a_{ij}\alpha_t(i)
+\end{align}</script><p>上面利用了齐次 Markov 假设得到了一个递推公式，这个算法叫做前向算法。</p>
+<h3 id="后向算法"><a href="#后向算法" class="headerlink" title="后向算法"></a>后向算法</h3><p>下面，记 $\beta_t(i)=p(o_{t+1},o_{t+2},\cdots，o_T|i_t=q_i,\lambda)$ 为（$t$ 时刻状态序列+ $t$ 时刻后所有观测序列）的联合概率。<br>进一步可写为：$\beta_t(i)=\sum\limits_{j=1}^Nb_j(o_{t+1})a_{ij}\beta_{t+1}(j)$。那么对所有状态序列求和可得：：</p>
+<script type="math/tex; mode=display">
+\begin{align}p(O|\lambda)&=p(o_1,\cdots,o_T|\lambda)\nonumber\\
+&=\sum\limits_{i=1}^Np(o_1,o_2,\cdots,o_T,i_1=q_i|\lambda)\nonumber\\
+&=\sum\limits_{i=1}^Np(o_1,o_2,\cdots,o_T|i_1=q_i,\lambda)p(i_1=q_i,|\lambda)\nonumber\\
+&=\sum\limits_{i=1}^Np(o_1,o_2,\cdots,o_T|i_1=q_i,\lambda)\pi_i\nonumber\\
+&=\sum\limits_{i=1}^Np(o_1|o_2,\cdots,o_T,i_1=q_i,\lambda)p(o_2,\cdots,o_T|i_1=q_i,\lambda)\pi_i\nonumber\\
+&=\sum\limits_{i=1}^Nb_i(o_1)\beta_1(i)\pi_i
+\end{align}</script><p>对于这个 $\beta_1(i)$ 可通过 $\beta_t(i)$ 得到，利用观测序列只与 $i_{t+1}$有关，化简$p(O|i_{t+1},i_t)$：</p>
+<script type="math/tex; mode=display">
+\begin{align}\beta_{t+1}(j) \to \beta_t(i)&=p(o_{t+1},\cdots,o_T|i_t=q_i,\lambda)\nonumber\\
+&=\sum\limits_{j=1}^Np(o_{t+1},\cdots,o_T,i_{t+1}=q_j|i_t=q_i,\lambda)\nonumber\\
+&=\sum\limits_{j=1}^Np(o_{t+1},\cdots,o_T|i_{t+1}=q_j,i_t=q_i,\lambda)p(i_{t+1}=q_j|i_t=q_i,\lambda)\nonumber\\
+&=\sum\limits_{j=1}^Np(o_{t+1},\cdots,o_T|i_{t+1}=q_j,\lambda)a_{ij}\nonumber\\
+&=\sum\limits_{j=1}^Np(o_{t+1}|o_{t+2},\cdots,o_T,i_{t+1}=q_j,\lambda)p(o_{t+2},\cdots,o_T|i_{t+1}=q_j,\lambda)a_{ij}\nonumber\\
+&=\sum\limits_{j=1}^Nb_j(o_{t+1})\beta_{t+1}(j)a_{ij}
+\end{align}</script><p>于是后向地得到了第一项。</p>
+<h2 id="Learning"><a href="#Learning" class="headerlink" title="Learning"></a>Learning</h2><p>为了学习得到参数的最优值，在 MLE 中：</p>
+<script type="math/tex; mode=display">
+\lambda_{MLE}=\mathop{argmax}_\lambda p(O|\lambda)</script><p>我们采用 EM 算法（在这里也叫 Baum Welch 算法），用上标表示迭代（时刻）：</p>
+<script type="math/tex; mode=display">
+\theta^{t+1}=\mathop{argmax}_{\theta}\int_z\log p(X,Z|\theta)p(Z|X,\theta^t)dz</script><p>其中，$X$ 是观测变量，$Z$ 是隐变量序列。对应替换成HMM变量：</p>
+<script type="math/tex; mode=display">
+\lambda^{t+1}=\mathop{argmax}_\lambda\sum\limits_I\log p(O,I|\lambda)p(I|O,\lambda^t)\\
+=\mathop{argmax}_\lambda\sum\limits_I\log p(O,I|\lambda)p(O,I|\lambda^t)</script><p>上式 $p(I|O,\lambda^t)=p(O,I|\lambda^t)/p(O|\lambda^t)$ 利用了 $p(O|\lambda^t)$ 和$\lambda$ 无关为常量。</p>
+<p>定义 $Q(\lambda,\lambda^t)$ 函数：</p>
+<script type="math/tex; mode=display">
+Q(\lambda,\lambda^t)=\sum\limits_I\log p(O,I|\lambda)p(O,I|\lambda^t)</script><p>将 Evaluation 中的直接计算式子代入：</p>
+<script type="math/tex; mode=display">
+\sum\limits_I\log p(O,I|\lambda)p(O,I|\lambda^t)=\sum\limits_I[(\log \pi_{i_1}+\sum\limits_{t=2}^T\log a_{i_{t-1},i_t}+\sum\limits_{t=1}^T\log b_{i_t}(o_t))p(O,I|\lambda^t)]</script><p>因为求参数 $\lambda^t=(\pi^t,A^t,B^t)$，有三个参数但求解方法一样这里以对求 $\pi^{t+1}$ 求解为例，它与后面 $a_{i_{t-1},i_t}$ 和 $b_{i_t}(o_t)$ 不相关：</p>
+<script type="math/tex; mode=display">
+\begin{align}\pi^{t+1}&=\mathop{argmax}_\pi Q(\lambda,\lambda^t) \nonumber\\
+&=\mathop{argmax}_\pi\sum\limits_I[\log \pi_{i_1}p(O,I|\lambda^t)]\nonumber\\
+&=\mathop{argmax}_\pi\sum\limits_{i_1}\cdots \sum\limits_{i_T}[\log \pi_{i_1}\cdot p(O,i_1,i_2,\cdots,i_T|\lambda^t)]
+\end{align}</script><p>上面的式子中，对 $i_2,\cdots,i_T$ 求和可以将这些参数消掉：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\pi^{t+1}&=\mathop{argmax}_\pi\sum\limits_{i_1}[\log \pi_{i_1}\cdot p(O,i_1|\lambda^t)]\\
+&=\mathop{argmax}_\pi \sum\limits_{i=1}^N[\log \pi_{i}\cdot p(O,i_1=q_i|\lambda^t)]
+\end{aligned}</script><p>上面的式子还有对 $\pi$ 的约束 $\sum\limits_i\pi_i=1$。使用拉格朗日乘子法，定义 Lagrange 函数：</p>
+<script type="math/tex; mode=display">
+L(\pi,\eta)=\sum\limits_{i=1}^N\log \pi_i\cdot p(O,i_1=q_i|\lambda^t)+\eta(\sum\limits_{i=1}^N\pi_i-1)</script><p>于是：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\frac{\partial L}{\partial\pi_i}&=\frac{1}{\pi_i}p(O,i_1=q_i|\lambda^t)+\eta=0\\
+&\Rightarrow p(O,i_1=q_i|\lambda^t)+\pi_i\eta=0
+\end{aligned}</script><p>对上式 $i$ 求和消去 $q_i$ 和 $\pi_i$：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\sum\limits_{i=1}^N[p(O,i_1=q_i|\lambda^t)+\pi_i\eta]=0\\
+&\Rightarrow p(O|\lambda^t)+\eta=0\\
+&\Rightarrow\eta=-p(O|\lambda^t)
+\end{aligned}</script><p>所以：</p>
+<script type="math/tex; mode=display">
+\pi_i^{t+1}=\frac{p(O,i_1=q_i|\lambda^t)}{p(O|\lambda^t)}</script><h2 id="Decoding"><a href="#Decoding" class="headerlink" title="Decoding"></a>Decoding</h2><p>Decoding 问题表述为：</p>
+<script type="math/tex; mode=display">
+I=\mathop{argmax}\limits_{I}p(I|O,\lambda)</script><p>我们需要找到一个状态序列，其概率最大，这个序列就是在参数空间中的一个路径，可以采用动态规划的思想。</p>
+<p>定义在 $t$ 时刻状态为 $i$ 的所有单个路径中概率最大值：</p>
+<script type="math/tex; mode=display">
+\delta_{t}(i)=\max\limits_{i_1,\cdots,i_{t-1}}p(o_1,\cdots,o_t,i_1,\cdots,i_{t-1},i_t=q_i)</script><p>由定义可得其递推公式：</p>
+<script type="math/tex; mode=display">
+\delta_{t+1}(j)=\max\limits_{1\le i\le N}\delta_t(i)a_{ij}b_j(o_{t+1})</script><p>从上一步到下一步的概率再求最大值，记这个路径为：</p>
+<script type="math/tex; mode=display">
+\psi_{t+1}(j)=\mathop{argmax}\limits_{1\le i\le N}\delta_t(i)a_{ij}</script><h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>HMM 是一种动态模型，是由混合树形模型和时序结合起来的一种模型（类似 GMM + Time）。对于类似 HMM 的这种状态空间模型，普遍的除了学习任务（采用 EM ）外，还有推断任务，推断任务包括：</p>
+<ol>
+<li><p>译码 Decoding：$p(z_1,z_2,\cdots,z_t|x_1,x_2,\cdots,x_t)$</p>
+</li>
+<li><p>似然 Prob of evidence：$p(x_1,x_2,\cdots,x_t|\theta)$</p>
+</li>
+<li><p>滤波 Filtering：$ p(z_t|x_1,\cdots,x_t)$，Online</p>
+<script type="math/tex; mode=display">
+p(z_t|x_{1:t})=\frac{p(x_{1:t},z_t)}{p(x_{1:t})}\propto p(x_{1:t},z_t)=\alpha_t (前向算法)</script><p>记 $\alpha_t=p(x_1,\cdots,x_t,z_t)$，$\beta_t=p(x_{t+1},\cdots,x_T|z_t)$。</p>
+</li>
+<li><p>平滑 Smoothing：$p(z_t|x_1,\cdots,x_T)$，Offline</p>
+<script type="math/tex; mode=display">
+p(z_t|x_{1:T})=\frac{p(x_{1:T},z_t)}{p(x_{1:T})}=\frac{p(x_{1:t},x_{t+1:T},z_t)}{p(x_{1:T})}=\frac{p(x_{1:t},z_t)p(x_{t+1:T}|x_{1:t},z_t)}{p(x_{1:T})}=\frac{\alpha_t p(x_{t+1:T}|x_{1:t},z_t)}{p(x_{1:T})}</script><p>根据概率图的条件独立性 $x_{t+1:T}$ 和 $x_{1:t}$ 相互独立，有 $p(x_{t+1:T}|x_{1:t},z_t)=p(x_{t+1:T}|z_t)$ ：</p>
+<script type="math/tex; mode=display">
+p(z_t|x_{1:T})=\frac{\alpha_t p(x_{t+1:T}|z_t)}{p(x_{1:T})}\propto \alpha_t\beta_t</script><p>这个算法叫做前向后向算法。</p>
+</li>
+<li><p>预测 Prediction：预测下一时刻隐状态$p(z_{t+1},z_{t+2}|x_1,\cdots,x_t)$，预测下一时刻观测状态$p(x_{t+1},x_{t+2}|x_1,\cdots,x_t)$</p>
+<script type="math/tex; mode=display">
+p(z_{t+1}|x_{1:t})=\sum_{z_t}p(z_{t+1},z_t|x_{1:t})=\sum\limits_{z_t}p(z_{t+1}|z_t,x_{1:t})p(z_t|x_{1:t})=\sum\limits_{z_t}p(z_{t+1}|z_t)p(z_t|x_{1:t})</script><p>其中 $p(z_t|x_{1:t})$ 是Filtering问题。</p>
+<script type="math/tex; mode=display">
+p(x_{t+1}|x_{1:t})=\sum\limits_{z_{t+1}}p(x_{t+1},z_{t+1}|x_{1:t})=\sum\limits_{z_{t+1}}p(x_{t+1}|z_{t+1},x_{1:t})p(z_{t+1}|x_{1:t})=\sum\limits_{z_{t+1}}p(x_{t+1}|z_{t+1})p(z_{t+1}|x_{1:t})</script><p>其中 $p(z_{t+1}|x_{1:t})$ 是上一个问题。</p>
+<div class="note info"><p>文章参考<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDcvTWFjaGluZS1MZWFybmluZy1TZXNzaW9u">Machine-Learning-Session<i class="fa fa-external-link-alt"></i></span>笔记，在其基础上增加细节笔记。</p>
+</div></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
@@ -1651,590 +2164,6 @@ K=\begin{pmatrix}k(x_1,x_2)&\cdots&k(x_1,x_N)\\\vdots&\vdots&\vdots\\k(x_N,x_1)&
 <script type="math/tex; mode=display">
 \mathop{argmin}_{w,b}\frac{1}{2}w^Tw+C\sum\limits_{i=1}^N\xi_i\ s.t.\ y_i(w^Tx_i+b)\ge1-\xi_i,\xi_i\ge0,i=1,2,\cdots,N</script><p>对于完全不可分的问题，我们采用特征转换的方式，在 SVM 中，我们引入正定核函数来直接对内积进行变换，只要这个变换满足对称性和正定性，那么就可以用做核函数。<br><div class="note info"><p>文章转载自<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDc=">Jie Zhou<i class="fa fa-external-link-alt"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDcvTWFjaGluZS1MZWFybmluZy1TZXNzaW9u">Machine-Learning-Session<i class="fa fa-external-link-alt"></i></span>。</p>
 </div></p>
-
-      
-    </div>
-
-    
-    
-    
-      
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/09/28/Machine%20Learning/20.DimentionReduction/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
-      <meta itemprop="name" content="SoundMemories">
-      <meta itemprop="description" content="今日事，今日毕">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SoundMemories">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/28/Machine%20Learning/20.DimentionReduction/" class="post-title-link" itemprop="url">DimentionReduction</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-09-28 00:00:00" itemprop="dateCreated datePublished" datetime="2020-09-28T00:00:00+08:00">2020-09-28</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3.2k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="降维"><a href="#降维" class="headerlink" title="降维"></a>降维</h1><p>我们知道，解决过拟合的问题除了正则化和添加数据之外，降维就是最好的方法。降维的思路来源于维度灾难的问题，我们知道 $n$ 维球的体积为：</p>
-<script type="math/tex; mode=display">
-CR^n</script><p>那么在球体积与边长为 $2R$ 的超立方体比值为：</p>
-<script type="math/tex; mode=display">
-\lim\limits_{n\rightarrow0}\frac{CR^n}{2^nR^n}=0</script><p>这就是所谓的维度灾难，在高维数据中，主要样本都分布在立方体的边缘，所以数据集更加稀疏。</p>
-<p>降维的算法分为：</p>
-<ol>
-<li>直接降维，特征选择</li>
-<li>线性降维，PCA，MDS等</li>
-<li>分线性，流形包括 Isomap，LLE 等</li>
-</ol>
-<p>为了方便，我们首先将协方差矩阵（数据集）写成中心化的形式：</p>
-<script type="math/tex; mode=display">
-\begin{align}S&=\frac{1}{N}\sum\limits_{i=1}^N(x_i-\overline{x})(x_i-\overline{x})^T\nonumber\\
-&=\frac{1}{N}(x_1-\overline{x},x_2-\overline{x},\cdots,x_N-\overline{x})(x_1-\overline{x},x_2-\overline{x},\cdots,x_N-\overline{x})^T\nonumber\\
-&=\frac{1}{N}(X^T-\frac{1}{N}X^T\mathbb{I}_{N1}\mathbb{I}_{N1}^T)(X^T-\frac{1}{N}X^T\mathbb{I}_{N1}\mathbb{I}_{N1}^T)^T\nonumber\\
-&=\frac{1}{N}X^T(E_N-\frac{1}{N}\mathbb{I}_{N1}\mathbb{I}_{1N})(E_N-\frac{1}{N}\mathbb{I}_{N1}\mathbb{I}_{1N})^TX\nonumber\\
-&=\frac{1}{N}X^TH_NH_N^TX\nonumber\\
-&=\frac{1}{N}X^TH_NH_NX=\frac{1}{N}X^THX
-\end{align}</script><p>这个式子利用了中心矩阵 $ H$的对称性，这也是一个投影矩阵。</p>
-<h2 id="线性降维-主成分分析-PCA"><a href="#线性降维-主成分分析-PCA" class="headerlink" title="线性降维-主成分分析 PCA"></a>线性降维-主成分分析 PCA</h2><h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><p>主成分分析中，我们的基本想法是将所有数据投影到一个字空间中，从而达到降维的目标，为了寻找这个子空间，我们基本想法是：</p>
-<ol>
-<li>所有数据在子空间中更为分散</li>
-<li>损失的信息最小，即：在补空间的分量少</li>
-</ol>
-<p>原来的数据很有可能各个维度之间是相关的，于是我们希望找到一组 $p$ 个新的线性无关的单位基 $u_i$，降维就是取其中的 $q$ 个基。于是对于一个样本 $x_i$，经过这个坐标变换后：</p>
-<script type="math/tex; mode=display">
-\hat{x_i}=\sum\limits_{i=1}^p(u_i^Tx_i)u_i=\sum\limits_{i=1}^q(u_i^Tx_i)u_i+\sum\limits_{i=q+1}^p(u_i^Tx_i)u_i</script><p>对于数据集来说，我们首先将其中心化然后再去上面的式子的第一项，并使用其系数的平方平均作为损失函数并最大化：</p>
-<script type="math/tex; mode=display">
-\begin{align}J&=\frac{1}{N}\sum\limits_{i=1}^N\sum\limits_{j=1}^q((x_i-\overline{x})^Tu_j)^2\nonumber\\
-&=\sum\limits_{j=1}^qu_j^TSu_j\ ,\ s.t.\ u_j^Tu_j=1
-\end{align}</script><p>由于每个基都是线性无关的，于是每一个 $u_j$ 的求解可以分别进行，使用拉格朗日乘子法：</p>
-<script type="math/tex; mode=display">
-\mathop{argmax}_{u_j}L(u_j,\lambda)=\mathop{argmax}_{u_j}u_j^TSu_j+\lambda(1-u_j^Tu_j)</script><p>于是：</p>
-<script type="math/tex; mode=display">
-Su_j=\lambda u_j</script><p>可见，我们需要的基就是协方差矩阵的本征矢。损失函数最大取在本征值前 $q$ 个最大值。</p>
-<p>下面看其损失的信息最少这个条件，同样适用系数的平方平均作为损失函数，并最小化：</p>
-<script type="math/tex; mode=display">
-\begin{align}J&=\frac{1}{N}\sum\limits_{i=1}^N\sum\limits_{j=q+1}^p((x_i-\overline{x})^Tu_j)^2\nonumber\\
-&=\sum\limits_{j=q+1}^pu_j^TSu_j\ ,\ s.t.\ u_j^Tu_j=1
-\end{align}</script><p>同样的：</p>
-<script type="math/tex; mode=display">
-\mathop{argmin}_{u_j}L(u_j,\lambda)=\mathop{argmin}_{u_j}u_j^TSu_j+\lambda(1-u_j^Tu_j)</script><p>损失函数最小取在本征值剩下的个最小的几个值。数据集的协方差矩阵可以写成 $S=U\Lambda U^T$，直接对这个表达式当然可以得到本征矢。</p>
-<h3 id="SVD-与-PCoA"><a href="#SVD-与-PCoA" class="headerlink" title="SVD 与 PCoA"></a>SVD 与 PCoA</h3><p>下面使用实际训练时常常使用的 SVD 直接求得这个 $q$ 个本征矢。</p>
-<p>对中心化后的数据集进行奇异值分解：</p>
-<script type="math/tex; mode=display">
-HX=U\Sigma V^T,U^TU=E_N,V^TV=E_p,\Sigma:N\times p</script><p>于是：</p>
-<script type="math/tex; mode=display">
-S=\frac{1}{N}X^THX=\frac{1}{N}X^TH^THX=\frac{1}{N}V\Sigma^T\Sigma V^T</script><p>因此，我们直接对中心化后的数据集进行 SVD，就可以得到特征值和特征向量 $V$，在新坐标系中的坐标就是：</p>
-<script type="math/tex; mode=display">
-HX\cdot V</script><p>由上面的推导，我们也可以得到另一种方法 PCoA 主坐标分析，定义并进行特征值分解：</p>
-<script type="math/tex; mode=display">
-T=HXX^TH=U\Sigma\Sigma^TU^T</script><p>由于：</p>
-<script type="math/tex; mode=display">
-TU\Sigma=U\Sigma(\Sigma^T\Sigma)</script><p>于是可以直接得到坐标。这两种方法都可以得到主成分，但是由于方差矩阵是 $p\times p$ 的，而 $T$ 是 $N\times N$ 的，所以对样本量较少的时候可以采用 PCoA的方法。</p>
-<h3 id="p-PCA"><a href="#p-PCA" class="headerlink" title="p-PCA"></a>p-PCA</h3><p>下面从概率的角度对 PCA 进行分析，概率方法也叫 p-PCA。我们使用线性模型，类似之前 LDA，我们选定一个方向，对原数据 $x\in\mathbb{R}^p$ ，降维后的数据为 $z\in\mathbb{R}^q,q&lt;p$。降维通过一个矩阵变换（投影）进行：</p>
-<script type="math/tex; mode=display">
-\begin{align}
-z&\sim\mathcal{N}(\mathbb{O}_{q1},\mathbb{I}_{qq})\\
-x&=Wz+\mu+\varepsilon\\
-\varepsilon&\sim\mathcal{N}(0,\sigma^2\mathbb{I}_{pp})
-\end{align}</script><p>对于这个模型，我么可以使用期望-最大（EM）的算法进行学习，在进行推断的时候需要求得 $p(z|x)$，推断的求解过程和线性高斯模型类似。</p>
-<script type="math/tex; mode=display">
-\begin{align}
-&p(z|x)=\frac{p(x|z)p(z)}{p(x)}\\
-&\mathbb{E}[x]=\mathbb{E}[Wz+\mu+\varepsilon]=\mu\\
-&Var[x]=WW^T+\sigma^2\mathbb{I}_{pp}\\
-\Longrightarrow p(z|x)=\mathcal{N}(W^T(WW^T+&\sigma^2\mathbb{I})^{-1}(x-\mu),\mathbb{I}-W^T(WW^T+\sigma^2\mathbb{I})^{-1}W)
-\end{align}</script><h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>降维是解决维度灾难和过拟合的重要方法，除了直接的特征选择外，我们还可以采用算法的途径对特征进行筛选，线性的降维方法以 PCA 为代表，在 PCA 中，我们只要直接对数据矩阵进行中心化然后求奇异值分解或者对数据的协方差矩阵进行分解就可以得到其主要维度。非线性学习的方法如流形学习将投影面从平面改为超曲面。</p>
-<div class="note info"><p>文章转载自<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDc=">Jie Zhou<i class="fa fa-external-link-alt"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDcvTWFjaGluZS1MZWFybmluZy1TZXNzaW9u">Machine-Learning-Session<i class="fa fa-external-link-alt"></i></span>。</p>
-</div>
-      
-    </div>
-
-    
-    
-    
-      
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/09/27/Machine%20Learning/19.LinearClassification/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
-      <meta itemprop="name" content="SoundMemories">
-      <meta itemprop="description" content="今日事，今日毕">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SoundMemories">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/27/Machine%20Learning/19.LinearClassification/" class="post-title-link" itemprop="url">LinearClassification</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-09-27 00:00:00" itemprop="dateCreated datePublished" datetime="2020-09-27T00:00:00+08:00">2020-09-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>8.2k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>7 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="线性分类"><a href="#线性分类" class="headerlink" title="线性分类"></a>线性分类</h1><p>对于分类任务，线性回归模型就无能为力了，但是我们可以在线性模型的函数进行后再加入一层激活函数，这个函数是非线性的，激活函数的反函数叫做链接函数。我们有两种线性分类的方式：</p>
-<ol>
-<li>硬分类，我们直接需要输出观测对应的分类。这类模型的代表为：<ol>
-<li>线性判别分析（Fisher 判别）</li>
-<li>感知机</li>
-</ol>
-</li>
-<li>软分类，产生不同类别的概率，这类算法根据概率方法的不同分为两种<ol>
-<li>生成式（根据贝叶斯定理先计算参数后验，再进行推断）：高斯判别分析（GDA）和朴素贝叶斯等为代表<ol>
-<li>GDA</li>
-<li>Naive Bayes</li>
-</ol>
-</li>
-<li>判别式（直接对条件概率进行建模）：Logistic 回归</li>
-</ol>
-</li>
-</ol>
-<h2 id="两分类-硬分类-感知机算法"><a href="#两分类-硬分类-感知机算法" class="headerlink" title="两分类-硬分类-感知机算法"></a>两分类-硬分类-感知机算法</h2><p>我们选取激活函数为：</p>
-<script type="math/tex; mode=display">
-sign(a)=\left\{\begin{matrix}+1,a\ge0\\-1,a\lt0\end{matrix}\right.</script><p>这样就可以将线性回归的结果映射到两分类的结果上了。</p>
-<p>定义损失函数为错误分类的数目，比较直观的方式是使用指示函数，但是指示函数不可导，因此可以定义：</p>
-<script type="math/tex; mode=display">
-L(w)=\sum\limits_{x_i\in\mathcal{D}_{wrong}}-y_iw^Tx_i</script><p>其中，$\mathcal{D}_{wrong}$是错误分类集合，实际在每一次训练的时候，我们采用梯度下降的算法。损失函数对 $w$ 的偏导为：</p>
-<script type="math/tex; mode=display">
-\frac{\partial}{\partial w}L(w)=\sum\limits_{x_i\in\mathcal{D}_{wrong}}-y_ix_i</script><p>但是如果样本非常多的情况下，计算复杂度较高，但是，实际上我们并不需要绝对的损失函数下降的方向，我们只需要损失函数的期望值下降，但是计算期望需要知道真实的概率分布，我们实际只能根据训练数据抽样来估算这个概率分布（经验风险）：</p>
-<script type="math/tex; mode=display">
-\mathbb{E}_{\mathcal D}[\mathbb{E}_\hat{p}[\nabla_wL(w)]]=\mathbb{E}_{\mathcal D}[\frac{1}{N}\sum\limits_{i=1}^N\nabla_wL(w)]</script><p>我们知道， $N$ 越大，样本近似真实分布越准确，但是对于一个标准差为 $\sigma$ 的数据，可以确定的标准差仅和 $\sqrt{N}$ 成反比，而计算速度却和 $N$ 成正比。因此可以每次使用较少样本，则在数学期望的意义上损失降低的同时，有可以提高计算速度，如果每次只使用一个错误样本，我们有下面的更新策略（根据泰勒公式，在负方向）：</p>
-<script type="math/tex; mode=display">
-w^{t+1}\leftarrow w^{t}+\lambda y_ix_i</script><p>是可以收敛的，同时使用单个观测更新也可以在一定程度上增加不确定度，从而减轻陷入局部最小的可能。在更大规模的数据上，常用的是小批量随机梯度下降法。</p>
-<h2 id="两分类-硬分类-线性判别分析-LDA"><a href="#两分类-硬分类-线性判别分析-LDA" class="headerlink" title="两分类-硬分类-线性判别分析 LDA"></a>两分类-硬分类-线性判别分析 LDA</h2><p>在 LDA 中，我们的基本想法是选定一个方向，将试验样本顺着这个方向投影，投影后的数据需要满足两个条件，从而可以更好地分类：</p>
-<ol>
-<li>相同类内部的试验样本距离接近。</li>
-<li>不同类别之间的距离较大。</li>
-</ol>
-<p>首先是投影，我们假定原来的数据是向量 $x$，那么顺着 $ w$ 方向的投影就是标量：</p>
-<script type="math/tex; mode=display">
-z=w^T\cdot x(=|w|\cdot|x|\cos\theta)</script><p>对第一点，相同类内部的样本更为接近，我们假设属于两类的试验样本数量分别是 $N_1$和 $N_2$，那么我们采用方差矩阵来表征每一个类内的总体分布，这里我们使用了协方差的定义，用 $S$ 表示原数据的协方差：</p>
-<script type="math/tex; mode=display">
-\begin{align}
-C_1:Var_z[C_1]&=\frac{1}{N_1}\sum\limits_{i=1}^{N_1}(z_i-\overline{z_{c1}})(z_i-\overline{z_{c1}})^T\nonumber\\
-&=\frac{1}{N_1}\sum\limits_{i=1}^{N_1}(w^Tx_i-\frac{1}{N_1}\sum\limits_{j=1}^{N_1}w^Tx_j)(w^Tx_i-\frac{1}{N_1}\sum\limits_{j=1}^{N_1}w^Tx_j)^T\nonumber\\
-&=w^T\frac{1}{N_1}\sum\limits_{i=1}^{N_1}(x_i-\overline{x_{c1}})(x_i-\overline{x_{c1}})^Tw\nonumber\\
-&=w^TS_1w\\
-C_2:Var_z[C_2]&=\frac{1}{N_2}\sum\limits_{i=1}^{N_2}(z_i-\overline{z_{c2}})(z_i-\overline{z_{c2}})^T\nonumber\\
-&=w^TS_2w
-\end{align}</script><p>所以类内距离可以记为：</p>
-<script type="math/tex; mode=display">
-\begin{align}
-Var_z[C_1]+Var_z[C_2]=w^T(S_1+S_2)w
-\end{align}</script><p>对于第二点，我们可以用两类的均值表示这个距离：</p>
-<script type="math/tex; mode=display">
-\begin{align}
-(\overline{z_{c1}}-\overline{z_{c2}})^2&=(\frac{1}{N_1}\sum\limits_{i=1}^{N_1}w^Tx_i-\frac{1}{N_2}\sum\limits_{i=1}^{N_2}w^Tx_i)^2\nonumber\\
-&=(w^T(\overline{x_{c1}}-\overline{x_{c2}}))^2\nonumber\\
-&=w^T(\overline{x_{c1}}-\overline{x_{c2}})(\overline{x_{c1}}-\overline{x_{c2}})^Tw
-\end{align}</script><p>综合这两点，由于协方差是一个矩阵，于是我们用将这两个值相除来得到我们的损失函数，并最大化这个值：</p>
-<script type="math/tex; mode=display">
-\begin{align}
-\hat{w}=\mathop{argmax}\limits_wJ(w)&=\mathop{argmax}\limits_w\frac{(\overline{z_{c1}}-\overline{z_{c2}})^2}{Var_z[C_1]+Var_z[C_2]}\nonumber\\
-&=\mathop{argmax}\limits_w\frac{w^T(\overline{x_{c1}}-\overline{x_{c2}})(\overline{x_{c1}}-\overline{x_{c2}})^Tw}{w^T(S_1+S_2)w}\nonumber\\
-&=\mathop{argmax}\limits_w\frac{w^TS_bw}{w^TS_ww}
-\end{align}</script><p>这样，我们就把损失函数和原数据集以及参数结合起来了。下面对这个损失函数求偏导，注意我们其实对 $w$ 的绝对值没有任何要求，只对方向有要求，因此只要一个方程就可以求解了：</p>
-<script type="math/tex; mode=display">
-\begin{align}
-&\frac{\partial}{\partial w}J(w)=2S_bw(w^TS_ww)^{-1}-2w^TS_bw(w^TS_ww)^{-2}S_ww=0\nonumber\\
-&\Longrightarrow S_bw(w^TS_ww)=(w^TS_bw)S_ww\nonumber\\
-&\Longrightarrow w\propto S_w^{-1}S_bw=S_w^{-1}(\overline{x_{c1}}-\overline{x_{c2}})(\overline{x_{c1}}-\overline{x_{c2}})^Tw\propto S_w^{-1}(\overline{x_{c1}}-\overline{x_{c2}})
-\end{align}</script><p>于是 $ S_w^{-1}(\overline{x_{c1}}-\overline{x_{c2}})$ 就是我们需要寻找的方向。最后可以归一化求得单位的 $w$ 值。</p>
-<h2 id="两分类-软分类-概率判别模型-Logistic-回归"><a href="#两分类-软分类-概率判别模型-Logistic-回归" class="headerlink" title="两分类-软分类-概率判别模型-Logistic 回归"></a>两分类-软分类-概率判别模型-Logistic 回归</h2><p>有时候我们只要得到一个类别的概率，那么我们需要一种能输出 $[0,1]$ 区间的值的函数。考虑两分类模型，我们利用判别模型，希望对 $p(C|x)$ 建模，利用贝叶斯定理：</p>
-<script type="math/tex; mode=display">
-p(C_1|x)=\frac{p(x|C_1)p(C_1)}{p(x|C_1)p(C_1)+p(x|C_2)p(C_2)}</script><p>取 $a=\ln\frac{p(x|C_1)p(C_1)}{p(x|C_2)p(C_2)}$，于是：</p>
-<script type="math/tex; mode=display">
-p(C_1|x)=\frac{1}{1+\exp(-a)}</script><p>上面的式子叫 Logistic Sigmoid 函数，其参数表示了两类联合概率比值的对数。在判别式中，不关心这个参数的具体值，模型假设直接对 $a$ 进行。</p>
-<p>Logistic 回归的模型假设是：</p>
-<script type="math/tex; mode=display">
-a=w^Tx</script><p>于是，通过寻找 $  w$ 的最佳值可以得到在这个模型假设下的最佳模型。概率判别模型常用最大似然估计的方式来确定参数。</p>
-<p>对于一次观测，获得分类 $y$ 的概率为（假定$C_1=1,C_2=0$）：</p>
-<script type="math/tex; mode=display">
-p(y|x)=p_1^yp_0^{1-y}</script><p>那么对于 $N$ 次独立全同的观测 MLE为：</p>
-<script type="math/tex; mode=display">
-\hat{w}=\mathop{argmax}_wJ(w)=\mathop{argmax}_w\sum\limits_{i=1}^N(y_i\log p_1+(1-y_i)\log p_0)</script><p>注意到，这个表达式是交叉熵表达式的相反数乘 $N$，MLE 中的对数也保证了可以和指数函数相匹配，从而在大的区间汇总获取稳定的梯度。</p>
-<p>对这个函数求导数，注意到：</p>
-<script type="math/tex; mode=display">
-p_1'=(\frac{1}{1+\exp(-a)})'=p_1(1-p_1)</script><p>则：</p>
-<script type="math/tex; mode=display">
-J'(w)=\sum\limits_{i=1}^Ny_i(1-p_1)x_i-p_1x_i+y_ip_1x_i=\sum\limits_{i=1}^N(y_i-p_1)x_i</script><p>由于概率值的非线性，放在求和符号中时，这个式子无法直接求解。于是在实际训练的时候，和感知机类似，也可以使用不同大小的批量随机梯度上升（对于最小化就是梯度下降）来获得这个函数的极大值。</p>
-<h2 id="两分类-软分类-概率生成模型-高斯判别分析-GDA"><a href="#两分类-软分类-概率生成模型-高斯判别分析-GDA" class="headerlink" title="两分类-软分类-概率生成模型-高斯判别分析 GDA"></a>两分类-软分类-概率生成模型-高斯判别分析 GDA</h2><p>生成模型中，我们对联合概率分布进行建模，然后采用 MAP 来获得参数的最佳值。两分类的情况，我们采用的假设：</p>
-<ol>
-<li>$y\sim Bernoulli(\phi)$</li>
-<li>$x|y=1\sim\mathcal{N}(\mu_1,\Sigma)$</li>
-<li>$x|y=0\sim\mathcal{N}(\mu_0,\Sigma)$</li>
-</ol>
-<p>那么独立全同的数据集最大后验概率可以表示为：</p>
-<script type="math/tex; mode=display">
-\begin{align}
-\mathop{argmax}_{\phi,\mu_0,\mu_1,\Sigma}\log p(X|Y)p(Y)=\mathop{argmax}_{\phi,\mu_0,\mu_1,\Sigma}\sum\limits_{i=1}^N (\log p(x_i|y_i)+\log p(y_i))\nonumber\\
-=\mathop{argmax}_{\phi,\mu_0,\mu_1,\Sigma}\sum\limits_{i=1}^N((1-y_i)\log\mathcal{N}(\mu_0,\Sigma)+y_i\log \mathcal{N}(\mu_1,\Sigma)+y_i\log\phi+(1-y_i)\log(1-\phi))
-\end{align}</script><ul>
-<li><p>首先对 $\phi$ 进行求解，将式子对 $\phi$ 求偏导：</p>
-<script type="math/tex; mode=display">
-\begin{align}\sum\limits_{i=1}^N\frac{y_i}{\phi}+\frac{y_i-1}{1-\phi}=0\nonumber\\
-\Longrightarrow\phi=\frac{\sum\limits_{i=1}^Ny_i}{N}=\frac{N_1}{N}
-\end{align}</script></li>
-<li><p>然后求解 $\mu_1$：</p>
-<script type="math/tex; mode=display">
-\begin{align}\hat{\mu_1}&=\mathop{argmax}_{\mu_1}\sum\limits_{i=1}^Ny_i\log\mathcal{N}(\mu_1,\Sigma)\nonumber\\
-&=\mathop{argmin}_{\mu_1}\sum\limits_{i=1}^Ny_i(x_i-\mu_1)^T\Sigma^{-1}(x_i-\mu_1)
-\end{align}</script><p>由于：</p>
-<script type="math/tex; mode=display">
-\sum\limits_{i=1}^Ny_i(x_i-\mu_1)^T\Sigma^{-1}(x_i-\mu_1)=\sum\limits_{i=1}^Ny_ix_i^T\Sigma^{-1}x_i-2y_i\mu_1^T\Sigma^{-1}x_i+y_i\mu_1^T\Sigma^{-1}\mu_1</script><p>求微分左边乘以 $\Sigma$ 可以得到：</p>
-<script type="math/tex; mode=display">
-\begin{align}
-\sum\limits_{i=1}^N-2y_i\Sigma^{-1}x_i+2y_i\Sigma^{-1}\mu_1=0\nonumber\\
-\Longrightarrow\mu_1=\frac{\sum\limits_{i=1}^Ny_ix_i}{\sum\limits_{i=1}^Ny_i}=\frac{\sum\limits_{i=1}^Ny_ix_i}{N_1}
-\end{align}</script></li>
-<li><p>求解 $\mu_0$，由于正反例是对称的，所以：</p>
-<script type="math/tex; mode=display">
-\mu_0=\frac{\sum\limits_{i=1}^N(1-y_i)x_i}{N_0}</script></li>
-<li><p>最为困难的是求解 $\Sigma$，我们的模型假设对正反例采用相同的协方差矩阵，当然从上面的求解中我们可以看到，即使采用不同的矩阵也不会影响之前的三个参数。首先我们有：</p>
-<script type="math/tex; mode=display">
-\begin{align}
-\sum\limits_{i=1}^N\log\mathcal{N}(\mu,\Sigma)&=\sum\limits_{i=1}^N\log(\frac{1}{(2\pi)^{p/2}|\Sigma|^{1/2}})+(-\frac{1}{2}(x_i-\mu)^T\Sigma^{-1}(x_i-\mu))\nonumber\\
-&=Const-\frac{1}{2}N\log|\Sigma|-\frac{1}{2}Trace((x_i-\mu)^T\Sigma^{-1}(x_i-\mu))\nonumber\\
-&=Const-\frac{1}{2}N\log|\Sigma|-\frac{1}{2}Trace((x_i-\mu)(x_i-\mu)^T\Sigma^{-1})\nonumber\\
-&=Const-\frac{1}{2}N\log|\Sigma|-\frac{1}{2}NTrace(S\Sigma^{-1})
-\end{align}</script><p>在这个表达式中，我们在标量上加入迹从而可以交换矩阵的顺序，对于包含绝对值和迹的表达式的导数，我们有：</p>
-<script type="math/tex; mode=display">
-\begin{align}
-\frac{\partial}{\partial A}(|A|)&=|A|A^{-1}\\
-\frac{\partial}{\partial A}Trace(AB)&=B^T
-\end{align}</script><p>因此：</p>
-<script type="math/tex; mode=display">
-\begin{align}[\sum\limits_{i=1}^N((1-y_i)\log\mathcal{N}(\mu_0,\Sigma)+y_i\log \mathcal{N}(\mu_1,\Sigma)]'
-\nonumber\\=Const-\frac{1}{2}N\log|\Sigma|-\frac{1}{2}N_1Trace(S_1\Sigma^{-1})-\frac{1}{2}N_2Trace(S_2\Sigma^{-1})
-\end{align}</script><p>其中，$S_1,S_2$ 分别为两个类数据内部的协方差矩阵，于是：</p>
-<script type="math/tex; mode=display">
-\begin{align}N\Sigma^{-1}-N_1S_1^T\Sigma^{-2}-N_2S_2^T\Sigma^{-2}=0\nonumber
-\\\Longrightarrow\Sigma=\frac{N_1S_1+N_2S_2}{N}
-\end{align}</script><p>这里应用了类协方差矩阵的对称性。</p>
-</li>
-</ul>
-<p>于是我们就利用最大后验的方法求得了我们模型假设里面的所有参数，根据模型，可以得到联合分布，也就可以得到用于推断的条件分布了。</p>
-<h2 id="两分类-软分类-概率生成模型-朴素贝叶斯"><a href="#两分类-软分类-概率生成模型-朴素贝叶斯" class="headerlink" title="两分类-软分类-概率生成模型-朴素贝叶斯"></a>两分类-软分类-概率生成模型-朴素贝叶斯</h2><p>上面的高斯判别分析的是对数据集的分布作出了高斯分布的假设，同时引入伯努利分布作为类先验，从而利用最大后验求得这些假设中的参数。</p>
-<p>朴素贝叶斯队数据的属性之间的关系作出了假设，一般地，我们有需要得到 $p(x|y)$ 这个概率值，由于 $x$ 有 $p$ 个维度，因此需要对这么多的维度的联合概率进行采样，但是我们知道这么高维度的空间中采样需要的样本数量非常大才能获得较为准确的概率近似。</p>
-<p>在一般的有向概率图模型中，对各个属性维度之间的条件独立关系作出了不同的假设，其中最为简单的一个假设就是在朴素贝叶斯模型描述中的条件独立性假设。</p>
-<script type="math/tex; mode=display">
-p(x|y)=\prod\limits_{i=1}^pp(x_i|y)</script><p>即：</p>
-<script type="math/tex; mode=display">
-x_i\perp x_j|y,\forall\  i\ne j</script><p>于是利用贝叶斯定理，对于单次观测：</p>
-<script type="math/tex; mode=display">
-p(y|x)=\frac{p(x|y)p(y)}{p(x)}=\frac{\prod\limits_{i=1}^pp(x_i|y)p(y)}{p(x)}</script><p>对于单个维度的条件概率以及类先验作出进一步的假设：</p>
-<ol>
-<li>$x_i$ 为连续变量：$p(x_i|y)=\mathcal{N}(\mu_i,\sigma_i^2)$</li>
-<li>$x_i$ 为离散变量：类别分布（Categorical）：$p(x_i=i|y)=\theta_i,\sum\limits_{i=1}^K\theta_i=1$</li>
-<li>$p(y)=\phi^y(1-\phi)^{1-y}$</li>
-</ol>
-<p>对这些参数的估计，常用 MLE 的方法直接在数据集上估计，由于不需要知道各个维度之间的关系，因此，所需数据量大大减少了。估算完这些参数，再代入贝叶斯定理中得到类别的后验分布。</p>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>分类任务分为两类，对于需要直接输出类别的任务，感知机算法中我们在线性模型的基础上加入符号函数作为激活函数，那么就能得到这个类别，但是符号函数不光滑，于是我们采用错误驱动的方式，引入 $\sum\limits_{x_i\in\mathcal{D}_{wrong}}-y_iw^Tx_i$ 作为损失函数，然后最小化这个误差，采用批量随机梯度下降的方法来获取最佳的参数值。而在线性判别分析中，我们将线性模型看作是数据点在某一个方向的投影，采用类内小，类间大的思路来定义损失函数，其中类内小定义为两类数据的方差之和，类间大定义为两类数据中心点的间距，对损失函数求导得到参数的方向，这个方向就是 $S_w^{-1}(\overline x_{c1}-\overline x_{c2})$，其中 $S_w$ 为原数据集两类的方差之和。</p>
-<p>另一种任务是输出分类的概率，对于概率模型，我们有两种方案，第一种是判别模型，也就是直接对类别的条件概率建模，将线性模型套入 Logistic 函数中，我们就得到了 Logistic 回归模型，这里的概率解释是两类的联合概率比值的对数是线性的，我们定义的损失函数是交叉熵（等价于 MLE），对这个函数求导得到 $\frac{1}{N}\sum\limits_{i=1}^N(y_i-p_1)x_i$，同样利用批量随机梯度（上升）的方法进行优化。第二种是生成模型，生成模型引入了类别的先验，在高斯判别分析中，我们对数据集的数据分布作出了假设，其中类先验是二项分布，而每一类的似然是高斯分布，对这个联合分布的对数似然进行最大化就得到了参数， $\frac{\sum\limits_{i=1}^Ny_ix_i}{N_1},\frac{\sum\limits_{i=1}^N(1-y_i)x_i}{N_0},\frac{N_1S_1+N_2S_2}{N},\frac{N_1}{N}$。在朴素贝叶斯中，我们进一步对属性的各个维度之间的依赖关系作出假设，条件独立性假设大大减少了数据量的需求。</p>
-<div class="note info"><p>文章转载自<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDc=">Jie Zhou<i class="fa fa-external-link-alt"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDcvTWFjaGluZS1MZWFybmluZy1TZXNzaW9u">Machine-Learning-Session<i class="fa fa-external-link-alt"></i></span>。</p>
-</div>
-
-      
-    </div>
-
-    
-    
-    
-      
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/09/25/Machine%20Learning/18.LinearRegression/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
-      <meta itemprop="name" content="SoundMemories">
-      <meta itemprop="description" content="今日事，今日毕">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SoundMemories">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/25/Machine%20Learning/18.LinearRegression/" class="post-title-link" itemprop="url">LinearRegression</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-09-25 00:00:00" itemprop="dateCreated datePublished" datetime="2020-09-25T00:00:00+08:00">2020-09-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3.2k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h1><p>假设数据集为：</p>
-<script type="math/tex; mode=display">
-\mathcal{D}=\{(x_1, y_1),(x_2, y_2),\cdots,(x_N, y_N)\}</script><p>后面我们记：</p>
-<script type="math/tex; mode=display">
-X=(x_1,x_2,\cdots,x_N)^T,Y=(y_1,y_2,\cdots,y_N)^T</script><p>线性回归假设：</p>
-<script type="math/tex; mode=display">
-f(w)=w^Tx</script><h2 id="最小二乘法"><a href="#最小二乘法" class="headerlink" title="最小二乘法"></a>最小二乘法</h2><p>对这个问题，采用二范数定义的平方误差来定义损失函数：</p>
-<script type="math/tex; mode=display">
-L(w)=\sum\limits_{i=1}^N||w^Tx_i-y_i||^2_2</script><p>展开得到：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-L(w)&=(w^Tx_1-y_1,\cdots,w^Tx_N-y_N)\cdot(w^Tx_1-y_1,\cdots,w^Tx_N-y_N)^T\\
-&=(w^TX^T-Y^T)\cdot(Xw-Y)=w^TX^TXw-Y^TXw-w^TX^TY+Y^TY\\
-&=w^TX^TXw-2w^TX^TY+Y^TY
-\end{aligned}</script><p>最小化这个值的 $\hat{w}$ ：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-\hat{w}=\mathop{argmin}\limits_wL(w)&\longrightarrow\frac{\partial}{\partial w}L(w)=0\\
-&\longrightarrow2X^TX\hat{w}-2X^TY=0\\
-&\longrightarrow \hat{w}=(X^TX)^{-1}X^TY=X^+Y
-\end{aligned}</script><p>这个式子中 $(X^TX)^{-1}X^T$ 又被称为伪逆。对于行满秩或者列满秩的 $X$，可以直接求解，但是对于非满秩的样本集合，需要使用奇异值分解（SVD）的方法，对 $X$ 求奇异值分解，得到</p>
-<script type="math/tex; mode=display">
-X=U\Sigma V^T</script><p>于是：</p>
-<script type="math/tex; mode=display">
-X^+=V\Sigma^{-1}U^T</script><p>在几何上，最小二乘法相当于模型（这里就是直线）和试验值的距离的平方求和，假设我们的试验样本张成一个 $p$ 维空间（满秩的情况）：$X=Span(x_1,\cdots,x_N)$，而模型可以写成 $f(w)=X\beta$，也就是 $x_1,\cdots,x_N$ 的某种组合，而最小二乘法就是说希望 $Y$ 和这个模型距离越小越好，于是它们的差应该与这个张成的空间垂直：</p>
-<script type="math/tex; mode=display">
-X^T\cdot(Y-X\beta)=0\longrightarrow\beta=(X^TX)^{-1}X^TY</script><h2 id="噪声为高斯分布的-MLE"><a href="#噪声为高斯分布的-MLE" class="headerlink" title="噪声为高斯分布的 MLE"></a>噪声为高斯分布的 MLE</h2><p>对于一维的情况，记 $y=w^Tx+\epsilon,\epsilon\sim\mathcal{N}(0,\sigma^2)$，那么 $y\sim\mathcal{N}(w^Tx,\sigma^2)$。代入极大似然估计中：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-L(w)=\log p(Y|X,w)&=\log\prod\limits_{i=1}^Np(y_i|x_i,w)\\
-&=\sum\limits_{i=1}^N\log(\frac{1}{\sqrt{2\pi\sigma}}e^{-\frac{(y_i-w^Tx_i)^2}{2\sigma^2}})\\
-\mathop{argmax}\limits_wL(w)&=\mathop{argmin}\limits_w\sum\limits_{i=1^N}(y_i-w^Tx_i)^2
-\end{aligned}</script><p>这个表达式和最小二乘估计得到的结果一样。</p>
-<h2 id="权重先验也为高斯分布的-MAP"><a href="#权重先验也为高斯分布的-MAP" class="headerlink" title="权重先验也为高斯分布的 MAP"></a>权重先验也为高斯分布的 MAP</h2><p>取先验分布 $w\sim\mathcal{N}(0,\sigma_0^2)$。于是： </p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-\hat{w}=\mathop{argmax}\limits_wp(w|Y)&=\mathop{argmax}\limits_wp(Y|w)p(w)\\
-&=\mathop{argmax}\limits_w\log p(Y|w)p(w)\\
-&=\mathop{argmax}\limits_w(\log p(Y|w)+\log p(w))\\
-&=\mathop{argmin}\limits_w[(y-w^Tx)^2+\frac{\sigma^2}{\sigma_0^2}w^Tw]
-\end{aligned}</script><p>这里省略了 $X$，$p(Y)$和 $w$ 没有关系，同时也利用了上面高斯分布的 MLE的结果。</p>
-<p>我们将会看到，超参数 $\sigma_0$的存在和下面会介绍的 Ridge 正则项可以对应，同样的如果将先验分布取为 Laplace 分布，那么就会得到和 L1 正则类似的结果。</p>
-<h2 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h2><p>在实际应用时，如果样本容量不远远大于样本的特征维度，很可能造成过拟合，对这种情况，我们有下面三个解决方式：</p>
-<ol>
-<li>加数据</li>
-<li>特征选择（降低特征维度）如 PCA 算法。</li>
-<li>正则化</li>
-</ol>
-<p>正则化一般是在损失函数（如上面介绍的最小二乘损失）上加入正则化项（表示模型的复杂度对模型的惩罚），下面我们介绍一般情况下的两种正则化框架。</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-L1&:\mathop{argmin}\limits_wL(w)+\lambda||w||_1,\lambda\gt0\\
-L2&:\mathop{argmin}\limits_wL(w)+\lambda||w||^2_2,\lambda \gt 0
-\end{aligned}</script><p>下面对最小二乘误差分别分析这两者的区别。</p>
-<h3 id="L1-Lasso"><a href="#L1-Lasso" class="headerlink" title="L1 Lasso"></a>L1 Lasso</h3><p>L1正则化可以引起稀疏解。</p>
-<p>从最小化损失的角度看，由于 L1 项求导在0附近的左右导数都不是0，因此更容易取到0解。</p>
-<p>从另一个方面看，L1 正则化相当于：</p>
-<script type="math/tex; mode=display">
-\mathop{argmin}\limits_wL(w)\\
-s.t. ||w||_1\lt C</script><p>我们已经看到平方误差损失函数在 $w$ 空间是一个椭球，因此上式求解就是椭球和 $||w||_1=C$的切点，因此更容易相切在坐标轴上。</p>
-<h3 id="L2-Ridge"><a href="#L2-Ridge" class="headerlink" title="L2 Ridge"></a>L2 Ridge</h3><script type="math/tex; mode=display">
-\begin{aligned}
-\hat{w}=\mathop{argmin}\limits_wL(w)+\lambda w^Tw&\longrightarrow\frac{\partial}{\partial w}L(w)+2\lambda w=0\\
-&\longrightarrow2X^TX\hat{w}-2X^TY+2\lambda \hat w=0\\
-&\longrightarrow \hat{w}=(X^TX+\lambda \mathbb{I})^{-1}X^TY
-\end{aligned}</script><p>可以看到，这个正则化参数和前面的 MAP 结果不谋而合。利用2范数进行正则化不仅可以是模型选择 $w$ 较小的参数，同时也避免 $ X^TX$不可逆的问题。</p>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>线性回归模型是最简单的模型，但是麻雀虽小，五脏俱全，在这里，我们利用最小二乘误差得到了闭式解。同时也发现，在噪声为高斯分布的时候，MLE 的解等价于最小二乘误差，而增加了正则项后，最小二乘误差加上 L2 正则项等价于高斯噪声先验下的 MAP解，加上 L1 正则项后，等价于 Laplace 噪声先验。</p>
-<p>传统的机器学习方法或多或少都有线性回归模型的影子：</p>
-<ol>
-<li>线性模型往往不能很好地拟合数据，因此有三种方案克服这一劣势：<ol>
-<li>对特征的维数进行变换，例如多项式回归模型就是在线性特征的基础上加入高次项。</li>
-<li>在线性方程后面加入一个非线性变换，即引入一个非线性的激活函数，典型的有线性分类模型如感知机。</li>
-<li>对于一致的线性系数，我们进行多次变换，这样同一个特征不仅仅被单个系数影响，例如多层感知机（深度前馈网络）。</li>
-</ol>
-</li>
-<li>线性回归在整个样本空间都是线性的，我们修改这个限制，在不同区域引入不同的线性或非线性，例如线性样条回归和决策树模型。</li>
-<li>线性回归中使用了所有的样本，但是对数据预先进行加工学习的效果可能更好（所谓的维数灾难，高维度数据更难学习），例如 PCA 算法和流形学习。</li>
-</ol>
-<div class="note info"><p>文章转载自<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDc=">Jie Zhou<i class="fa fa-external-link-alt"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDcvTWFjaGluZS1MZWFybmluZy1TZXNzaW9u">Machine-Learning-Session<i class="fa fa-external-link-alt"></i></span>。</p>
-</div>
 
       
     </div>

@@ -1620,6 +1620,7 @@ pre code {
   line-height: 1.8;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .post-toc .nav .nav-child {
   display: block;
@@ -2906,7 +2907,7 @@ mjx-container[display="true"] + br {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #60f74e;
+  background: #c1ff8c;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
