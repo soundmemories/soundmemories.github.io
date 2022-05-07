@@ -44,7 +44,7 @@
 <meta property="og:image" content="https://soundmemories.github.io/images/word2vec/1.png">
 <meta property="og:image" content="https://soundmemories.github.io/images/语言模型和词向量/sigmoid.png">
 <meta property="article:published_time" content="2021-06-19T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-03-13T13:04:35.464Z">
+<meta property="article:modified_time" content="2022-05-07T11:54:01.152Z">
 <meta property="article:author" content="SoundMemories">
 <meta property="article:tag" content="NLP">
 <meta name="twitter:card" content="summary">
@@ -161,11 +161,6 @@
         <li class="menu-item menu-item-归档">
 
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
-        <li class="menu-item menu-item-关于">
-
-    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -734,7 +729,7 @@ P_{ij}=P(j|i)=\frac{x_{ij}}{x_i}</script><p>为词 $j$ 出现在词 $i$ 的环�
 </ul>
 <p>由此可见，共现概率的比值能够直观地表达词与词之间的关系。因此，我们可以设计三个词向量的函数来拟合这个比值。</p>
 <script type="math/tex; mode=display">
-f(v_i,v_j,\tilde{v}_k)=\frac{P_{ik}}{P_{jk}}</script><p>其中，$i$ 是中心词，$j$ 和 $k$ 是上下文词。<br>$f$ 可以有多种设计，由于 $f$ 映射的是向量空间，而向量空间是一个线性空间。因此从右侧的除法可以联想到减法：</p>
+f(v_i,v_j,\tilde{v}_k)=\frac{P_{ik}}{P_{jk}}</script><p>其中，$i$ 和 $j$是中心词，$k$ 是上下文词。<br>$f$ 可以有多种设计，由于 $f$ 映射的是向量空间，而向量空间是一个线性空间。因此从右侧的除法可以联想到减法：</p>
 <script type="math/tex; mode=display">
 f(v_i,v_j,\tilde{v}_k)=f(v_i-v_j,\tilde{v}_k)</script><p>又因为共现概率的比值是标量，所以我们要求 $f$ 是标量函数，即 $v_i-v_j$ 和 $\tilde{v}_k$ 均为向量，结果要求是标量，因此可以联想到向量的内积：</p>
 <script type="math/tex; mode=display">
@@ -782,7 +777,7 @@ J=\sum\limits_{i,j=1}^Vf(x_{ij})(v_i^T\tilde{v}_j+b_i+b_j-log(x_{ij}))^2</script
 -logP(w_o|w_c)=-log\frac{1}{1+exp(-u_o^T\sum_{g\in \mathcal{G}_w }z_g )}-\sum\limits_{k=1,w_k\sim P(w)}^K log\frac{1}{1+exp(u_{i_k}^T\sum_{g\in \mathcal{G}_w }z_g)}</script><p>我们可以看到，原中心词向量被替换成了中心词的子词向量的和。与整词学习（word2vec和Glove）不同，词典以外的新词的词向量可以使用fastText中相应的子词向量之和。</p>
 <p>fastText对于一些语言较重要，例如阿拉伯语、德语和俄语。例如，德语中有很多复合词，例如兵乓球（table tennis）在德语中叫“Tischtennis”。fastText可以通过子词可以表达两个词的相关性，例如“Tischtennis”和“Tennis”。</p>
 <p><strong>总结：Glove用词向量表达共现词频的对数。fastText用子词向量之和表达整词。</strong></p>
-<p>Fasttext可以做文本分类：<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE2MDcuMDE3NTl2Mi5wZGY=">Bag of Tricks for Efficient Text Classification<i class="fa fa-external-link-alt"></i></span>。<br>Fasttext可以训练词向量：<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE2MDcuMDQ2MDYucGRm">Enriching word vectors with subword information<i class="fa fa-external-link-alt"></i></span>。<br>Fasttext官方：<span class="exturl" data-url="aHR0cHM6Ly9mYXN0dGV4dC5jYy9kb2NzL2VuL3N1cGVydmlzZWQtdHV0b3JpYWwuaHRtbOOAgg==">https://fasttext.cc/docs/en/supervised-tutorial.html。<i class="fa fa-external-link-alt"></i></span></p>
+<p>Fasttext可以做文本分类：<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE2MDcuMDE3NTl2Mi5wZGY=">Bag of Tricks for Efficient Text Classification<i class="fa fa-external-link-alt"></i></span>。<br>Fasttext可以训练词向量：<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE2MDcuMDQ2MDYucGRm">Enriching word vectors with subword information<i class="fa fa-external-link-alt"></i></span>。<br>Fasttext官方：<span class="exturl" data-url="aHR0cHM6Ly9mYXN0dGV4dC5jYy9kb2NzL2VuL3N1cGVydmlzZWQtdHV0b3JpYWwuaHRtbA==">https://fasttext.cc/docs/en/supervised-tutorial.html<i class="fa fa-external-link-alt"></i></span></p>
 <p><strong>补充问答</strong>：<br>问：如果一个词出现在另一个词的背景窗口中，如何利用它们之间在文本序列的距离重新设计条件概率 $P_{ij}$ 的计算方式？（提示：可参考<span class="exturl" data-url="aHR0cHM6Ly9ubHAuc3RhbmZvcmQuZWR1L3B1YnMvZ2xvdmUucGRm">GloVe论文<i class="fa fa-external-link-alt"></i></span>4.2节）<br>问：如果丢弃Glove中的偏移项，是否也可以满足任意一对词共现的对称性？<br>问：在fastText中，子词过多怎么办？（例如，6字英文组合数为$26^6$）？（提示：可参考<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE2MDcuMDE3NTl2Mi5wZGY=">fastText论文<i class="fa fa-external-link-alt"></i></span>3.2节）</p>
 <h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h2 id="softmax"><a href="#softmax" class="headerlink" title="softmax"></a>softmax</h2><script type="math/tex; mode=display">
 \begin{aligned}

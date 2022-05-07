@@ -148,11 +148,6 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
-        <li class="menu-item menu-item-关于">
-
-    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
-
-  </li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -280,6 +275,129 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2022/01/31/Other/%E7%AE%97%E6%B3%95%E9%A2%98%E5%90%88%E9%9B%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/01/31/Other/%E7%AE%97%E6%B3%95%E9%A2%98%E5%90%88%E9%9B%86/" class="post-title-link" itemprop="url">算法题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-01-31 00:00:00" itemprop="dateCreated datePublished" datetime="2022-01-31T00:00:00+08:00">2022-01-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Other/" itemprop="url" rel="index"><span itemprop="name">Other</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>114k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1:44</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="基础题"><a href="#基础题" class="headerlink" title="基础题"></a>基础题</h1><h2 id="557-反转字符串中的单词-III"><a href="#557-反转字符串中的单词-III" class="headerlink" title="557. 反转字符串中的单词 III"></a>557. 反转字符串中的单词 III</h2><p><strong>难度</strong>：简单<br><strong>题目链接</strong>：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/reverse-words-in-a-string-iii/">https://leetcode-cn.com/problems/reverse-words-in-a-string-iii/</a><br><strong>题目描述</strong>：给定一个字符串 s ，你需要反转字符串中每个单词的字符顺序，同时仍保留空格和单词的初始顺序。<br>示例 1：<br>输入：<code>s = &quot;Let&#39;s take LeetCode contest&quot;</code><br>输出：<code>&quot;s&#39;teL ekat edoCteeL tsetnoc&quot;</code></p>
+<p>示例 2:<br>输入： <code>s = &quot;God Ding&quot;</code><br>输出：<code>&quot;doG gniD&quot;</code></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/reverse-words-in-a-string-iii/solution/python-fan-zhuan-zi-fu-chuan-zhong-dan-ci-si-lu-xi/">Swants题解</a><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reverseWords</span>(<span class="params">self, s: <span class="built_in">str</span></span>) -&gt; str:</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type: str</span></span><br><span class="line"><span class="string">        :rtype: str</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 按空格切分-&gt;每个字符串反转-&gt;拼接</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot; &quot;</span>.join(word[::<span class="number">-1</span>] <span class="keyword">for</span> word <span class="keyword">in</span> s.split(<span class="string">&quot; &quot;</span>))</span><br><span class="line">        <span class="comment"># 先反转单词列表 再反转字符串</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot; &quot;</span>.join(s.split(<span class="string">&quot; &quot;</span>)[::<span class="number">-1</span>])[::<span class="number">-1</span>]</span><br><span class="line">        <span class="comment"># 先反转字符串，再反转单词列表</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot; &quot;</span>.join(s[::<span class="number">-1</span>].split(<span class="string">&quot; &quot;</span>)[::<span class="number">-1</span>])</span><br></pre></td></tr></table></figure></p>
+<h2 id="859-亲密字符串"><a href="#859-亲密字符串" class="headerlink" title="859. 亲密字符串"></a>859. 亲密字符串</h2><p><strong>难度</strong>：简单<br><strong>题目链接</strong>：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/buddy-strings/">https://leetcode-cn.com/problems/buddy-strings/</a><br><strong>题目描述</strong>：<br>给你两个字符串 <code>s</code> 和 <code>goal</code> ，只要我们可以通过交换 <code>s</code> 中的两个字母得到与 <code>goal</code> 相等的结果，就返回 <code>true</code> ；否则返回 <code>false</code> 。<br>交换字母的定义是：取两个下标 <code>i</code> 和 <code>j</code> （下标从 0 开始）且满足 <code>i != j</code> ，接着交换 <code>s[i]</code> 和 <code>s[j]</code> 处的字符。<br>例如，在 “abcd” 中交换下标 0 和下标 2 的元素可以生成 “cbad” 。</p>
+<p>示例 1：<br>输入：<code>s = &quot;ab&quot;, goal = &quot;ba&quot;</code><br>输出：<code>true</code><br>解释：你可以交换 s[0] = ‘a’ 和 s[1] = ‘b’ 生成 “ba”，此时 s 和 goal 相等。</p>
+<p><strong>题目解析</strong>：</p>
+<ol>
+<li>字符串A、B满足条件且长度相等；</li>
+<li>A、B字符串相同时，A或B字符串去重后长度比原来小；</li>
+<li>A、B字符串不相同的位置字符zip成元组放在列表中，因为只交换一次，所以列表长度必为2，且2个元组为对称关系；</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">buddyStrings</span>(<span class="params">self, A: <span class="built_in">str</span>, B: <span class="built_in">str</span></span>) -&gt; bool:</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type: str</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># A和B长度必须相等，不相等返回false</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(A)!=<span class="built_in">len</span>(B) : <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># A和B相同时，如果A去重后长度比原来小，返回True</span></span><br><span class="line">        <span class="keyword">if</span> A == B <span class="keyword">and</span> <span class="built_in">len</span>(<span class="built_in">set</span>(A)) &lt; <span class="built_in">len</span>(A): <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 使用zip组合A、B中同位置不相等的字符</span></span><br><span class="line">        dif = [(a,b) <span class="keyword">for</span> a,b <span class="keyword">in</span> <span class="built_in">zip</span>(A,B) <span class="keyword">if</span> a != b]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 因为只交换一次，所以dif长度只能是2，且2个元组为对称关系</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(dif) == <span class="number">2</span> <span class="keyword">and</span> dif[<span class="number">0</span>] == dif[<span class="number">1</span>][::<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="020-有效的括号"><a href="#020-有效的括号" class="headerlink" title="020. 有效的括号"></a>020. 有效的括号</h2><p><strong>难度</strong>：简单<br><strong>题目链接</strong>：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/valid-parentheses/">https://leetcode-cn.com/problems/valid-parentheses/</a><br><strong>题目描述</strong>：给定一个只包括 <code>(</code>，<code>)</code>，<code>&#123;</code>，<code>&#125;</code>，<code>[</code>，<code>]</code> 的字符串 <code>s</code> ，判断字符串是否有效。有效字符串需满足：左括号必须用相同类型的右括号闭合。左括号必须以正确的顺序闭合。<br>示例 1：<br>输入：<code>s = &quot;()[]&#123;&#125;&quot;</code><br>输出：<code>true</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isValid</span>(<span class="params">self, s: <span class="built_in">str</span></span>) -&gt; bool:</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        使用栈，先进后出的性质，判断括号合法性。</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(s) % <span class="number">2</span> == <span class="number">1</span>: <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">        dic = &#123;<span class="string">&#x27;&#123;&#x27;</span>: <span class="string">&#x27;&#125;&#x27;</span>,  <span class="string">&#x27;[&#x27;</span>: <span class="string">&#x27;]&#x27;</span>, <span class="string">&#x27;(&#x27;</span>: <span class="string">&#x27;)&#x27;</span>&#125;</span><br><span class="line">        stack = []</span><br><span class="line">        <span class="keyword">for</span> c <span class="keyword">in</span> s:</span><br><span class="line">            <span class="comment"># 左半，入栈</span></span><br><span class="line">            <span class="keyword">if</span> c <span class="keyword">in</span> dic: stack.append(c)</span><br><span class="line">            <span class="comment"># 右半，出栈</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="keyword">not</span> stack <span class="keyword">or</span> dic[stack.pop()] != c: <span class="keyword">return</span> <span class="literal">False</span> </span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(stack) == <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="021-合并两个有序链表"><a href="#021-合并两个有序链表" class="headerlink" title="021. 合并两个有序链表"></a>021. 合并两个有序链表</h2><p><strong>难度</strong>：简单<br><strong>题目链接</strong>：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/merge-two-sorted-lists/">https://leetcode-cn.com/problems/merge-two-sorted-lists/</a><br><strong>题目描述</strong>：将两个<strong>升序链表</strong>合并为一个新的 <strong>升序</strong> 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。<br>示例 1：<br>输入：<code>l1 = [1,2,4], l2 = [1,3,4]</code><br>输出：<code>[1,1,2,3,4,4]</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"># class ListNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, next=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.next = next</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">mergeTwoLists</span>(<span class="params">self, list1: Optional[ListNode], list2: Optional[ListNode]</span>) -&gt; Optional[ListNode]:</span></span><br><span class="line">        cur = newlist = ListNode(<span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> list1 <span class="keyword">and</span> list2:</span><br><span class="line">            <span class="keyword">if</span> list1.val &lt; list2.val:</span><br><span class="line">                cur.<span class="built_in">next</span> = list1</span><br><span class="line">                list1 = list1.<span class="built_in">next</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                cur.<span class="built_in">next</span> = list2</span><br><span class="line">                list2 = list2.<span class="built_in">next</span></span><br><span class="line">            cur = cur.<span class="built_in">next</span></span><br><span class="line">            </span><br><span class="line">        cur.<span class="built_in">next</span> = list1 <span class="keyword">if</span> list1 <span class="keyword">else</span> list2</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> newlist.<span class="built_in">next</span></span><br></pre></td></tr></table></figure>
+<h2 id="1290-二进制链表转整数"><a href="#1290-二进制链表转整数" class="headerlink" title="1290. 二进制链表转整数"></a>1290. 二进制链表转整数</h2><p><strong>难度</strong>：简单<br><strong>题目链接</strong>：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/convert-binary-number-in-a-linked-list-to-integer/">https://leetcode-cn.com/problems/convert-binary-number-in-a-linked-list-to-integer/</a><br><strong>题目描述</strong>：给你一个单链表的引用结点 <code>head</code>。链表中每个结点的值不是 0 就是 1。已知此链表是一个整数数字的二进制表示形式。请你返回该链表所表示数字的 <strong>十进制值</strong> 。</p>
+<p>示例 1：<br>输入：<code>head = [1,0,1]</code><br>输出：<code>5</code><br>解释：二进制数 (101) 转化为十进制数 (5)</p>
+<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/convert-binary-number-in-a-linked-list-to-integer/solution/er-jin-zhi-lian-biao-zhuan-zheng-shu-by-leetcode-s/">官方题解</a>。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"># class ListNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, x):</span></span><br><span class="line"><span class="comment">#         self.val = x</span></span><br><span class="line"><span class="comment">#         self.next = None</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getDecimalValue</span>(<span class="params">self, head: ListNode</span>) -&gt; int:</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type head: ListNode</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        cur = head</span><br><span class="line">        ans = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> cur: </span><br><span class="line">            <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">            # 二进制方法</span></span><br><span class="line"><span class="string">            # 左移n位==乘2^n，| 按位或</span></span><br><span class="line"><span class="string">            ans = ans&lt;&lt;1 | cur.val</span></span><br><span class="line"><span class="string">            &quot;&quot;&quot;</span></span><br><span class="line">            ans = ans * <span class="number">2</span> + cur.val <span class="comment"># 十进制方法</span></span><br><span class="line">            cur = cur.<span class="built_in">next</span></span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure></p>
+<h2 id="082-删除排序链表中的重复元素-II"><a href="#082-删除排序链表中的重复元素-II" class="headerlink" title="082. 删除排序链表中的重复元素 II"></a>082. 删除排序链表中的重复元素 II</h2><p><strong>难度</strong>：中等<br><strong>题目链接</strong>：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list-ii/">https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list-ii/</a><br><strong>题目描述</strong>：给定一个已排序的链表的头 <code>head</code> ， 删除原始链表中所有重复数字的节点，只留下不同的数字 。返回 已排序的链表 。<br>示例 1：<br>输入：<code>head = [1,2,3,3,4,4,5]</code><br>输出：<code>[1,2,5]</code></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list-ii/solution/82-pythonshuang-zhi-zhen-fa-by-lullaby/">Lullaby题解</a>。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"># class ListNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, next=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.next = next</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">deleteDuplicates</span>(<span class="params">self, head: ListNode</span>) -&gt; ListNode:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> head:<span class="keyword">return</span> head</span><br><span class="line">        chead = ListNode(<span class="number">0</span>, head) <span class="comment"># 防止head被删除，增加一个哑节点</span></span><br><span class="line"></span><br><span class="line">        pre = chead</span><br><span class="line">        cur = head</span><br><span class="line">        <span class="keyword">while</span> cur:</span><br><span class="line">            <span class="comment"># 跳过重复节点，cur停在最后一个重复元素</span></span><br><span class="line">            <span class="keyword">while</span> cur.<span class="built_in">next</span> <span class="keyword">and</span> cur.val == cur.<span class="built_in">next</span>.val: cur = cur.<span class="built_in">next</span></span><br><span class="line">            <span class="comment"># pre和cur之间没有重复节点，pre后移</span></span><br><span class="line">            <span class="keyword">if</span> pre.<span class="built_in">next</span> == cur: pre = pre.<span class="built_in">next</span></span><br><span class="line">            <span class="comment"># pre和cur之间有重复节点，跳过重复节点</span></span><br><span class="line">            <span class="keyword">else</span>: pre.<span class="built_in">next</span> = cur.<span class="built_in">next</span></span><br><span class="line">            cur = cur.<span class="built_in">next</span></span><br><span class="line">        <span class="keyword">return</span> chead.<span class="built_in">next</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="160-相交链表"><a href="#160-相交链表" class="headerlink" title="160. 相交链表"></a>160. 相交链表</h2><p><strong>难度</strong>：简单<br><strong>题目链接</strong>：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/intersection-of-two-linked-lists/">https://leetcode-cn.com/problems/intersection-of-two-linked-lists/</a><br><strong>题目描述</strong>：给你两个单链表的头节点 <code>headA</code> 和 <code>headB</code> ，请你找出并返回两个单链表相交的起始节点。如果两个链表不存在相交节点，返回 <code>null</code> 。两个链表在节点 <code>c1</code> 开始相交：<code>A=[a1,a2,c1,c2,c3]，B=[b1,b2,b3,c1,c2,c3]</code>，题目数据 <strong>保证</strong> 整个链式结构中<strong>不存在环</strong>。注意，函数返回结果后，链表必须 <strong>保持其原始结构</strong> 。</p>
+<p>示例 1：<br>输入：<code>intersectVal = 8, listA = [4,1,8,4,5], listB = [5,6,1,8,4,5], skipA = 2, skipB = 3</code><br>输出：<code>Intersected at &#39;8&#39;</code><br>解释：相交节点的值为 <code>8</code> （注意，如果两个链表相交则不能为 <code>0</code>）。<br>从各自的表头开始算起，链表 <code>A</code> 为 <code>[4,1,8,4,5]</code>，链表 <code>B</code> 为 <code>[5,6,1,8,4,5]</code>。<br>在 <code>A</code> 中，相交节点前有 <code>2</code> 个节点；在 <code>B</code> 中，相交节点前有 <code>3</code> 个节点。</p>
+<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/intersection-of-two-linked-lists/solution/xiang-jiao-lian-biao-by-leetcode-solutio-a8jn/">官方题解</a>和<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/intersection-of-two-linked-lists/solution/intersection-of-two-linked-lists-shuang-zhi-zhen-l/">jyd题解</a>。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"># class ListNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, x):</span></span><br><span class="line"><span class="comment">#         self.val = x</span></span><br><span class="line"><span class="comment">#         self.next = None</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getIntersectionNode</span>(<span class="params">self, headA: ListNode, headB: ListNode</span>) -&gt; ListNode:</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type headA: ListNode</span></span><br><span class="line"><span class="string">        :type headB: ListNode</span></span><br><span class="line"><span class="string">        :rtype: ListNode</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        ha, hb = headA, headB</span><br><span class="line">        <span class="comment"># 假设ha长m(不相交部分长a)，hb长n(不相交部分长b)，相交部分长度c。</span></span><br><span class="line">        <span class="comment"># 当两指针相遇时停止：此时ha走了a+c+b，hb走了b+c+a。</span></span><br><span class="line">        <span class="keyword">while</span> ha != hb:</span><br><span class="line">            <span class="comment"># a走到尾部，从b头部开始</span></span><br><span class="line">            ha = ha.<span class="built_in">next</span> <span class="keyword">if</span> ha <span class="keyword">else</span> headB</span><br><span class="line">            <span class="comment"># b走到尾部，从a头部开始</span></span><br><span class="line">            hb = hb.<span class="built_in">next</span> <span class="keyword">if</span> hb <span class="keyword">else</span> headA</span><br><span class="line">        <span class="keyword">return</span> ha</span><br></pre></td></tr></table></figure></p>
+<h2 id="002-两数相加-I"><a href="#002-两数相加-I" class="headerlink" title="002. 两数相加 I"></a>002. 两数相加 I</h2><p><strong>难度</strong>：中等<br><strong>题⽬链接</strong>：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/add-two-numbers/">https://leetcode-cn.com/problems/add-two-numbers/</a><br><strong>题⽬描述</strong>：给出两个 <strong>⾮空</strong> 的链表⽤来表示两个非负的整数。其中，它们各⾃的位数是按照 <strong>逆序</strong> 的⽅式存储的，并且它们的每个节点只能存储 <strong>⼀位</strong> 数字。如果，我们将这两个数相加起来，则会返回⼀个新的链表来表示它们的和您可以假设除了数字 <code>0</code> 之外，这两个数都不会以 <code>0</code> 开头。</p>
+<p>示例：<br>输⼊：<code>(2 -&gt; 4 -&gt; 3) + (5 -&gt; 6 -&gt; 4)</code><br>输出：<code>7 -&gt; 0 -&gt; 8</code><br>原因：<code>342 + 465 = 807</code></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/01/31/Other/%E7%AE%97%E6%B3%95%E9%A2%98%E5%90%88%E9%9B%86/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
@@ -1849,136 +1967,6 @@ D( p||q)&=\sum\limits_{ x\in\textbf{X}} p(x) log\frac{ p(x)}{ q(x)}\\
 H( p,q)&=H( p)+D( p||q)\\
 &=-\sum\limits_{ x\in\textbf{X}} p(x) log  q(x)\\
 \end{aligned}</script><h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p><span class="exturl" data-url="aHR0cHM6Ly9kbC5hY20ub3JnL2RvaS9wZGYvMTAuMTE0NS8yOTM5NjcyLjI5Mzk3ODU=">XGBoost: A Scalable Tree Boosting System<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vcGluYXJkL3AvMTA5Nzk4MDguaHRtbA==">XGBoost算法原理小结<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FkYnN6c2ovYXJ0aWNsZS9kZXRhaWxzLzc5NjE1NzEy">XGBoost 论文翻译+个人注释<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC84OTU4OTIyMg==">XGBoost论文详解<i class="fa fa-external-link-alt"></i></span><br>[统计自然语言处理（第二版），宗成庆]</p>
-
-      
-    </div>
-
-    
-    
-    
-      
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2021/06/20/Paper/01.Unsupervised%20Data%20Augmentation%20for%20Consistency%20Training/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
-      <meta itemprop="name" content="SoundMemories">
-      <meta itemprop="description" content="今日事，今日毕">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SoundMemories">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/06/20/Paper/01.Unsupervised%20Data%20Augmentation%20for%20Consistency%20Training/" class="post-title-link" itemprop="url">Unsupervised Data Augmentation for Consistency Training</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-06-20 00:00:00" itemprop="dateCreated datePublished" datetime="2021-06-20T00:00:00+08:00">2021-06-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Paper/" itemprop="url" rel="index"><span itemprop="name">Paper</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>5.4k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>背景：深度学习的模型训练通常依赖大量的标签数据（如Bert、XLNet），在只有少量数据上通常表现不好。由此产生了数据增强，但以前的研究都是基于监督学习的，并且效果不是特别理想。</p>
-<p>贡献：本文提出了一种对无监督（无标签）数据增强方式（半监督学习中无标签数据的增强），简称UDA。UDA方法生成的无监督数据与原始无监督数据具备<strong>分布的一致性</strong>，而以前的方法通常只是应用高斯噪声和dropout噪声（无法保证一致性）。</p>
-<p>效果：使用这种数据增强方法，在极少量数据集上，六种语言任务和三种视觉任务都得到了明显的提升。IMDb数据分类任务上，仅仅使用20个带标签数据加UDA方法，就超过了25000个带标签数据的训练模型，错误率达到了4.2%。在CIFAR-10上仅用4000张标签图片就达到了2.7%的错误率。在SVHN任务上，仅仅用250个标签数据就达到了2.85%的错误率，这相当于用全数据集才能达到的正确率，而它们的数量级差别达到了1或2（差10倍或100倍）。在大量标签数据集上，UDA同样表现优秀，在ImageNet任务上，使用10%带标签数据，UDA方法就将Top1和Top5的准确率分别由55.1%提高到77.3%，68.7提高到88.5%。在全数据集上，则分别由78.3%提高到94.4%，79%提高到94.5%。</p>
-<h1 id="导读"><a href="#导读" class="headerlink" title="导读"></a>导读</h1><p>深度学习需要大量带标签数据，但是实际工程中很难满足，这就需要数据标注，但数据标注是一项耗时耗力的工作。所以，充分利用未标注数据是一个很有意义的研究方向。而半监督方法，是最有前景的方法之一，当前半监督方法可归结为三类：<br>（1）基于图卷积和图嵌入的图标签传播方法。<br>（2）将目标数据作为潜变量进行预测。<br>（3）强制一致/平滑。这种方法在许多任务中被证明具有较好的效果。</p>
-<p>强制平滑方法只是使得模型对应较小的噪声不那么敏感。常用方法就是：对于一个样本，添加一些噪声（例如高斯噪声）然后强制让模型对于加噪和不加噪的数据的输出尽量的相似。直观而言就是一个好的模型，应该能够适应各种小的、不改变样本性质的扰动。通常由于扰动函数的不同会有各种不同的方案。</p>
-<p>本文在Sajjadi、 Laine等人的研究的基础上，从有监督数据中学习扰动函数，从而得到最优的数据增强方法。良好的数据增强方法能够大大提高模型的结果，并且数据增强方法能应用于各领域。<strong>本文使用的优化方法是最小化增强数据与真实数据之间的KL散度</strong>。虽然有监督数据的数据增强取得了很多成功，但是大量的无监督数据使得UDA这种无监督数据增强方法拥有更广阔前景。</p>
-<p>主要贡献：<br>（1）提出一种TSA方法，该方法能够在无标签数据大于标签数据的时候防止过拟合。<br>（2）证明<strong>针对性的数据增强</strong>（如AutoAugment）效果明显优于无针对性的数据增强。<br>（3）验证了本文方法在NLP任务上（如Bert）上的有效性。<br>（4）在CV和NLP任务中，本文方法都表现优异。<br>（5）研究一种能应用于分类数据中有标签数据和无标签数据不匹配情况的方法（数据不平衡处理方法）。</p>
-<h1 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h1><h2 id="有监督数据增强"><a href="#有监督数据增强" class="headerlink" title="有监督数据增强"></a>有监督数据增强</h2><p>在保持标签相同（同一类别）的情况下，通过某种转换方法扩充出类似于真实数据的训练数据。简单而言就是，有一个样本$x$，通过转换函数$q(x)$生成新数据$\hat{x}$，新旧数据有相同的数据标签$y(\hat{x})=y(x)$。通常为了得到的增强数据与原始数据相似，使用的是最大似然估计方法。</p>
-<p>数据增强方法可以看成是从有标签数据中扩充出更多的有标签数据，然后用扩充数据进行模型训练。因此，扩充数据相对于原始数据必须是有效的变换（例如图片缩放对图片识别可能有效，图片旋转可能无效）。也因此，如何设计转换函数至关重要。</p>
-<p>目前，针对NLP任务的有监督数据增强方法已经取得了很大进展。虽然有成果，但是它通常被比喻成“蛋糕上的樱桃”，只是提高有限的性能，这是由于监督数据通常都是少量的。因此，本文研究了一种基于大量数据的无监督数据增强方法。</p>
-<h2 id="无监督数据增强"><a href="#无监督数据增强" class="headerlink" title="无监督数据增强"></a>无监督数据增强</h2><p>本文研究了一种利用无监督数据的强制平滑方法（类似VAT）。工作流程如下：<br><img src="/images/UDA/UDA.png" width="90%"></p>
-<p>（1）监督学习部分，使用交叉熵损失函数，模型是$p_\theta(y|x)$。<br>（2）无监督学习部分，使用强制平滑损失函数，对无标签数据进行数据增强，使增强前和增强后的数据分布越相近越好。增强前模型$p_{\tilde{\theta}}(y|x)$，增强后模型$p_\theta(y|\hat{x})$。<br>（3）最后，同时使用有标签和无标签数据，把二者模型结合起来，得到Final Loss。</p>
-<p>本文使用最小化<strong>增强后的无标签数据</strong>和<strong>增强前无标签数据</strong>的KL散度。公式如下：<br><img src="/images/UDA/UDA_loss1.png" width="60%"></p>
-<p>为了同时使用带标签数据和无标签数据，作者在计算带标签数据时上加上交叉熵损失和权重$\lambda$。<br><img src="/images/UDA/UDA_loss2.png" width="40%"></p>
-<p>其中$\it q(\hat{x}|x)$是数据增强变换，$\tilde{\theta}$是当前参数$\theta$的固定副本，表明梯度像Miyato等人所建议的那样，不是通过$\tilde{\theta}$传播的。这里使用的数据增强与监督数据增强中使用的增强方法相同。由于数据增强耗时比较大，所以数据增强是离线生成的，单个原始样本会生成多个增强样本。</p>
-<p>在无监督学习时，使用了针对性的数据增强：<br>（1）<strong>Back-translation</strong>：回译能够在保证语义不变的情况下，生成多样的句式。实验证明，在QANet上，这种策略取得了良好的效果。因此作者在情感分类问题等数据集，如IMDb，Yelp-2，Yelp-5，Amazon-2，Amazon-5上采用了这种策略，同时，他们发现，句式的多样性比较有效性更重要。所以使用了<strong>RandAugument</strong>。<br>（2）<strong>RandAugument</strong>：随机抽样增强，加入噪声。采用随机抽样代替集束搜索策略（一种贪心策略）。具体而言，作者使用WMT14语料库来训练英语到法语和法语到英语的翻译模型，并对每个句子执行回译，而不是整个段落，因为WMT14中的并行数据是用于句子级翻译，而情感分类语料库中的输入类型是段落。<br>（3）<strong>TF-IDF word replacement</strong>：虽然回译能够很好的进行数据扩充，但是它并不能保证扩充的句子包含关键词。而对于某些任务，如DBPedia任务，它的目标是预测某些句子属于维基百科的哪个词条。因此关键字非常重要，本文研究了一种在保留TF-IDF高的关键字，用其他非关键字替代TF-IDF分数低的非关键字扩充方案，详细见论文附录B。<br>增强结果如图所示：<br><img src="/images/UDA/trans.png" width="80%"></p>
-<p>当然，对CV任务用了<strong>AutoAugument</strong>：用强化学习来搜索图像增强的“最优”组合，其性能明显优于任何人工设计的优化方法。作者使用已发现的增强策略，在CIFAR-10， SVHN和ImageNet上进行了实验，并在CIFAR-10，SVHN上组合应用了Cutout技术。<br>增强结果如图所示：<br><img src="/images/UDA/trans2.png" width="80%"></p>
-<h2 id="数据增强在多样性和有效性上的平衡"><a href="#数据增强在多样性和有效性上的平衡" class="headerlink" title="数据增强在多样性和有效性上的平衡"></a>数据增强在多样性和有效性上的平衡</h2><p>虽然在一些非常优秀的数据增强方法中，能够得到很好的多样性和有效性。但是，由于多样性是通过改变原始数据得到的，所以，它存在改变数据类别的风险，所以，多样性和有效性是存在一定矛盾的。</p>
-<p>对于图像分类，AutoAugment算法在有监督的环境下，根据验证集的性能进行优化，从而自动找到多样性和有效性之间的最佳点。</p>
-<p>对于文本分类，作者调整随机抽样的强度。一方面，当强度为0时，随机抽样解码退化为贪婪方法，产生完全有效但完全相同的样本。另一方面，当作者使用1的强度时，随机抽样会产生非常不同但几乎不可读的样本。作者发现，设置Softmax强度为0.7、0.8或0.9的表现最好。</p>
-<h2 id="训练技巧"><a href="#训练技巧" class="headerlink" title="训练技巧"></a>训练技巧</h2><p>要介绍一些针对不同问题，不同场景下的训练技巧。</p>
-<p><strong>Training Signal Annealing（TSA）</strong>：针对标签数据与未标签数据不平衡时的场景。由于有大量的未标签数据需要UDA处理，所以需要一个较大模型，但是由于较大模型很容易在少量标签数据下过拟合，所以，提出了本方法用于解决该问题。<br>TSA原理就是在训练过程中，随着未标签数据的增加，逐步去除带标签数据，从而避免模型过拟合到带标签的训练数据。具体而言，就是在训练的$t$时刻，设置一个阈值$\eta_t$，当$\frac{1}{k}\leqslant\eta_t\leqslant 1$，其中$k$是类别数。当某个标签计算的$p_\theta(y^*|x)$大于阈值$\eta_t$，就将该标签数据移除出计算损失的过程，而只计算miniBatch里面的其余数据。假定miniBatch样本记作B，那么该策略计算损失如下：<br><img src="/images/UDA/TSA.png" width="40%"><br>过滤后的样本集合：<br><img src="/images/UDA/TSA2.png" width="40%"></p>
-<p>阈值$\eta_t$用于防止模型过拟合到标签数据。随着$\eta_t$向1靠近，模型只能缓慢地从标注的实例中得到监督，大大缓解了过拟合问题。假设T是总训练步数，t是当前的训练步数。为了考虑未标记数据和标记数据的不同比率，有以下三种$\eta_t$更新计算方式：<br><img src="/images/UDA/TSA3.png" width="90%"></p>
-<p>对于数据量少，容易过拟合的情况，使用指数形式比较好。对于标签数据不容易过拟合的情况，比如标签数据比较多或者使用了有效的正则化手段时，使用对数形式会比较好。使用不同更新方式的效果：<br><img src="/images/UDA/TSA4.png" width="50%"></p>
-<p><strong>Sharpening Predictions</strong><br>当标签数据很少时，未标签数据和预测的未标签数据分布会很平坦。因此，在计算KL散度时，主要贡献的部分来自于标签数据。例如在Imagenet任务中，使用10%标签数据下，未标签数据的分布明显比标签数据的分布更加平坦。而比较丰富的数据分布是比较有利于模型训练的，因此，提出以下三种锐化方案：<br>（1）基于置信度的mask：对模型预测效果不好的，预测的概率小于一定阈值的标签，不计算一致性损失。<br>（2）最小化熵：最小化熵就是使得预测的增广数据能够拥有一个较低的熵，因此，需要在计算损失时，加上熵的计算。<br>（3）Softmax控制：通过调整Softmax控制输出， $p_{\tilde{\theta}}(y|x)$通过$Softmax(l(x)/\tau)$计算，其中$l(x)$表示结果逻辑分布概率，$\tau$表示强度。$\tau$越小，分布越锐化。</p>
-<p><strong>Domain-relevance Data Filtering</strong><br>通常，作者希望能够运用领域外的数据，因为它比较容易获取。但是，一般领域外的数据和领域内的数据不匹配。由于数据分布的不匹配，使用领域外的数据往往对模型是有负面影响的。为了获取与当前任务相关的域数据，本文采用一种通用的检测领域外数据的技术。作者用领域内的数据训练了一个模型，让后用它去评估领域外的数据，然后过滤掉置信度低的数据。具体说就是，对于分类任务，对所有领域外数据进行概率计算，只使用其中分类正确且概率高的数据。</p>
-<h2 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h2><p>本文对文本分类和视觉相关任务，运用UDA进行了实验。包括六项文本分类任务和三项图片分类任务。</p>
-<h3 id="文本分类"><a href="#文本分类" class="headerlink" title="文本分类"></a>文本分类</h3><p>实验是基于Bert进行的，因为它在许多NLP任务中表现都很好。具体实验设置请看原始论文，实验结果如下：<br><img src="/images/UDA/01.png" width="80%"></p>
-<p>实验结果表明，运用UDA后，基本都取得了较大的提高。同时，作者还实验了<strong>不同数量的标签</strong>对结果的影响，结果如下：<br><img src="/images/UDA/02.png" width="80%"></p>
-<p>作者实验对比了UDA与半监督方法，结果显示，UDA结果明显更优。<br><img src="/images/UDA/03.png" width="90%"></p>
-<p>同时，作者还对比实验了不同模型的情况：<br><img src="/images/UDA/04.png" width="80%"></p>
-<h3 id="图像任务"><a href="#图像任务" class="headerlink" title="图像任务"></a>图像任务</h3><p>ImageNet之所以要单独拿出来，是因为它是一个很有挑战性的任务，而且数据量很大。作者使用10%标签数据和全数据分别做了对比（图片尺寸224）。<strong>10%标签数据</strong>，ImageNet对比实验结果：<br><img src="/images/UDA/05.png" width="50%"></p>
-<p><strong>全数据</strong>，ImageNet对比实验结果：<br><img src="/images/UDA/06.png" width="50%"></p>
-<p>作者做了<strong>使用不同训练策略</strong>下的情况，TSA对比实验结果：<br><img src="/images/UDA/07.png" width="50%"></p>
-<p>最后，作者做了<strong>消融实验，对比不同策略的重要性</strong>。不同模块的消融实验结果：<br><img src="/images/UDA/08.png" width="50%"></p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本文提供了一种无监督数据（无标签）数据增强方式，通过<strong>Back-translation</strong>、<strong>RandAugument</strong>、<strong>TF-IDF word replacement</strong>方法对无监督文本数据增强，使用<strong>AutoAugument</strong>对图像数据进行增强，最后使用KL散度使新生成的样本数据和原样本数据分布一致，最后结合有监督数据（有标签）形成最终的损失函数，通过<strong>TSA</strong>处理了无标签数据大于有标签数据的过拟合问题。</p>
-<p>本文重要的是使用了针对性的数据增强，并且效果很好，不同于传统的高斯噪声、dropout噪声、或者简单的仿射变换，这种针对性的增强能生成更有效的噪声。并且对扰动的有效性和多样性进行了平衡。</p>
-<p>这种针对性的思想值得学习，并且考虑分布影响，结合可以利用的增强方式，比如EDA中提到的同义词替换（synonym replacement）和随机插入（random Insertion，RI）。</p>
-<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p><span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE5MDQuMTI4NDh2Mi5wZGY=">Unsupervised Data Augmentation for Consistency Training<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE5MDQuMTI4NDgucGRmP3JlZj1oYWNrZXJub29uLmNvbQ==">Unsupervised Data Augmentation for Consistency Training<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE5MDEuMTExOTYucGRm">EDA: Easy Data Augmentation Techniques for Boosting Performance on Text Classification Tasks<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9zZXZlbm9sZC5naXRodWIuaW8vMjAyMC8wNi90ZXh0X0VEQS8=">自然语言处理之文本数据增强<i class="fa fa-external-link-alt"></i></span><br>Github：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dvb2dsZS1yZXNlYXJjaC91ZGE=">uda<i class="fa fa-external-link-alt"></i></span><br>Github：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3poYW5sYW9iYW4vRURBX05MUF9mb3JfQ2hpbmVzZQ==">EDA_NLP_for_Chinese<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cuamlhbnNodS5jb20vcC81ZDRlMThiOGRlMDQ=">谷歌惊艳的无监督数据增强方法—Unsupervised Data Augmentation for Consistency Training<i class="fa fa-external-link-alt"></i></span></p>
 
       
     </div>
