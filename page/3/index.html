@@ -1087,163 +1087,6 @@ Log-likehood:\sum\limits_{v\in V}\log p(v)</script><p>对上面这个问题，�
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/15/Machine%20Learning/37.NN/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
-      <meta itemprop="name" content="SoundMemories">
-      <meta itemprop="description" content="今日事，今日毕">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SoundMemories">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/15/Machine%20Learning/37.NN/" class="post-title-link" itemprop="url">NN</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-10-15 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-15T00:00:00+08:00">2020-10-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>915</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="前馈神经网络"><a href="#前馈神经网络" class="headerlink" title="前馈神经网络"></a>前馈神经网络</h1><p>机器学习我们已经知道可以分为两大流派：</p>
-<ol>
-<li><p>频率派，这个流派的方法叫做统计学习，根据具体问题有下面的算法：</p>
-<ol>
-<li><p>正则化，L1，L2 等</p>
-</li>
-<li><p>核化，如核支撑向量机</p>
-</li>
-<li><p>集成化，AdaBoost，RandomForest</p>
-</li>
-<li><p>层次化，神经网络，神经网络有各种不同的模型，有代表性的有：</p>
-<ol>
-<li>多层感知机</li>
-<li>Autoencoder</li>
-<li>CNN</li>
-<li>RNN</li>
-</ol>
-<p>这几种模型又叫做深度神经网络。</p>
-</li>
-</ol>
-</li>
-<li><p>贝叶斯派，这个流派的方法叫概率图模型，根据图特点分为：</p>
-<ol>
-<li>有向图-贝叶斯网络，加入层次化后有深度有向网络，包括<ol>
-<li>Sigmoid Belief Network</li>
-<li>Variational Autoencoder</li>
-<li>GAN</li>
-</ol>
-</li>
-<li>无向图-马尔可夫网络，加入层次化后有深度玻尔兹曼机。</li>
-<li>混合，加入层次化后有深度信念网络</li>
-</ol>
-<p>这几个加入层次化后的模型叫做深度生成网络。</p>
-</li>
-</ol>
-<p>从广义来说，深度学习包括深度生成网络和深度神经网络。</p>
-<h2 id="From-PLA-to-DL"><a href="#From-PLA-to-DL" class="headerlink" title="From PLA to DL"></a>From PLA to DL</h2><ul>
-<li>1958，PLA</li>
-<li>1969，PLA 不能解决 XOR 等非线性数据</li>
-<li>1981，MLP，多层感知机的出现解决了上面的问题</li>
-<li>1986，BP 算法应用在 MLP 上，RNN</li>
-<li>1989，CNN，Univeral Approximation Theorem，但是于此同时，由于深度和宽度的相对效率不知道，并且无法解决 BP 算法的梯度消失问题</li>
-<li>1993，1995，SVM + kernel，AdaBoost，RandomForest，这些算法的发展，DL 逐渐没落</li>
-<li>1997，LSTM</li>
-<li>2006，基于 RBM 的 深度信念网络和深度自编码</li>
-<li>2009，GPU的发展</li>
-<li>2011，在语音方面的应用</li>
-<li>2012，ImageNet</li>
-<li>2013，VAE</li>
-<li>2014，GAN</li>
-<li>2016，AlphaGo</li>
-<li>2018，GNN</li>
-</ul>
-<p>DL 不是一个新的东西，其近年来的大发展主要原因如下：</p>
-<ol>
-<li>数据量变大</li>
-<li>分布式计算的发展</li>
-<li>硬件算力的发展</li>
-</ol>
-<h2 id="非线性问题"><a href="#非线性问题" class="headerlink" title="非线性问题"></a>非线性问题</h2><p>对于非线性的问题，有三种方法：</p>
-<ol>
-<li>非线性转换，将低维空间转换到高维空间（Cover 定理），从而变为一个线性问题。</li>
-<li>核方法，由于非线性转换是变换为高维空间，因此可能导致维度灾难，并且可能很难得到这个变换函数，核方法不直接寻找这个转换，而是寻找一个内积。</li>
-<li>神经网络方法，将复合运算变为基本的线性运算的组合。</li>
-</ol>
-<div class="note info"><p>文章转载自<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDc=">Jie Zhou<i class="fa fa-external-link-alt"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDcvTWFjaGluZS1MZWFybmluZy1TZXNzaW9u">Machine-Learning-Session<i class="fa fa-external-link-alt"></i></span>。</p>
-</div>
-      
-    </div>
-
-    
-    
-    
-      
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/15/Machine%20Learning/38.PartitionFunction/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1393,6 +1236,163 @@ p(h_i=1|v^k)v_j^k</script><p>具体的算法为：</p>
 <li>重复进行上述过程，最终的梯度除以 $N$</li>
 </ol>
 </li>
+</ol>
+<div class="note info"><p>文章转载自<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDc=">Jie Zhou<i class="fa fa-external-link-alt"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDcvTWFjaGluZS1MZWFybmluZy1TZXNzaW9u">Machine-Learning-Session<i class="fa fa-external-link-alt"></i></span>。</p>
+</div>
+      
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/15/Machine%20Learning/37.NN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/15/Machine%20Learning/37.NN/" class="post-title-link" itemprop="url">NN</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-15 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-15T00:00:00+08:00">2020-10-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>915</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="前馈神经网络"><a href="#前馈神经网络" class="headerlink" title="前馈神经网络"></a>前馈神经网络</h1><p>机器学习我们已经知道可以分为两大流派：</p>
+<ol>
+<li><p>频率派，这个流派的方法叫做统计学习，根据具体问题有下面的算法：</p>
+<ol>
+<li><p>正则化，L1，L2 等</p>
+</li>
+<li><p>核化，如核支撑向量机</p>
+</li>
+<li><p>集成化，AdaBoost，RandomForest</p>
+</li>
+<li><p>层次化，神经网络，神经网络有各种不同的模型，有代表性的有：</p>
+<ol>
+<li>多层感知机</li>
+<li>Autoencoder</li>
+<li>CNN</li>
+<li>RNN</li>
+</ol>
+<p>这几种模型又叫做深度神经网络。</p>
+</li>
+</ol>
+</li>
+<li><p>贝叶斯派，这个流派的方法叫概率图模型，根据图特点分为：</p>
+<ol>
+<li>有向图-贝叶斯网络，加入层次化后有深度有向网络，包括<ol>
+<li>Sigmoid Belief Network</li>
+<li>Variational Autoencoder</li>
+<li>GAN</li>
+</ol>
+</li>
+<li>无向图-马尔可夫网络，加入层次化后有深度玻尔兹曼机。</li>
+<li>混合，加入层次化后有深度信念网络</li>
+</ol>
+<p>这几个加入层次化后的模型叫做深度生成网络。</p>
+</li>
+</ol>
+<p>从广义来说，深度学习包括深度生成网络和深度神经网络。</p>
+<h2 id="From-PLA-to-DL"><a href="#From-PLA-to-DL" class="headerlink" title="From PLA to DL"></a>From PLA to DL</h2><ul>
+<li>1958，PLA</li>
+<li>1969，PLA 不能解决 XOR 等非线性数据</li>
+<li>1981，MLP，多层感知机的出现解决了上面的问题</li>
+<li>1986，BP 算法应用在 MLP 上，RNN</li>
+<li>1989，CNN，Univeral Approximation Theorem，但是于此同时，由于深度和宽度的相对效率不知道，并且无法解决 BP 算法的梯度消失问题</li>
+<li>1993，1995，SVM + kernel，AdaBoost，RandomForest，这些算法的发展，DL 逐渐没落</li>
+<li>1997，LSTM</li>
+<li>2006，基于 RBM 的 深度信念网络和深度自编码</li>
+<li>2009，GPU的发展</li>
+<li>2011，在语音方面的应用</li>
+<li>2012，ImageNet</li>
+<li>2013，VAE</li>
+<li>2014，GAN</li>
+<li>2016，AlphaGo</li>
+<li>2018，GNN</li>
+</ul>
+<p>DL 不是一个新的东西，其近年来的大发展主要原因如下：</p>
+<ol>
+<li>数据量变大</li>
+<li>分布式计算的发展</li>
+<li>硬件算力的发展</li>
+</ol>
+<h2 id="非线性问题"><a href="#非线性问题" class="headerlink" title="非线性问题"></a>非线性问题</h2><p>对于非线性的问题，有三种方法：</p>
+<ol>
+<li>非线性转换，将低维空间转换到高维空间（Cover 定理），从而变为一个线性问题。</li>
+<li>核方法，由于非线性转换是变换为高维空间，因此可能导致维度灾难，并且可能很难得到这个变换函数，核方法不直接寻找这个转换，而是寻找一个内积。</li>
+<li>神经网络方法，将复合运算变为基本的线性运算的组合。</li>
 </ol>
 <div class="note info"><p>文章转载自<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDc=">Jie Zhou<i class="fa fa-external-link-alt"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDcvTWFjaGluZS1MZWFybmluZy1TZXNzaW9u">Machine-Learning-Session<i class="fa fa-external-link-alt"></i></span>。</p>
 </div>

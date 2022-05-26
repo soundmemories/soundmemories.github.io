@@ -38,7 +38,7 @@
 <meta property="og:image" content="https://soundmemories.github.io/images/模型评估/ROC和PR.png">
 <meta property="og:image" content="https://soundmemories.github.io/images/模型评估/增益与KS图.png">
 <meta property="article:published_time" content="2020-06-19T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-07-14T04:03:09.901Z">
+<meta property="article:modified_time" content="2022-05-26T11:08:33.094Z">
 <meta property="article:author" content="SoundMemories">
 <meta property="article:tag" content="Machine Learning">
 <meta name="twitter:card" content="summary">
@@ -345,7 +345,7 @@
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>12 分钟</span>
+      <span>13 分钟</span>
     </span>
 </div>
 
@@ -401,11 +401,11 @@
 
 <p><strong>准确率（Accuracy）</strong>：$\dfrac{TP+TN}{TP+FP+FN+TN}$，注意只用准确率不行，比如样本极度不平衡标签0：1的比例为99：1，而模型只要是输入就判别为0，准确率还是能达到99%，所以只用准确率判别是不好的。 </p>
 <p><strong>精确率（Precision）</strong>：$P=\dfrac{TP}{TP+FP}$，预测结果正类中，正确的程度。</p>
-<p><strong>召回率（Recall/TPR）</strong>：$R=\dfrac{TP}{TP+FN}$，真实情况正类中，预测出的占比。</p>
-<p><strong>$F1$-score</strong>：$\dfrac{2<em>Precision</em>Recall}{Precision+Recall}=\dfrac{2*TP}{\text{样例总数}+TP-TN}$，F1充分考量了精确率和召回率，比单独使用准确率更好。</p>
-<p><strong>$F_\beta$-score</strong>：$\dfrac{(1+\beta^2)<em>Precision</em>Recall}{\beta^2*Precision+Recall}$，F1的一般形式，$\beta &gt;1$时召回率有更大的影响；$\beta&lt;1$时精确率有更大影响。</p>
-<p><strong>错误接收率（False Positive Rate/FPR）：</strong>$\dfrac{FP}{FP+TN}$，真实负类中，被预测为正类的比例。  </p>
+<p><strong>召回率/真正率（Recall/TPR）</strong>：$R=\dfrac{TP}{TP+FN}$，真实情况正类中，预测出的占比。</p>
+<p><strong>假正率（False Positive Rate/FPR）：</strong>$\dfrac{FP}{FP+TN}$，真实负类中，被预测为正类的比例。  </p>
 <p><strong>错误拒绝率（False Rejection Rate/FRR）：</strong>$\dfrac{FN}{TP+FN}$，真实正类中，被预测为负类的比例。</p>
+<p><strong>$F1$-score</strong>：$\dfrac{2\ast P\ast R}{P + R}=\dfrac{2\ast TP}{\text{样例总数}+TP-TN}$，F1充分考量了精确率和召回率，比单独使用准确率更好。</p>
+<p><strong>$F_\beta$-score</strong>：$\dfrac{(1+\beta^2)\ast P\ast R}{\beta^2\ast P+R}$，F1的一般形式，$\beta &gt;1$时召回率有更大的影响；$\beta&lt;1$时精确率有更大影响。</p>
 <h3 id="多元混淆矩阵"><a href="#多元混淆矩阵" class="headerlink" title="多元混淆矩阵"></a>多元混淆矩阵</h3><p>在多次训练/测试后会有多个二分类混淆矩阵，或者在多个数据集上训练/测试后希望估计算法全局性能，或者执行多分类任务，每两两类别的组合都能对应一个混淆矩阵，总之我们希望在n个二分类混淆矩阵上综合考察精确率和召回率。</p>
 <p>一种直接的做法是先在各混淆矩阵上分别计算出精确率和召回率，记为$(P_1,R_1),(P_2,R_2),…,(P_n,R_n)$，再计算平均值，这样就得到<strong>宏精确率</strong>（macro-P）和<strong>宏召回率</strong>（macro-R），以及相应的<strong>宏F1</strong>（macro-F1）。<br><strong>macro-P</strong>：$\dfrac{1}{n}\sum\limits_{i=1}^NP_i$</p>
 <p><strong>macro-R</strong>：$\dfrac{1}{n}\sum\limits_{i=1}^NR_i$</p>
@@ -429,9 +429,10 @@
 <h3 id="增益图与KS图"><a href="#增益图与KS图" class="headerlink" title="增益图与KS图"></a>增益图与KS图</h3><p><img src="/images/模型评估/增益与KS图.png" width="60%"></p>
 <p>左图是<strong>增益图</strong>，虚线是1。比如挖取游戏作弊玩家，100个玩家，10个作弊的：计算得分，取出得分前10的用户，发现有9个作弊的，那么正样本比例是9/10=0.9，测试集取样比例为10/100=0.1，正样本比例/平均比例为0.9/0.1=9。增益图最好情况是在取样比例为0.5为转折点，前部分全是最高值，后部分全是最低值。增益图宏观上反映了分类器的分类效果。</p>
 <p>右图是<strong>KS图</strong>，我们关心的是两条曲线的最大差值，横坐标是阈值，纵坐标是差值$TPR-FPR$，这个差值反映了对正类样本的区分度。一般选择差值最大的阈值作为分类阈值。</p>
-<h2 id="回归模型"><a href="#回归模型" class="headerlink" title="回归模型"></a>回归模型</h2><p><strong>MAE（Mean Absolute Error）平均绝对误差:</strong> $\dfrac{1}{n}\sum\limits_{i=1}^n |f_i - y_i|=\dfrac{1}{n}\sum\limits_{i=1}^n|e_i|$，真实值和预测值差值的绝对值和。用此为指标，求导非常麻烦，常用MSE。</p>
-<p><strong>MSE（Mean Square Error）均方误差:</strong> $\dfrac{1}{n}\sum\limits_{i=1}^n (f_i - y_i)^2=\dfrac{1}{n}\sum\limits_{i=1}^n(e_i)^2$，真实值和预测值差值的平方和。</p>
+<h2 id="回归模型"><a href="#回归模型" class="headerlink" title="回归模型"></a>回归模型</h2><p><strong>MSE（Mean Square Error）均方误差:</strong> $\dfrac{1}{n}\sum\limits_{i=1}^n (f_i - y_i)^2$，真实值和预测值差值的平方和。</p>
 <p><strong>RMSE（Root MSE）均方根误差:</strong> $\sqrt{MSE}$，对MSE开根号，如果MSE都是比较小的，可以放大它们之间尺度。</p>
+<p><strong>MAE（Mean Absolute Error）平均绝对误差:</strong> $\dfrac{1}{n}\sum\limits_{i=1}^n |f_i - y_i|$，真实值和预测值差值的绝对值和。用此为指标，求导非常麻烦，常用MSE。</p>
+<p><strong>MAPE（Mean Absolute Percentage Error）平均绝对百分比误差：</strong> $\dfrac{100\%}{n}\sum\limits_{i=1}^n |\dfrac{f_i - y_i}{y_i}|$，范围$[0,+\infty)$，MAPE 为0%表示完美模型，MAPE 大于 100 %则表示劣质模型。<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8yNTk2NjI4NjQ=">mape和smape<i class="fa fa-external-link-alt"></i></span>。</p>
 <p><strong>r2_score（决定系数）:</strong> $R^2=\dfrac{\sum\limits_{i=1}^n ( y_i - f_i)^2}{\sum\limits_{i=1}^n ( y_i - \bar y)^2}$，$f_i$是预测值，$y_i$是实际值，$\bar y$是实际值的平均值。分子代表预测值对实际值的离散程度，分母代表真实值的离散程度。R平方为回归平方和与总离差平方和的比值，表示总离差平方和中可以由回归平方和解释的比例，这一比例越大越好，模型越精确，回归效果越显著。R平方介于0~1之间，越接近1，回归拟合效果越好，一般认为超过0.8的模型拟合优度比较高。</p>
 <h2 id="聚类模型"><a href="#聚类模型" class="headerlink" title="聚类模型"></a>聚类模型</h2><p><strong>RMS（Root Mean Square）：</strong> $\dfrac{1}{n}\sqrt{\sum\limits_{i=1}^n (x_i-\bar x)^2}$，聚类的值减去每个类的平均值，然后平方和开根号，除以n。越小越好，越大表示每个类和它的中心比较远，效果差。</p>
 <p><strong>轮廓系数：</strong> $s(i)=\dfrac{b(i)-a(i)}{max\{a(i),b(i)\}}$，$a(i)$为样本i与簇内其他样本的平均距离，也叫内聚度；$b(i)$为样本i与其他某簇样本的平均距离，多个簇$b(i)$取最小的，也叫分离度。它结合了内聚度和分离度来评价，可以在相同数据的基础上评价不同的算法，或者算法的不同运行方式对聚类结果产生的影响。这个值越趋近于1，越好；越接近于-1，越差。</p>
