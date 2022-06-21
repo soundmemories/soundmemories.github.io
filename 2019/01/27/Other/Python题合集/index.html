@@ -25,21 +25,21 @@
     var CONFIG = {"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.0.2","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="近似推断这一讲中的近似推断具体描述在深度生成模型中的近似推断。推断的目的有下面几个部分：  推断本身，根据结果（观测）得到原因（隐变量）。 为参数的学习提供帮助。  但是推断本身是一个困难的额任务，计算复杂度往往很高，对于无向图，由于节点之间的联系过多，那么因子分解很难进行，并且相互之间都有耦合，于是很难求解，仅仅在某些情况如 RBM 中可解，在有向图中，常常由于条件独立性问题，如两个节点之间条件">
+  <meta name="description" content="NP1 Hello World!描述：将字符串 ‘Hello World!’ 存储到变量str中，再使用print语句将其打印出来。12s &#x3D; &quot;Hello World!&quot;print(s) NP2 多行输出描述：将字符串 ‘Hello World!’ 存储到变量str1中，再将字符串 ‘Hello Nowcoder!’ 存储到变量str2中，再使用print语句将其打印出来（一">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ApproInference">
-<meta property="og:url" content="https://soundmemories.github.io/2020/10/16/Machine%20Learning/39.ApproInference/index.html">
+<meta property="og:title" content="Python题合集">
+<meta property="og:url" content="https://soundmemories.github.io/2019/01/27/Other/Python%E9%A2%98%E5%90%88%E9%9B%86/index.html">
 <meta property="og:site_name" content="SoundMemories">
-<meta property="og:description" content="近似推断这一讲中的近似推断具体描述在深度生成模型中的近似推断。推断的目的有下面几个部分：  推断本身，根据结果（观测）得到原因（隐变量）。 为参数的学习提供帮助。  但是推断本身是一个困难的额任务，计算复杂度往往很高，对于无向图，由于节点之间的联系过多，那么因子分解很难进行，并且相互之间都有耦合，于是很难求解，仅仅在某些情况如 RBM 中可解，在有向图中，常常由于条件独立性问题，如两个节点之间条件">
+<meta property="og:description" content="NP1 Hello World!描述：将字符串 ‘Hello World!’ 存储到变量str中，再使用print语句将其打印出来。12s &#x3D; &quot;Hello World!&quot;print(s) NP2 多行输出描述：将字符串 ‘Hello World!’ 存储到变量str1中，再将字符串 ‘Hello Nowcoder!’ 存储到变量str2中，再使用print语句将其打印出来（一">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-10-15T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-08-22T13:45:06.423Z">
+<meta property="article:published_time" content="2019-01-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-06-21T09:09:11.698Z">
 <meta property="article:author" content="SoundMemories">
-<meta property="article:tag" content="Machine Learning">
+<meta property="article:tag" content="Other">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://soundmemories.github.io/2020/10/16/Machine%20Learning/39.ApproInference/">
+<link rel="canonical" href="https://soundmemories.github.io/2019/01/27/Other/Python%E9%A2%98%E5%90%88%E9%9B%86/">
 
 
 <script data-pjax class="page-configurations">
@@ -52,7 +52,7 @@
   };
 </script>
 
-  <title>ApproInference | SoundMemories</title>
+  <title>Python题合集 | SoundMemories</title>
   
 
 
@@ -209,7 +209,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%91%E4%BC%BC%E6%8E%A8%E6%96%AD"><span class="nav-number">1.</span> <span class="nav-text">近似推断</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#NP1-Hello-World"><span class="nav-number">1.</span> <span class="nav-text">NP1 Hello World!</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NP2-%E5%A4%9A%E8%A1%8C%E8%BE%93%E5%87%BA"><span class="nav-number">2.</span> <span class="nav-text">NP2 多行输出</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NP3-%E6%A0%BC%E5%BC%8F%E5%8C%96%E8%BE%93%E5%87%BA%EF%BC%88%E4%B8%80%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">NP3 格式化输出（一）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NP4-%E6%A0%BC%E5%BC%8F%E5%8C%96%E8%BE%93%E5%87%BA%EF%BC%88%E4%BA%8C%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">NP4 格式化输出（二）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NP5-%E6%A0%BC%E5%BC%8F%E5%8C%96%E8%BE%93%E5%87%BA%EF%BC%88%E4%B8%89%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">NP5 格式化输出（三）</span></a></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -288,7 +288,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/16/Machine%20Learning/39.ApproInference/">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2019/01/27/Other/Python%E9%A2%98%E5%90%88%E9%9B%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
@@ -301,7 +301,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          ApproInference
+          Python题合集
         </h1>
 
         <div class="post-meta-container">
@@ -312,7 +312,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2020-10-16 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-16T00:00:00+08:00">2020-10-16</time>
+      <time title="创建时间：2019-01-27 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-27T00:00:00+08:00">2019-01-27</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -320,7 +320,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+          <a href="/categories/Other/" itemprop="url" rel="index"><span itemprop="name">Other</span></a>
         </span>
     </span>
 
@@ -332,7 +332,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>646</span>
+      <span>1.2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -350,23 +350,12 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="近似推断"><a href="#近似推断" class="headerlink" title="近似推断"></a>近似推断</h1><p>这一讲中的近似推断具体描述在深度生成模型中的近似推断。推断的目的有下面几个部分：</p>
-<ol>
-<li>推断本身，根据结果（观测）得到原因（隐变量）。</li>
-<li>为参数的学习提供帮助。</li>
-</ol>
-<p>但是推断本身是一个困难的额任务，计算复杂度往往很高，对于无向图，由于节点之间的联系过多，那么因子分解很难进行，并且相互之间都有耦合，于是很难求解，仅仅在某些情况如 RBM 中可解，在有向图中，常常由于条件独立性问题，如两个节点之间条件相关（explain away），于是求解这些节点的条件概率就很困难，仅仅在某些概率假设情况下可解如高斯模型，于是需要近似推断。</p>
-<p>事实上，我们常常讲推断问题变为优化问题，即：</p>
-<script type="math/tex; mode=display">
-Log-likehood:\sum\limits_{v\in V}\log p(v)</script><p>对上面这个问题，由于：</p>
-<script type="math/tex; mode=display">
-\log p(v)=\log\frac{p(v,h)}{p(h|v)}=\log\frac{p(v,h)}{q(h|v)}+\log\frac{q(h|v)}{p(h|v)}</script><p>左右两边对 $h$ 积分：</p>
-<script type="math/tex; mode=display">
-\int_h\log p(v)\cdot q(h|v)dh=\log p(v)</script><p>右边积分有：</p>
-<script type="math/tex; mode=display">
-\mathbb{E}_{q(h|v)}[\log\frac{p(v,h)}{q(h|v)}]+KL(q(h|v)||p(h|v))=\mathbb{E}_{q(h|v)}[\log p(v,h)]+H(q)+KL(q||p)</script><p>其中前两项是 ELBO，于是这就变成一个优化 ELBO 的问题。</p>
-<div class="note info"><p>文章转载自<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDc=">Jie Zhou<i class="fa fa-external-link-alt"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDcvTWFjaGluZS1MZWFybmluZy1TZXNzaW9u">Machine-Learning-Session<i class="fa fa-external-link-alt"></i></span>。</p>
-</div>
+        <h1 id="NP1-Hello-World"><a href="#NP1-Hello-World" class="headerlink" title="NP1 Hello World!"></a>NP1 Hello World!</h1><p>描述：<br>将字符串 ‘Hello World!’ 存储到变量str中，再使用print语句将其打印出来。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">&quot;Hello World!&quot;</span></span><br><span class="line">print(s)</span><br></pre></td></tr></table></figure></p>
+<h1 id="NP2-多行输出"><a href="#NP2-多行输出" class="headerlink" title="NP2 多行输出"></a>NP2 多行输出</h1><p>描述：<br>将字符串 ‘Hello World!’ 存储到变量str1中，再将字符串 ‘Hello Nowcoder!’ 存储到变量str2中，再使用print语句将其打印出来（一行一个变量）。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">s1 = <span class="string">&quot;Hello World!&quot;</span></span><br><span class="line">s2 = <span class="string">&quot;Hello Nowcoder!&quot;</span></span><br><span class="line">print(s1)</span><br><span class="line">print(s2)</span><br></pre></td></tr></table></figure></p>
+<h1 id="NP3-格式化输出（一）"><a href="#NP3-格式化输出（一）" class="headerlink" title="NP3 格式化输出（一）"></a>NP3 格式化输出（一）</h1><p>描述：<br>牛牛、牛妹和牛可乐正在Nowcoder学习Python语言，现在给定他们三个当中的某一个名字name，<br>假设输入的name为Niuniu，则输出 I am Niuniu and I am studying Python in Nowcoder!<br>请按以上句式输出相应的英文句子。<br>输入描述：<br>一行一个字符串表示名字。<br>输出描述：<br>假设输入的name为Niuniu，则输出I am Niuniu and I am studying Python in Nowcoder!<br>请按以上句式输出相应的英文句子。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 3.6以上用f</span></span><br><span class="line">name = <span class="built_in">input</span>()</span><br><span class="line">print(<span class="string">f&#x27;I am <span class="subst">&#123;name&#125;</span> and I am studying Python in Nowcoder!&#x27;</span>)</span><br><span class="line"><span class="comment"># format适合所有版本</span></span><br><span class="line">print(<span class="string">&#x27;I am &#123;&#125; and I am studying Python in Nowcoder!&#x27;</span>.<span class="built_in">format</span>(name)) </span><br></pre></td></tr></table></figure></p>
+<h1 id="NP4-格式化输出（二）"><a href="#NP4-格式化输出（二）" class="headerlink" title="NP4 格式化输出（二）"></a>NP4 格式化输出（二）</h1><p>描述：<br>牛牛、牛妹和牛可乐都是Nowcoder的用户，某天Nowcoder的管理员希望将他们的用户名以某种格式进行显示，<br>现在给定他们三个当中的某一个名字name，请分别按全小写、全大写和首字母大写的方式对name进行格式化输出（注：每种格式独占一行）。<br>输入描述：<br>一行一个字符串表示名字。<br>输出描述：<br>请分别按全小写、全大写和首字母大写的方式对name进行格式化输出（注：每种格式独占一行）。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">name = <span class="built_in">input</span>()</span><br><span class="line">low = name.lower()</span><br><span class="line">large = name.upper()</span><br><span class="line">title = name.title()</span><br><span class="line">print(low, large, title, sep=<span class="string">&#x27;\n&#x27;</span>)</span><br></pre></td></tr></table></figure></p>
+<h1 id="NP5-格式化输出（三）"><a href="#NP5-格式化输出（三）" class="headerlink" title="NP5 格式化输出（三）"></a>NP5 格式化输出（三）</h1><p>描述：<br>牛牛、牛妹和牛可乐都是Nowcoder的用户，某天Nowcoder的管理员由于某种错误的操作导致他们的用户名的左右两边增加了一些多余的空白符（如空格或’\t’等），<br>现在给定他们三个当中的某一个名字name，请输出name去掉两边的空白符后的原本的内容。<br>输入描述：<br>一行一个字符串表示名字name（注：name两边带有一些多余的空白符）。<br>输出描述：<br>一行输出name去掉两边的空白符后的原本的内容。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure></p>
+
     </div>
 
     
@@ -376,39 +365,47 @@ Log-likehood:\sum\limits_{v\in V}\log p(v)</script><p>对上面这个问题，�
   <div class="popular-posts-header">相关文章</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\04\20\Machine Learning\00.ML-机器学习？\" rel="bookmark">ML-机器学习？</a></div>
+      <div class="popular-posts-title"><a href="\2019\01\21\Other\面试题集\" rel="bookmark">面试题集</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\06\10\Machine Learning\11.ML-数据分析\" rel="bookmark">ML-数据分析</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\09\20\Machine Learning\16.Introduction\" rel="bookmark">Introduction</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\09\21\Machine Learning\17.MathBasics\" rel="bookmark">MathBasics</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\09\25\Machine Learning\18.LinearRegression\" rel="bookmark">LinearRegression</a></div>
+      <div class="popular-posts-title"><a href="\2019\01\26\Other\算法题合集\" rel="bookmark">算法题合集</a></div>
     </li>
   </ul>
 
 
     <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>SoundMemories
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://soundmemories.github.io/2019/01/27/Other/Python%E9%A2%98%E5%90%88%E9%9B%86/" title="Python题合集">https://soundmemories.github.io/2019/01/27/Other/Python题合集/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
           <div class="post-tags">
-              <a href="/tags/Machine-Learning/" rel="tag"><i class="fa fa-tag"></i> Machine Learning</a>
+              <a href="/tags/Other/" rel="tag"><i class="fa fa-tag"></i> Other</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2020/10/15/Machine%20Learning/37.NN/" rel="prev" title="NN">
-                  <i class="fa fa-chevron-left"></i> NN
+                <a href="/2019/01/26/Other/%E7%AE%97%E6%B3%95%E9%A2%98%E5%90%88%E9%9B%86/" rel="prev" title="算法题合集">
+                  <i class="fa fa-chevron-left"></i> 算法题合集
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/10/17/Machine%20Learning/40.cheatsheet/" rel="next" title="cheatsheet">
-                  cheatsheet <i class="fa fa-chevron-right"></i>
+                <a href="/2019/01/31/Python/14.Python-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%BF%9B%E9%98%B6/" rel="next" title="Python-面向对象-进阶">
+                  Python-面向对象-进阶 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -630,7 +627,7 @@ if (document.querySelectorAll('.mermaid').length) {
       quicklink.listen({
         timeout : 3000,
         priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'https://soundmemories.github.io/2020/10/16/Machine%20Learning/39.ApproInference/',]
+        ignores : [uri => uri.includes('#'),uri => uri === 'https://soundmemories.github.io/2019/01/27/Other/Python%E9%A2%98%E5%90%88%E9%9B%86/',]
       });
       });
   </script>
