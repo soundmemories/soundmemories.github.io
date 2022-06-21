@@ -661,10 +661,10 @@
 </ul>
 <p>最后对于每个单词的分数我们做一个求和，就得到了query和文档之间的分数。</p>
 <script type="math/tex; mode=display">Score(Q,d)=\sum\limits^nW_iR(q_i,d)</script><p>其中，$W_i$代表单词 $q_i$ 权重，$R(q_i,d)$ 代表单词 $q_i$ 和文档 $d$ 相关性。</p>
-<p><strong>每个单词的权重</strong><br>$N$ 表示所有文档数目，$n(q_i)$ 为单词 $q_i$ 出现的文档数目，0.5主要是做平滑处理。</p>
+<p><strong>每个单词的权重(IDF变形)</strong><br>$N$ 表示所有文档数目，$n(q_i)$ 为单词 $q_i$ 出现的文档数目，0.5主要是做平滑处理。</p>
 <script type="math/tex; mode=display">IDF(q_i)=log(\frac{N-n(q_i)+0.5}{n(q_i)+0.5})</script><p>依据IDF的作用，对于某个 $q_i$ ，包含 $q_i$ 的文档数越多，说明 $q_i$ 重要性越小，或者区分度越低，IDF越小，因此IDF可以用来刻画 $q_i$ 与文档的相似性。</p>
-<p><strong>相关性分数</strong><br>BM25的设计依据一个重要的发现：词频和相关性之间的关系是非线性的，也就是说，每个词对于文档的相关性分数不会超过一个特定的阈值，当词出现的次数达到一个阈值后，其影响就不在线性增加了，而这个阈值会跟文档本身有关。</p>
-<script type="math/tex; mode=display">R(q_i,d)=\frac{f_i\cdot (k_1+1)}{f_i+K}\cdot\frac{qf_i\cdot(k_2+1)}{qf_i+k_2}</script><script type="math/tex; mode=display">K=k_1\cdot(1-b+b\cdot\frac{dl}{avgdl})</script><p>其中，$f_i$ 为单词 $q_i$ 在文档 $d$ 中的词频。$qf_i$ 为单词 $q_i$ 在 $query$ 中出现的频率。$dl$ 是文档 $d$ 的长度，$avgdl$ 是所有文档的平均长度。$k_1$ 是一个正的参数（一般为2），用来标准化文章词频的范围，$k_1$ 越大，我们越看重单词在文档d中词频的影响。$k_2$ 越大，越看重单词在query中的词频，$k_2$ 一般为1。$b$为0~1之间的值（一般为0.75），决定使用文档长度来表示信息量的范围。</p>
+<p><strong>相关性分数(TF变形)</strong><br>BM25的设计依据一个重要的发现：词频和相关性之间的关系是非线性的，也就是说，每个词对于文档的相关性分数不会超过一个特定的阈值，当词出现的次数达到一个阈值后，其影响就不在线性增加了，而这个阈值会跟文档本身有关。</p>
+<script type="math/tex; mode=display">R(q_i,d)=\frac{f_i\cdot (k_1+1)}{f_i+K}\cdot\frac{qf_i\cdot(k_2+1)}{qf_i+k_2}</script><script type="math/tex; mode=display">K=k_1\cdot(1-b+b\cdot\frac{dl}{avgdl})</script><p>其中，$f_i$ 为单词 $q_i$ 在文档 $d$ 中的词频。$qf_i$ 为单词 $q_i$ 在 $query$ 中出现的频率。<br>$dl$ 是文档 $d$ 的长度，$avgdl$ 是所有文档的平均长度。<br>$k_1$ 是一个正的参数（一般为2），用来标准化文章词频的范围，$k_1$ 越大，我们越看重单词在文档d中词频的影响。<br>$k_2$ 越大，越看重单词在query中的词频，$k_2$ 一般为1。$b$为0~1之间的值（一般为0.75），决定使用文档长度来表示信息量的范围。</p>
 <h3 id="WAND"><a href="#WAND" class="headerlink" title="WAND"></a>WAND</h3><p>wand（weak and）算法，通过计算每个词的贡献上限来估计文档的相关性上限，并与预设的阈值比较，进而跳过一些相关性一定达不到要求的文档，从而得到提速效果（$query$比较长的时候使用）。</p>
 <p>wand 算法首先要估计<strong>每个词对相关性贡献的上限（upper bound）</strong>，最简单的相关性就是TF-IDF，一般IDF是固定的，因此只需要估计一个词在各个文档中的词频TF上限（即这个词在各个文档中最大的TF），该步骤通过线下计算即可完成。线下计算出各个词的相关性上限，可以计算出一个 $query$ 和一个文档的相关性上限值，就是它们共同出现的词的相关性上限值的和，通过与预设的阈值比较，如果 $query$ 与文档的相关性大于阈值，则进行下一步的计算，否则丢弃。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">query：the quick brown fox     </span><br><span class="line">with top k&#x3D;2</span><br></pre></td></tr></table></figure><br>根据倒排索引表，计算每个词的相关性贡献上限，即 TF-IDF，取每个词的最大值即可，如下表中max值。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">        max  倒排索引</span><br><span class="line">the     0.9  [2,3,7,8,9,10,11,12,13,17,18,19...]</span><br><span class="line">qucik   1.9  [5,6,9,11,14,18]</span><br><span class="line">brown   2.3  [2,4,5,15,42,84,96]</span><br><span class="line">fox     7.1  [5,7,8,13]</span><br></pre></td></tr></table></figure><br>根据max可得到 $query$ 和文档的相关性上限。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">the和brown都出现在2文档，假设2文档中the的tfidf为0.1，brown为1。</span><br><span class="line">the只出现在3文档，假设3文档中the的tfidf为0.5。</span><br><span class="line"># |score|id|</span><br><span class="line">------------</span><br><span class="line">1 | 2.0 | 2 |</span><br><span class="line">2 | 0.5 | 3 |</span><br><span class="line">一般用heap维持k个。</span><br></pre></td></tr></table></figure><br>维持top-2这个heap堆，不停的这样寻找。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">当走到4的时候，只有brown出在4中，且max为2.3，那么文档4的score可能战胜0.5，计算文档4的tfidf，假设为1.4，替换掉0.5。</span><br><span class="line"># |score|id|</span><br><span class="line">------------</span><br><span class="line">1 | 2.0 | 2 |</span><br><span class="line">2 | 1.4 | 4 |</span><br><span class="line"></span><br><span class="line">同理，走到文档5的时候，brown、quick、fox都出现在文档5中，假设score计算为6.3，替换掉1.4。</span><br><span class="line"># |score|id|</span><br><span class="line">------------</span><br><span class="line">1 | 6.3 | 5 |</span><br><span class="line">2 | 2.0 | 2 |</span><br><span class="line"></span><br><span class="line">走到文档6的时候，只有quick出现在文档6中，且max为1.9，不可能超过heap中最小的score，所以跳过不用计算。</span><br></pre></td></tr></table></figure><br>预设的阈值，就是heap中最小score值，每次都是和它比较。</p>
 <h2 id="向量级别"><a href="#向量级别" class="headerlink" title="向量级别"></a>向量级别</h2><h3 id="SIF"><a href="#SIF" class="headerlink" title="SIF"></a>SIF</h3><p>smooth inverse frequency（SIF），原论文<span class="exturl" data-url="aHR0cHM6Ly9vcGVucmV2aWV3Lm5ldC9wZGY/aWQ9U3lLMDB2NXh4">A SIMPLE BUT TOUGH-TO-BEAT BASELINE FOR SENTENCE EMBEDDINGS<i class="fa fa-external-link-alt"></i></span>，参考解析<span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vZGF0YWJpbmdvL3AvOTc4ODI0NC5odG1s">论文阅读<i class="fa fa-external-link-alt"></i></span>。</p>
@@ -852,7 +852,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>397</span>
+      <span>1.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -873,12 +873,13 @@
           <h2 id="闲聊式"><a href="#闲聊式" class="headerlink" title="闲聊式"></a>闲聊式</h2><p>情感识别，多轮对话中情感向量生成（Emotion Embedding）、意图识别等。建议参考项目<span class="exturl" data-url="aHR0cHM6Ly9yYXNhLmNvbS8=">Rasa<i class="fa fa-external-link-alt"></i></span>。</p>
 <h2 id="检索式"><a href="#检索式" class="headerlink" title="检索式"></a>检索式</h2><p>涉及到的核心：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入问句：句向量的构建。</span><br><span class="line">粗排：候选问句的范围，重点是速度、召回率。</span><br><span class="line">精排：候选问句基础上精细匹配&#x2F;深度匹配，重点是精准率。</span><br><span class="line">答案：匹配问句对应的答案。</span><br></pre></td></tr></table></figure></p>
 <h2 id="知识问答"><a href="#知识问答" class="headerlink" title="知识问答"></a>知识问答</h2><p><img src="/images/对话系统/1.png" width="80%"></p>
-<p>架构一般为KBQA，详情参考<span class="exturl" data-url="aHR0cHM6Ly93d3cuc29odS5jb20vYS8xNjMyNzg1ODhfNTAwNjU5">KBQA从入门到放弃—入门篇<i class="fa fa-external-link-alt"></i></span>。</p>
-<p>知识图谱、问题解析、查询、答案生成等。需要实体识别、关系识别，SPO三元组((subject, predicate, object)等，详情参考<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8yMzc0NTI5MTg/dXRtX3NvdXJjZT13ZWNoYXRfc2Vzc2lvbg==">实体关系、实体属性、三元组、SPO三元组及其抽取方案<i class="fa fa-external-link-alt"></i></span>。</p>
-<p>NL2SQL也会涉及到一些，将用户的自然语句转为可执行SQL语句的技术，用于自动问答、知识查询，针对目的清晰的问答。</p>
 <h2 id="任务式"><a href="#任务式" class="headerlink" title="任务式"></a>任务式</h2><p><img src="/images/对话系统/2.png" width="80%"></p>
-<p>四大模块：自然语言理解、对话状态追踪、对话策略、自然语言生成。</p>
-<p>意图识别、情感识别、命名实体识别、强化学习、文本生成等。</p>
+<p>1、<strong>自然语言理解</strong>(NLU)：<br>(1) 将<strong>非结构化</strong>的<strong>文本</strong>转成<strong>结构化</strong>的<strong>语义</strong>(意图分类、词槽序列标注)。<br>(2) 将无限种可能转成有限的组合。<br>核心：意图识别(Intent)、实体识别(Entity)。</p>
+<p>2、<strong>对话管理</strong>(DM, meaning&amp;context)：bot需要通过历史对话中的信息来判断，此时处理方案。<br>(1) 对话跟踪(DST)：记录和更新 对话状态。用户话语中哪些 <strong>变化</strong>、<strong>值</strong> 是我们关心的，对对话处理有影响的要素记录。<br>(2) 对话策略(DP)：根据<strong>历史和当前</strong>的对话状态选择合适的对话策略。<strong>选择哪种动作</strong>(Action)和<strong>执行动作响应后作什么</strong>，和业务相关，比如查询or定业务？成功or失败后做什么决策？。<br><strong>对话策略(Policy)类型</strong>：<br>(1) 基于规则：意图为X，那么直接输出对应的动作Y。比如打招呼。<br>(2) 基于记忆：用户当前对话状态和训练数据中某个story状态完全一致时，可以使用story中后序的动作。<br>(3) 基于神经网络预测：模型分类预测，比如KerasPolicy。<br>(4) 基于编程：自定义脚本处理规则。<br>所有对话策略同时预测，按得分高低做动作。<br><strong>动作执行</strong>：把对话跟踪和对话策略的结果 发送给执行机构，得到返回结果呈现给用户。</p>
+<p>3、<strong>自然语言生成</strong>(NLG)：<br>(1) 语义转成文本。绝大数情况下，可用模板解决。</p>
+<p><strong>90%看不见的工作</strong>：<br>(1) 对话数据的获取：已有数据or人工造数据。<br>(2) 对话数据的扩充：样本少，数据不均衡。<br>(3) 对话数据的标注：算法实现or业务需求、长尾需求、语义歧义、方言/ASR错误识别、需求变更、无意义句子。<br>(4) 对话数据校验与清洗：错标、漏标。<br>(5) 数据和模板 版本化管理(可复现)：数据迭代(变更追踪)、算法迭代、参数迭代。<br>(6) 模型部署：字典转换、序列编码。<br>(7) 模型效果分析：模型行不行、哪里不行、为什么不行(数据or模型)、怎么解决。</p>
+<p>任务型+FAQ：Rasa成熟的开源框架。<br>Rasa x：不断根据客户反馈改进模型。<br>Rasa3.0变化：<br>(1) 支持无向图，可以使用更多的模型。<br>(2) 不再支持markdown配置，改用YAML配置。<br>(3) 需要配置中新增recipe字段，如recipe: default.v1。<br>(4) 训练文件中的version:”2.0”改成version:”3.0”。<br>(5) 3.0彻底移除了2.0准备要删除的api。<br>(6) 2.0的slot mapping是在表单中定义的，现在每个slot的mapping都在slot的配置中指定，原来的slot和实体之间默认是可以进行自动填充的，现在必须显示指定。<br>(7) 原来是线性的pipeline，现在用的是有向无环图(DAG)。训练和推理的逻辑都发生了变化。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><span class="exturl" data-url="aHR0cHM6Ly93d3cuc29odS5jb20vYS8xNjMyNzg1ODhfNTAwNjU5">KBQA从入门到放弃—入门篇<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8yMzc0NTI5MTg/dXRtX3NvdXJjZT13ZWNoYXRfc2Vzc2lvbg==">实体关系、实体属性、三元组、SPO三元组及其抽取方案<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMW9yNHkxVTdYUj9zcG1faWRfZnJvbT0zMzMuMzM3LnNlYXJjaC1jYXJkLmFsbC5jbGljayZhbXA7dmRfc291cmNlPTI4MmRjNzZmNDNkNDYxY2NkN2IzM2NmMGY1ZWE2NGI1">【社区说】一起来聊聊 Rasa 3.0<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9yYXNhLmNvbS9kb2NzL3Jhc2Ev">Rasa NLU &amp; Core<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9yYXNhLmNvbS9kb2NzL2FjdGlvbi1zZXJ2ZXIv">Rasa Action Server<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9yYXNhLmNvbS9kb2NzL3Jhc2EteC8=">Rasa X<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLnJhc2EuY29tLw==">Rasa Blog<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1Jhc2FIUS9yYXNh">Rasa code<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2hvd2wtYW5kZXJzb24=">Rasa 开发者<i class="fa fa-external-link-alt"></i></span></p>
 
       
     </div>
@@ -952,7 +953,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>13k</span>
+      <span>14k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -1078,7 +1079,7 @@
 </li>
 </ul>
 <h1 id="Bert变种"><a href="#Bert变种" class="headerlink" title="Bert变种"></a>Bert变种</h1><h2 id="BERT-WWM"><a href="#BERT-WWM" class="headerlink" title="BERT-WWM"></a>BERT-WWM</h2><p><strong>BERT-WWM</strong>：始版本的 BERT 采用了WordPiece tokenize 来预处理，即把每个单词拆解一些 WordPiece token（比如，loved-&gt;lov ed） ，最初是为了解决谷歌语音识别系统遇到的日语/韩语分割问题。该模型是数据驱动，并且确保任何可能的字符序列的确定性分割。这种预处理为 BERT 带来一个严重的问题：<strong>有可能仅仅对一个单词的某个部分 wordpiece token 执行了 mask。此时 MLM 模型预测的只是单词的一部分，相当于模型对一个错误的目标进行预测。这非常不利于模型的学习</strong>。有鉴于此，谷歌后续发布了 BERT 的 Whole Word Masking:WWM 版本 <strong>BERT-WWM</strong>。在该版本中，一个单词要么没有被 mask、要么该单词所有的 workpiece token 都被 mask 。类似的想法还有ERNIE模型的phrase-level mask和entity-level mask。</p>
-<p><strong>BERT-wwm-ext</strong>：是 BERT-WWM 的中文版本，该模型对中文的<strong>整个汉语单词</strong>而不是单个汉字进行mask ，在最新的中文维基百科上训练。</p>
+<p><strong>BERT-wwm-ext</strong>：是 BERT-WWM 的中文版本(哈工大讯飞联合实验室发布)，该模型对中文的<strong>整个单词</strong>而不是单个字进行mask ，在最新的中文维基百科上训练。</p>
 <h2 id="ERNIE"><a href="#ERNIE" class="headerlink" title="ERNIE"></a>ERNIE</h2><p><strong>ERNIE</strong>：BERT 的 MLM 任务在执行 mask 的时候，未能考虑先验知识，如果有学习到与Mask的单词相关的先验知识，则无需借助很长的上下文就可以很容易的预测出Mask的单词。但是 ERNIE 并没有直接添加先验知识，而是通过引入 <strong>entity-level mask</strong> 和 <strong>phrase-level mask</strong> 来引入先验知识，隐式的学习实体间的关系、实体的属性等知识：</p>
 <ul>
 <li><strong>phrase-level mask</strong>：将一个 phrase 作为一个单元，每个单元通常由几个 token 组成。在训练期间，同一个单元中的所有 token 都会被屏蔽，而不是只有一个 token 被屏蔽。</li>
@@ -1114,16 +1115,6 @@
 </ul>
 <p><img src="/images/Bert/17.png" width="80%"></p>
 <p>实验结果：<br><img src="/images/Bert/15.png" width="40%"><br><img src="/images/Bert/16.png" width="80%"></p>
-<h2 id="XLNet"><a href="#XLNet" class="headerlink" title="XLNet"></a>XLNet</h2><p><strong>XLNet</strong>：使用Transformer-XL模型。</p>
-<p>当Bert作为seq2seq的encoder时，输入也要Mask：</p>
-<ul>
-<li>随机Mask。</li>
-<li>删除Delete。</li>
-<li>多个句子，换顺序Permuttion。</li>
-<li>打乱token，比如后面词放在前面。</li>
-<li>插入Mask，Text Infilling。这个效果最好。</li>
-</ul>
-<p>后续 RoBerta和Albert使用 sentence order prediction:SOP 任务来预训练了。</p>
 <h2 id="Albert"><a href="#Albert" class="headerlink" title="Albert"></a>Albert</h2><p>Albert主要对Bert参数进行优化，在任务结果下降很低的情况的下，使模型更小更适合部署。<br>论文原文：<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE5MDkuMTE5NDIucGRm">ALBERT: A LITE BERT FOR SELF-SUPERVISED LEARNING OF LANGUAGE REPRESENTATIONS<i class="fa fa-external-link-alt"></i></span></p>
 <p>主要优化点：</p>
 <ul>
@@ -1149,8 +1140,8 @@
 <p>ALBERT默认是共享全部参数的，在后续实验结果中我们可以看到几种方式的模型表现。</p>
 <p>如下图所示，实验表明加入参数共享之后，每一层的输入embedding和输出embedding的L2距离和余弦相似度都比BERT稳定了很多，ALBERT 的结果更加平滑。这证明参数共享能够使模型参数更加稳定。<br><img src="/images/Bert/3.png" width="90%"></p>
 <p>如下图所示，可以看出参数共享几乎也是对模型结果有负面影响的。但是考虑到其能够大幅削减参数量，并且对结果影响不是特别大，因此权衡之下选择了参数共享。<br><img src="/images/Bert/4.png" width="90%"></p>
-<p><strong>优化三：SOP替代NSP</strong><br>除了减少模型参数外，本外还对BERT的预训练任务Next-sentence prediction (NSP)进行了改进。在BERT中，NSP任务的正例是文章中连续的两个句子，而负例则是从两篇文档中各选一个句子构造而成。在先前的研究中，已经证明NSP是并不是一个合适的预训练任务。本文推测其原因是模型在判断两个句子的关系时不仅考虑了两个句子之间的连贯性（coherence），还会考虑到两个句子的话题（topic）。而两篇文档的话题通常不同，模型会更多的通过话题去分析两个句子的关系，而不是句子间的连贯性，这使得NSP任务变成了一个相对简单的任务。</p>
-<p>因此本文提出了Sentence-order prediction (SOP)来取代NSP。具体来说，其正例与NSP相同，但负例是通过选择一篇文档中的两个连续的句子并将它们的顺序交换构造的。这样两个句子就会有相同的话题，模型学习到的就更多是句子间的连贯性。</p>
+<p><strong>优化三：SOP替代NSP</strong><br>除了减少模型参数外，本外还对BERT的预训练任务<strong>Next-sentence prediction</strong>(NSP)进行了改进。在BERT中，NSP任务的正例是文章中连续的两个句子，而负例则是从两篇文档中各选一个句子构造而成。在先前的研究中，已经证明NSP是并不是一个合适的预训练任务。本文推测其原因是模型在判断两个句子的关系时不仅考虑了两个句子之间的连贯性（coherence），还会考虑到两个句子的话题（topic）。而两篇文档的话题通常不同，模型会更多的通过话题去分析两个句子的关系，而不是句子间的连贯性，这使得NSP任务变成了一个相对简单的任务。</p>
+<p>因此本文提出了<strong>Sentence-order prediction</strong>(SOP)来取代NSP。具体来说，其正例与NSP相同，但负例是通过选择一篇文档中的两个连续的句子并将它们的顺序交换构造的。这样两个句子就会有相同的话题，模型学习到的就更多是句子间的连贯性。</p>
 <p>如下图实验结果所示，如果不使用NSP或SOP作为预训练任务的话，模型在NSP和SOP两个任务上表现都很差；如果使用NSP作为预训练任务的话，模型确实能很好的解决NSP问题，但是在SOP问题上表现却很差，几乎相当于随机猜，因此说明NSP任务确实很难学到句子间的连贯性；而如果用SOP作为预训练任务，则模型也可以较好的解决NSP问题，同时模型在下游任务上表现也更好。说明SOP确实是更好的预训练任务。<br><img src="/images/Bert/5.png" width="90%"></p>
 <h2 id="RoBerta"><a href="#RoBerta" class="headerlink" title="RoBerta"></a>RoBerta</h2><p>论文原文：<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE5MDcuMTE2OTIucGRm">RoBERTa: A Robustly Optimized BERT Pretraining Approach<i class="fa fa-external-link-alt"></i></span></p>
 <p>预训练模型能够显著的提升任务效果，但是不同预训练模型的比较非常困难。首先，每个预训练模型的训练成本很高，无法一一训练并进行比较。其次，不同预训练模型通常是在不同规模大小的数据集上训练的，难以评估效果的好坏是预训练模型引起的还是预训练数据引起的。最后，超参数的选择对预训练模型的表现影响很大。同一个预训练模型的不同超参数，其比较结果会有很大不同。</p>
@@ -1159,14 +1150,14 @@
 <li>更大的 batch size</li>
 <li>更多的数据、更长的预训练时间</li>
 <li>移除 NSP 任务 + 使用更长的输入序列</li>
-<li>使用动态 mask</li>
+<li><strong>使用动态mask</strong></li>
 <li>使用BPE方式，减少UNK单词出现次数（英文）</li>
 </ul>
 <p><strong>更大的 batch size</strong><br>原本的BERTbase 的batch size是256，训练1M个steps。RoBERTa的batch size为8k。为什么要用更大的batch size呢？（除了因为他们有钱玩得起外）作者借鉴了在机器翻译中，用更大的batch size配合更大学习率能提升模型优化速率和模型性能的现象，并且也用实验证明了确实Bert还能用更大的batch size。<br><img src="/images/Bert/6.png" width="40%"></p>
 <p><strong>更多的数据、更长的预训练时间</strong><br>借鉴XLNet用了比Bert多10倍的数据，RoBERTa也用了更多的数据。性能确实再次彪升。当然，也需要配合更长时间的训练。<br><img src="/images/Bert/8.png" width="80%"></p>
 <p><strong>移除 NSP 任务 + 使用更长的输入序列</strong><br>原本的Bert为了捕捉句子之间的关系，使用了NSP任务进行预训练，就是输入一对句子A和B，判断这两个句子是否是连续的。在训练的数据中，50%的B是A的下一个句子，50%的B是随机抽取的。</p>
 <p>而RoBERTa去除了NSP，而是每次输入连续的多个句子，直到最大长度512（可以跨文章）。这种训练方式叫做（FULL - SENTENCES），而原来的Bert每次只输入两个句子。实验表明在MNLI这种推断句子关系的任务上RoBERTa也能有更好性能。<br><img src="/images/Bert/7.png" width="80%"></p>
-<p><strong>使用动态 mask</strong><br>原来Bert对每一个序列随机选择15%的Tokens替换成[MASK]，为了消除与下游任务的不匹配，还对这15%的Tokens进行（1）80%的时间替换成[MASK]；（2）10%的时间不变；（3）10%的时间替换成其他词。但整个训练过程，这15%的Tokens一旦被选择就不再改变，也就是说从一开始随机选择了这15%的Tokens，之后的N个epoch里都不再改变了。这就叫做静态Masking。</p>
+<p><strong>使用动态mask</strong><br>原来Bert对每一个序列随机选择15%的Tokens替换成[MASK]，为了消除与下游任务的不匹配，还对这15%的Tokens进行（1）80%的时间替换成[MASK]；（2）10%的时间不变；（3）10%的时间替换成其他词。但整个训练过程，这15%的Tokens一旦被选择就不再改变，也就是说从一开始随机选择了这15%的Tokens，之后的N个epoch里都不再改变了。这就叫做静态Masking。</p>
 <p>而RoBERTa一开始把预训练的数据复制10份，每一份都随机选择15%的Tokens进行Masking，也就是说，同样的一句话有10种不同的mask方式。然后每份数据都训练N/10个epoch。这就相当于在这N个epoch的训练中，每个序列的被mask的tokens是会变化的。这就叫做动态Masking。</p>
 <p>那么这样改变是否真的有效果？作者在只将静态Masking改成动态Masking，其他参数不变的情况下做了实验，动态Masking确实能提高性能。<br><img src="/images/Bert/9.png" width="40%"></p>
 <p><strong>使用BPE方式</strong><br>针对的是英文，BERT原型使用的是 character-level BPE vocabulary of size 30K, RoBERTa使用了GPT2的 byte BPE 实现，使用的是byte而不是unicode characters作为subword的单位。</p>
@@ -1183,6 +1174,22 @@
 <p>通过SBERT模型获取到的句子embedding，可以直接通过cos相似度计算两个句子的相似度，这样就大大减少了计算量。因为在使用BERT模型进行句子间相似度的判断时，需要从句子集合中，选出两个句子进行组合，传入BERT中进行计算，而使用SBERT模型，只需要将集合中每个句子单独传入到模型中，得到每个句子的embeding，计算相似度只需要使用cos函数计算两两embeding的cos距离即可。因此，使用BERT/RoBERTa模型需要65h才能完成的寻找最相似句子对任务，SBERT模型完成仅需5s。</p>
 <p>作者在一些STS任务和迁移学习任务上评估SBERT模型，该模型达到了新的SOTA水平。</p>
 <p>论文原文：<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE5MDguMTAwODQucGRm">Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks<i class="fa fa-external-link-alt"></i></span>。<br>模型地址：<span class="exturl" data-url="aHR0cHM6Ly93d3cuc2JlcnQubmV0Lw==">Sentence-Transformers<i class="fa fa-external-link-alt"></i></span>。<br>详解参考：<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Zlbmd4aW5saW51eC9hcnRpY2xlL2RldGFpbHMvMTA5MTk1NzYy">论文阅读Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks<i class="fa fa-external-link-alt"></i></span>。</p>
+<h2 id="XLNet"><a href="#XLNet" class="headerlink" title="XLNet"></a>XLNet</h2><p><strong>XLNet</strong>：使用Transformer-XL模型。</p>
+<p>当Bert作为seq2seq的encoder时，输入也要Mask：</p>
+<ul>
+<li>随机Mask。</li>
+<li>删除Delete。</li>
+<li>多个句子，换顺序Permuttion。</li>
+<li>打乱token，比如后面词放在前面。</li>
+<li>插入Mask，Text Infilling。这个效果最好。</li>
+</ul>
+<h2 id="GPT"><a href="#GPT" class="headerlink" title="GPT"></a>GPT</h2><p>只使用Transformer-Decoder端进行序列生成(预测下一个词)。<br>训练使用Few-shot Learning：先给出问题描述和部分示例学习，再给出prompt(引子/问题)，能给出解答。<br>训练时只给出一个示例(one-shot)或不给示例(zero-shot)进行学习。</p>
+<p>GPT-2的学习目标是使用无监督的预训练模型做有监督的任务。作者认为，当一个语言模型的容量足够大时，它就足以覆盖所有的有监督任务，也就是说所有的有监督学习都是无监督语言模型的一个子集。GPT-2去掉了fine-tuning层。</p>
+<p>GPT-3沿用了GPT-2的结构，但是在网络容量上做了很大的提升。</p>
+<p><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zNTAwMTc0NDM=">词向量之GPT-1，GPT-2和GPT-3<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8yMDA5Nzg1Mzg=">GPT-3阅读笔记：Language Models are Few-Shot Learners<i class="fa fa-external-link-alt"></i></span></p>
+<h2 id="MASS"><a href="#MASS" class="headerlink" title="MASS"></a>MASS</h2><p>MASS针对的是seq2seq任务。<br>MASS在encoder端对句子随机mask一个长度为k的连续片段，然后通过decoder预测生被mask片段。<br>mask方式：随机删除、打乱词序、旋转词序、插入mask等方式。</p>
+<h2 id="UniLM"><a href="#UniLM" class="headerlink" title="UniLM"></a>UniLM</h2><p>UniLM 1.0通过设计不同掩码，支持4种不同的训练目标：从左往右单向LM，从右往左单向LM，双向LM，序列到序列LM。<br>UniLM 2.0支持更多样的factorization order且无需重复构建训练实体。训练时部分自回归使用pseudo mask LM (PMLM)，直译为伪掩码，作为部分自回归训练时占位符，和自编码的<code>[M]</code>任务作为区分。</p>
+<p><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8xMjI5OTkxNTM=">微软统一预训练语言模型UniLM 2.0解读<i class="fa fa-external-link-alt"></i></span></p>
 <h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p><span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE4MTAuMDQ4MDU=">BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE5MDUuMDU1ODMucGRm">How to Fine-Tune BERT for Text Classification?<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9jbG91ZC50ZW5jZW50LmNvbS9kZXZlbG9wZXIvYXJ0aWNsZS8xNTE5MTgw">BERT论文解读<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2RlbmRpX2h1c3QvYXJ0aWNsZS9kZXRhaWxzLzEwNDQ2NTMzNw==">【调优方法】——warmup<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpb24xOTkzMDkyNC9hcnRpY2xlL2RldGFpbHMvMTA0NDY5OTQ0">Bert微调技巧实验大全-How to Fine-Tune BERT for Text Classification<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC84NzU2MjkyNg==">【论文阅读】ALBERT<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cuamlhbnNodS5jb20vcC9lZGRmMDRiYTg1NDU=">改进版的RoBERTa到底改进了什么？<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9tcC53ZWl4aW4ucXEuY29tL3MvTUhtN0F4bWN1RWdGUl9vTmJOcUZrUQ==">BERT模型的优化改进方法！<i class="fa fa-external-link-alt"></i></span></p>
 
       
@@ -1257,7 +1264,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3.6k</span>
+      <span>3.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -1310,17 +1317,16 @@
 <li>decoder 输出 embedding 层：将 decoder 输出 token 转化为512维的向量。</li>
 </ul>
 <p>在论文中这三个 embedding 矩阵是共享的，并且论文中在 embedding 层将该矩阵乘以一个常量 $\sqrt{d_{model}}$  来放大每个权重。</p>
-<h1 id="position-embedding"><a href="#position-embedding" class="headerlink" title="position embedding"></a>position embedding</h1><p>从 attention 的计算公式可知：调整输入的顺序对 attention 的结果没有任何影响。即：attention 的输出中不包含任何顺序信息。<br>论文通过将位置编码添加到 encoder 和 decoder 底部的输入 embedding 来解决问题。对于同一个输入序列如果打乱序列顺序，则不同 token 的 attention 权重发生改变使得 attention 的结果不同。</p>
+<h1 id="position-embedding"><a href="#position-embedding" class="headerlink" title="position embedding"></a>position embedding</h1><p>从 attention 的计算公式可知：调整输入的顺序对 attention 的结果没有任何影响，attention 的输出中不包含任何顺序信息。<br>论文通过将位置编码添加到 encoder 和 decoder 底部的输入 embedding 来解决问题。对于同一个输入序列如果打乱序列顺序，则不同 token 的 attention 权重发生改变使得 attention 的结果不同。</p>
 <p>位置编码有两种选择：</p>
 <ul>
-<li>可以作为参数来学习，即：将 encoder 的每个输入的位置embedding 、decoder 的每个输入的位置embedding 作为网络的参数，这些参数都从训练中学得。</li>
-<li>也可以人工设定固定值。论文中使用：正弦+余弦方式设定position embedding。<ul>
+<li><strong>functional(函数式)</strong>：论文中使用 <strong>正弦+余弦</strong> 方式设定position embedding。<ul>
 <li>不同的维度对应不同的波长的正弦曲线，波长从 $2\pi$ 到 $2000\pi$ 。</li>
 <li>选择这样的函数是因为：不同位置之间的embedding 可以简单的相互表示。这意味着模型可以捕获到位置之间的相对位置关系。</li>
 </ul>
 </li>
+<li><strong>parametric(参数式)</strong>：可以自己学习，比如bert。</li>
 </ul>
-<p>论文的实验表明：通过参数学习的position embedding 的效果和采用固定的position embedding 相差无几。<br>另外，固定方式的 position embedding 可以在测试阶段处理那些超过训练序列长度的测试序列。</p>
 <h1 id="补充阅读"><a href="#补充阅读" class="headerlink" title="补充阅读"></a>补充阅读</h1><p><span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzIwMDIuMDQ3NDU=">On Layer Normalization in the Transformer Architecture<i class="fa fa-external-link-alt"></i></span>：<br>我们知道，在原始的Transformer中，Layer Norm在跟在Residual之后的，我们把这个称为Post-LN Transformer。</p>
 <p>而且用Transformer调过参的也知道，Post-LN Transformer对参数非常敏感，需要很仔细地调参才能取得好的结果，比如必备的warm-up学习率策略，这会非常耗时间。<br>所以现在问题来了，为什么warm-up是必须的？能不能把它去掉？<br>本文的出发点是：既然warm-up是训练的初始阶段使用的，那肯定是训练的初始阶段优化有问题，包括模型的初始化。</p>
 <p>从而，作者发现，Post-LN Transformer在训练的初始阶段，输出层附近的期望梯度非常大，所以，如果没有warm-up，模型优化过程就会炸裂，非常不稳定。<br>既然如此，本文作者尝试把LayerNorm换个位置，比如放在Residual的过程之中（称为Pre-LN Transformer），再观察训练初始阶段的梯度变化，发现比Post-LN Transformer不知道好到哪里去了，甚至不需要warm-up，从而进一步减少训练时间，这一结果的确令人震惊。</p>
@@ -1400,7 +1406,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.7k</span>
+      <span>2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -1421,7 +1427,7 @@
           <h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>把seq2seq模型应用于摘要生成时存在两个主要的问题：<br>（1）难以准确复述原文的事实细节、无法处理原文中的未登录词(OOV)；<br>（2）生成的摘要中存在重复的片段。</p>
 <p>针对存在的问题提出对应解决之道，在标准seq2seq+attention的基础之上做了改进：<br>（1）采用Pointer-Generator Network（抽取+生成），在保留生成新词的同时，还可以从原文中抽取内容，促使生成更准确的摘要。<br>（2）覆盖率机制(coverage mechanism)，使用Coverage记录已经生成的内容，从而减少内容重复。</p>
 <p><img src="/images/PGN/结构.png" width="90%"></p>
-<h1 id="基础模型"><a href="#基础模型" class="headerlink" title="基础模型"></a>基础模型</h1><p>标准的seq2seq模型+Attention机制：<br>encoder使用Bi-LSTM，序列单词按顺序喂给encoder中，产生一系列编码器的隐状态 $h_i$。decoder使用LSTM，在每个时间步 $t$，接收前一个词（训练时采用teacher forcing方式，预测时是前一时刻decoder输出词），decoder隐状态为 $s_t$。Attention计算采用Bahdanau方式，注意这里采用decoder的当前时刻 $t$ 的隐状态 $s_t$ 作为query。</p>
+<h1 id="基础模型"><a href="#基础模型" class="headerlink" title="基础模型"></a>基础模型</h1><p>标准的seq2seq模型+Attention机制：<br>encoder使用Bi-LSTM，序列单词按顺序喂给encoder中，产生一系列编码器的隐状态 $h_i$。decoder使用LSTM，在每个时间步 $t$，接收前一个词（训练时采用teacher forcing方式，预测时是前一时刻decoder输出词），decoder隐状态为 $s_t$。Attention计算采用Bahdanau方式，但这里采用decoder的当前时刻 $t$ 的隐状态 $s_t$ 作为 query 计算attention，得到context vector 和 当前时刻的隐状态拼接后作为全连接层输入。也可使用context上一时刻隐状态作为query，但得到context vector要与输入拼接作为decoder输入(Bahdanau Attention)。</p>
 <p><img src="/images/PGN/1+2.png" width="40%"></p>
 <p>编码器隐藏状态的加权和，称为上下文向量（context vector） $h_t^*$。<br><img src="/images/PGN/3.png" width="30%"></p>
 <p>上下文向量可以被看作是在当前时间步 $t$ 看encoder的哪些部分，与解码器隐状态 $s_t$ 拼接，通过两个线性层产生词汇分布 $P_{\text{vocab}}$。<br><img src="/images/PGN/4.png" width="40%"></p>
@@ -1429,11 +1435,9 @@
 <p>在训练过程中，时间步长 $t$ 的损失是 $t$ 的目标词 $w_t^*$ 的负对数似然。<br><img src="/images/PGN/6.png" width="30%"></p>
 <p>整个序列的损失是：<br><img src="/images/PGN/7.png" width="30%"></p>
 <h1 id="Pointer-Generator-Network"><a href="#Pointer-Generator-Network" class="headerlink" title="Pointer-Generator Network"></a>Pointer-Generator Network</h1><p>通过Pointer-Generator可以从输入中复制单词，需要一个软开关 $P_{\text{gen}}$ 来融合baseline 和 Pointer-Generator。<br>根据上下文向量 $h_t^*$，解码器隐状态 $s_t$，解码器输入 $x_t$，计算得到时间步 $t$ 的生成概率 $P_{\text{gen}}\in [0,1]$。<br><img src="/images/PGN/8.png" width="40%"></p>
-<p>使用软开关 $P_{\text{gen}}$ 来融合baseline 和 Pointer-Generator。需要维护一个扩展词表（extended vocabulary）表示原始词表和出现在source中的所有词汇的联合，在扩展词表上得到以下概率分布，$a_i^t$ 表示通过Attention值来确定从source中拷贝词的概率分布。<br><img src="/images/PGN/9.png" width="40%"><br>注意，如果单词 $w$ 是OOV单词，那么 $P_{\text{vocab}}$ 一定为零，要是这个词也没出现在source中，那么 $a_i^t$ 也是零。</p>
+<p>使用软开关 $P_{\text{gen}}$ 来融合baseline 和 Pointer-Generator。需要维护一个扩展词表（extended vocabulary）表示原始词表和出现在source中的所有词汇的联合，在扩展词表上得到以下概率分布，$a_i^t$ 表示通过attention weight来确定从source中拷贝词的概率分布。因为attention weight包括了所有source中单词出现的概率，即使是原始词表中oov的词(该词在src_oov中能找到)，也能通过attention weight从source扩展词表src_oov中抽取复制。<br><img src="/images/PGN/9.png" width="40%"><br>注意，如果单词 $w$ 是原始词表OOV单词，那么 $P_{\text{vocab}}$ 一定为零，要是这个词也没出现在source中(即也没在扩展词表)，那么 $a_i^t$ 也是零。</p>
 <h1 id="Coverage-mechanism"><a href="#Coverage-mechanism" class="headerlink" title="Coverage mechanism"></a>Coverage mechanism</h1><p>重复序列是一个常见问题，本文维护一个覆盖向量（coverage vector） $c^t$，它是所有先前decoder时间步的Attention值 $a_i^t$ 的累加和：<br><img src="/images/PGN/10.png" width="30%"><br>目的是用先前的注意力权重决策来影响当前注意力权重的决策（累加的某个值大代表一直关注它，要减少这个值，不让模型总关注它），这样就避免在同一位置重复，从而避免重复生成文本。</p>
-<p>$c^t$ 是source中单词的分布，表示这些单词从注意力机制到目前时间步的覆盖程度。 $c^0$ 是一个零向量。覆盖向量被引入到注意力机制中：<br><img src="/images/PGN/11.png" width="40%"></p>
-<p>作者认为有必要额外定义覆盖损失（coverage loss）处罚重复出现的参考位置，使注意力更分散：<br><img src="/images/PGN/12.png" width="35%"><br>如果覆盖向量每个值都大于/小于1，则最终覆盖向量都将受到惩罚。</p>
-<p>最后融合为复合损失函数：<br><img src="/images/PGN/13.png" width="45%"></p>
+<p>$c^t$ 是source中单词的分布，表示这些单词从注意力机制到目前时间步的覆盖程度。 $c^0$ 是一个零向量。覆盖向量被引入到注意力机制中：<br><img src="/images/PGN/11.png" width="40%"><br>作者认为有必要额外定义覆盖损失（coverage loss）处罚重复出现的参考位置，使注意力更分散，即对过往时刻或当前时刻受到注意力较多的单词进行惩罚：<br><img src="/images/PGN/12.png" width="35%"><br>最后融合为复合损失函数：<br><img src="/images/PGN/13.png" width="45%"></p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>根据评价指标来看，提升效果明显，普遍提高2个百分点。</p>
 <p>作者还说了直接加coverage效果并不好，所以实际应用时采用fine-tuning训练。</p>
 <p>实际使用时建议增加weight_tying和scheduled_sampling尝试效果。</p>

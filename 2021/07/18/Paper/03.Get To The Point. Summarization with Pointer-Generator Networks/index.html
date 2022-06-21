@@ -46,7 +46,7 @@
 <meta property="og:image" content="https://soundmemories.github.io/images/PGN/12.png">
 <meta property="og:image" content="https://soundmemories.github.io/images/PGN/13.png">
 <meta property="article:published_time" content="2021-07-17T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-22T07:38:54.877Z">
+<meta property="article:modified_time" content="2022-06-09T03:24:27.223Z">
 <meta property="article:author" content="SoundMemories">
 <meta property="article:tag" content="Paper">
 <meta name="twitter:card" content="summary">
@@ -346,7 +346,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.7k</span>
+      <span>2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -367,7 +367,7 @@
         <h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>把seq2seq模型应用于摘要生成时存在两个主要的问题：<br>（1）难以准确复述原文的事实细节、无法处理原文中的未登录词(OOV)；<br>（2）生成的摘要中存在重复的片段。</p>
 <p>针对存在的问题提出对应解决之道，在标准seq2seq+attention的基础之上做了改进：<br>（1）采用Pointer-Generator Network（抽取+生成），在保留生成新词的同时，还可以从原文中抽取内容，促使生成更准确的摘要。<br>（2）覆盖率机制(coverage mechanism)，使用Coverage记录已经生成的内容，从而减少内容重复。</p>
 <p><img src="/images/PGN/结构.png" width="90%"></p>
-<h1 id="基础模型"><a href="#基础模型" class="headerlink" title="基础模型"></a>基础模型</h1><p>标准的seq2seq模型+Attention机制：<br>encoder使用Bi-LSTM，序列单词按顺序喂给encoder中，产生一系列编码器的隐状态 $h_i$。decoder使用LSTM，在每个时间步 $t$，接收前一个词（训练时采用teacher forcing方式，预测时是前一时刻decoder输出词），decoder隐状态为 $s_t$。Attention计算采用Bahdanau方式，注意这里采用decoder的当前时刻 $t$ 的隐状态 $s_t$ 作为query。</p>
+<h1 id="基础模型"><a href="#基础模型" class="headerlink" title="基础模型"></a>基础模型</h1><p>标准的seq2seq模型+Attention机制：<br>encoder使用Bi-LSTM，序列单词按顺序喂给encoder中，产生一系列编码器的隐状态 $h_i$。decoder使用LSTM，在每个时间步 $t$，接收前一个词（训练时采用teacher forcing方式，预测时是前一时刻decoder输出词），decoder隐状态为 $s_t$。Attention计算采用Bahdanau方式，但这里采用decoder的当前时刻 $t$ 的隐状态 $s_t$ 作为 query 计算attention，得到context vector 和 当前时刻的隐状态拼接后作为全连接层输入。也可使用context上一时刻隐状态作为query，但得到context vector要与输入拼接作为decoder输入(Bahdanau Attention)。</p>
 <p><img src="/images/PGN/1+2.png" width="40%"></p>
 <p>编码器隐藏状态的加权和，称为上下文向量（context vector） $h_t^*$。<br><img src="/images/PGN/3.png" width="30%"></p>
 <p>上下文向量可以被看作是在当前时间步 $t$ 看encoder的哪些部分，与解码器隐状态 $s_t$ 拼接，通过两个线性层产生词汇分布 $P_{\text{vocab}}$。<br><img src="/images/PGN/4.png" width="40%"></p>
@@ -375,11 +375,9 @@
 <p>在训练过程中，时间步长 $t$ 的损失是 $t$ 的目标词 $w_t^*$ 的负对数似然。<br><img src="/images/PGN/6.png" width="30%"></p>
 <p>整个序列的损失是：<br><img src="/images/PGN/7.png" width="30%"></p>
 <h1 id="Pointer-Generator-Network"><a href="#Pointer-Generator-Network" class="headerlink" title="Pointer-Generator Network"></a>Pointer-Generator Network</h1><p>通过Pointer-Generator可以从输入中复制单词，需要一个软开关 $P_{\text{gen}}$ 来融合baseline 和 Pointer-Generator。<br>根据上下文向量 $h_t^*$，解码器隐状态 $s_t$，解码器输入 $x_t$，计算得到时间步 $t$ 的生成概率 $P_{\text{gen}}\in [0,1]$。<br><img src="/images/PGN/8.png" width="40%"></p>
-<p>使用软开关 $P_{\text{gen}}$ 来融合baseline 和 Pointer-Generator。需要维护一个扩展词表（extended vocabulary）表示原始词表和出现在source中的所有词汇的联合，在扩展词表上得到以下概率分布，$a_i^t$ 表示通过Attention值来确定从source中拷贝词的概率分布。<br><img src="/images/PGN/9.png" width="40%"><br>注意，如果单词 $w$ 是OOV单词，那么 $P_{\text{vocab}}$ 一定为零，要是这个词也没出现在source中，那么 $a_i^t$ 也是零。</p>
+<p>使用软开关 $P_{\text{gen}}$ 来融合baseline 和 Pointer-Generator。需要维护一个扩展词表（extended vocabulary）表示原始词表和出现在source中的所有词汇的联合，在扩展词表上得到以下概率分布，$a_i^t$ 表示通过attention weight来确定从source中拷贝词的概率分布。因为attention weight包括了所有source中单词出现的概率，即使是原始词表中oov的词(该词在src_oov中能找到)，也能通过attention weight从source扩展词表src_oov中抽取复制。<br><img src="/images/PGN/9.png" width="40%"><br>注意，如果单词 $w$ 是原始词表OOV单词，那么 $P_{\text{vocab}}$ 一定为零，要是这个词也没出现在source中(即也没在扩展词表)，那么 $a_i^t$ 也是零。</p>
 <h1 id="Coverage-mechanism"><a href="#Coverage-mechanism" class="headerlink" title="Coverage mechanism"></a>Coverage mechanism</h1><p>重复序列是一个常见问题，本文维护一个覆盖向量（coverage vector） $c^t$，它是所有先前decoder时间步的Attention值 $a_i^t$ 的累加和：<br><img src="/images/PGN/10.png" width="30%"><br>目的是用先前的注意力权重决策来影响当前注意力权重的决策（累加的某个值大代表一直关注它，要减少这个值，不让模型总关注它），这样就避免在同一位置重复，从而避免重复生成文本。</p>
-<p>$c^t$ 是source中单词的分布，表示这些单词从注意力机制到目前时间步的覆盖程度。 $c^0$ 是一个零向量。覆盖向量被引入到注意力机制中：<br><img src="/images/PGN/11.png" width="40%"></p>
-<p>作者认为有必要额外定义覆盖损失（coverage loss）处罚重复出现的参考位置，使注意力更分散：<br><img src="/images/PGN/12.png" width="35%"><br>如果覆盖向量每个值都大于/小于1，则最终覆盖向量都将受到惩罚。</p>
-<p>最后融合为复合损失函数：<br><img src="/images/PGN/13.png" width="45%"></p>
+<p>$c^t$ 是source中单词的分布，表示这些单词从注意力机制到目前时间步的覆盖程度。 $c^0$ 是一个零向量。覆盖向量被引入到注意力机制中：<br><img src="/images/PGN/11.png" width="40%"><br>作者认为有必要额外定义覆盖损失（coverage loss）处罚重复出现的参考位置，使注意力更分散，即对过往时刻或当前时刻受到注意力较多的单词进行惩罚：<br><img src="/images/PGN/12.png" width="35%"><br>最后融合为复合损失函数：<br><img src="/images/PGN/13.png" width="45%"></p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>根据评价指标来看，提升效果明显，普遍提高2个百分点。</p>
 <p>作者还说了直接加coverage效果并不好，所以实际应用时采用fine-tuning训练。</p>
 <p>实际使用时建议增加weight_tying和scheduled_sampling尝试效果。</p>
@@ -394,10 +392,10 @@
   <div class="popular-posts-header">相关文章</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2021\06\19\Paper\00.Paper阅读技巧\" rel="bookmark">Paper阅读技巧</a></div>
+      <div class="popular-posts-title"><a href="\2021\06\20\Paper\01.Unsupervised Data Augmentation for Consistency Training\" rel="bookmark">Unsupervised Data Augmentation for Consistency Training</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2021\06\20\Paper\01.Unsupervised Data Augmentation for Consistency Training\" rel="bookmark">Unsupervised Data Augmentation for Consistency Training</a></div>
+      <div class="popular-posts-title"><a href="\2021\06\19\Paper\00.Paper阅读技巧\" rel="bookmark">Paper阅读技巧</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2021\06\25\Paper\02.XGBoost A Scalable Tree Boosting System\" rel="bookmark">XGBoost A Scalable Tree Boosting System</a></div>

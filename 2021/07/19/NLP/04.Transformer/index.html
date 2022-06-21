@@ -34,7 +34,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://soundmemories.github.io/images/Transformer/1.png">
 <meta property="article:published_time" content="2021-07-18T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-04T00:12:58.717Z">
+<meta property="article:modified_time" content="2022-06-10T01:27:44.939Z">
 <meta property="article:author" content="SoundMemories">
 <meta property="article:tag" content="NLP">
 <meta name="twitter:card" content="summary">
@@ -334,7 +334,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3.6k</span>
+      <span>3.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -387,17 +387,16 @@
 <li>decoder 输出 embedding 层：将 decoder 输出 token 转化为512维的向量。</li>
 </ul>
 <p>在论文中这三个 embedding 矩阵是共享的，并且论文中在 embedding 层将该矩阵乘以一个常量 $\sqrt{d_{model}}$  来放大每个权重。</p>
-<h1 id="position-embedding"><a href="#position-embedding" class="headerlink" title="position embedding"></a>position embedding</h1><p>从 attention 的计算公式可知：调整输入的顺序对 attention 的结果没有任何影响。即：attention 的输出中不包含任何顺序信息。<br>论文通过将位置编码添加到 encoder 和 decoder 底部的输入 embedding 来解决问题。对于同一个输入序列如果打乱序列顺序，则不同 token 的 attention 权重发生改变使得 attention 的结果不同。</p>
+<h1 id="position-embedding"><a href="#position-embedding" class="headerlink" title="position embedding"></a>position embedding</h1><p>从 attention 的计算公式可知：调整输入的顺序对 attention 的结果没有任何影响，attention 的输出中不包含任何顺序信息。<br>论文通过将位置编码添加到 encoder 和 decoder 底部的输入 embedding 来解决问题。对于同一个输入序列如果打乱序列顺序，则不同 token 的 attention 权重发生改变使得 attention 的结果不同。</p>
 <p>位置编码有两种选择：</p>
 <ul>
-<li>可以作为参数来学习，即：将 encoder 的每个输入的位置embedding 、decoder 的每个输入的位置embedding 作为网络的参数，这些参数都从训练中学得。</li>
-<li>也可以人工设定固定值。论文中使用：正弦+余弦方式设定position embedding。<ul>
+<li><strong>functional(函数式)</strong>：论文中使用 <strong>正弦+余弦</strong> 方式设定position embedding。<ul>
 <li>不同的维度对应不同的波长的正弦曲线，波长从 $2\pi$ 到 $2000\pi$ 。</li>
 <li>选择这样的函数是因为：不同位置之间的embedding 可以简单的相互表示。这意味着模型可以捕获到位置之间的相对位置关系。</li>
 </ul>
 </li>
+<li><strong>parametric(参数式)</strong>：可以自己学习，比如bert。</li>
 </ul>
-<p>论文的实验表明：通过参数学习的position embedding 的效果和采用固定的position embedding 相差无几。<br>另外，固定方式的 position embedding 可以在测试阶段处理那些超过训练序列长度的测试序列。</p>
 <h1 id="补充阅读"><a href="#补充阅读" class="headerlink" title="补充阅读"></a>补充阅读</h1><p><span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzIwMDIuMDQ3NDU=">On Layer Normalization in the Transformer Architecture<i class="fa fa-external-link-alt"></i></span>：<br>我们知道，在原始的Transformer中，Layer Norm在跟在Residual之后的，我们把这个称为Post-LN Transformer。</p>
 <p>而且用Transformer调过参的也知道，Post-LN Transformer对参数非常敏感，需要很仔细地调参才能取得好的结果，比如必备的warm-up学习率策略，这会非常耗时间。<br>所以现在问题来了，为什么warm-up是必须的？能不能把它去掉？<br>本文的出发点是：既然warm-up是训练的初始阶段使用的，那肯定是训练的初始阶段优化有问题，包括模型的初始化。</p>
 <p>从而，作者发现，Post-LN Transformer在训练的初始阶段，输出层附近的期望梯度非常大，所以，如果没有warm-up，模型优化过程就会炸裂，非常不稳定。<br>既然如此，本文作者尝试把LayerNorm换个位置，比如放在Residual的过程之中（称为Pre-LN Transformer），再观察训练初始阶段的梯度变化，发现比Post-LN Transformer不知道好到哪里去了，甚至不需要warm-up，从而进一步减少训练时间，这一结果的确令人震惊。</p>
