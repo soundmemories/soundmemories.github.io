@@ -1058,9 +1058,9 @@
 <p>除了 batch size、学习率、训练 epoch 不同之外，<strong>其它训练参数与预训练阶段的训练参数相同</strong>。fine-tune阶段通常很快，因此建议<strong>对超参数进行彻底搜索</strong>并选择在验证集上表现最好的模型。<br>论文发现：数据集越小，模型性能对超参数的选择越敏感。大数据集（超过10万的标记样本）对超参数的敏感性要低的多。</p>
 <p>对于文本分类，详情参考<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE5MDUuMDU1ODMucGRm">How to Fine-Tune BERT for Text Classification?<i class="fa fa-external-link-alt"></i></span>。<br>BERT在NLP任务中效果十分优秀，这篇文章对于BERT在文本分类的应用上做了非常丰富的实验，介绍了一些调参以及改进的经验，进一步挖掘BERT的潜力。</p>
 <ul>
-<li>微调（fin-tune）策略<ul>
+<li>微调（fine-tune）策略<ul>
 <li>对于长文本，尝试了（1）取头部510 tokens（2）尾部510 tokens（3）头部128 tokens + 尾部382 tokens（4）分片并进行最大池化、平均池化、attention。发现方法（3）最好。因为文章的关键信息一般在开头和结尾。</li>
-<li>分层训练，上层对文本分类更加重要。</li>
+<li>分层训练，上层对fine-tune更加重要，这部分可随机初始化。</li>
 <li>灾难性遗忘：在下游finetune可能会遗忘预训练的知识。需要设置较小的学习率，如2e-5.</li>
 <li>分层衰减学习率（Layer-wise Decreasing Layer Rate），对下层设置更小的学习率可以得到更高的准确率，在lr=2e-5，衰减率$\xi$=0.95</li>
 </ul>
@@ -1078,6 +1078,7 @@
 </ul>
 </li>
 </ul>
+<p><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC81MjQwMzYwODc=">Bert在fine-tune时训练的5种技巧<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodXhpbnlpbi9DaGluZXNlLVRleHQtQ2xhc3NpZmljYXRpb24=">https://github.com/shuxinyin/Chinese-Text-Classification<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC84Njk2NTU5NQ==">深入理解NLP Subword算法：BPE、WordPiece、ULM<i class="fa fa-external-link-alt"></i></span></p>
 <h1 id="Bert变种"><a href="#Bert变种" class="headerlink" title="Bert变种"></a>Bert变种</h1><h2 id="BERT-WWM"><a href="#BERT-WWM" class="headerlink" title="BERT-WWM"></a>BERT-WWM</h2><p><strong>BERT-WWM</strong>：始版本的 BERT 采用了WordPiece tokenize 来预处理，即把每个单词拆解一些 WordPiece token（比如，loved-&gt;lov ed） ，最初是为了解决谷歌语音识别系统遇到的日语/韩语分割问题。该模型是数据驱动，并且确保任何可能的字符序列的确定性分割。这种预处理为 BERT 带来一个严重的问题：<strong>有可能仅仅对一个单词的某个部分 wordpiece token 执行了 mask。此时 MLM 模型预测的只是单词的一部分，相当于模型对一个错误的目标进行预测。这非常不利于模型的学习</strong>。有鉴于此，谷歌后续发布了 BERT 的 Whole Word Masking:WWM 版本 <strong>BERT-WWM</strong>。在该版本中，一个单词要么没有被 mask、要么该单词所有的 workpiece token 都被 mask 。类似的想法还有ERNIE模型的phrase-level mask和entity-level mask。</p>
 <p><strong>BERT-wwm-ext</strong>：是 BERT-WWM 的中文版本(哈工大讯飞联合实验室发布)，该模型对中文的<strong>整个单词</strong>而不是单个字进行mask ，在最新的中文维基百科上训练。</p>
 <h2 id="ERNIE"><a href="#ERNIE" class="headerlink" title="ERNIE"></a>ERNIE</h2><p><strong>ERNIE</strong>：BERT 的 MLM 任务在执行 mask 的时候，未能考虑先验知识，如果有学习到与Mask的单词相关的先验知识，则无需借助很长的上下文就可以很容易的预测出Mask的单词。但是 ERNIE 并没有直接添加先验知识，而是通过引入 <strong>entity-level mask</strong> 和 <strong>phrase-level mask</strong> 来引入先验知识，隐式的学习实体间的关系、实体的属性等知识：</p>
@@ -1147,11 +1148,11 @@
 <p>预训练模型能够显著的提升任务效果，但是不同预训练模型的比较非常困难。首先，每个预训练模型的训练成本很高，无法一一训练并进行比较。其次，不同预训练模型通常是在不同规模大小的数据集上训练的，难以评估效果的好坏是预训练模型引起的还是预训练数据引起的。最后，超参数的选择对预训练模型的表现影响很大。同一个预训练模型的不同超参数，其比较结果会有很大不同。</p>
 <p>RoBERTa 主要工作是复现 BERT，然后对 BERT 的模型架构、训练目标、训练细节（如数据集大小、训练时间）的重要性进行探索，从而提出了改进方案，这个改进方案称为 RoBERTa 。主要修改：</p>
 <ul>
-<li>更大的 batch size</li>
-<li>更多的数据、更长的预训练时间</li>
-<li>移除 NSP 任务 + 使用更长的输入序列</li>
+<li>更大的 batch size。</li>
+<li>更多的数据、更长的预训练时间。</li>
+<li>移除 NSP 任务 + 使用更长的输入序列。</li>
 <li><strong>使用动态mask</strong></li>
-<li>使用BPE方式，减少UNK单词出现次数（英文）</li>
+<li>使用BPE方式，减少UNK单词出现次数（英文）。</li>
 </ul>
 <p><strong>更大的 batch size</strong><br>原本的BERTbase 的batch size是256，训练1M个steps。RoBERTa的batch size为8k。为什么要用更大的batch size呢？（除了因为他们有钱玩得起外）作者借鉴了在机器翻译中，用更大的batch size配合更大学习率能提升模型优化速率和模型性能的现象，并且也用实验证明了确实Bert还能用更大的batch size。<br><img src="/images/Bert/6.png" width="40%"></p>
 <p><strong>更多的数据、更长的预训练时间</strong><br>借鉴XLNet用了比Bert多10倍的数据，RoBERTa也用了更多的数据。性能确实再次彪升。当然，也需要配合更长时间的训练。<br><img src="/images/Bert/8.png" width="80%"></p>
