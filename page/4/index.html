@@ -220,18 +220,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">119</span>
+          <span class="site-state-item-count">120</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -275,6 +275,213 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/09/Machine%20Learning/31.CRF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/09/Machine%20Learning/31.CRF/" class="post-title-link" itemprop="url">CRF</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-09 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-09T00:00:00+08:00">2020-10-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="条件随机场"><a href="#条件随机场" class="headerlink" title="条件随机场"></a>条件随机场</h1><p>我们知道，分类问题可以分为<strong>硬分类</strong>和<strong>软分类</strong>两种。其中<strong>硬分类</strong>有 SVM（支持向量机），PLA（感知机算法），LDA（线性判别分析） 等。<strong>软分类</strong>问题大体上可以分为<strong>概率生成</strong>和<strong>概率判别</strong>模型，其中较为有名的<strong>判别模型</strong>有 Logistic 回归，<strong>生成模型</strong>有朴素贝叶斯模型。Logistic 回归模型的损失函数为交叉熵，这类模型也叫对数线性模型，一般地，又叫做最大熵模型，这类模型和指数族分布的概率假设是一致的。对朴素贝叶斯假设，如果将其中的单元素的条件独立性做推广到一系列的隐变量，那么，由此得到的模型又被称为动态模型，比较有代表性的如 HMM（隐马尔可夫模型），从概率意义上，当HMM的发射矩阵服从高斯分布时，HMM也可以看成是 GMM（高斯混合模型） 在时序上面的推广。</p>
+<p>我们看到，一般地，如果将<strong>最大熵模型</strong>（判别模型）和 <strong>HMM</strong>（生成模型） 相结合，那么这种模型叫做<strong>最大熵 Markov 模型</strong>（MEMM），严格讲它是概率判别模型：</p>
+<div class="mermaid">
+graph LR
+	x4((x4))--&gt;y4
+	x2((x2))--&gt;y2
+	x1((x1))--&gt;y1
+	x3((x3))--&gt;y3
+	y1--&gt;y2;
+	y2--&gt;y3;
+y3--&gt;y4;
+</div>
+<p>这个图就是将 HMM 的<strong>观测变量 $x$ 方向反向</strong>且是有向图，应用在分类中，隐变量就是输出的分类。这样 HMM 中的两个假设就不成立了，特别是观测之间不是完全独立的了。即与HMM的 $x_i$ 只依赖 $y_i$ 不一样，MEMM当前隐藏状态  $y_i$ 应该是依赖当前时刻的观测节点 $x_i$ 和上一时刻的隐藏节点 $y_{i-1}$，依次类推$y_{i-1}$也和 $x_{i-1}$ 有关，所以 $x_i$ 和 $x_{i-1}$ 有关，从而打破了观测独立假设。</p>
+<p>HMM 是一种<strong>生成式模型</strong>，其建模对象为 $p(X,Y|\lambda)$，根据 HMM 的概率图，$p(X,Y|\lambda)=\prod\limits_{t=1}^Tp(x_t,y_t|\lambda,y_{t-1})$。我们看到，观测独立性假设是一个很强的假设，如果我们有一个文本样本，那么观测独立性假设就假定了所有的单词之间没有关联。</p>
+<p>MEMM 是一种<strong>判别式模型</strong>，建模对象是 $p(Y|X,\lambda)$，我们看概率图（有向图），给定 $y_t$，$x_t,x_{t-1}$ 是不独立的，这样，观测独立假设就不成立了。根据概率图，$p(Y|X,\lambda)=\prod\limits_{t=1}^Tp(y_t|y_{t-1},X,\lambda)$。</p>
+<p>MEMM 的缺陷是<strong>标注偏差问题</strong>（Label Bias Problem），其必须满足<strong>局域的概率归一化</strong>，我们看到，在上面的概率图中，$p(y_t|y_{t-1},x_t)$， 这个概率，如果 $p(y_t|y_{t-1})$ 非常接近1，那么事实上，观测变量 $x$ 是什么都不会影响这个概率了，这样观测变量就没用了。</p>
+<p>对于这个问题，我们将 $y$ 之间的箭头转为直线转为无向图（线性链条件随机场），这样就只要满足<strong>全局归一化了</strong>（破坏齐次 Markov 假设）。</p>
+<div class="mermaid">
+graph LR
+	x4((x4))--&gt;y4
+		x2((x2))--&gt;y2
+			x1((x1))--&gt;y1
+				x3((x3))--&gt;y3
+	y1---y2;
+	y2---y3;
+y3---y4;
+</div>
+<h2 id="CRF-的-PDF"><a href="#CRF-的-PDF" class="headerlink" title="CRF 的 PDF"></a>CRF 的 PDF</h2><p>线性链的 CRF 的 PDF 为 $p(Y|X)=\dfrac{1}{Z}\exp\sum\limits_{t=1}^T(F_t(y_{t-1},y_t,x_{1:T}))$，两两形成了最大团，其中 $y_0$ 是随意外加的一个元素作为初始状态。作为第一个简化，我们假设每个团的势函数相同 $F_t=F$。</p>
+<p>对于这个 $F$，我们进一步，可以将其写为 $ F(y_{t-1},y_t,X)=\Delta_{y_{t-1},X}+\Delta_{y_{t},X}+\Delta_{y_t,y_{t-1},X}$这三个部分，前两个部分表示状态函数，最后一个表示转移函数，由于整体的求和，第一部分重复可以省略，可以简化为 $ F(y_{t-1},y_t,X)=\Delta_{y_{t},X}+\Delta_{y_t,y_{t-1},X}$，我们可以设计一个表达式将这两部分参数化：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\Delta_{y_t,y_{t-1},X}&=\sum\limits_{k=1}^K\lambda_kf_k(y_{t-1},y_t,X)\\
+\Delta_{y_{t},X}&=\sum\limits_{l=1}^L\eta_lg_l(y_t,X)
+\end{align}</script><p>其中 $g,f $ 叫做特征函数，对于 $y$ 有 $S$ 种元素，$K$ 和 $y_{t-1}$ 和 $y_{t}$ 有关，$L$ 和 $y_t$有关，所以 $K\le S^2,L\le S$。</p>
+<p>然后代入概率密度函数中：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+p(Y|X)=\frac{1}{Z}\exp\sum\limits_{t=1}^T[\sum\limits_{k=1}^K\lambda_kf_k(y_{t-1},y_t,X)+\sum\limits_{l=1}^L\eta_lg_l(y_t,X)]
+\end{align}</script><h3 id="条件随机场的简化"><a href="#条件随机场的简化" class="headerlink" title="条件随机场的简化"></a>条件随机场的简化</h3><p>将其写成向量的形式：定义 $y=(y_1,y_2,\cdots,y_T)^T,x=(x_1,x_2,\cdots,x_T)^T,\lambda=(\lambda_1,\lambda_2,\cdots,\lambda_K)^T,\eta=(\eta_1,\eta_2,\cdots,\eta_L)^T$，并且有 $f=(f_1,f_2,\cdots,f_K)^T,g=(g_1,g_2,\cdots,g_L)^T$，于是：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+p(Y=y|X=x)=\frac{1}{Z}\exp\sum\limits_{t=1}^T[\lambda^Tf(y_{t-1},y_t,x)+\eta^Tg(y_t,x)]
+\end{align}</script><p>不妨记：$\theta=(\lambda,\eta)^T,H=(\sum\limits_{t=1}^Tf,\sum\limits_{t=1}^Tg)^T$，这俩都是 $K+L$ 维度：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+p(Y=y|X=x)=\frac{1}{Z(x,\theta)}\exp[\theta^TH(y_t,y_{t-1},x)]
+\end{align}</script><p>上面这个式子是一个指数族分布，于是 $Z$ 是配分函数。</p>
+<h3 id="3个问题"><a href="#3个问题" class="headerlink" title="3个问题"></a>3个问题</h3><p>CRF 需要解决下面几个问题：</p>
+<ol>
+<li>Learning：参数估计问题，CRF是求 $\theta$ 参数。对 $N$ 个 $T$ 维样本，$\hat{\theta}=\mathop{argmax}\limits_{\theta}\prod\limits_{i=1}^Np(y^i|x^i)$，这里用上标表示样本的编号。</li>
+<li>Inference：<ol>
+<li>边缘概率：$p(y_t|x)$  </li>
+<li>条件概率：一般在生成模型中较为关注，CRF中不关注</li>
+<li>MAP 推断(Decoding)：$\hat{y}=\mathop{argmax}\limits_{y}p(y|x)$ 的序列 $y$</li>
+</ol>
+</li>
+</ol>
+<p>总体来说3个基本问题：<strong>概率计算问题</strong>(边缘概率)、<strong>学习问题</strong>(参数估计)、<strong>预测问题</strong>(Decoding)。   </p>
+<h2 id="边缘概率"><a href="#边缘概率" class="headerlink" title="边缘概率"></a>边缘概率</h2><p>边缘概率这个问题描述为，根据学习任务得到的参数，给定了 $p(Y=y|X=x)$，求解 $p(y_t=i|x)$。根据无向图可以给出：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+p(y_t=i|x)=\sum\limits_{y_{1:t-1},y_{t+1:T}}p(y|x)=\sum\limits_{y_{1:t-1}}\sum\limits_{y_{t+1:T}}\frac{1}{Z}\prod\limits_{t'=1}^T\phi_{t'}(y_{t'-1},y_{t'},x)
+\end{align}</script><p>我们看到上面的式子，直接计算的复杂度很高，这是由于求和的复杂度在 $O(S^T)$，求积的复杂度在 $O(T)$，所以整体复杂度为 $O(TS^T)$。我们需要调整求和符号的顺序，从而降低复杂度。</p>
+<p>首先，将两个求和分为：</p>
+<script type="math/tex; mode=display">
+\begin{align}&p(y_t=i|x)=\frac{1}{Z}\Delta_l\Delta_r\\
+&\Delta_l=\sum\limits_{y_{1:t-1}}\phi_{1}(y_0,y_1,x)\phi_2(y_1,y_2,x)\cdots\phi_{t-1}(y_{t-2},y_{t-1},x)\phi_t(y_{t-1},y_t=i,x)\\
+&\Delta_r=\sum\limits_{y_{t+1:T}}\phi_{t+1}(y_t=i,y_{t+1},x)\phi_{t+2}(y_{t+1},y_{t+2},x)\cdots\phi_T(y_{T-1},y_T,x)
+\end{align}</script><p>对于 $\Delta_l$：$\phi_{t-1}(y_{t-2},y_{t-1},x)\phi_t(y_{t-1},y_t=i,x)$ 对 $y_{t-1}$ 积分得到 $\sum\limits_{y_{t-1}}\phi_t(y_{t-1},y_t=i,x)$ ，那么从左向右，一步一步积分将 $y_t$ 消掉：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\Delta_l=\sum\limits_{y_{t-1}}\phi_t(y_{t-1},y_t=i,x)\sum\limits_{y_{t-2}}\phi_{t-1}(y_{t-2},y_{t-1},x)\cdots\sum\limits_{y_0}\phi_1(y_0,y_1,x)
+\end{align}</script><p>引入：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\alpha_t(i)=\Delta_l
+\end{align}</script><p>这里 $\alpha_t(i)=y_1y_2…y_{t-1}(y_t=i)$，依此类推 $\alpha_{t-1}(j)=y_1y_2…y_{t-2}(y_{t-1}=j)$，于是：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\alpha_{t}(i)&=\sum\limits_{y_{t-1}}\phi_t(y_{t-1}=j,y_t=i,x)\alpha_{t-1}(j)\\
+&=\sum\limits_{j\in S}\phi_t(y_{t-1}=j,y_t=i,x)\alpha_{t-1}(j)
+\end{align}</script><p>这样我们得到了一个递推式。</p>
+<p>类似地，$\Delta_r=\beta_t(i)=\sum\limits_{j\in S}\phi_{t+1}(y_t=i,y_{t+1}=j,x)\beta_{t+1}(j)$。这个方法和 HMM 中的前向-后向算法类似，就是概率图模型中精确推断的变量消除算法（信念传播）。</p>
+<h2 id="参数估计"><a href="#参数估计" class="headerlink" title="参数估计"></a>参数估计</h2><p>在进行各种类型的推断之前，还需要对参数 $\theta=(\lambda,\eta)$ 进行学习：</p>
+<script type="math/tex; mode=display">
+\begin{align}\hat{\theta}&=\mathop{argmax}_{\theta}\prod\limits_{i=1}^Np(y^i|x^i)\\
+&=\mathop{argmax}_\theta\sum\limits_{i=1}^N\log p(y^i|x^i)\\
+&=\mathop{argmax}_\theta\sum\limits_{i=1}^N\log [\frac{1}{Z(x^i,\lambda,\eta)}\exp\sum\limits_{t=1}^T[\lambda^Tf(y_{t-1}^i,y_t^i,x^i)+\eta^Tg(y_t^i,x^i)]]\\
+&=\mathop{argmax}_\theta\sum\limits_{i=1}^N[-\log Z(x^i,\lambda,\eta)+\sum\limits_{t=1}^T[\lambda^Tf(y_{t-1}^i,y_t^i,x^i)+\eta^Tg(y_t^i,x^i)]]\\
+&=\mathop{argmax}_\theta L(\lambda,\eta,x^i)
+\end{align}</script><p>最优化 $L$ 函数，使用梯度上升法，求 $\nabla_\lambda L$ 和 $\nabla_\eta L$，下面以求 $\nabla_\lambda L$ 为例：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\nabla_\lambda L= \sum\limits_{i=1}^N[-\nabla_\lambda \log Z(x^i,\lambda,\eta)+\sum\limits_{t=1}^T f(y_{t-1}^i,y_t^i,x^i)]
+\end{align}</script><p>上面的式子中，第一项是对数配分函数，根据指数族分布(log-partition function)的结论：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\nabla_\lambda(\log Z(x^i,\lambda,\eta))=\mathbb{E}_{p(y^i|x^i)}[\sum\limits_{t=1}^Tf(y_{t-1},y_t,x^i)]
+\end{align}</script><p>其中，和 $\eta$ 相关的项相当于一个常数。求解这个期望值：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\mathbb{E}_{p(y^i|x^i)}[\sum\limits_{t=1}^Tf(y_{t-1},y_t,x^i)]=\sum\limits_{y}p(y|x^i)\sum\limits_{t=1}^Tf(y_{t-1},y_t,x^i)
+\end{align}</script><p>第一个求和号的复杂度为 $O(S^T)$，重新排列求和符号：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\mathbb{E}_{p(y^i|x^i)}[\sum\limits_{t=1}^Tf(y_{t-1},y_t,x^i)]&=\sum\limits_{t=1}^T\sum\limits_{y_{1:t-2}}\sum\limits_{y_{t-1}}\sum\limits_{y_t}\sum\limits_{y_{t+1:T}}p(y|x^i)f(y_{t-1},y_t,x^i)\nonumber\\
+&=\sum\limits_{t=1}^T\sum\limits_{y_{t-1}}\sum\limits_{y_t}(\sum\limits_{y_{1:t-2}}\sum\limits_{y_{t+1:T}}p(y|x^i)f(y_{t-1},y_t,x^i))\nonumber\\
+&=\sum\limits_{t=1}^T\sum\limits_{y_{t-1}}\sum\limits_{y_t}p(y_{t-1},y_t|x^i)f(y_{t-1},y_t,x^i)
+\end{align}</script><p>和上面的求边缘概率 $p(y_t|x)$ 类似，这里 $p(y_{t-1},y_t|x^i)$ 的 $y$ 是两个，也可以通过前向后向算法得到上面式子中的边缘概率。</p>
+<p>于是：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\nabla_\lambda L=\sum\limits_{i=1}^N\sum\limits_{t=1}^T[f(y_{t-1},y_t,x^i)-\sum\limits_{y_{t-1}}\sum\limits_{y_t}p(y_{t-1},y_t|x^i)f(y_{t-1},y_t,x^i)]
+\end{align}</script><p>利用梯度上升算法可以求解。对于 $\eta$ 也是类似的过程。</p>
+<h2 id="译码"><a href="#译码" class="headerlink" title="译码"></a>译码</h2><p>译码问题和 HMM 中的 Viterbi 算法类似，同样采样动态规划的思想一层一层求解最大值。</p>
+<div class="note info"><p>文章参考<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDcvTWFjaGluZS1MZWFybmluZy1TZXNzaW9u">Machine-Learning-Session<i class="fa fa-external-link-alt"></i></span>笔记，在其基础上增加细节笔记。<br>有关CRF的内容，推荐博客<span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vcGluYXJkL3AvNzA0ODMzMy5odG1s">条件随机场CRF<i class="fa fa-external-link-alt"></i></span>。</p>
+</div>
+      
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
@@ -1880,286 +2087,6 @@ L(p,\lambda_0,\lambda)=\sum\limits_{k=1}^Np_k\log p_k+\lambda_0(1-\sum\limits_{k
 p(x)=\exp(\lambda^Tf(x)+\lambda_0-1)</script><p>这就是指数族分布。</p>
 <div class="note info"><p>文章转载自<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDc=">Jie Zhou<i class="fa fa-external-link-alt"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDcvTWFjaGluZS1MZWFybmluZy1TZXNzaW9u">Machine-Learning-Session<i class="fa fa-external-link-alt"></i></span>。</p>
 </div>
-      
-    </div>
-
-    
-    
-    
-      
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/09/29/Machine%20Learning/21.SVM/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
-      <meta itemprop="name" content="SoundMemories">
-      <meta itemprop="description" content="今日事，今日毕">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SoundMemories">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/29/Machine%20Learning/21.SVM/" class="post-title-link" itemprop="url">SVM</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-09-29 00:00:00" itemprop="dateCreated datePublished" datetime="2020-09-29T00:00:00+08:00">2020-09-29</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>7.5k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>7 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="支撑向量机"><a href="#支撑向量机" class="headerlink" title="支撑向量机"></a>支撑向量机</h1><p>支撑向量机（SVM）算法在分类问题中有着重要地位，其主要思想是最大化两类之间的间隔。按照数据集的特点：</p>
-<ol>
-<li>线性可分问题，如之前的感知机算法处理的问题</li>
-<li>线性可分，只有一点点错误点，如感知机算法发展出来的 Pocket 算法处理的问题</li>
-<li>非线性问题，完全不可分，如在感知机问题发展出来的多层感知机和深度学习</li>
-</ol>
-<p>这三种情况对于 SVM 分别有下面三种处理手段：</p>
-<ol>
-<li>hard-margin SVM</li>
-<li>soft-margin SVM</li>
-<li>kernel Method</li>
-</ol>
-<p>SVM 的求解中，大量用到了 Lagrange 乘子法，首先对这种方法进行介绍。</p>
-<h2 id="约束优化问题"><a href="#约束优化问题" class="headerlink" title="约束优化问题"></a>约束优化问题</h2><p>一般地，约束优化问题（原问题）可以写成：</p>
-<script type="math/tex; mode=display">
-\begin{align}
-
-&\min_{x\in\mathbb{R^p}}f(x)\\
-&s.t.\ m_i(x)\le0,i=1,2,\cdots,M\\
-&\ \ \ \ \ \ \ \ n_j(x)=0,j=1,2,\cdots,N
-
-\end{align}</script><p>定义 Lagrange 函数：</p>
-<script type="math/tex; mode=display">
-L(x,\lambda,\eta)=f(x)+\sum\limits_{i=1}^M\lambda_im_i(x)+\sum\limits_{i=1}^N\eta_in_i(x)</script><p>那么原问题可以等价于无约束形式：</p>
-<script type="math/tex; mode=display">
-\min_{x\in\mathbb{R}^p}\max_{\lambda,\eta}L(x,\lambda,\eta)\ s.t.\ \lambda_i\ge0</script><p>这是由于，当满足原问题的不等式约束的时候，$\lambda_i=0$ 才能取得最大值，直接等价于原问题，如果不满足原问题的不等式约束，那么最大值就为 $+\infty$，由于需要取最小值，于是不会取到这个情况。</p>
-<p>这个问题的对偶形式：</p>
-<script type="math/tex; mode=display">
-\max_{\lambda,\eta}\min_{x\in\mathbb{R}^p}L(x,\lambda,\eta)\ s.t.\ \lambda_i\ge0</script><p>对偶问题是关于 $ \lambda, \eta$ 的最大化问题。</p>
-<p>由于：</p>
-<script type="math/tex; mode=display">
-\max_{\lambda_i,\eta_j}\min_{x}L(x,\lambda_i,\eta_j)\le\min_{x}\max_{\lambda_i,\eta_j}L(x,\lambda_i,\eta_j)</script><blockquote>
-<p>  证明：显然有 $\min\limits_{x}L\le L\le\max\limits_{\lambda,\eta}L$，于是显然有 $\max\limits_{\lambda,\eta}\min\limits_{x}L\le L$，且 $\min\limits_{x}\max\limits_{\lambda,\eta}L\ge L$。</p>
-</blockquote>
-<p>对偶问题的解小于原问题，有两种情况：</p>
-<ol>
-<li>强对偶：可以取等于号</li>
-<li>弱对偶：不可以取等于号</li>
-</ol>
-<p>其实这一点也可以通过一张图来说明：</p>
-<p><img src="/images/SVM/SVM.png" width="90%" height="90%"></p>
-<p>对于一个凸优化问题，有如下定理：</p>
-<blockquote>
-<p>  如果凸优化问题满足某些条件如 Slater 条件，那么它和其对偶问题满足强对偶关系。记问题的定义域为：$\mathcal{D}=domf(x)\cap dom m_i(x)\cap domn_j(x)$。于是 Slater 条件为：</p>
-<script type="math/tex; mode=display">
-  \exists\hat{x}\in Relint\mathcal{D}\ s.t.\ \forall i=1,2,\cdots,M,m_i(x)\lt0</script><p>  其中 Relint 表示相对内部（不包含边界的内部）。</p>
-</blockquote>
-<ol>
-<li>对于大多数凸优化问题，Slater 条件成立。</li>
-<li>松弛 Slater 条件，如果 M 个不等式约束中，有 K 个函数为仿射函数，那么只要其余的函数满足 Slater 条件即可。</li>
-</ol>
-<p>上面介绍了原问题和对偶问题的对偶关系，但是实际还需要对参数进行求解，求解方法使用 KKT 条件进行：</p>
-<blockquote>
-<p>  KKT 条件和强对偶关系是等价关系。KKT 条件对最优解的条件为：</p>
-<ol>
-<li><p>可行域：</p>
-<script type="math/tex; mode=display">
-\begin{align}
-m_i(x^*)\le0\\
-n_j(x^*)=0\\
-\lambda^*\ge0
-\end{align}</script></li>
-<li><p>互补松弛 $\lambda^<em>m_i(x^</em>)=0,\forall m_i$，对偶问题的最佳值为 $d^<em>$，原问题为 $p^</em>$</p>
-<script type="math/tex; mode=display">
-\begin{align}
-d^*&=\max_{\lambda,\eta}g(\lambda,\eta)=g(\lambda^*,\eta^*)\nonumber\\
-&=\min_{x}L(x,\lambda^*,\eta^*)\nonumber\\
-&\le L(x^*,\lambda^*,\eta^*)\nonumber\\
-&=f(x^*)+\sum\limits_{i=1}^M\lambda^*m_i(x^*)\nonumber\\
-&\le f(x^*)=p^*
-\end{align}</script><p>为了满足相等，两个不等式必须成立，于是，对于第一个不等于号，需要有梯度为0条件，对于第二个不等于号需要满足互补松弛条件。</p>
-</li>
-<li><p>梯度为0：$\frac{\partial L(x,\lambda^<em>,\eta^</em>)}{\partial x}|_{x=x^*}=0$</p>
-</li>
-</ol>
-</blockquote>
-<h2 id="Hard-margin-SVM"><a href="#Hard-margin-SVM" class="headerlink" title="Hard-margin SVM"></a>Hard-margin SVM</h2><p>支撑向量机也是一种硬分类模型，在之前的感知机模型中，我们在线性模型的基础上叠加了符号函数，在几何直观上，可以看到，如果两类分的很开的话，那么其实会存在无穷多条线可以将两类分开。在 SVM 中，我们引入最大化间隔这个概念，间隔指的是数据和直线的距离的最小值，因此最大化这个值反映了我们的模型倾向。</p>
-<p>分割的超平面可以写为：</p>
-<script type="math/tex; mode=display">
-0=w^Tx+b</script><p>那么最大化间隔（约束为分类任务的要求）：</p>
-<script type="math/tex; mode=display">
-\mathop{argmax}_{w,b}[\min_i\frac{|w^Tx_i+b|}{||w||}]\ s.t.\ y_i(w^Tx_i+b)>0\\
-\Longrightarrow\mathop{argmax}_{w,b}[\min_i\frac{y_i(w^Tx_i+b)}{||w||}]\ s.t.\ y_i(w^Tx_i+b)>0</script><p>对于这个约束 $y_i(w^Tx_i+b)&gt;0$，不妨固定 $\min y_i(w^Tx_i+b)=1&gt;0$，这是由于分开两类的超平面的系数经过比例放缩不会改变这个平面，这也相当于给超平面的系数作出了约束。化简后的式子可以表示为：</p>
-<script type="math/tex; mode=display">
-\mathop{argmin}_{w,b}\frac{1}{2}w^Tw\ s.t.\ \min_iy_i(w^Tx_i+b)=1\\
-\Rightarrow\mathop{argmin}_{w,b}\frac{1}{2}w^Tw\ s.t.\ y_i(w^Tx_i+b)\ge1,i=1,2,\cdots,N</script><p>这就是一个包含 $N$ 个约束的凸优化问题，有很多求解这种问题的软件。</p>
-<p>但是，如果样本数量或维度非常高，直接求解困难甚至不可解，于是需要对这个问题进一步处理。引入 Lagrange 函数：</p>
-<script type="math/tex; mode=display">
-L(w,b,\lambda)=\frac{1}{2}w^Tw+\sum\limits_{i=1}^N\lambda_i(1-y_i(w^Tx_i+b))</script><p>我们有原问题就等价于：</p>
-<script type="math/tex; mode=display">
-\mathop{argmin}_{w,b}\max_{\lambda}L(w,b,\lambda_i)\ s.t.\ \lambda_i\ge0</script><p>我们交换最小和最大值的符号得到对偶问题：</p>
-<script type="math/tex; mode=display">
-\max_{\lambda_i}\min_{w,b}L(w,b,\lambda_i)\ s.t.\ \lambda_i\ge0</script><p>由于不等式约束是仿射函数，对偶问题和原问题等价：</p>
-<ul>
-<li><p>$b$：$\frac{\partial}{\partial b}L=0\Rightarrow\sum\limits_{i=1}^N\lambda_iy_i=0$</p>
-</li>
-<li><p>$w$：首先将 $b$ 代入：</p>
-<script type="math/tex; mode=display">
-L(w,b,\lambda_i)=\frac{1}{2}w^Tw+\sum\limits_{i=1}^N\lambda_i(1-y_iw^Tx_i-y_ib)=\frac{1}{2}w^Tw+\sum\limits_{i=1}^N\lambda_i-\sum\limits_{i=1}^N\lambda_iy_iw^Tx_i</script><p>所以：</p>
-<script type="math/tex; mode=display">
-\frac{\partial}{\partial w}L=0\Rightarrow w=\sum\limits_{i=1}^N\lambda_iy_ix_i</script></li>
-<li><p>将上面两个参数代入：</p>
-<script type="math/tex; mode=display">
-L(w,b,\lambda_i)=-\frac{1}{2}\sum\limits_{i=1}^N\sum\limits_{j=1}^N\lambda_i\lambda_jy_iy_jx_i^Tx_j+\sum\limits_{i=1}^N\lambda_i</script></li>
-</ul>
-<p>因此，对偶问题就是：</p>
-<script type="math/tex; mode=display">
-\max_{\lambda}-\frac{1}{2}\sum\limits_{i=1}^N\sum\limits_{j=1}^N\lambda_i\lambda_jy_iy_jx_i^Tx_j+\sum\limits_{i=1}^N\lambda_i,\ s.t.\ \lambda_i\ge0</script><p>从 KKT 条件得到超平面的参数：</p>
-<blockquote>
-<p>  原问题和对偶问题满足强对偶关系的充要条件为其满足 KKT 条件：</p>
-<script type="math/tex; mode=display">
-  \begin{align}
-  &\frac{\partial L}{\partial w}=0,\frac{\partial L}{\partial b}=0
-  \\&\lambda_k(1-y_k(w^Tx_k+b))=0(slackness\ complementary)\\
-  &\lambda_i\ge0\\
-  &1-y_i(w^Tx_i+b)\le0
-  \end{align}</script></blockquote>
-<p>根据这个条件就得到了对应的最佳参数：</p>
-<script type="math/tex; mode=display">
-\hat{w}=\sum\limits_{i=1}^N\lambda_iy_ix_i\\
-\hat{b}=y_k-w^Tx_k=y_k-\sum\limits_{i=1}^N\lambda_iy_ix_i^Tx_k,\exists k,1-y_k(w^Tx_k+b)=0</script><p>于是这个超平面的参数 $w$ 就是数据点的线性组合，最终的参数值就是部分满足 $y_i(w^Tx_i+b)=1$向量的线性组合（互补松弛条件给出），这些向量也叫支撑向量。</p>
-<h2 id="Soft-margin-SVM"><a href="#Soft-margin-SVM" class="headerlink" title="Soft-margin SVM"></a>Soft-margin SVM</h2><p>Hard-margin 的 SVM 只对可分数据可解，如果不可分的情况，我们的基本想法是在损失函数中加入错误分类的可能性。错误分类的个数可以写成：</p>
-<script type="math/tex; mode=display">
-error=\sum\limits_{i=1}^N\mathbb{I}\{y_i(w^Tx_i+b)\lt1\}</script><p>这个函数不连续，可以将其改写为：</p>
-<script type="math/tex; mode=display">
-error=\sum\limits_{i=1}^N\max\{0,1-y_i(w^Tx_i+b)\}</script><p>求和符号中的式子又叫做 Hinge Function。</p>
-<p>将这个错误加入 Hard-margin SVM 中，于是：</p>
-<script type="math/tex; mode=display">
-\mathop{argmin}_{w,b}\frac{1}{2}w^Tw+C\sum\limits_{i=1}^N\max\{0,1-y_i(w^Tx_i+b)\}\ s.t.\ y_i(w^Tx_i+b)\ge1-\xi_i,i=1,2,\cdots,N</script><p>这个式子中，常数 $C$ 可以看作允许的错误水平，同时上式为了进一步消除 $\max$ 符号，对数据集中的每一个观测，我们可以认为其大部分满足约束，但是其中部分违反约束，因此这部分约束变成 $y_i(w^Tx+b)\ge1-\xi_i$，其中 $\xi_i=1-y_i(w^Tx_i+b)$，进一步的化简：</p>
-<script type="math/tex; mode=display">
-\mathop{argmin}_{w,b}\frac{1}{2}w^Tw+C\sum\limits_{i=1}^N\xi_i\ s.t.\ y_i(w^Tx_i+b)\ge1-\xi_i,\xi_i\ge0,i=1,2,\cdots,N</script><h2 id="Kernel-Method"><a href="#Kernel-Method" class="headerlink" title="Kernel Method"></a>Kernel Method</h2><p>核方法可以应用在很多问题上，在分类问题中，对于严格不可分问题，我们引入一个特征转换函数将原来的不可分的数据集变为可分的数据集，然后再来应用已有的模型。往往将低维空间的数据集变为高维空间的数据集后，数据会变得可分（数据变得更为稀疏）：</p>
-<blockquote>
-<p>  Cover TH：高维空间比低维空间更易线性可分。</p>
-</blockquote>
-<p>应用在 SVM 中时，观察上面的 SVM 对偶问题：</p>
-<script type="math/tex; mode=display">
-\max_{\lambda}-\frac{1}{2}\sum\limits_{i=1}^N\sum\limits_{j=1}^N\lambda_i\lambda_jy_iy_jx_i^Tx_j+\sum\limits_{i=1}^N\lambda_i,\ s.t.\ \lambda_i\ge0</script><p>在求解的时候需要求得内积，于是不可分数据在通过特征变换后，需要求得变换后的内积。我们常常很难求得变换函数的内积。于是直接引入内积的变换函数：</p>
-<script type="math/tex; mode=display">
-\forall x,x'\in\mathcal{X},\exists\phi\in\mathcal{H}:x\rightarrow z\ s.t.\ k(x,x')=\phi(x)^T\phi(x)</script><p>称 $k(x,x’)$ 为一个正定核函数，其中$\mathcal{H}$ 是 Hilbert 空间（完备的线性内积空间），如果去掉内积这个条件我们简单地称为核函数。</p>
-<blockquote>
-<p>  $k(x,x’)=\exp(-\frac{(x-x’)^2}{2\sigma^2})$ 是一个核函数。</p>
-<p>  证明：</p>
-<script type="math/tex; mode=display">
-  \begin{align}
-  \exp(-\frac{(x-x')^2}{2\sigma^2})&=\exp(-\frac{x^2}{2\sigma^2})\exp(\frac{xx'}{\sigma^2})\exp(-\frac{x'^2}{2\sigma^2})\nonumber\\
-  &=\exp(-\frac{x^2}{2\sigma^2})\sum\limits_{n=0}^{+\infty}\frac{x^nx'^n}{\sigma^{2n}n!}\exp(-\frac{x'^2}{2\sigma^2})\nonumber\\
-  &=\exp(-\frac{x^2}{2\sigma^2})\varphi(x)\varphi(x')\exp(-\frac{x'^2}{2\sigma^2})\nonumber\\
-  &=\phi(x)\phi(x')
-  \end{align}</script></blockquote>
-<p>正定核函数有下面的等价定义：</p>
-<blockquote>
-<p>  如果核函数满足：</p>
-<ol>
-<li>对称性</li>
-<li><p>正定性</p>
-<p>那么这个核函数时正定核函数。</p>
-<p>证明：</p>
-</li>
-<li><p>对称性 $\Leftrightarrow$ $k(x,z)=k(z,x)$，显然满足内积的定义</p>
-</li>
-<li><p>正定性 $\Leftrightarrow$ $\forall N,x_1,x_2,\cdots,x_N\in\mathcal{X}$，对应的 Gram Matrix $K=[k(x_i,x_j)]$ 是半正定的。</p>
-<p>要证：$k(x,z)=\phi(x)^T\phi(z)\Leftrightarrow K$ 半正定+对称性。</p>
-</li>
-<li><p>$\Rightarrow$：首先，对称性是显然的，对于正定性：</p>
-<script type="math/tex; mode=display">
-K=\begin{pmatrix}k(x_1,x_2)&\cdots&k(x_1,x_N)\\\vdots&\vdots&\vdots\\k(x_N,x_1)&\cdots&k(x_N,x_N)\end{pmatrix}</script><p>任意取 $\alpha\in\mathbb{R}^N$，即需要证明 $\alpha^TK\alpha\ge0$：</p>
-<script type="math/tex; mode=display">
-\alpha^TK\alpha=\sum\limits_{i,j}\alpha_i\alpha_jK_{ij}=\sum\limits_{i,j}\alpha_i\phi^T(x_i)\phi(x_j)\alpha_j=\sum\limits_{i}\alpha_i\phi^T(x_i)\sum\limits_{j}\alpha_j\phi(x_j)</script><p>这个式子就是内积的形式，Hilbert 空间满足线性性，于是正定性的证。</p>
-</li>
-<li><p>$\Leftarrow$：对于 $K$ 进行分解，对于对称矩阵 $K=V\Lambda V^T$，那么令 $\phi(x_i)=\sqrt{\lambda_i}V_i$，其中 $V_i$是特征向量，于是就构造了 $k(x,z)=\sqrt{\lambda_i\lambda_j}V_i^TV_j$</p>
-</li>
-</ol>
-</blockquote>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>分类问题在很长一段时间都依赖 SVM，对于严格可分的数据集，Hard-margin SVM 选定一个超平面，保证所有数据到这个超平面的距离最大，对这个平面施加约束，固定 $y_i(w^Tx_i+b)=1$，得到了一个凸优化问题并且所有的约束条件都是仿射函数，于是满足 Slater 条件，将这个问题变换成为对偶的问题，可以得到等价的解，并求出约束参数：</p>
-<script type="math/tex; mode=display">
-\max_{\lambda}-\frac{1}{2}\sum\limits_{i=1}^N\sum\limits_{j=1}^N\lambda_i\lambda_jy_iy_jx_i^Tx_j+\sum\limits_{i=1}^N\lambda_i,\ s.t.\ \lambda_i\ge0</script><p>对需要的超平面参数的求解采用强对偶问题的 KKT 条件进行。</p>
-<script type="math/tex; mode=display">
-\begin{align}
-&\frac{\partial L}{\partial w}=0,\frac{\partial L}{\partial b}=0
-\\&\lambda_k(1-y_k(w^Tx_k+b))=0(slackness\ complementary)\\
-&\lambda_i\ge0\\
-&1-y_i(w^Tx_i+b)\le0
-\end{align}</script><p>解就是：</p>
-<script type="math/tex; mode=display">
-\hat{w}=\sum\limits_{i=1}^N\lambda_iy_ix_i\\
-\hat{b}=y_k-w^Tx_k=y_k-\sum\limits_{i=1}^N\lambda_iy_ix_i^Tx_k,\exists k,1-y_k(w^Tx_k+b)=0</script><p>当允许一点错误的时候，可以在 Hard-margin SVM 中加入错误项。用 Hinge Function 表示错误项的大小，得到：</p>
-<script type="math/tex; mode=display">
-\mathop{argmin}_{w,b}\frac{1}{2}w^Tw+C\sum\limits_{i=1}^N\xi_i\ s.t.\ y_i(w^Tx_i+b)\ge1-\xi_i,\xi_i\ge0,i=1,2,\cdots,N</script><p>对于完全不可分的问题，我们采用特征转换的方式，在 SVM 中，我们引入正定核函数来直接对内积进行变换，只要这个变换满足对称性和正定性，那么就可以用做核函数。<br><div class="note info"><p>文章转载自<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDc=">Jie Zhou<i class="fa fa-external-link-alt"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NodWh1YWkwMDcvTWFjaGluZS1MZWFybmluZy1TZXNzaW9u">Machine-Learning-Session<i class="fa fa-external-link-alt"></i></span>。</p>
-</div></p>
-
       
     </div>
 
