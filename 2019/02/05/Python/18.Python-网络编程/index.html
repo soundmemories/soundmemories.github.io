@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.1","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="基础知识，请参考Java网络编程。 Socket Socket是网络编程的一个抽象概念。 通常用一个Socket表示“一个网络链接”，而创建一个Socket需要知道目标计算机的IP地址和端口号，再指定协议类型即可。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python-网络编程">
+<meta property="og:url" content="https://soundmemories.github.io/2019/02/05/Python/18.Python-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/index.html">
+<meta property="og:site_name" content="SoundMemories">
+<meta property="og:description" content="基础知识，请参考Java网络编程。 Socket Socket是网络编程的一个抽象概念。 通常用一个Socket表示“一个网络链接”，而创建一个Socket需要知道目标计算机的IP地址和端口号，再指定协议类型即可。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/04/19/zBCFYKUgaDQ58Vo.jpg">
+<meta property="og:image" content="https://i.loli.net/2021/04/19/ZW3fmQv7Sdl8tHN.jpg">
+<meta property="article:published_time" content="2019-02-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-05-29T15:58:20.770Z">
+<meta property="article:author" content="SoundMemories">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/04/19/zBCFYKUgaDQ58Vo.jpg">
+
+
+<link rel="canonical" href="https://soundmemories.github.io/2019/02/05/Python/18.Python-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://soundmemories.github.io/2019/02/05/Python/18.Python-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/","path":"2019/02/05/Python/18.Python-网络编程/","title":"Python-网络编程"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Python-网络编程 | SoundMemories</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">SoundMemories</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">8</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">8</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">122</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#socket"><span class="nav-number">1.</span> <span class="nav-text">Socket</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#socket%E7%B1%BB"><span class="nav-number">1.1.</span> <span class="nav-text">socket类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#socket%E5%AF%B9%E8%B1%A1"><span class="nav-number">1.2.</span> <span class="nav-text">socket对象</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8Etcp%E7%9A%84%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">基于TCP的网络编程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%92%8C%E4%B8%80%E4%B8%AA%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%80%9A%E4%BF%A1"><span class="nav-number">2.1.</span> <span class="nav-text">一个客户端和一个服务器通信</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E4%B8%AA%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%BE%A4%E8%81%8A"><span class="nav-number">2.1.1.</span> <span class="nav-text">多个客户端群聊</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8Eudp%E7%9A%84%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">基于UDP的网络编程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E4%B8%AA%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%BE%A4%E8%81%8A-1"><span class="nav-number">3.1.</span> <span class="nav-text">多个客户端群聊</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#socketserver"><span class="nav-number">4.</span> <span class="nav-text">SocketServer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAserver%E5%AF%B9%E8%B1%A1%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="nav-number">4.1.</span> <span class="nav-text">创建Server对象和使用</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SoundMemories"
+      src="/images/avstar.png">
+  <p class="site-author-name" itemprop="name">SoundMemories</p>
+  <div class="site-description" itemprop="description">今日事，今日毕</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">122</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NvdW5kbWVtb3JpZXM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;soundmemories"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNvdW5kbWVtb3JpZXNAMTYzLmNvbQ==" title="E-Mail → mailto:soundmemories@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+        <div class="pjax">
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2019/02/05/Python/18.Python-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Python-网络编程 | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python-网络编程
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-05 00:00:00" itemprop="dateCreated datePublished" datetime="2019-02-05T00:00:00+08:00">2019-02-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>14 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>基础知识，请参考<a
+href="https://soundmemories.github.io/2020/03/07/Java/28.Java%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">Java网络编程</a>。</p>
+<h2 id="socket">Socket</h2>
+<p>Socket是网络编程的一个抽象概念。<br />
+通常用一个Socket表示“一个网络链接”，而创建一个Socket需要知道目标计算机的IP地址和端口号，再指定协议类型即可。<br />
+<span id="more"></span></p>
+<h3 id="socket类">socket类</h3>
+<p>Python中使用socket类来创建“一个网络链接”，其本身有几个创建方法：<br />
+（1）<code>socket.socket(family=AF_INET, type=SOCK_STREAM, proto=0, fileno=None)</code>：创建一个socket对象。<br />
+（2）<code>socket.socketpair(...)</code>：创建一对socket对象。<br />
+（3）<code>socket.fromfd(...)</code>：创建一个socket对象，根据指定配置文件来创建。<br />
+（4）<code>socket.fromshare(...)</code>：创建一个socket对象，根据<code>socket.share()</code>的数据来创建。<br />
+创建socket主要参数：<br />
+（1）<code>family</code>：指定地址簇。可选<code>AF_INET</code>（ipv4，默认）、<code>AF_INET6</code>（ipv6）、<code>AF_UNIX</code>（Unix下使用）、<code>AF_CAN</code>、<code>AF_PACKET</code>、<code>AF_RDS</code>。<br />
+（2）<code>type</code>：socket类型。可选<code>SOCK_STREAM</code>（TCP，默认）、<code>SOCK_DGRAM</code>（UDP）、<code>SOCK_RAW</code>、<code>SOCK_RDM</code>、<code>SOCK_SEQPACKET</code>。<br />
+（3）<code>proto</code>：协议号。通常为0，可以省略。在地址簇为<code>AF_CAN</code>
+的情况下，协议号应为<code>CAN_RAW</code>、<code>CAN_BCM</code>、<code>CAN_ISOTP</code>之一。<br />
+（4）<code>fileno</code>：如果指定了fileno，那么将从这一指定的文件描述符中自动检测family、type
+和 proto 的值。<br />
+socket类还提供了一些与网络相关的方法：<br />
+（1）<code>socket.close(fd)</code>：关闭一个socket对象。<br />
+（2）<code>socket.getaddrinfo(host, port, family=0, type=0, proto=0, flags=0)</code>：将host/port参数转换为5元组的序列(family,
+type, proto, canonname,
+sockaddr)，其中包含创建socket所需的所有参数。3.7新增。<br />
+（3）<code>socket.gethostbyname(hostname)</code>：将主机名转换为 IPv4
+地址格式。IPv4 地址以字符串格式返回。<br />
+（4）<code>socket.gethostname()</code>：返回一个字符串，包含当前正在运行
+Python 解释器的机器的主机名。<br />
+（5）<code>socket.getnameinfo(sockaddr, flags)</code>：将socket地址
+sockaddr 转换为二元组 (host, port)。</p>
+<h3 id="socket对象">socket对象</h3>
+<p>socket对象可使用的方法，address是二元组（hostaddr，port）：<br />
+（1）<code>accept()</code>：等待传入连接。返回一个表示连接和客户端地址的新socket对象(socket
+object, address info)。<br />
+（2）<code>bind(addr)</code>：将socket对象绑定到
+address。多次绑定会报错。<br />
+（3）<code>close()</code>：将socket对象标记为关闭，建议使用with语句。<br />
+（4）<code>connect(addr)</code>：连接到 address
+处的远程socket对象。如果连接被信号中断，则本方法将等待，直到连接完成。<br />
+（5）<code>getpeername()</code>：返回socket对象连接到的远程地址。<br />
+（6）<code>getsockname()</code>：返回socket对象本身的地址。<br />
+（7）<code>getsockopt(level, optname[, buflen])</code>：返回socket对象设置信息。<br />
+（8）<code>getblocking()</code>：如果socket对象处于阻塞模式，返回
+True，非阻塞模式返回 False。3.7新增。<br />
+（9）<code>gettimeout()</code>：返回socket对象操作相关的超时秒数（浮点数），未设置超时则返回
+None。<br />
+（10）<code>listen()</code>：启动一个监听服务，用于接受连接。服务器端。<br />
+（11）<code>recv(buflen[, flags])</code>：从socket对象接收数据。返回值是一个字节对象，表示接收到的数据。bufsize
+指定一次接收的最大数据量。<br />
+（12）<code>recv_into(buffer[, nbytes[, flags]])</code>：从socket对象接收至多
+nbytes 个字节，将其写入缓冲区而不是创建新的字节串。<br />
+（13）<code>recv(bufsize[, flags])</code>：从socket对象接收数据。返回值是一对
+(bytes, address)，其中 bytes 是字节对象，表示接收到的数据，address
+是发送端socket对象的地址。<br />
+（14）<code>recvfrom_into(buffer[, nbytes, [, flags])</code>：从socket对象接收数据，将其写入
+buffer 而不是创建新的字节串。返回值是一对 (nbytes, address)，其中 nbytes
+是收到的字节数，address 是发送端socket对象的地址。<br />
+（15）<code>sendall(bytes[, flags])</code>：发送数据给socket对象。本socket对象必须已连接到远程socket对象。持续从
+bytes 发送数据，直到所有数据都已发送或发生错误为止。成功后会返回
+None。出错后会抛出一个异常，此时并没有办法确定成功发送了多少数据。<br />
+（16）<code>send(bytes[, flags])</code>：发送数据给socket对象。本socket对象必须已连接到远程socket对象。返回已发送的字节数。应用程序要负责检查所有数据是否已发送，如果仅传输了部分数据，程序需要自行尝试传输其余数据。<br />
+（17）<code>sendfile(file, offset=0,count=None)</code>：发送一个文件直到EOF，使用高性能的os.sendfile机制，返回发送的字节数。如果win下不支持sendfile，或者不是普通文件，使用<code>send()</code>发送文件。offset告诉起始位置。<br />
+（18）<code>sendto(bytes, address)</code>：发送给指定address信息。UDP发送数据。<br />
+（19）<code>setblocking(flag)</code>：设置socket对象为阻塞或非阻塞模式：如果
+flag 为 false，则将socket对象设置为非阻塞，否则设置为阻塞。<br />
+（20）<code>settimeout(value)</code>：为阻塞socket对象的操作设置超时。如果赋为一个非零值，那么如果在操作完成前超过了超时时间
+value，后续的socket对象操作将抛出 timeout 异常。如果赋为
+0，则socket对象将处于非阻塞模式。如果指定为
+None，则socket对象将处于阻塞模式。<br />
+（21）setsockopt(level,optname,value)：设置套接字选项的值。比如缓冲区大小。<br />
+（22）<code>shutdown(how)</code>：关闭一半或全部的连接。如果 how 为
+SHUT_RD，则后续不再允许接收。如果 how 为
+SHUT_WR，则后续不再允许发送。如果 how 为
+SHUT_RDWR，则后续的发送和接收都不允许。<br />
+（23）<code>makefile(mode='r', buffering=None, *, encoding=None, errors=None, newline=None)</code>：创建一个与该套接字相关连的文件对象，将<code>recv()</code>看做读方法，将<code>send()</code>看做写方法。</p>
+<h2 id="基于tcp的网络编程">基于TCP的网络编程</h2>
+<p><img src="https://i.loli.net/2021/04/19/zBCFYKUgaDQ58Vo.jpg" /></p>
+<h3 id="一个客户端和一个服务器通信">一个客户端和一个服务器通信</h3>
+<p>以下是 2 个使用 TCP/IP 协议的最小示例程序：<br />
+一台服务器，它将收到的所有数据原样返回（仅服务于一个客户端），还有一个使用该服务器的客户端。<br />
+服务器：必须按序执行 <code>socket()</code>,<code>bind()</code>,
+<code>listen()</code>, <code>accept()</code>，可能需要重复执行
+<code>accept()</code> 以服务多个客户端。服务器不在侦听套接字上发送
+<code>sendall()</code>/<code>recv()</code>，而是在 <code>accept()</code>
+返回的新套接字上发送。<br />
+客户端：仅需要按序执行
+<code>socket()</code>,<code>connect()</code>。<br />
+<div class="tabs" id="socket"><ul class="nav-tabs"><li class="tab active"><a href="#socket-1">server</a></li><li class="tab"><a href="#socket-2">client</a></li></ul><div class="tab-content"><div class="tab-pane active" id="socket-1"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Echo server program</span></span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"></span><br><span class="line">HOST = <span class="string">&#x27;&#x27;</span>                 <span class="comment"># Symbolic name meaning all available interfaces</span></span><br><span class="line">PORT = <span class="number">50007</span>              <span class="comment"># Arbitrary non-privileged port</span></span><br><span class="line"><span class="keyword">with</span> socket.socket(socket.AF_INET, socket.SOCK_STREAM) <span class="keyword">as</span> s:</span><br><span class="line">    s.bind((HOST, PORT))</span><br><span class="line">    s.listen(<span class="number">1</span>)</span><br><span class="line">    conn, addr = s.accept()</span><br><span class="line">    <span class="keyword">with</span> conn:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;Connected by&#x27;</span>, addr)</span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            data = conn.recv(<span class="number">1024</span>)</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> data: <span class="keyword">break</span></span><br><span class="line">            conn.sendall(data)</span><br></pre></td></tr></table></figure></div><div class="tab-pane" id="socket-2"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Echo client program</span></span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"></span><br><span class="line">HOST = <span class="string">&#x27;daring.cwi.nl&#x27;</span>    <span class="comment"># The remote host</span></span><br><span class="line">PORT = <span class="number">50007</span>              <span class="comment"># The same port as used by the server</span></span><br><span class="line"><span class="keyword">with</span> socket.socket(socket.AF_INET, socket.SOCK_STREAM) <span class="keyword">as</span> s:</span><br><span class="line">    s.connect((HOST, PORT))</span><br><span class="line">    s.sendall(<span class="string">b&#x27;Hello, world&#x27;</span>)</span><br><span class="line">    data = s.recv(<span class="number">1024</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Received&#x27;</span>, <span class="built_in">repr</span>(data))</span><br></pre></td></tr></table></figure></div></div></div></p>
+<h4 id="多个客户端群聊">多个客户端群聊</h4>
+<p>服务器应该具有的功能：<br />
+（1）启动服务，包括绑定地址和端口，并监听。<br />
+（2）建立连接，能和多个客户端建立连接。<br />
+（3）接收不同用户的信息。<br />
+（4）分发，将接收的某个用户的信息转发到已连接的所有客户端。<br />
+（5）停止服务。<br />
+（6）记录连接的客户端。<br />
+客户端应该具有的功能：<br />
+（1）创建Socket对象。<br />
+（2）连接到远端服务端的ip和port，connect()方法。<br />
+（3）数据通信，使用send、recv方法发送、接收数据。<br />
+（5）关闭连接，释放资源。</p>
+<div class="tabs" id="sockettcp"><ul class="nav-tabs"><li class="tab active"><a href="#sockettcp-1">client</a></li><li class="tab"><a href="#sockettcp-2">server</a></li><li class="tab"><a href="#sockettcp-3">serverHandler</a></li></ul><div class="tab-content"><div class="tab-pane active" id="sockettcp-1"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"></span><br><span class="line">FORMAT = <span class="string">&#x27;Thread info: %(thread)d %(threadName)s %(message)s&#x27;</span></span><br><span class="line">logging.basicConfig(<span class="built_in">format</span>=FORMAT,level=logging.INFO)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ChatClient</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, rip:<span class="built_in">str</span>=<span class="string">&#x27;127.0.0.1&#x27;</span>, rport:<span class="built_in">int</span>=<span class="number">9999</span></span>):</span><br><span class="line">        self.socket = socket.socket() <span class="comment">#client实例</span></span><br><span class="line">        self.addr = rip, rport</span><br><span class="line">        self.event = threading.Event()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">start</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="comment">#为socket分配新laddr，填充raddr</span></span><br><span class="line">        self.socket.connect(self.addr)</span><br><span class="line">        self.socket.send(<span class="string">b&#x27;hello server&#x27;</span>)</span><br><span class="line">        threading.Thread(target=self.recv).start()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">recv</span>(<span class="params">self</span>): <span class="comment">#接收server消息</span></span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">not</span> self.event.is_set():</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                data = self.socket.recv(<span class="number">1024</span>) <span class="comment">#防止sever崩溃</span></span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                self.stop()</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            data = data.strip()</span><br><span class="line">            logging.info(<span class="string">&#x27;&#123;&#125; &#123;&#125;&#x27;</span>.<span class="built_in">format</span>(self.socket.getpeername(),data.decode()))<span class="comment">#打印消息</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">send</span>(<span class="params">self,msg:<span class="built_in">str</span></span>):<span class="comment">#向server发消息</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            self.socket.send(msg.encode())<span class="comment">#防止server崩溃，发送不成功</span></span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            logging.info(<span class="string">&#x27;&#123;&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="string">&#x27;server collapse&#x27;</span>))</span><br><span class="line">            sys.exit(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">stop</span>(<span class="params">self</span>):</span><br><span class="line">        self.send(<span class="string">&#x27;quit&#x27;</span>)</span><br><span class="line">        self.event.<span class="built_in">set</span>()</span><br><span class="line">        self.socket.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">cc = ChatClient()</span><br><span class="line">cc.start()</span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    cmd = <span class="built_in">input</span>(<span class="string">&#x27;&gt;&gt;&gt;&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> cmd == <span class="string">&#x27;quit&#x27;</span>:</span><br><span class="line">        cc.stop()</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    cc.send(cmd)</span><br></pre></td></tr></table></figure></div><div class="tab-pane" id="sockettcp-2"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">FORMAT = <span class="string">&#x27;Thread info: %(thread)d %(threadName)s %(message)s&#x27;</span></span><br><span class="line">logging.basicConfig(<span class="built_in">format</span>=FORMAT,level=logging.INFO)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ChatServer</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,ip:<span class="built_in">str</span>=<span class="string">&#x27;127.0.0.1&#x27;</span>,port:<span class="built_in">int</span>=<span class="number">9999</span></span>):</span><br><span class="line">        self.sock = socket.socket()</span><br><span class="line">        self.addr = ip,port</span><br><span class="line">        self.clients = &#123;&#125;</span><br><span class="line">        self.event = threading.Event()<span class="comment"># 关闭时不能accept和recv</span></span><br><span class="line">        self.lock = threading.Lock()<span class="comment"># 线程间，对字典执行写和pop要上锁</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">start</span>(<span class="params">self</span>): <span class="comment"># 启动监听</span></span><br><span class="line">        self.sock.bind(self.addr)</span><br><span class="line">        self.sock.listen()</span><br><span class="line">        <span class="comment"># 把accept放入线程中循环执行</span></span><br><span class="line">        threading.Thread(target=self.accept, name=<span class="string">&#x27;accept&#x27;</span>, daemon=<span class="literal">True</span>).start() <span class="comment"># daemon=True，accept线程崩了，不影响主线程退出</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">accept</span>(<span class="params">self</span>): <span class="comment"># 多人连接</span></span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">not</span> self.event.is_set():</span><br><span class="line">            sock, caddr = self.sock.accept()</span><br><span class="line">            <span class="keyword">with</span> self.lock: <span class="comment"># 不能一边pop，一边写入，加锁</span></span><br><span class="line">                <span class="comment"># 把新客户端加入到字典中</span></span><br><span class="line">                self.clients[caddr] = sock</span><br><span class="line">            threading.Thread(target=self.recv,name=<span class="string">&#x27;recv&#x27;</span>,args=(sock,caddr)).start()</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        while not self.event.is_set():</span></span><br><span class="line"><span class="string">            sock, client = self.sock.accept() # 阻塞</span></span><br><span class="line"><span class="string">            with self.lock:</span></span><br><span class="line"><span class="string">                # 准备接收数据，recv是阻塞的，开启新的线程</span></span><br><span class="line"><span class="string">                f = sock.makefile(&#x27;rw&#x27;) # 使用makefile支持读写方式</span></span><br><span class="line"><span class="string">                self.clients[client] = f, sock # 添加到客户端字典</span></span><br><span class="line"><span class="string">            threading.Thread(target=self.recv, args=(f, client), name=&#x27;recv&#x27;).start()</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">recv</span>(<span class="params">self,sock,caddr</span>): <span class="comment"># 接收客户端信息</span></span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">not</span> self.event.is_set():</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                data = sock.recv(<span class="number">1024</span>) <span class="comment"># 防止等待数据时自己写的client断开，抛异常，自己写的是抛异常的</span></span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                <span class="comment"># 不能写b&#x27;&#x27;，执行下面判断时，时间片到了，轮到别的进程执行for x in self.clients.values()时，里面异常的线程还在，导致这个又崩溃了</span></span><br><span class="line">                <span class="comment"># 所以只能立即处理关闭</span></span><br><span class="line">                <span class="keyword">with</span> self.lock:</span><br><span class="line">                    self.clients.pop(caddr) <span class="comment"># 把要关闭的从字典中剔除</span></span><br><span class="line">                    sock.close()</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">            data = data.strip()</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 处理外部关闭请求</span></span><br><span class="line">            <span class="keyword">if</span> data == <span class="string">b&#x27;quit&#x27;</span> <span class="keyword">or</span> data == <span class="string">b&#x27;&#x27;</span>: <span class="comment"># b&#x27;&#x27;因为使用测试的软件clients断开，会发送个空包</span></span><br><span class="line">                <span class="keyword">with</span> self.lock:</span><br><span class="line">                    logging.info(<span class="string">&#x27;&#123;&#125; quit&#x27;</span>.<span class="built_in">format</span>(caddr))</span><br><span class="line">                    self.clients.pop(caddr) <span class="comment"># 把要关闭的client从字典中剔除，所以用字典</span></span><br><span class="line">                sock.close() <span class="comment"># 关闭当前客户</span></span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">            <span class="comment"># 把收到的信息发给所有人</span></span><br><span class="line">            msg = <span class="string">&#x27;&#123;&#125; &#123;&#125;:&#123;&#125; &#123;&#125;&#x27;</span>.<span class="built_in">format</span>(datetime.datetime.now(), *caddr,data.decode())</span><br><span class="line">            logging.info(msg) <span class="comment"># sever查看中转数据</span></span><br><span class="line">            <span class="keyword">with</span> self.lock:</span><br><span class="line">                <span class="keyword">for</span> x <span class="keyword">in</span> self.clients.values(): <span class="comment"># 把信息转发给其它client</span></span><br><span class="line">                    <span class="keyword">try</span>:</span><br><span class="line">                        x.send(msg.encode())</span><br><span class="line">                    <span class="keyword">except</span>:</span><br><span class="line">                        <span class="comment"># 发送不成功，client有问题，所以把client给pop出去</span></span><br><span class="line">                        self.clients.pop(x.getpeername)</span><br><span class="line">                        x.close()</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    def recv(self,sock,caddr): </span></span><br><span class="line"><span class="string">        while not self.event.is_set():</span></span><br><span class="line"><span class="string">            data = sock.readline() # 阻塞到换行符</span></span><br><span class="line"><span class="string">            msg = data.strip()</span></span><br><span class="line"><span class="string">            # 客户端退出命令</span></span><br><span class="line"><span class="string">            if msg == &#x27;quit&#x27;:</span></span><br><span class="line"><span class="string">                _, s = self.clients.pop(client)</span></span><br><span class="line"><span class="string">                sock.close()</span></span><br><span class="line"><span class="string">                s.close()</span></span><br><span class="line"><span class="string">                logging.info(&#x27;&#123;&#125; quits&#x27;.format(client))</span></span><br><span class="line"><span class="string">                break</span></span><br><span class="line"><span class="string">            msg = &quot;&#123;:%Y/%m/%d %H:%M:%S&#125; &#123;&#125;:&#123;&#125;\n&#123;&#125;\n&quot;.format(datetime.datetime.now(), *client,data)</span></span><br><span class="line"><span class="string">            logging.info(msg)</span></span><br><span class="line"><span class="string">            for f,s in self.clients.values():</span></span><br><span class="line"><span class="string">                f.write(msg)</span></span><br><span class="line"><span class="string">                f.flush()</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">stop</span>(<span class="params">self</span>): <span class="comment"># 停止服务</span></span><br><span class="line">        self.event.<span class="built_in">set</span>() <span class="comment"># 关闭前停止accept和recv</span></span><br><span class="line">        <span class="keyword">with</span> self.lock:</span><br><span class="line">            <span class="keyword">for</span> x <span class="keyword">in</span> self.clients.values():</span><br><span class="line">                x.close()</span><br><span class="line">        self.sock.close()</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        self.event.set() # 关闭前停止accept和recv</span></span><br><span class="line"><span class="string">        with self.lock:</span></span><br><span class="line"><span class="string">            for f,s in self.clients.values():</span></span><br><span class="line"><span class="string">                f.close()</span></span><br><span class="line"><span class="string">                s.close()</span></span><br><span class="line"><span class="string">        self.sock.close()</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">cs = ChatServer()</span><br><span class="line">cs.start()</span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    cmd = <span class="built_in">input</span>(<span class="string">&#x27;&gt;&gt;&gt;&#x27;</span>).strip()</span><br><span class="line">    <span class="keyword">if</span> cmd == <span class="string">&#x27;quit&#x27;</span>:</span><br><span class="line">        cs.stop()</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    logging.info(threading.<span class="built_in">enumerate</span>()) <span class="comment"># 观察线程变化</span></span><br></pre></td></tr></table></figure></div><div class="tab-pane" id="sockettcp-3"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> socketserver</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"></span><br><span class="line">FORMAT = <span class="string">&quot;%(asctime)s %(threadName)s %(thread)d %(message)s&quot;</span></span><br><span class="line">logging.basicConfig(<span class="built_in">format</span>=FORMAT, level=logging.INFO)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ChatHandler</span>(socketserver.StreamRequestHandler):</span><br><span class="line">    clients = &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">setup</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>().setup() <span class="comment">#父类生成rfile和wfile方法</span></span><br><span class="line">        self.event = threading.Event()</span><br><span class="line">        self.clients[self.client_address] = self.wfile</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">handle</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>().handle()</span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">not</span> self.event.is_set():</span><br><span class="line">            data = self.rfile.read1(<span class="number">1024</span>).decode().strip()<span class="comment">#相当于recv,data是bytes类型</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> data == <span class="string">&#x27;quit&#x27;</span> <span class="keyword">or</span> data == <span class="string">&#x27;&#x27;</span>: <span class="comment">#主动退出和断开</span></span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">            msg = <span class="string">&#x27;&#123;&#125;:&#123;&#125; &#123;&#125;&#x27;</span>.<span class="built_in">format</span>( *self.client_address, data)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> f <span class="keyword">in</span> self.clients.values():</span><br><span class="line">                f.write(msg.encode())</span><br><span class="line">                f.flush()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">finish</span>(<span class="params">self</span>):</span><br><span class="line">        self.event.<span class="built_in">set</span>()</span><br><span class="line">        self.clients.pop(self.client_address)</span><br><span class="line">        <span class="built_in">super</span>().finish()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    s = socketserver.ThreadingTCPServer((<span class="string">&#x27;127.0.0.1&#x27;</span>,<span class="number">9999</span>),ChatHandler)</span><br><span class="line">    threading.Thread(target=s.serve_forever, daemon=<span class="literal">True</span>).start()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        cmd = <span class="built_in">input</span>(<span class="string">&#x27;&gt;&gt;&gt;&#x27;</span>).strip()</span><br><span class="line">        <span class="keyword">if</span> cmd == <span class="string">&#x27;quit&#x27;</span>:</span><br><span class="line">            s.server_close()</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="built_in">print</span>(threading.<span class="built_in">enumerate</span>())</span><br></pre></td></tr></table></figure></div></div></div>
+<h2 id="基于udp的网络编程">基于UDP的网络编程</h2>
+<p><img src="https://i.loli.net/2021/04/19/ZW3fmQv7Sdl8tHN.jpg" /></p>
+<h3 id="多个客户端群聊-1">多个客户端群聊</h3>
+<div class="tabs" id="udp"><ul class="nav-tabs"><li class="tab active"><a href="#udp-1">client</a></li><li class="tab"><a href="#udp-2">server</a></li></ul><div class="tab-content"><div class="tab-pane active" id="udp-1"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">FORMAT = <span class="string">&#x27;Thread info: %(thread)d %(threadName)s %(message)s&#x27;</span></span><br><span class="line">logging.basicConfig(<span class="built_in">format</span>=FORMAT,level=logging.INFO)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ChatClient</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, rip:<span class="built_in">str</span>=<span class="string">&#x27;127.0.0.1&#x27;</span>,rport:<span class="built_in">int</span>=<span class="number">9999</span></span>):</span><br><span class="line">        self.socket = socket.socket(<span class="built_in">type</span>=socket.SOCK_DGRAM) <span class="comment">#client实例</span></span><br><span class="line">        self.addr = rip,rport</span><br><span class="line">        self.event = threading.Event()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">start</span>(<span class="params">self</span>):</span><br><span class="line">        self.socket.connect(self.addr)</span><br><span class="line">        threading.Thread(target=self.recv, daemon=<span class="literal">True</span>,name=<span class="string">&#x27;recv&#x27;</span>).start()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">recv</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">not</span> self.event.is_set():</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                data = self.socket.recv(<span class="number">1024</span>)</span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                self.stop()</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            logging.info(<span class="string">&#x27;&#123;&#125;&#x27;</span>.<span class="built_in">format</span>(data.decode())) <span class="comment">#收到的信息只需打印出来</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">send</span>(<span class="params">self,msg:<span class="built_in">str</span></span>):</span><br><span class="line">        <span class="keyword">if</span> msg:</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                self.socket.send(msg.encode())</span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                logging.info(<span class="string">&#x27;&#123;&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="string">&#x27;server collapse&#x27;</span>))</span><br><span class="line">                sys.exit(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">stop</span>(<span class="params">self</span>):</span><br><span class="line">        self.send(<span class="string">&#x27;quit&#x27;</span>)</span><br><span class="line">        self.event.<span class="built_in">set</span>()</span><br><span class="line">        self.socket.close()</span><br><span class="line"></span><br><span class="line">cc = ChatClient()</span><br><span class="line">cc.start()</span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    cmd = <span class="built_in">input</span>(<span class="string">&#x27;&gt;&gt;&gt;&#x27;</span>).strip()</span><br><span class="line">    <span class="keyword">if</span> cmd == <span class="string">&#x27;quit&#x27;</span>:</span><br><span class="line">        cc.stop()</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    cc.send(cmd)</span><br><span class="line">    <span class="comment">#logging.info(threading.enumerate())</span></span><br></pre></td></tr></table></figure></div><div class="tab-pane" id="udp-2"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">FORMAT = <span class="string">&#x27;Thread info: %(thread)d %(threadName)s %(message)s&#x27;</span></span><br><span class="line">logging.basicConfig(<span class="built_in">format</span>=FORMAT,level=logging.INFO)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ChatServer</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, ip:<span class="built_in">str</span>=<span class="string">&#x27;127.0.0.1&#x27;</span>, port:<span class="built_in">int</span>=<span class="number">9999</span>, interval:<span class="built_in">int</span>=<span class="number">10</span></span>):</span><br><span class="line">        self.socket = socket.socket(<span class="built_in">type</span>=socket.SOCK_DGRAM)</span><br><span class="line">        self.addr = ip,port</span><br><span class="line">        <span class="comment">#sendto按address发送，考虑一段时间没client不发数据就认为它不在，所以用字典存时间</span></span><br><span class="line">        self.clients = &#123;&#125;<span class="comment"># 记录客户端，改为字典</span></span><br><span class="line">        self.interval = interval <span class="comment"># 默认10秒，超时就要移除对应的客户端</span></span><br><span class="line">        self.event = threading.Event()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">start</span>(<span class="params">self</span>):</span><br><span class="line">        self.socket.bind(self.addr)</span><br><span class="line">        threading.Thread(target=self.recv, name=<span class="string">&#x27;recv&#x27;</span>).start()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">recv</span>(<span class="params">self</span>):</span><br><span class="line">       <span class="keyword">while</span> <span class="keyword">not</span> self.event.is_set():</span><br><span class="line">            localset = <span class="built_in">set</span>() <span class="comment">#记录本次要清理client的address</span></span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                data,caddr = self.socket.recvfrom(<span class="number">1024</span>) <span class="comment">#返回(data,(ip,port))，data是bytes类型，caddr是二元组</span></span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                self.stop()</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">#client主动退出</span></span><br><span class="line">            <span class="keyword">if</span> data == <span class="string">b&#x27;quit&#x27;</span>:</span><br><span class="line">                logging.info(<span class="string">&#x27;&#123;&#125; quit&#x27;</span>.<span class="built_in">format</span>(caddr))</span><br><span class="line">                self.clients.pop(caddr)</span><br><span class="line">                <span class="keyword">continue</span> <span class="comment"># 不能用break</span></span><br><span class="line"></span><br><span class="line">            current = datetime.datetime.now().timestamp()</span><br><span class="line">            self.clients[caddr] = current</span><br><span class="line"></span><br><span class="line">            msg = <span class="string">&#x27;&#123;&#125; &#123;&#125;&#x27;</span>.<span class="built_in">format</span>(datetime.datetime.now(),data.decode())</span><br><span class="line">            logging.info(msg)</span><br><span class="line">            <span class="comment">#超时清理client，这里也可以用锁</span></span><br><span class="line">            <span class="keyword">for</span> address,stamp <span class="keyword">in</span> self.clients.items():</span><br><span class="line">                    <span class="keyword">if</span> current - stamp &gt; self.interval:</span><br><span class="line">                        localset.add(address)</span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        <span class="comment">#sendto只需要key即可,key是address</span></span><br><span class="line">                        self.socket.sendto(msg.encode(),address)</span><br><span class="line">            <span class="comment">#字典不能一边遍历，一边改变长度，这里先把要pop的添加到set中，然后统一pop</span></span><br><span class="line">            <span class="keyword">for</span> address <span class="keyword">in</span> localset:</span><br><span class="line">                self.clients.pop(address)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">stop</span>(<span class="params">self</span>):</span><br><span class="line">        self.event.<span class="built_in">set</span>()</span><br><span class="line">        self.socket.close()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    cs = ChatServer()</span><br><span class="line">    cs.start()</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        cmd = <span class="built_in">input</span>(<span class="string">&#x27;&gt;&gt;&gt;&#x27;</span>).strip()</span><br><span class="line">        <span class="keyword">if</span> cmd == <span class="string">&#x27;quit&#x27;</span>:</span><br><span class="line">            cs.stop()</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        logging.info(cs.clients.keys())</span><br></pre></td></tr></table></figure></div></div></div>
+<p>上例中服务器端，使用了心跳机制（一定时间内无通信即可断开），客户端不需要响应。</p>
+<p>在服务器端，可加一个心跳机制或响应机制。<br />
+心跳机制：就是一端定时，或定时发往另一端的信息，一般每次数据越少越好。心跳时间间隔约定好就行。<br />
+响应机制：一端收到另一端的消息后返回的确认信息。</p>
+<p>一般来讲：<br />
+（1）客户端定时发往服务端的，服务端并不需要响应回复客户端，只需要记录该客户端还活着就行了。<br />
+（2）服务端定时发往客户端的，一般需要客户端响应响应来表示活着，如果没有收到响应的客户端，服务端移除其信息。这种实现较为复杂，用的较少。<br />
+（3）也可以双向都使用心跳和响应，用的更少。</p>
+<h2 id="socketserver">SocketServer</h2>
+<p>socket编程过于底层，编程虽然有套路，但是想要写出健壮的代码还是比较困难的，所以很多语言都对socket底层API进行封装，Python的封装就是——socketserver模块。它是网络服务编程框架，便于企业级快速开发。SocketServer简化了网络服务器的编写。</p>
+<p>继承关系：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">+------------+</span><br><span class="line">| BaseServer |</span><br><span class="line">+------------+</span><br><span class="line">        |</span><br><span class="line">        v</span><br><span class="line">+-----------+        +------------------+</span><br><span class="line">| TCPServer |-------&gt;| UnixStreamServer |</span><br><span class="line">+-----------+        +------------------+</span><br><span class="line">        |</span><br><span class="line">        v</span><br><span class="line">+-----------+        +--------------------+</span><br><span class="line">| UDPServer |-------&gt;| UnixDatagramServer |</span><br><span class="line">+-----------+        +--------------------+</span><br></pre></td></tr></table></figure></p>
+<h3 id="创建server对象和使用">创建Server对象和使用</h3>
+<p>SocketServer有4个同步类：<br />
+（1）TCPServer<br />
+（2）UDPServer<br />
+（3）UnixStreamServer<br />
+（4）UnixDatagramServer</p>
+<p>SocketServer有2个Mixin类，用来支持异步：<br />
+（1）ForkingMixIn:<br />
+　　　class ForkingUDPServer(ForkingMixIn, UDPServer)<br />
+　　　class ForkingTCPServer(ForkingMixIn, TCPServer)<br />
+（2）ThreadingMixIn：<br />
+　　　class ThreadingUDPServer(ThreadingMixIn, UDPServer)<br />
+　　　class ThreadingTCPServer(ThreadingMixIn, TCPServer)<br />
+fork是创建多进程，thread是创建多线程。fork需要操作系统支持，Windows不支持。</p>
+<p>以上这些类，都可以创建对应的Server对象。<br />
+一般使用BaseServer创建Server对象：<br />
+<code>socketserver.BaseServer(server_address, RequestHandlerClass)</code>：需要提供服务器绑定的地址信息，和用于处理请求的RequestHandlerClass类。RequestHandlerClass类必须继承BaseRequestHandler类或其子类，可重写其<code>handle()</code>、<code>setup()</code>、<code>finish()</code>。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socketserver</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyTCPHandler</span>(socketserver.BaseRequestHandler):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    The request handler class for our server.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    It is instantiated once per connection to the server, and must</span></span><br><span class="line"><span class="string">    override the handle() method to implement communication to the</span></span><br><span class="line"><span class="string">    client.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">handle</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="comment"># self.request is the TCP socket connected to the client</span></span><br><span class="line">        self.data = self.request.recv(<span class="number">1024</span>).strip()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;&#123;&#125; wrote:&quot;</span>.<span class="built_in">format</span>(self.client_address[<span class="number">0</span>]))</span><br><span class="line">        <span class="built_in">print</span>(self.data)</span><br><span class="line">        <span class="comment"># just send back the same data, but upper-cased</span></span><br><span class="line">        self.request.sendall(self.data.upper())</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyTCPHandler</span>(socketserver.StreamRequestHandler):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">handle</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="comment"># self.rfile is a file-like object created by the handler;</span></span><br><span class="line">        <span class="comment"># we can now use e.g. readline() instead of raw recv() calls</span></span><br><span class="line">        self.data = self.rfile.readline().strip()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;&#123;&#125; wrote:&quot;</span>.<span class="built_in">format</span>(self.client_address[<span class="number">0</span>]))</span><br><span class="line">        <span class="built_in">print</span>(self.data)</span><br><span class="line">        <span class="comment"># Likewise, self.wfile is a file-like object used to write back</span></span><br><span class="line">        <span class="comment"># to the client</span></span><br><span class="line">        self.wfile.write(self.data.upper())</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    HOST, PORT = <span class="string">&quot;localhost&quot;</span>, <span class="number">9999</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Create the server, binding to localhost on port 9999</span></span><br><span class="line">    <span class="keyword">with</span> socketserver.TCPServer((HOST, PORT), MyTCPHandler) <span class="keyword">as</span> server:</span><br><span class="line">        <span class="comment"># Activate the server; this will keep running until you</span></span><br><span class="line">        <span class="comment"># interrupt the program with Ctrl-C</span></span><br><span class="line">        server.serve_forever()</span><br></pre></td></tr></table></figure><br />
+Server对象的方法：<br />
+（1）serve_forever(poll_interval=0.5)：处理请求，直到shutdown()。每隔poll_interval秒检测一次是否shutdown()。<br />
+（2）shutdown()：关闭服务。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>SoundMemories
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://soundmemories.github.io/2019/02/05/Python/18.Python-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" title="Python-网络编程">https://soundmemories.github.io/2019/02/05/Python/18.Python-网络编程/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/05/Python/17.Python-%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95/" rel="prev" title="Python-日志记录">
+                  <i class="fa fa-chevron-left"></i> Python-日志记录
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/08/Python/19.Python-%E5%AF%BC%E5%85%A5%E5%92%8C%E6%89%93%E5%8C%85/" rel="next" title="Python-导入和打包">
+                  Python-导入和打包 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">SoundMemories</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"neutral"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.min.js","integrity":"sha256-JFptYy4KzJ5OQP+Q9fubNf3cxpPPmZKqUOovyEONKrQ="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://soundmemories.github.io/2019/02/05/Python/18.Python-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

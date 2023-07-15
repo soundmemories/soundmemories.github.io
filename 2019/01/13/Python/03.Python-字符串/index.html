@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.1","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="字符串  单引号、双引号、三引号都可以。 特性：  一旦定义不能改变（赋值），所以生成的都是新字符串。 python中只有字符串类型，没有字符类型。 本身可迭代。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python-字符串">
+<meta property="og:url" content="https://soundmemories.github.io/2019/01/13/Python/03.Python-%E5%AD%97%E7%AC%A6%E4%B8%B2/index.html">
+<meta property="og:site_name" content="SoundMemories">
+<meta property="og:description" content="字符串  单引号、双引号、三引号都可以。 特性：  一旦定义不能改变（赋值），所以生成的都是新字符串。 python中只有字符串类型，没有字符类型。 本身可迭代。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-01-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-05-29T15:44:47.146Z">
+<meta property="article:author" content="SoundMemories">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://soundmemories.github.io/2019/01/13/Python/03.Python-%E5%AD%97%E7%AC%A6%E4%B8%B2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://soundmemories.github.io/2019/01/13/Python/03.Python-%E5%AD%97%E7%AC%A6%E4%B8%B2/","path":"2019/01/13/Python/03.Python-字符串/","title":"Python-字符串"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Python-字符串 | SoundMemories</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">SoundMemories</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">8</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">8</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">122</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">1.</span> <span class="nav-text">字符串</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.</span> <span class="nav-text">其他函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#f-string"><span class="nav-number">1.2.</span> <span class="nav-text">f-string</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%A0%BC%E5%BC%8F%E5%8C%96format"><span class="nav-number">1.3.</span> <span class="nav-text">字符串格式化format</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%88%A4%E6%96%AD"><span class="nav-number">1.4.</span> <span class="nav-text">字符串判断</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SoundMemories"
+      src="/images/avstar.png">
+  <p class="site-author-name" itemprop="name">SoundMemories</p>
+  <div class="site-description" itemprop="description">今日事，今日毕</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">122</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NvdW5kbWVtb3JpZXM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;soundmemories"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNvdW5kbWVtb3JpZXNAMTYzLmNvbQ==" title="E-Mail → mailto:soundmemories@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+        <div class="pjax">
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2019/01/13/Python/03.Python-%E5%AD%97%E7%AC%A6%E4%B8%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Python-字符串 | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python-字符串
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-01-13 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-13T00:00:00+08:00">2019-01-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="字符串">字符串</h3>
+<ul>
+<li>单引号、双引号、三引号都可以。</li>
+<li>特性：
+<ul>
+<li>一旦定义不能改变（赋值），所以生成的都是新字符串。</li>
+<li>python中只有字符串类型，没有字符类型。</li>
+<li>本身可迭代。</li>
+</ul></li>
+</ul>
+<span id="more"></span>
+<p>使用<code>str()</code>时注意：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">In: <span class="built_in">str</span>(<span class="built_in">range</span>(<span class="number">5</span>))</span><br><span class="line">Out: <span class="string">&#x27;range(0, 5)&#x27;</span> </span><br></pre></td></tr></table></figure><br />
+把<code>range(5)</code>当字符串了！</p>
+<p>使用<code>print(sep,end)</code>时注意：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">In: <span class="built_in">print</span>(<span class="string">&#x27;hello&#x27;</span>,<span class="string">&#x27;world&#x27;</span>,sep=<span class="string">&#x27;-&#x27;</span>,end=<span class="string">&quot;!&quot;</span>)</span><br><span class="line">Out: hello-world!</span><br></pre></td></tr></table></figure><br />
+sep：输出多个值之间的分隔符。<br />
+end：结束时的分隔符。</p>
+<p>三元运算符：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">In: <span class="string">&#x27;true&#x27;</span> <span class="keyword">if</span> <span class="number">3</span>&gt;<span class="number">2</span> <span class="keyword">and</span> <span class="number">3</span>&lt;<span class="number">10</span> <span class="keyword">else</span> <span class="string">&#x27;false&#x27;</span></span><br><span class="line">Out: <span class="string">&#x27;true&#x27;</span></span><br></pre></td></tr></table></figure><br />
+字符串运算：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">In:d = <span class="string">&#x27;ab&#x27;</span>*<span class="number">5</span> </span><br><span class="line">Out:<span class="string">&#x27;ababababab&#x27;</span></span><br><span class="line"><span class="comment"># 返回的是新字符串</span></span><br><span class="line">In:d += <span class="string">&#x27;c&#x27;</span></span><br><span class="line">Out:<span class="string">&#x27;abababababc&#x27;</span></span><br><span class="line"><span class="comment"># 字符串的 += 特殊，正常+=是就地修改;</span></span><br><span class="line"><span class="comment"># 返回的是新字符串，相当于d=d+&#x27;c&#x27;生成新的字符串在赋值给d，字符串不可修改，原字符串是被清空了。</span></span><br></pre></td></tr></table></figure><br />
+<code>for _ in range(10)</code>:
+当计数器时可以不写变量，使用<code>_</code>代替。</p>
+<h4 id="其他函数">其他函数</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;string&quot;</span>.join(iterable)-&gt;<span class="built_in">str</span> </span><br><span class="line"><span class="comment"># 使用string作为分隔符，iterable是可迭代字符串。iterable若不是字符串可用map(str,iterable)转换成str。</span></span><br><span class="line"></span><br><span class="line">.replace(old, new[,count]))-&gt;<span class="built_in">str</span></span><br><span class="line"><span class="comment"># old旧字符，new新字符，count替换次数。</span></span><br><span class="line"></span><br><span class="line">.strip([chars])-&gt;<span class="built_in">str</span></span><br><span class="line"><span class="comment"># 默认去除字符串两头的空白字符，()里面指定字符时，\t \r \n之类的就算非空白字符了。</span></span><br><span class="line"><span class="comment"># 非整体匹配，挨个匹配，两边匹配到第一个不是指定的字符就停止，同理还有lstrip,rstrip。</span></span><br><span class="line"></span><br><span class="line">.index(sub[,start[,end]])-&gt;index</span><br><span class="line"><span class="comment"># 前闭后开，返回从左第一个指定字符的索引，找不到返回异常。O(n)</span></span><br><span class="line"></span><br><span class="line">.find(sub[,start[,end]])-&gt;index </span><br><span class="line"><span class="comment"># 返回从左第一个指定字符的索引，找不到返回-1。</span></span><br><span class="line">.rfind()-&gt;index </span><br><span class="line"><span class="comment"># 返回从右第一个指定字符的索引，找不到返回-1</span></span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;v&#x27;</span> <span class="keyword">in</span> string -&gt; <span class="built_in">bool</span> </span><br><span class="line"><span class="comment"># 在字符串中查找字符&#x27;v&#x27;返回bool值。</span></span><br><span class="line"></span><br><span class="line">.count(sub[,start[,end]])-&gt;<span class="built_in">int</span></span><br><span class="line"><span class="comment"># 返回列表中匹配value的次数，O(n)</span></span><br><span class="line"></span><br><span class="line">.startswith(prefix[,start[,end]])-&gt;<span class="built_in">bool</span> </span><br><span class="line"><span class="comment"># 头匹配O(1)</span></span><br><span class="line">.endswith(suffix[,start[,end]])-&gt;<span class="built_in">bool</span> </span><br><span class="line"><span class="comment"># 结尾匹配O(1)</span></span><br><span class="line"></span><br><span class="line">.split(sep=切割符,maxsplit=最大切割数)-&gt;<span class="built_in">list</span></span><br><span class="line">.rsplit(sep=切割符,maxsplit=最大切割数)-&gt;<span class="built_in">list</span></span><br><span class="line"><span class="comment"># 默认空白为切割符、切掉尽可能多的空白，切割符丢掉。</span></span><br><span class="line"><span class="comment"># rsplit先从右侧切割</span></span><br><span class="line">.splitlines() </span><br><span class="line"><span class="comment"># 按行切。</span></span><br><span class="line">.splitlines(<span class="literal">True</span>) </span><br><span class="line"><span class="comment"># 保留切掉的东西。</span></span><br><span class="line"></span><br><span class="line">.partition(sep)-&gt;<span class="built_in">tuple</span> </span><br><span class="line">.rpartition(sep)-&gt;<span class="built_in">tuple</span> </span><br><span class="line"><span class="comment"># 根据指定的分隔符将字符串进行分割。</span></span><br><span class="line"><span class="comment"># 如果字符串包含指定的分隔符，则返回一个3元的元组，第一个为分隔符左边的子串，第二个为分隔符本身，第三个为分隔符右边的子串。</span></span><br><span class="line"><span class="comment"># rpartition从右侧开始切割</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">enumerate</span>(iterable, start=<span class="number">0</span>)</span><br><span class="line"><span class="comment"># 枚举，生成(下标、元素)的2元组，可立即使用解构。</span></span><br></pre></td></tr></table></figure>
+<h4 id="f-string">f-string</h4>
+<p>python3.6版本新加入的形式。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">name = <span class="string">&#x27;Molly&#x27;</span></span><br><span class="line">hight = <span class="number">170.4</span></span><br><span class="line">score_math = <span class="number">95</span></span><br><span class="line">score_english = <span class="number">89</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;大家好！我叫<span class="subst">&#123;name&#125;</span>，我的身高是<span class="subst">&#123;hight:<span class="number">.3</span>f&#125;</span> cm, 数学成绩<span class="subst">&#123;score_math&#125;</span>分,英语成绩<span class="subst">&#123;score_english&#125;</span>分&quot;</span>)</span><br></pre></td></tr></table></figure></p>
+<p>实例：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># b前面2个空格切除，2个空格中间是空，所以输出一个&#x27;&#x27;，三个空格输出两个&#x27;&#x27;。</span></span><br><span class="line">In:<span class="string">&#x27;a  b&#x27;</span>.split(<span class="string">&#x27; &#x27;</span>)</span><br><span class="line">Out:[<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;&#x27;</span>,<span class="string">&#x27;b&#x27;</span>] </span><br><span class="line"></span><br><span class="line">In:<span class="string">&#x27;a  b&#x27;</span>.rsplit(<span class="string">&#x27; &#x27;</span>)</span><br><span class="line">Out:[<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;&#x27;</span>,<span class="string">&#x27;b&#x27;</span>]</span><br><span class="line"></span><br><span class="line">In:<span class="string">&#x27;a,b,c&#x27;</span>.partition(<span class="string">&#x27;,&#x27;</span>) </span><br><span class="line">Out:(<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;,&#x27;</span>, <span class="string">&#x27;b,c&#x27;</span>)</span><br><span class="line"></span><br><span class="line">In:<span class="string">&#x27;a,b,c&#x27;</span>.rpartition(<span class="string">&#x27;,&#x27;</span>)</span><br><span class="line">Out:(<span class="string">&#x27;a,b&#x27;</span>, <span class="string">&#x27;,&#x27;</span>, <span class="string">&#x27;c&#x27;</span>) </span><br><span class="line"></span><br><span class="line">In:<span class="string">&#x27;a,b,c&#x27;</span>.rpartition(<span class="string">&#x27; &#x27;</span>)</span><br><span class="line">Out:(<span class="string">&#x27;&#x27;</span>,<span class="string">&#x27;&#x27;</span>,<span class="string">&#x27;a,b,c&#x27;</span>)</span><br></pre></td></tr></table></figure></p>
+<h4 id="字符串格式化format">字符串格式化format</h4>
+<p><code>.format(*args, **kwargs)-&gt;str</code><br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 打印花括号 </span></span><br><span class="line">In:<span class="string">&quot;&#123;&#123;&#125;&#125;&quot;</span>.<span class="built_in">format</span>()</span><br><span class="line">Out:&#123;&#125;</span><br><span class="line">   </span><br><span class="line"><span class="comment"># 控制小数点宽度。</span></span><br><span class="line">In:<span class="string">&#x27;&#123;:.2f&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="number">1.2345</span>)</span><br><span class="line">Out:<span class="string">&#x27;1.23&#x27;</span> </span><br><span class="line"></span><br><span class="line"><span class="comment"># 不写f变成科学计数法。</span></span><br><span class="line">In:<span class="string">&#x27;&#123;:.2&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="number">12.2345</span>)</span><br><span class="line">Out:<span class="string">&#x27;1.2e+01&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 百分制输出。</span></span><br><span class="line">In:<span class="string">&#x27;&#123;:.3%&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="number">1</span>/<span class="number">3</span>)</span><br><span class="line">Out:<span class="string">&#x27;33.333%&#x27;</span> </span><br><span class="line"></span><br><span class="line"><span class="comment"># 超出范围全都输出。</span></span><br><span class="line">In:<span class="string">&#x27;&#123;:2&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="number">123</span>)</span><br><span class="line">Out:<span class="string">&#x27;123&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 0索引号，3表示占三位，默认右对齐，</span></span><br><span class="line">In:<span class="string">&#x27;&#123;0:3&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="number">2</span>)</span><br><span class="line">Out:<span class="string">&#x27;  2&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 右对齐</span></span><br><span class="line">In:<span class="string">&#x27;&#123;:&gt;3&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="number">2</span>)</span><br><span class="line">Out:<span class="string">&#x27;  2&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 左对齐,空位补0</span></span><br><span class="line">In:<span class="string">&#x27;&#123;:0&lt;3&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="number">2</span>)</span><br><span class="line">Out:<span class="string">&#x27;200&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 居中</span></span><br><span class="line">In:<span class="string">&#x27;&#123;:^3&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="number">2</span>)</span><br><span class="line">Out:<span class="string">&#x27; 2 &#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 转化成16进制&#x27;0x7f&#x27;，#输出加0x。</span></span><br><span class="line">In:<span class="string">&#x27;&#123;:#x&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="number">127</span>)</span><br><span class="line">Out:<span class="string">&#x27;0x7f&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># *号能把后面一个整体的元素按顺序输出直到&#123;&#125;填满。</span></span><br><span class="line">In:<span class="string">&#x27;&#123;&#125;&#x27;</span>.<span class="built_in">format</span>(*<span class="string">&quot;192.168.0.1&quot;</span>.split(<span class="string">&#x27;.&#x27;</span>))</span><br><span class="line">Out:<span class="string">&#x27;192&#x27;</span></span><br></pre></td></tr></table></figure></p>
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">In:<span class="string">&#x27;a&#123;&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="number">1</span>)</span><br><span class="line">Out:<span class="string">&#x27;a1&#x27;</span></span><br><span class="line"></span><br><span class="line">In:<span class="string">&#x27;a&#123;&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">Out:<span class="string">&#x27;a1&#x27;</span></span><br><span class="line"></span><br><span class="line">In:<span class="string">&#x27;a&#123;0&#125; &#123;1&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">Out:<span class="string">&#x27;a1 2&#x27;</span></span><br><span class="line"></span><br><span class="line">In:<span class="string">&#x27;&#123;&#125; &#123;&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="string">&#x27;a&#x27;</span>,[<span class="string">&#x27;b&#x27;</span>])</span><br><span class="line">Out:<span class="string">&quot;a [&#x27;b&#x27;]&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># p1是namedtuple可以用.来引用它的属性。</span></span><br><span class="line">In:<span class="string">&quot;&#123;&#125; &#123;&#125;&quot;</span>.<span class="built_in">format</span>(p1.x,p1.y)</span><br></pre></td></tr></table></figure>
+<h4 id="字符串判断">字符串判断</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">.upper() <span class="comment">#转大写</span></span><br><span class="line">.lower() <span class="comment">#转小写</span></span><br><span class="line">.title() <span class="comment">#单词首字母大写</span></span><br><span class="line">.center(width,[fillchar]) <span class="comment"># 返回一个长度width的新字符串,原字符串居中,剩余位置使用fillchar/空格填充</span></span><br><span class="line">.swapcase() <span class="comment"># 转换大小写</span></span><br><span class="line">.capitalize() <span class="comment"># 句子首字母大写</span></span><br><span class="line">.zfill(宽度) <span class="comment"># 打印宽度，居右，左边用0填充</span></span><br><span class="line">.ljust() <span class="comment"># 左对齐</span></span><br><span class="line">.rjust() <span class="comment"># 右对齐</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.isalnum() <span class="comment">#是否是字母和数字组成</span></span><br><span class="line">.isalpha() <span class="comment">#是否是字母</span></span><br><span class="line">.isdecimal() <span class="comment"># 是否只包含十进制数字</span></span><br><span class="line">.isdigit() <span class="comment"># 是否全部数字(0~9)正整数</span></span><br><span class="line">.isidentifier() <span class="comment"># 是不是字母和下划线开头，其他都是字母、数字、下划线</span></span><br><span class="line">.islower() <span class="comment"># 是否都是小写</span></span><br><span class="line">.isupper() <span class="comment"># 是否都是大写</span></span><br><span class="line">.isspace() <span class="comment"># 是否只包含空白符</span></span><br></pre></td></tr></table></figure>
+<p>以上函数返回的都是<code>bool</code>值。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>SoundMemories
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://soundmemories.github.io/2019/01/13/Python/03.Python-%E5%AD%97%E7%AC%A6%E4%B8%B2/" title="Python-字符串">https://soundmemories.github.io/2019/01/13/Python/03.Python-字符串/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/01/12/Python/02.Python-%E5%88%97%E8%A1%A8%E3%80%81%E5%85%83%E7%BB%84/" rel="prev" title="Python-列表、元组">
+                  <i class="fa fa-chevron-left"></i> Python-列表、元组
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/01/14/Python/04.Python-%E9%9B%86%E5%90%88/" rel="next" title="Python-集合">
+                  Python-集合 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">SoundMemories</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"neutral"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.min.js","integrity":"sha256-JFptYy4KzJ5OQP+Q9fubNf3cxpPPmZKqUOovyEONKrQ="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://soundmemories.github.io/2019/01/13/Python/03.Python-%E5%AD%97%E7%AC%A6%E4%B8%B2/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>
