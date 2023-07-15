@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.1","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Flask介绍 Flask诞生于2010年，是Armin ronacher（人名）用 Python 语言基于 Werkzeug 工具箱编写的轻量级Web开发框架。 Flask 本身相当于一个内核，其他几乎所有的功能都要用到扩展（邮件扩展Flask-Mail，用户认证Flask-Login，数据库Flask-SQLAlchemy），都需要用第三方的扩展来实现。比如可以用 Flask 扩展加">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flask">
+<meta property="og:url" content="https://soundmemories.github.io/2021/07/19/Python/22.Flask/index.html">
+<meta property="og:site_name" content="SoundMemories">
+<meta property="og:description" content="Flask介绍 Flask诞生于2010年，是Armin ronacher（人名）用 Python 语言基于 Werkzeug 工具箱编写的轻量级Web开发框架。 Flask 本身相当于一个内核，其他几乎所有的功能都要用到扩展（邮件扩展Flask-Mail，用户认证Flask-Login，数据库Flask-SQLAlchemy），都需要用第三方的扩展来实现。比如可以用 Flask 扩展加">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-07-18T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-06T14:15:02.722Z">
+<meta property="article:author" content="SoundMemories">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://soundmemories.github.io/2021/07/19/Python/22.Flask/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://soundmemories.github.io/2021/07/19/Python/22.Flask/","path":"2021/07/19/Python/22.Flask/","title":"Flask"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Flask | SoundMemories</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">SoundMemories</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">8</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">8</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">122</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#flask%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">Flask介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A1%86%E6%9E%B6%E5%AF%B9%E6%AF%94"><span class="nav-number">1.1.</span> <span class="nav-text">框架对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E6%89%A9%E5%B1%95%E5%8C%85"><span class="nav-number">1.2.</span> <span class="nav-text">常用扩展包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.3.</span> <span class="nav-text">安装</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B7%A5%E7%A8%8B%E6%90%AD%E5%BB%BA"><span class="nav-number">2.</span> <span class="nav-text">工程搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#hello-world%E7%A8%8B%E5%BA%8F"><span class="nav-number">2.1.</span> <span class="nav-text">Hello World程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0"><span class="nav-number">2.2.</span> <span class="nav-text">应用程序配置参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#app.run-%E5%8F%82%E6%95%B0"><span class="nav-number">2.3.</span> <span class="nav-text">app.run 参数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B7%AF%E7%94%B1"><span class="nav-number">3.</span> <span class="nav-text">路由</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E8%B7%AF%E7%94%B1%E4%BF%A1%E6%81%AF"><span class="nav-number">3.1.</span> <span class="nav-text">查询路由信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E5%AE%9A%E8%AF%B7%E6%B1%82%E6%96%B9%E5%BC%8F"><span class="nav-number">3.2.</span> <span class="nav-text">指定请求方式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%93%9D%E5%9B%BE"><span class="nav-number">4.</span> <span class="nav-text">蓝图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%93%9D%E5%9B%BE%E5%88%9B%E5%BB%BA"><span class="nav-number">4.1.</span> <span class="nav-text">蓝图创建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E7%94%A8%E6%B3%95"><span class="nav-number">4.2.</span> <span class="nav-text">扩展用法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%B7%E6%B1%82"><span class="nav-number">5.</span> <span class="nav-text">请求</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#url%E8%B7%AF%E5%BE%84%E5%8F%82%E6%95%B0%E5%8A%A8%E6%80%81%E8%B7%AF%E7%94%B1"><span class="nav-number">5.1.</span> <span class="nav-text">URL路径参数（动态路由）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BD%AC%E6%8D%A2%E5%99%A8"><span class="nav-number">5.2.</span> <span class="nav-text">自定义转换器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%8F%82%E6%95%B0"><span class="nav-number">5.3.</span> <span class="nav-text">其他参数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%93%8D%E5%BA%94"><span class="nav-number">6.</span> <span class="nav-text">响应</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%94%E5%9B%9E%E6%A8%A1%E6%9D%BF"><span class="nav-number">6.1.</span> <span class="nav-text">返回模板</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E5%AE%9A%E5%90%91"><span class="nav-number">6.2.</span> <span class="nav-text">重定向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%94%E5%9B%9Ejson"><span class="nav-number">6.3.</span> <span class="nav-text">返回JSON</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%8A%B6%E6%80%81%E7%A0%81%E5%92%8C%E5%93%8D%E5%BA%94%E5%A4%B4"><span class="nav-number">6.4.</span> <span class="nav-text">自定义状态码和响应头</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cookie"><span class="nav-number">6.5.</span> <span class="nav-text">Cookie</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#session"><span class="nav-number">6.6.</span> <span class="nav-text">Session</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">7.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SoundMemories"
+      src="/images/avstar.png">
+  <p class="site-author-name" itemprop="name">SoundMemories</p>
+  <div class="site-description" itemprop="description">今日事，今日毕</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">122</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NvdW5kbWVtb3JpZXM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;soundmemories"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNvdW5kbWVtb3JpZXNAMTYzLmNvbQ==" title="E-Mail → mailto:soundmemories@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+        <div class="pjax">
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2021/07/19/Python/22.Flask/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Flask | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Flask
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-07-19 00:00:00" itemprop="dateCreated datePublished" datetime="2021-07-19T00:00:00+08:00">2021-07-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>17 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="flask介绍">Flask介绍</h1>
+<p>Flask诞生于2010年，是Armin ronacher（人名）用 Python 语言基于
+Werkzeug 工具箱编写的轻量级Web开发框架。</p>
+<p>Flask
+本身相当于一个内核，其他几乎所有的功能都要用到扩展（邮件扩展Flask-Mail，用户认证Flask-Login，数据库Flask-SQLAlchemy），都需要用第三方的扩展来实现。比如可以用
+Flask 扩展加入ORM、窗体验证工具，文件上传、身份验证等。Flask
+没有默认使用的数据库，你可以选择 MySQL，也可以用 NoSQL。</p>
+<p>其<strong>WSGI工具箱</strong>采用
+Werkzeug（路由模块），<strong>模板引擎</strong>则使用 Jinja2。这两个也是
+Flask 框架的核心。</p>
+<p>最新版本：1.0.2、2.1.2</p>
+<h2 id="框架对比">框架对比</h2>
+<p>重量级的框架：为方便业务程序的开发，提供了丰富的工具、组件，如Django<br />
+轻量级的框架：只提供Web框架的核心功能，自由、灵活、高度定制，如Flask、Tornado</p>
+<p>django提供了：<br />
+1. django-admin快速创建项目工程目录<br />
+2. manage.py 管理项目工程<br />
+3. orm模型（数据库抽象层）<br />
+4. admin后台管理站点<br />
+5. 缓存机制<br />
+6. 文件存储系统<br />
+7. 用户认证系统</p>
+<p>而这些，flask都没有，都需要扩展包来提供。</p>
+<h2 id="常用扩展包">常用扩展包</h2>
+<p>扩展列表：http://flask.pocoo.org/extensions/</p>
+<p>Flask-SQLalchemy：操作数据库；<br />
+Flask-script：插入脚本；<br />
+Flask-migrate：管理迁移数据库；<br />
+Flask-Session：Session存储方式指定；<br />
+Flask-WTF：表单；<br />
+Flask-Mail：邮件；<br />
+Flask-Bable：提供国际化和本地化支持，翻译；<br />
+Flask-Login：认证用户状态；<br />
+Flask-OpenID：认证；<br />
+<strong>Flask-RESTful：开发REST API的工具；</strong><br />
+Flask-Bootstrap：集成前端Twitter Bootstrap框架；<br />
+Flask-Moment：本地化日期和时间；<br />
+Flask-Admin：简单而可扩展的管理接口的框架</p>
+<h2 id="安装">安装</h2>
+<p>建议初学者创建修环境<code>mkvirtualenv flask -p python3</code>，再<code>pip install flask</code>。</p>
+<p>虚拟环境命令：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 虚拟环境</span></span><br><span class="line">mkvirtualenv  <span class="comment"># 创建虚拟环境</span></span><br><span class="line">rmvirtualenv  <span class="comment"># 删除虚拟环境</span></span><br><span class="line">workon  <span class="comment"># 进入虚拟环境、查看所有虚拟环境</span></span><br><span class="line">deactivate  <span class="comment"># 退出虚拟环境</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pip</span></span><br><span class="line">pip install  <span class="comment"># 安装依赖包</span></span><br><span class="line">pip uninstall  <span class="comment"># 卸载依赖包</span></span><br><span class="line">pip <span class="built_in">list</span>  <span class="comment"># 查看已安装的依赖包</span></span><br><span class="line">pip freeze  <span class="comment"># 冻结当前环境的依赖包</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="工程搭建">工程搭建</h1>
+<h2 id="hello-world程序">Hello World程序</h2>
+<figure class="highlight python"><figcaption><span>app.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 导入Flask类</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line"></span><br><span class="line"><span class="comment">#Flask类接收一个参数__name__</span></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 装饰器的作用是将路由映射到视图函数index</span></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;Hello World&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Flask应用程序实例的run方法启动WEB服务器</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure>
+<p>1、首先我们导入了 Flask 类。 该类的实例将会成为我们的 WSGI
+应用。<br />
+2、接着我们创建一个该类的实例<code>Flask(__name__)</code>。第一个参数是应用模块或者包的名称。这个参数是必需的，这样
+Flask
+才能知道在哪里可以找到模板和静态文件等东西。<code>Flask(__name__)</code>就是告诉Flask框架根目录位置，从而Flask可以查找其他配置文件。比如创建的flask项目目录如下：<br />
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- test</span><br><span class="line">  - static</span><br><span class="line">  - tmplates</span><br><span class="line">  - app.py</span><br></pre></td></tr></table></figure><br />
+通过<code>Flask(__name__)</code>，Flask知道了根目录test，从而知道本目录下的其他配置文件或文件夹(static、tmplates)，不像Django需要手动指定配置目录。</p>
+<p>3、然后我们使用 <code>route()</code> 装饰器来告诉 Flask 触发函数的
+URL 。</p>
+<p><code>Flask</code>类实例化时可传递的参数：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import_name      <span class="comment"># Flask程序所在的包(模块)，传 __name__ 就可以</span></span><br><span class="line">                 <span class="comment"># 其可以决定 Flask 在访问静态文件时查找的路径</span></span><br><span class="line">static_url_path  <span class="comment"># 静态文件访问路径，可以不传，默认为：/ + static_folder</span></span><br><span class="line">static_folder    <span class="comment"># 静态文件存储的文件夹，可以不传，默认为 static</span></span><br><span class="line">template_folder  <span class="comment"># 模板文件存储的文件夹，可以不传，默认为 templates</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="应用程序配置参数">应用程序配置参数</h2>
+<p><code>Flask(__name__)</code>对象初始化参数仅仅设置的是Flask本身的属性，比如Flask从哪里读取静态文件、模板文件。</p>
+<p>应用程序配置参数设置的是一个Web应用工程的相关信息，比如：数据库的连接信息、日志的配置信息、自定义的配置信息。<br />
+这就需要集中管理项目的所有配置信息：<br />
+1. Django将所有配置信息都放到了settings.py文件中，而Flask则不同。<br />
+2.
+Flask将配置信息保存到了<strong>app.config</strong>属性中，该属性可以<strong>按照字典类型进行操作</strong>。</p>
+<p>Flask应用程序配置参数：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 读取</span></span><br><span class="line">app.config.get(name)</span><br><span class="line">app.config[name]</span><br></pre></td></tr></table></figure><br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置</span></span><br><span class="line"><span class="comment"># 1. 从配置“对象”中加载，配置对象可以写一个类</span></span><br><span class="line">app.config.from_object(配置对象)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 从配置文件中加载</span></span><br><span class="line">app.config.from_pyfile(<span class="string">&#x27;setting.py&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 从环境变量中加载(使用环境变量加载不想出现在代码中的敏感配置信息)</span></span><br><span class="line">app.config.from_envvar(<span class="string">&#x27;环境变量名&#x27;</span>)</span><br></pre></td></tr></table></figure><br />
+优缺点：<br />
+1.
+从配置“对象”中加载：可以继承，适用于配置多变动的情况；缺点是敏感信息暴露。<br />
+2.
+从配置文件中加载：不会暴露敏感信息；缺点是不能继承，配置地址写死，不易变动。<br />
+3.
+从环境变量中加载：不会暴露敏感信息，配置地址灵活可变；缺点是不能继承，设置不方便。</p>
+<p>一般选择2种方式一起，来配置参数。</p>
+<div class="tabs" id="1"><ul class="nav-tabs"><li class="tab active"><a href="#1-1">从配置“对象”中加载</a></li><li class="tab"><a href="#1-2">从配置文件中加载</a></li><li class="tab"><a href="#1-3">从环境变量中加载</a></li></ul><div class="tab-content"><div class="tab-pane active" id="1-1"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">DefaultConfig</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;默认配置&quot;&quot;&quot;</span></span><br><span class="line">    SECRET_KEY = <span class="string">&#x27;TPmi4aLWRbyVq8zu9v82dWYW1&#x27;</span></span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"><span class="comment"># 加入SECRET_KEY配置</span></span><br><span class="line">app.config.from_object(DefaultConfig)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="built_in">print</span>(app.config[<span class="string">&#x27;SECRET_KEY&#x27;</span>])</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;hello world&quot;</span></span><br></pre></td></tr></table></figure></div><div class="tab-pane" id="1-2"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 新建一个配置文件setting.py，写入下文</span></span><br><span class="line">SECRET_KEY = <span class="string">&#x27;TPmi4aLWRbyVq8zu9v82dWYW1&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在Flask程序</span></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"><span class="comment"># 增加配置</span></span><br><span class="line">app.config.from_pyfile(<span class="string">&#x27;setting.py&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="built_in">print</span>(app.config[<span class="string">&#x27;SECRET_KEY&#x27;</span>])</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;hello world&quot;</span></span><br></pre></td></tr></table></figure></div><div class="tab-pane" id="1-3"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 先在终端中执行如下命令</span></span><br><span class="line">export PROJECT_SETTING=<span class="string">&#x27;~/setting.py&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在Flask程序</span></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"><span class="comment"># 增加配置：setting.py指定为配置文件，只不过这个文件地址存储在PROJECT_SETTING环境变量中</span></span><br><span class="line">app.config.from_envvar(<span class="string">&#x27;PROJECT_SETTING&#x27;</span>, silent=<span class="literal">True</span>) </span><br><span class="line"><span class="comment"># silent=False没有值时报错通知，默认为False</span></span><br><span class="line"><span class="comment"># True 表示安静的处理，即时没有值也让Flask正常的运行下去</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="built_in">print</span>(app.config[<span class="string">&#x27;SECRET_KEY&#x27;</span>])</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;hello world&quot;</span></span><br></pre></td></tr></table></figure></div></div></div>
+<p><strong>环境变量</strong><br />
+通俗的理解，环境变量就是我们设置在操作系统中，由操作系统代为保存的变量值。<br />
+在Linux系统中设置和读取环境变量的方式如下：<br />
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">export 变量名=变量值  # 设置</span><br><span class="line">echo $变量名  # 读取</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">例如</span></span><br><span class="line">export ITCAST=python</span><br><span class="line">echo $ITCAST</span><br></pre></td></tr></table></figure><br />
+Flask使用环境变量加载配置的本质是通过环境变量值找到配置文件。</p>
+<p>项目中的常用方式：使用工厂模式创建Flask
+app，并结合使用配置对象与环境变量加载配置。<br />
+（1）使用<strong>配置对象</strong>加载默认配置。<br />
+（2）使用<strong>环境变量</strong>加载不想出现在代码中的敏感配置信息。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">create_flask_app</span>(<span class="params">config</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    创建Flask应用</span></span><br><span class="line"><span class="string">    :param config: 配置对象</span></span><br><span class="line"><span class="string">    :return: Flask应用</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    app = Flask(__name__)</span><br><span class="line">    app.config.from_object(config)</span><br><span class="line">    <span class="comment"># 3. 从环境变量中加载</span></span><br><span class="line">    <span class="comment"># 从环境变量指向的配置文件中读取的配置信息会覆盖掉从配置对象中加载的同名参数</span></span><br><span class="line">    app.config.from_envvar(<span class="string">&quot;PROJECT_SETTING&quot;</span>, silent=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">return</span> app</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 1. 从配置“对象”中加载，配置对象可以写一个类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DefaultConfig</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;默认配置&quot;&quot;&quot;</span></span><br><span class="line">    SECRET_KEY = <span class="string">&#x27;itcast1&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 继承</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DevelopmentConfig</span>(<span class="title class_ inherited__">DefaultConfig</span>):</span><br><span class="line">    DEBUG=<span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># app = create_flask_app(DefaultConfig)</span></span><br><span class="line">app = create_flask_app(DevelopmentConfig)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="built_in">print</span>(app.config[<span class="string">&#x27;SECRET_KEY&#x27;</span>])</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;hello world&quot;</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="app.run-参数">app.run 参数</h2>
+<p>可以指定运行的主机IP地址，端口，是否开启调试模式。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app.run(host=<span class="string">&quot;0.0.0.0&quot;</span>, port=<span class="number">5000</span>, debug = <span class="literal">True</span>)</span><br></pre></td></tr></table></figure><br />
+关于DEBUG调试模式：<br />
+（1）程序代码修改后可以自动重启服务器。<br />
+（2）在服务器出现相关错误的时候可以直接将错误信息返回到前端进行展示。</p>
+<p>在1.0版本之后，Flask调整了开发服务器的启动方式，由代码编写<code>app.run()</code>语句调整为命令<code>flask run</code>启动。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;Hello World&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 程序中不用再写app.run()</span></span><br></pre></td></tr></table></figure><br />
+终端启动：<br />
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">export</span> FLASK_APP=helloworld</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">flask run</span></span><br><span class="line"> * Running on http://127.0.0.1:5000/</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">flask run 等价于 python -m flask run</span></span><br></pre></td></tr></table></figure><br />
+说明：<br />
+（1）环境变量 <code>FLASK_APP</code> 指明flask的启动实例。<br />
+（2）<code>flask run -h 0.0.0.0 -p 8000</code> 绑定地址 端口。<br />
+（3）<code>flask run --help</code>获取帮助。<br />
+（4）生产模式与开发模式的控制。通过<code>FLASK_ENV</code>环境变量指明：<br />
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export FLASK_ENV=production # 运行在生产模式，未指明则默认为此方式</span><br><span class="line">export FLASK_ENV=development #  运行在开发模式</span><br></pre></td></tr></table></figure></p>
+<h1 id="路由">路由</h1>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/itcast&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">view_func</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;hello world&quot;</span></span><br></pre></td></tr></table></figure>
+<h2 id="查询路由信息">查询路由信息</h2>
+<p>1、命令行方式<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ flask routes</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">Endpoint  Methods  Rule</span></span><br><span class="line"><span class="string">--------  -------  -----------------------</span></span><br><span class="line"><span class="string">index     GET      /</span></span><br><span class="line"><span class="string">static    GET      /static/</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure><br />
+2、在程序中获取<br />
+在应用中的<code>url_map</code>属性中保存着整个Flask应用的路由映射信息，可以通过读取这个属性获取路由信息。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(app.url_map)</span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Map([&lt;Rule &#x27;/&#x27; (GET, HEAD, OPTIONS) -&gt; hello_world&gt;,</span></span><br><span class="line"><span class="string"> &lt;Rule &#x27;/static/&lt;filename&gt;&#x27; (GET, HEAD, OPTIONS) -&gt; static&gt;])</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure><br />
+如果想在程序中遍历路由信息，可以采用如下方式：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># rule为Rule对象，其属性endpoint为路由名字，rule为路由路径。</span></span><br><span class="line"><span class="keyword">for</span> rule <span class="keyword">in</span> app.url_map.iter_rules():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;name=&#123;&#125; path=&#123;&#125;&#x27;</span>.<span class="built_in">format</span>(rule.endpoint, rule.rule))</span><br><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">name=hello_world path=/</span></span><br><span class="line"><span class="string">name=static path=/static/&lt;path:filename&gt;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure><br />
+实例：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 通过访问/地址，以json的方式返回应用内的所有路由信息</span></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">route_map</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    主视图，返回所有视图网址</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    rules_iterator = app.url_map.iter_rules()</span><br><span class="line">    <span class="keyword">return</span> json.dumps(&#123;rule.endpoint: rule.rule <span class="keyword">for</span> rule <span class="keyword">in</span> rules_iterator&#125;)</span><br><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">&#123;&quot;route_map&quot;: &quot;/rule&quot;, &quot;hello_world&quot;: &quot;/&quot;, &quot;static&quot;: &quot;/static/&quot;&#125;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="指定请求方式">指定请求方式</h2>
+<p>在 Flask 中，定义路由其默认的请求方式为：<br />
+（1）<code>GET</code><br />
+（2）<code>OPTIONS</code>
+(自带)：简化版的GET请求，用于询问服务器接口信息的。比如，接口允许的请求方式、允许的请求源头域名（cors跨域时会出现）。<br />
+（3）<code>HEAD</code>
+(自带)：简化版的GET请求，只返回GET请求处理时的响应头，不返回响应体。<br />
+利用<code>methods</code>参数可以自己指定一个接口的请求方式。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/itcast1&quot;</span>, methods=[<span class="string">&quot;POST&quot;</span>]</span>)  </span><span class="comment"># 只支持POST请求</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">view_func_1</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;hello world 1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/itcast2&quot;</span>, methods=[<span class="string">&quot;GET&quot;</span>, <span class="string">&quot;POST&quot;</span>]</span>)  </span><span class="comment"># 支持GET、POST请求</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">view_func_2</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;hello world 2&quot;</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="蓝图">蓝图</h1>
+<p>在一个Flask
+应用项目中，如果业务视图过多，可否将以某种方式划分出的业务单元单独维护，将每个单元用到的视图、静态文件、模板文件等独立分开？<br />
+例如从业务角度上，可将整个应用划分为用户模块单元、商品模块单元、订单模块单元，如何分别开发这些不同单元，并最终整合到一个项目应用中？<br />
+在Django中这种需求是如何实现的？</p>
+<p>在Flask中，使用蓝图 Blueprint 来分模块组织管理。<br />
+蓝图实际可以理解为是一个存储一组视图方法的容器对象，其具有如下特点：<br />
+（1）一个应用可以具有多个Blueprint。<br />
+（2）可以将一个Blueprint注册到任何一个未使用的URL下比如
+“/user”、“/goods”。<br />
+（3）Blueprint可以单独具有自己的模板、静态文件或者其它的通用操作方法，它并不是必须要实现应用的视图和函数。<br />
+（4）在一个应用初始化时，就应该要注册需要使用的Blueprint<br />
+但是一个Blueprint并不是一个完整的应用，它不能独立于应用运行，而必须要注册到某一个应用中。</p>
+<h2 id="蓝图创建">蓝图创建</h2>
+<p>1、创建一个蓝图对象<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">user_bp = Blueprint(<span class="string">&#x27;user&#x27;</span>,__name__)</span><br></pre></td></tr></table></figure><br />
+2、在这个蓝图对象上进行操作，注册路由，指定静态文件夹，注册模版过滤器<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@user_bp.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">user_profile</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;user_profile&#x27;</span></span><br></pre></td></tr></table></figure><br />
+3、在应用对象上注册这个蓝图对象<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app.register_blueprint(user_bp)</span><br></pre></td></tr></table></figure><br />
+<strong>单文件蓝图</strong><br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, Blueprint</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个蓝图对象</span></span><br><span class="line">user_bp = Blueprint(<span class="string">&#x27;user&#x27;</span>,__name__)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 注册路由</span></span><br><span class="line"><span class="meta">@user_bp.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">user_profile</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;user_profile&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 应用对象上注册这个蓝图对象</span></span><br><span class="line">app.register_blueprint(user_bp)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure><br />
+<strong>目录蓝图</strong><br />
+对于一个打算包含多个文件的蓝图，通常将创建蓝图对象放到Python包的<code>__init__.py</code>文件中。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">--------- project <span class="comment"># 工程目录</span></span><br><span class="line">  |------ main.py <span class="comment"># 启动文件</span></span><br><span class="line">  |------ user  <span class="comment"># 用户蓝图</span></span><br><span class="line">  |  |--- __init__.py  <span class="comment"># 此处创建蓝图对象</span></span><br><span class="line">  |  |--- passport.py  </span><br><span class="line">  |  |--- profile.py</span><br><span class="line">  |  |--- ...</span><br><span class="line">  |</span><br><span class="line">  |------ goods <span class="comment"># 商品蓝图</span></span><br><span class="line">  |  |--- __init__.py  <span class="comment"># 此处创建蓝图对象</span></span><br><span class="line">  |  |--- views.py  <span class="comment"># 此处定义视图</span></span><br><span class="line">  |...</span><br></pre></td></tr></table></figure><br />
+以goods为例：<br />
+<div class="tabs" id="2"><ul class="nav-tabs"><li class="tab active"><a href="#2-1">__init__.py</a></li><li class="tab"><a href="#2-2">views.py</a></li><li class="tab"><a href="#2-3">main.py</a></li></ul><div class="tab-content"><div class="tab-pane active" id="2-1"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, Blueprint</span><br><span class="line"></span><br><span class="line">goods_bp = Blueprint(<span class="string">&#x27;goods&#x27;</span>,__name__)</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> views  <span class="comment"># 导入视图，不然没有视图</span></span><br></pre></td></tr></table></figure></div><div class="tab-pane" id="2-2"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> goods_bp</span><br><span class="line"></span><br><span class="line"><span class="meta">@goods_bp.route(<span class="params"><span class="string">&#x27;/goods&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_goods</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;get_goods&#x27;</span></span><br></pre></td></tr></table></figure></div><div class="tab-pane" id="2-3"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, Blueprint</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 主程序注册即可</span></span><br><span class="line"><span class="keyword">from</span> goods <span class="keyword">import</span> goods_bp</span><br><span class="line">app.register_blueprint(goods_bp)</span><br></pre></td></tr></table></figure></div></div></div></p>
+<h2 id="扩展用法">扩展用法</h2>
+<p>1、指定蓝图的url前缀：在应用中注册蓝图时使用url_prefix参数指定<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">app.register_blueprint(user_bp, url_prefix=<span class="string">&#x27;/user&#x27;</span>)</span><br><span class="line">app.register_blueprint(goods_bp, url_prefix=<span class="string">&#x27;/goods&#x27;</span>)</span><br></pre></td></tr></table></figure><br />
+2、蓝图内部静态文件<br />
+和应用对象不同，蓝图对象创建时不会默认注册静态目录的路由。需要我们在
+创建时指定 <code>static_folder</code> 参数。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 蓝图所在目录下的static_admin目录设置为静态目录</span></span><br><span class="line">admin = Blueprint(<span class="string">&quot;admin&quot;</span>,__name__,static_folder=<span class="string">&#x27;static_admin&#x27;</span>)</span><br><span class="line">app.register_blueprint(admin, url_prefix=<span class="string">&#x27;/admin&#x27;</span>)</span><br><span class="line"><span class="comment"># 注册完，可使用 /admin/static_admin/&lt;filename&gt; 访问static_admin目录下的静态文件</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 也可通过static_url_path改变访问路径</span></span><br><span class="line">admin = Blueprint(<span class="string">&quot;admin&quot;</span>,__name__,static_folder=<span class="string">&#x27;static_admin&#x27;</span>,static_url_path=<span class="string">&#x27;/lib&#x27;</span>)</span><br><span class="line">app.register_blueprint(admin,url_prefix=<span class="string">&#x27;/admin&#x27;</span>)</span><br></pre></td></tr></table></figure><br />
+3、蓝图内部模板目录<br />
+蓝图对象默认的模板目录为系统的模版目录，可以在创建蓝图对象时使用
+<code>template_folder</code> 关键字参数设置模板目录。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin = Blueprint(<span class="string">&#x27;admin&#x27;</span>,__name__,template_folder=<span class="string">&#x27;my_templates&#x27;</span>)</span><br></pre></td></tr></table></figure></p>
+<h1 id="请求">请求</h1>
+<p>在视图编写中需要读取客户端请求携带的数据时，如何才能正确的取出数据呢？</p>
+<p>请求携带的数据可能出现在HTTP报文中的不同位置，需要使用不同的方法来获取参数。</p>
+<h2 id="url路径参数动态路由">URL路径参数（动态路由）</h2>
+<p>例如，有一个请求访问的接口地址为/users/123，其中123实际上为具体的请求参数，表明请求123号用户的信息。此时如何从url中提取出123的数据？</p>
+<p>Flask不同于Django直接在定义路由时编写正则表达式的方式，而是采用转换器语法：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/users/&lt;user_id&gt;&#x27;</span></span>)  </span><span class="comment"># 提取路径中user_id参数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">user_info</span>(<span class="params">user_id</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">type</span>(user_id))</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;hello user &#123;&#125;&#x27;</span>.<span class="built_in">format</span>(user_id)</span><br></pre></td></tr></table></figure><br />
+此处的<code>&lt;&gt;</code>即是一个转换器，<strong>默认为字符串类型</strong>，即将该位置的数据以字符串格式进行匹配、并以字符串为数据类型类型、
+user_id为参数名传入视图。</p>
+<p>Flask也提供其他数据类型的转换器：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">DEFAULT_CONVERTERS = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>:          UnicodeConverter,</span><br><span class="line">    <span class="string">&#x27;string&#x27;</span>:           UnicodeConverter,</span><br><span class="line">    <span class="string">&#x27;any&#x27;</span>:              AnyConverter,</span><br><span class="line">    <span class="string">&#x27;path&#x27;</span>:             PathConverter,</span><br><span class="line">    <span class="string">&#x27;int&#x27;</span>:              IntegerConverter,</span><br><span class="line">    <span class="string">&#x27;float&#x27;</span>:            FloatConverter,</span><br><span class="line">    <span class="string">&#x27;uuid&#x27;</span>:             UUIDConverter,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br />
+比如，以整型匹配数据：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/users/&lt;int:user_id&gt;&#x27;</span></span>)  </span><span class="comment"># 整型转换</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">user_info</span>(<span class="params">user_id</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">type</span>(user_id))</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;hello user &#123;&#125;&#x27;</span>.<span class="built_in">format</span>(user_id)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/users/&lt;int(min=1):user_id&gt;&#x27;</span></span>)  </span><span class="comment"># 整型转换、限制最小值</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">user_info</span>(<span class="params">user_id</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">type</span>(user_id))</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;hello user &#123;&#125;&#x27;</span>.<span class="built_in">format</span>(user_id)</span><br></pre></td></tr></table></figure></p>
+<h2 id="自定义转换器">自定义转换器</h2>
+<p>如果遇到需要匹配提取/sms_codes/15645678901
+中的手机号数据，Flask内置的转换器就无法满足需求，此时需要自定义转换器。</p>
+<p>1、创建转换器类，保存匹配时的正则表达式。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> werkzeug.routing <span class="keyword">import</span> BaseConverter</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MobileConverter</span>(<span class="title class_ inherited__">BaseConverter</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    手机号格式</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    regex = <span class="string">r&#x27;1[3-9]\d&#123;9&#125;&#x27;</span></span><br></pre></td></tr></table></figure><br />
+2、将自定义的转换器告知Flask应用。相当于注册自定义类型到converters字典中，converters保存了所有类型。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将自定义转换器添加到转换器字典中，并指定转换器使用时名字为: mobile</span></span><br><span class="line">app.url_map.converters[<span class="string">&#x27;mobile&#x27;</span>] = MobileConverter</span><br></pre></td></tr></table></figure><br />
+3、在使用转换器的地方定义使用。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/sms_codes/&lt;mobile:mob_num&gt;&#x27;</span></span>)  </span><span class="comment"># mobile为自定义类型</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">send_sms_code</span>(<span class="params">mob_num</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;send sms code to &#123;&#125;&#x27;</span>.<span class="built_in">format</span>(mob_num)</span><br></pre></td></tr></table></figure></p>
+<h2 id="其他参数">其他参数</h2>
+<p>如果想要获取其他地方传递的参数，可以通过Flask提供的request对象来读取。</p>
+<p>不同位置的参数都存放在request的不同属性中：<br />
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">属性	说明	                        类型</span><br><span class="line">data	记录请求的数据，并转换为字符串      *</span><br><span class="line">form	记录请求中的表单数据	        MultiDict</span><br><span class="line">args	记录请求中的查询参数	        MultiDict</span><br><span class="line">cookies	记录请求中的cookie信息	        Dict</span><br><span class="line">headers	记录请求中的报文头              EnvironHeaders</span><br><span class="line">method	记录请求使用的HTTP方法	        GET/POST</span><br><span class="line">url     记录请求的URL地址               string</span><br><span class="line">files	记录请求上传的文件                 *</span><br></pre></td></tr></table></figure><br />
+data 对应请求中 body 的原始数据。<br />
+form 对应请求中 body 的form数据。<br />
+args 对应请求中 path 后面的查询参数。<br />
+files 对应请求中 body 的files数据。</p>
+<p>例如
+想要获取请求/articles?channel_id=1中channel_id的参数，可以按如下方式使用：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> request</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/articles&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_articles</span>():</span><br><span class="line">    channel_id = request.args.get(<span class="string">&#x27;channel_id&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;you wanna get articles of channel &#123;&#125;&#x27;</span>.<span class="built_in">format</span>(channel_id)</span><br></pre></td></tr></table></figure><br />
+例如，客户端上传图片到服务器，并保存到服务器中：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> request</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/upload&#x27;</span>, methods=[<span class="string">&#x27;POST&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">upload_file</span>():</span><br><span class="line">    f = request.files[<span class="string">&#x27;pic&#x27;</span>]  <span class="comment"># pic为上传文件的字段名</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 1、python方式保存文件</span></span><br><span class="line">    <span class="comment"># with open(&#x27;./demo.png&#x27;, &#x27;wb&#x27;) as new_file:</span></span><br><span class="line">    <span class="comment">#     new_file.write(f.read())</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2、自带的保存方式</span></span><br><span class="line">    f.save(<span class="string">&#x27;./demo.png&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;ok&#x27;</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="响应">响应</h1>
+<p>如何在不同的场景里返回不同的响应信息？</p>
+<h2 id="返回模板">返回模板</h2>
+<p>使用render_template方法渲染模板并返回。</p>
+<p>例如，新建一个模板index.html：<br />
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Title<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">我的模板html内容</span><br><span class="line"><span class="tag">&lt;<span class="name">br</span>/&gt;</span>&#123;&#123; my_str &#125;&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">br</span>/&gt;</span>&#123;&#123; my_int &#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure><br />
+后端视图：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> render_template</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回html</span></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    mstr = <span class="string">&#x27;Hello World&#x27;</span></span><br><span class="line">    mint = <span class="number">10</span></span><br><span class="line">    <span class="comment"># html模板中的变量名作为参数名，前面定义的变量mstr、mint赋值给这些参数。</span></span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;index.html&#x27;</span>, my_str=mstr, my_int=mint)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回dict格式 </span></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="comment"># 注意，参数名要和html一致</span></span><br><span class="line">    data = <span class="built_in">dict</span>(</span><br><span class="line">        my_str = <span class="string">&#x27;Hello World&#x27;</span>  </span><br><span class="line">        my_int = <span class="number">10</span></span><br><span class="line">    )</span><br><span class="line">    <span class="comment"># 解包</span></span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;index.html&#x27;</span>, **data)</span><br></pre></td></tr></table></figure></p>
+<h2 id="重定向">重定向</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> redirect</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/demo2&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">demo2</span>():</span><br><span class="line">    <span class="keyword">return</span> redirect(<span class="string">&#x27;http://www.baidu.com&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="返回json">返回JSON</h2>
+<p><code>jsonify</code>：转换成json格式，设置了响应头<code>Content-Type:application/json</code>。<br />
+<code>json.dumps</code>：只会转换成json格式，无设置响应头信息。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> jsonify</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/demo3&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">demo3</span>():</span><br><span class="line">    json_dict = &#123;</span><br><span class="line">        <span class="string">&quot;user_id&quot;</span>: <span class="number">10</span>,</span><br><span class="line">        <span class="string">&quot;user_name&quot;</span>: <span class="string">&quot;laowang&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> jsonify(json_dict)</span><br></pre></td></tr></table></figure></p>
+<h2 id="自定义状态码和响应头">自定义状态码和响应头</h2>
+<p>1、元祖方式<br />
+可以返回一个元组，这样的元组必须是
+<code>(response, status, headers)</code> 的形式，且至少包含一个元素。
+<code>status</code> 值会覆盖状态代码， <code>headers</code>
+可以是一个列表或字典，作为额外的消息标头值。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/demo4&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">demo4</span>():</span><br><span class="line">    <span class="comment"># return &#x27;状态码为 666&#x27;, 666</span></span><br><span class="line">    <span class="comment"># return &#x27;状态码为 666&#x27;, 666, [(&#x27;Itcast&#x27;, &#x27;Python&#x27;)]</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;状态码为 666&#x27;</span>, <span class="number">666</span>, &#123;<span class="string">&#x27;Itcast&#x27;</span>: <span class="string">&#x27;Python&#x27;</span>&#125;</span><br></pre></td></tr></table></figure><br />
+2、make_response方式<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/demo5&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">demo5</span>():</span><br><span class="line">    resp = make_response(<span class="string">&#x27;make response测试&#x27;</span>)  <span class="comment"># 这里是body</span></span><br><span class="line">        resp.headers[“Itcast”] = “Python”      <span class="comment"># 这里是响应头</span></span><br><span class="line">        resp.status = “<span class="number">404</span> <span class="keyword">not</span> found”          <span class="comment"># 这里是状态，一定是完整的状态(状态码+描述信息)！</span></span><br><span class="line">    <span class="keyword">return</span> resp</span><br></pre></td></tr></table></figure></p>
+<h2 id="cookie">Cookie</h2>
+<p>1、设置<br />
+cookie只能在响应对象中设置，所以要先拿到响应体，所以只能用make_response方法构造响应。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, make_response</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/cookie&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">set_cookie</span>():</span><br><span class="line">    resp = make_response(<span class="string">&#x27;set cookie ok&#x27;</span>)  <span class="comment"># 先拿到响应体</span></span><br><span class="line">    resp.set_cookie(<span class="string">&#x27;username&#x27;</span>, <span class="string">&#x27;itcast&#x27;</span>)  <span class="comment"># 再设置cookie，默认有效期为窗口关闭</span></span><br><span class="line">    <span class="keyword">return</span> resp</span><br></pre></td></tr></table></figure><br />
+设置有效期：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/cookie&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">set_cookie</span>():</span><br><span class="line">    response = make_response(<span class="string">&#x27;hello world&#x27;</span>)</span><br><span class="line">    response.set_cookie(<span class="string">&#x27;username&#x27;</span>, <span class="string">&#x27;itheima&#x27;</span>, max_age=<span class="number">3600</span>)</span><br><span class="line">    <span class="keyword">return</span> response</span><br></pre></td></tr></table></figure><br />
+2、读取<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> request</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/get_cookie&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_cookie</span>():</span><br><span class="line">    resp = request.cookies.get(<span class="string">&#x27;username&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span> resp</span><br></pre></td></tr></table></figure><br />
+3、删除<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> request</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/delete_cookie&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">delete_cookie</span>():</span><br><span class="line">    response = make_response(<span class="string">&#x27;hello world&#x27;</span>)</span><br><span class="line">    response.delete_cookie(<span class="string">&#x27;username&#x27;</span>)  <span class="comment"># 不是真删除，是设置过早的有效期达到结束目的</span></span><br><span class="line">    <span class="keyword">return</span> response</span><br></pre></td></tr></table></figure></p>
+<h2 id="session">Session</h2>
+<p>Django把session数据存储到redis中。<br />
+flask将session数据保存到了哪里？放到了浏览器缓存中。<br />
+为了防止用户修改这个session，那么需要设置签名，这就需要SECRET_KEY了。</p>
+<p>需要先设置SECRET_KEY：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">DefaultConfig</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    SECRET_KEY = <span class="string">&#x27;fih9fh9eh9gh2&#x27;</span></span><br><span class="line"></span><br><span class="line">app.config.from_object(DefaultConfig)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者直接设置</span></span><br><span class="line">app.secret_key=<span class="string">&#x27;xihwidfw9efw&#x27;</span></span><br></pre></td></tr></table></figure><br />
+1、设置<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> session</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/set_session&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">set_session</span>():</span><br><span class="line">    session[<span class="string">&#x27;username&#x27;</span>] = <span class="string">&#x27;itcast&#x27;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;set session ok&#x27;</span></span><br></pre></td></tr></table></figure><br />
+2、读取<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/get_session&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_session</span>():</span><br><span class="line">    username = session.get(<span class="string">&#x27;username&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;get session username &#123;&#125;&#x27;</span>.<span class="built_in">format</span>(username)</span><br></pre></td></tr></table></figure></p>
+<h1 id="参考文献">参考文献</h1>
+<p><span class="exturl" data-url="aHR0cHM6Ly9mbGFzay1yZXN0ZnVsLnJlYWR0aGVkb2NzLmlvL2VuL2xhdGVzdC9xdWlja3N0YXJ0Lmh0bWw=">Flask-RESTful<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cDovL3d3dy5weXRob25kb2MuY29tL0ZsYXNrLVJFU1RmdWwvcXVpY2tzdGFydC5odG1s">Flask-RESTful中文<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cDovL3d3dy5iamhlZS5jb20vZmxhc2stMS5odG1s">Flask入门系列(一)–Hello
+World<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cDovL3d3dy5iamhlZS5jb20vZmxhc2stYWQxLmh0bWw=">Flask进阶系列(一)–上下文环境<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9mbGFzay5wYWxsZXRzcHJvamVjdHMuY29tL2VuLzIuMi54Lw==">Flask
+Documentation (2.2.x)<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3BhbGxldHMvZmxhc2s=">pallets/flask<i class="fa fa-external-link-alt"></i></span></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>SoundMemories
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://soundmemories.github.io/2021/07/19/Python/22.Flask/" title="Flask">https://soundmemories.github.io/2021/07/19/Python/22.Flask/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/07/18/Paper/03.Get%20To%20The%20Point.%20Summarization%20with%20Pointer-Generator%20Networks/" rel="prev" title="Get To The Point. Summarization with Pointer-Generator Networks">
+                  <i class="fa fa-chevron-left"></i> Get To The Point. Summarization with Pointer-Generator Networks
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/07/19/NLP/04.Transformer/" rel="next" title="Transformer">
+                  Transformer <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">SoundMemories</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"neutral"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.min.js","integrity":"sha256-JFptYy4KzJ5OQP+Q9fubNf3cxpPPmZKqUOovyEONKrQ="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://soundmemories.github.io/2021/07/19/Python/22.Flask/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

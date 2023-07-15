@@ -2,10 +2,9 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.2.0">
-
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
@@ -16,21 +15,18 @@
 
 <link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
 
-<script class="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.0.2","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
-  </script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.1","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-  <meta name="description" content="摘要大型图中节点的低维embedding已被证明在各种预测任务中非常有用，从内容推荐到识别蛋白质功能。然而，大多数现有的方法都要求在embedding训练期间图中的所有节点都存在；这些以前的方法本质上是transductive（直推式），不能自然地推广到看不见的节点。这里我们介绍GraphSAGE，这是一个通用inductive（归纳式）框架，它利用节点特征信息（例如，文本属性）高效地为以前看不见">
+    <meta name="description" content="摘要 大型图中节点的低维embedding已被证明在各种预测任务中非常有用，从内容推荐到识别蛋白质功能。然而，大多数现有的方法都要求在embedding训练期间图中的所有节点都存在；这些以前的方法本质上是transductive（直推式），不能自然地推广到看不见的节点。这里我们介绍GraphSAGE，这是一个通用inductive（归纳式）框架，它利用节点特征信息（例如，文本属性）高效地为以前看">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GraphSAGE">
 <meta property="og:url" content="https://soundmemories.github.io/2021/02/12/Graph/03.GraphSAGE/index.html">
 <meta property="og:site_name" content="SoundMemories">
-<meta property="og:description" content="摘要大型图中节点的低维embedding已被证明在各种预测任务中非常有用，从内容推荐到识别蛋白质功能。然而，大多数现有的方法都要求在embedding训练期间图中的所有节点都存在；这些以前的方法本质上是transductive（直推式），不能自然地推广到看不见的节点。这里我们介绍GraphSAGE，这是一个通用inductive（归纳式）框架，它利用节点特征信息（例如，文本属性）高效地为以前看不见">
+<meta property="og:description" content="摘要 大型图中节点的低维embedding已被证明在各种预测任务中非常有用，从内容推荐到识别蛋白质功能。然而，大多数现有的方法都要求在embedding训练期间图中的所有节点都存在；这些以前的方法本质上是transductive（直推式），不能自然地推广到看不见的节点。这里我们介绍GraphSAGE，这是一个通用inductive（归纳式）框架，它利用节点特征信息（例如，文本属性）高效地为以前看">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://soundmemories.github.io/images/GraphSAGE/1.png">
 <meta property="og:image" content="https://soundmemories.github.io/images/GraphSAGE/2.png">
@@ -43,7 +39,7 @@
 <meta property="og:image" content="https://soundmemories.github.io/images/GraphSAGE/6.png">
 <meta property="og:image" content="https://soundmemories.github.io/images/GraphSAGE/7.png">
 <meta property="article:published_time" content="2021-02-11T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-09-16T08:24:35.856Z">
+<meta property="article:modified_time" content="2023-05-24T15:38:53.121Z">
 <meta property="article:author" content="SoundMemories">
 <meta property="article:tag" content="Graph">
 <meta name="twitter:card" content="summary">
@@ -53,17 +49,11 @@
 <link rel="canonical" href="https://soundmemories.github.io/2021/02/12/Graph/03.GraphSAGE/">
 
 
-<script data-pjax class="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
 
-  <title>GraphSAGE | SoundMemories</title>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://soundmemories.github.io/2021/02/12/Graph/03.GraphSAGE/","path":"2021/02/12/Graph/03.GraphSAGE/","title":"GraphSAGE"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>GraphSAGE | SoundMemories</title>
   
 
 
@@ -71,51 +61,21 @@
 
 
 
+
+
   <noscript>
-  <style>
-  body { margin-top: 2rem; }
-
-  .use-motion .menu-item,
-  .use-motion .sidebar,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header {
-    visibility: visible;
-  }
-
-  .use-motion .header,
-  .use-motion .site-brand-container .toggle,
-  .use-motion .footer { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle,
-  .use-motion .custom-logo-image {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line {
-    transform: scaleX(1);
-  }
-
-  .search-pop-overlay, .sidebar-nav { display: none; }
-  .sidebar-panel { display: block; }
-  </style>
-</noscript>
-
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
   <div class="headband"></div>
 
   <main class="main">
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
+    <div class="toggle" aria-label="切换导航栏" role="button">
         <span class="toggle-line"></span>
         <span class="toggle-line"></span>
         <span class="toggle-line"></span>
@@ -126,13 +86,13 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title">SoundMemories</h1>
+      <p class="site-title">SoundMemories</p>
       <i class="logo-line"></i>
     </a>
   </div>
 
   <div class="site-nav-right">
-    <div class="toggle popup-trigger">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
         <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
@@ -141,27 +101,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu">
-        <li class="menu-item menu-item-主页">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>主页</a>
-
-  </li>
-        <li class="menu-item menu-item-分类">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
-
-  </li>
-        <li class="menu-item menu-item-标签">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-归档">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">8</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">8</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">122</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -172,8 +112,7 @@
 
 
   <div class="search-pop-overlay">
-    <div class="popup search-popup">
-        <div class="search-header">
+    <div class="popup search-popup"><div class="search-header">
   <span class="search-icon">
     <i class="fa fa-search"></i>
   </span>
@@ -182,7 +121,7 @@
            placeholder="搜索..." spellcheck="false"
            type="search" class="search-input">
   </div>
-  <span class="popup-btn-close">
+  <span class="popup-btn-close" role="button">
     <i class="fa fa-times-circle"></i>
   </span>
 </div>
@@ -195,15 +134,9 @@
     </div>
   </div>
 
-</div>
+</header>
         
   
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-
   <aside class="sidebar">
 
     <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
@@ -215,43 +148,43 @@
           站点概览
         </li>
       </ul>
-	   
-		  
+
       <div class="sidebar-panel-container">
         <!--noindex-->
-        <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Introduction"><span class="nav-number">2.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Embedding-generation"><span class="nav-number">3.</span> <span class="nav-text">Embedding generation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Aggregator-Architectures"><span class="nav-number">4.</span> <span class="nav-text">Aggregator Architectures</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Learning-the-parameters-of-GraphSAGE"><span class="nav-number">5.</span> <span class="nav-text">Learning the parameters of GraphSAGE</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Experiments"><span class="nav-number">6.</span> <span class="nav-text">Experiments</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Code"><span class="nav-number">8.</span> <span class="nav-text">Code</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">9.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
-        </section>
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#introduction"><span class="nav-number">2.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#embedding-generation"><span class="nav-number">3.</span> <span class="nav-text">Embedding generation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#aggregator-architectures"><span class="nav-number">4.</span> <span class="nav-text">Aggregator Architectures</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#learning-the-parameters-of-graphsage"><span class="nav-number">5.</span> <span class="nav-text">Learning the parameters of
+GraphSAGE</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#experiments"><span class="nav-number">6.</span> <span class="nav-text">Experiments</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#code"><span class="nav-number">8.</span> <span class="nav-text">Code</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">9.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+        </div>
         <!--/noindex-->
 
-        <section class="site-overview-wrap sidebar-panel">
-          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image" alt="SoundMemories"
-      src="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+      src="/images/avstar.png">
   <p class="site-author-name" itemprop="name">SoundMemories</p>
   <div class="site-description" itemprop="description">今日事，今日毕</div>
 </div>
-<div class="site-state-wrap site-overview-item animated">
+<div class="site-state-wrap animated">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
-          <a href="/archives">
-          <span class="site-state-item-count">120</span>
+        <a href="/archives/">
+          <span class="site-state-item-count">122</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-        <span class="site-state-item-count">9</span>
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-        <span class="site-state-item-count">9</span>
+          <a href="/tags/">
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>
-  <div class="links-of-author site-overview-item animated">
+  <div class="links-of-author animated">
       <span class="links-of-author-item">
         <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NvdW5kbWVtb3JpZXM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;soundmemories"><i class="fab fa-github fa-fw"></i>GitHub</span>
       </span>
@@ -259,37 +192,24 @@
         <span class="exturl" data-url="bWFpbHRvOnNvdW5kbWVtb3JpZXNAMTYzLmNvbQ==" title="E-Mail → mailto:soundmemories@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
       </span>
   </div>
-  <div class="cc-license site-overview-item animated" itemprop="license">
-    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></span>
   </div>
 
-
-
-        </section>
+        </div>
       </div>
     </div>
-  </aside>
-  <div class="sidebar-dimmer"></div>
-
-
-    </header>
 
     
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+        <div class="pjax">
+        </div>
+  </aside>
 
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
 
+    </div>
 
     <div class="main-inner post posts-expand">
-      
 
-      
 
   
 
@@ -302,13 +222,18 @@
     <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2021/02/12/Graph/03.GraphSAGE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+      <meta itemprop="image" content="/images/avstar.png">
       <meta itemprop="name" content="SoundMemories">
-      <meta itemprop="description" content="今日事，今日毕">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="GraphSAGE | SoundMemories">
+      <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -336,21 +261,20 @@
     </span>
 
   
-      </div>
-      <div class="post-meta">
+    <span class="post-meta-break"></span>
     <span class="post-meta-item" title="本文字数">
       <span class="post-meta-item-icon">
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>14k</span>
+      <span>4.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>13 分钟</span>
+      <span>16 分钟</span>
     </span>
 </div>
 
@@ -360,87 +284,157 @@
     
     
     
-    <div class="post-body" itemprop="articleBody">
-        <h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>大型图中节点的低维embedding已被证明在各种预测任务中非常有用，从内容推荐到识别蛋白质功能。然而，大多数现有的方法都要求在embedding训练期间图中的所有节点都存在；这些以前的方法本质上是<strong>transductive</strong>（直推式），不能自然地推广到看不见的节点。这里我们介绍GraphSAGE，这是一个通用<strong>inductive</strong>（归纳式）框架，它利用节点特征信息（例如，文本属性）高效地为以前看不见的数据生成节点embedding。我们学习的不是为每个节点训练单个embedding，而是通过从节点的局部邻域采样和聚合特征来生成嵌入的函数。</p>
-<p>GraphSAGE是一个经典的基于空域的算法，它从两个方面对传统的GCN做了改进：<br>（1）<strong>在训练时的，采样方式将GCN的全图采样优化到部分以节点为中心的邻居抽样，这使得大规模图数据的分布式训练成为可能，并且使得网络可以学习没有见过的节点，这也使得GraphSAGE可以做归纳学习（Inductive Learning）</strong>。<br>（2）GraphSAGE研究了若干种<strong>邻居聚合</strong>的方式，并通过实验和理论分析对比了不同聚合方式的优缺点。</p>
-<p><strong>归纳学习（Inductive Learning）</strong>：指可以对训练过程中见不到的数据直接计算而不需要重新对整个图进行学习。<br><strong>直推学习（Transductive Learning）</strong>：指所有的数据都可以在训练的时候拿到，学习的过程是在这个固定的图上进行学习，一旦图中的某些节点发生变化，则需要对整个图进行重新训练和学习。</p>
-<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p><img src="/images/GraphSAGE/1.png" width="80%"></p>
+    <div class="post-body" itemprop="articleBody"><h1 id="摘要">摘要</h1>
+<p>大型图中节点的低维embedding已被证明在各种预测任务中非常有用，从内容推荐到识别蛋白质功能。然而，大多数现有的方法都要求在embedding训练期间图中的所有节点都存在；这些以前的方法本质上是<strong>transductive</strong>（直推式），不能自然地推广到看不见的节点。这里我们介绍GraphSAGE，这是一个通用<strong>inductive</strong>（归纳式）框架，它利用节点特征信息（例如，文本属性）高效地为以前看不见的数据生成节点embedding。我们学习的不是为每个节点训练单个embedding，而是通过从节点的局部邻域采样和聚合特征来生成嵌入的函数。</p>
+<p>GraphSAGE是一个经典的基于空域的算法，它从两个方面对传统的GCN做了改进：<br />
+（1）<strong>在训练时的，采样方式将GCN的全图采样优化到部分以节点为中心的邻居抽样，这使得大规模图数据的分布式训练成为可能，并且使得网络可以学习没有见过的节点，这也使得GraphSAGE可以做归纳学习（Inductive
+Learning）</strong>。<br />
+（2）GraphSAGE研究了若干种<strong>邻居聚合</strong>的方式，并通过实验和理论分析对比了不同聚合方式的优缺点。</p>
+<p><strong>归纳学习（Inductive
+Learning）</strong>：指可以对训练过程中见不到的数据直接计算而不需要重新对整个图进行学习。<br />
+<strong>直推学习（Transductive
+Learning）</strong>：指所有的数据都可以在训练的时候拿到，学习的过程是在这个固定的图上进行学习，一旦图中的某些节点发生变化，则需要对整个图进行重新训练和学习。</p>
+<h1 id="introduction">Introduction</h1>
+<p><img src="/images/GraphSAGE/1.png" width="80%"></p>
 <p>GraphSAGE的算法核心是<strong>将整张图的采样优化到当前邻居节点的采样</strong>，因此从邻居<strong>采样</strong>（Sample）和邻居<strong>聚合</strong>（aggregate）两个方面来对GraphSAGE进行解释。具体流程如上图所示，可分为三个步骤：</p>
-<ol>
-<li>对图中每个顶点邻居顶点进行采样，因为每个节点的度是不一致的，为了计算高效， 为每个节点采样固定数量的邻居。</li>
+<ol type="1">
+<li>对图中每个顶点邻居顶点进行采样，因为每个节点的度是不一致的，为了计算高效，
+为每个节点采样固定数量的邻居。</li>
 <li>根据聚合函数聚合邻居顶点蕴含的信息。</li>
 <li>得到图中各顶点的向量表示供下游任务使用。</li>
 </ol>
-<h1 id="Embedding-generation"><a href="#Embedding-generation" class="headerlink" title="Embedding generation"></a>Embedding generation</h1><p>GraphSAGE的前向传播算法如下，前向传播描述了如何使用聚合函数对节点的邻居信息进行聚合，从而生成节点embedding：</p>
-<ol>
-<li>首先确定深度K，代表聚合深度，对每一层 $k=1…K$ 进行遍历；</li>
-<li>在当前层$k$，<strong>采样</strong>固定size大小的邻居节点进行<strong>聚合</strong>，得到$h_{N(v)}^k$，和自己进行CONCAT，做一个线性变换经过激活得到$h_{v}^k$，再归一化。</li>
+<h1 id="embedding-generation">Embedding generation</h1>
+<p>GraphSAGE的前向传播算法如下，前向传播描述了如何使用聚合函数对节点的邻居信息进行聚合，从而生成节点embedding：</p>
+<ol type="1">
+<li>首先确定深度K，代表聚合深度，对每一层 <span
+class="math inline">\(k=1...K\)</span> 进行遍历；</li>
+<li>在当前层<span
+class="math inline">\(k\)</span>，<strong>采样</strong>固定size大小的邻居节点进行<strong>聚合</strong>，得到<span
+class="math inline">\(h_{N(v)}^k\)</span>，和自己进行CONCAT，做一个线性变换经过激活得到<span
+class="math inline">\(h_{v}^k\)</span>，再归一化。</li>
 <li>每层都按（1）（2）处理，最后得到顶点的embedding。</li>
 </ol>
 <p>即在每次迭代(或搜索深度)，顶点从它们的局部邻居聚合信息，并且随着这个过程的迭代，顶点会从越来越远的地方获得信息。</p>
-<p><strong>采样</strong>：出于对计算效率的考虑，对每个顶点采样一定数量的邻居顶点作为待聚合信息的顶点。设采样数量为$m$，若顶点邻居数少于$m$,则采用有放回的抽样方法，直到采样出$m$个顶点。若顶点邻居数大于$m$，则采用无放回的抽样。作者给出了建议：在二层 $K=2$ 时，第一次采样数量 $S_1$ 和第二次采样数量 $S_2$ 满足公式：$S_1 · S_2 \leq 500$。<br><strong>聚合</strong>：之后会单独介绍。<br><img src="/images/GraphSAGE/2.png" width="80%"></p>
-<p>举个例子：<br><img src="/images/GraphSAGE/2.1.png" width="80%"></p>
-<p>在GraphSAGE之前的GCN模型中，都是采用的全图的训练方式，也就是说每一轮的迭代都要对全图的节点进行更新，当图的规模很大时，这种训练方式无疑是很耗时甚至无法更新的。mini-batch的训练时深度学习一个非常重要的特点，那么能否将mini-batch的思想用到GraphSAGE中呢，GraphSAGE提出了一个解决方案：<strong>只需记录当前mini-batch用到的所有节点（包括邻居节点），存储下来，之后再进行训练，这样每次训练就不需要保存整个图的信息</strong>。<br><img src="/images/GraphSAGE/3.png" width="80%"><br>注意，mini-batch采样是从中心点$K$层到最外层$1$，在聚合时是从最外层$1$到中心层$K$的。</p>
-<p>举个例子：<br><img src="/images/GraphSAGE/3.1.png" width="80%"><br><img src="/images/GraphSAGE/3.2.png" width="80%"></p>
-<h1 id="Aggregator-Architectures"><a href="#Aggregator-Architectures" class="headerlink" title="Aggregator Architectures"></a>Aggregator Architectures</h1><p>在图中顶点的邻居是无序的，所以希望构造出的聚合函数是<strong>对称的</strong>（即也就是对它输入的各种排列，函数的输出结果不变）和<strong>可导的</strong>。 聚合函数的对称性（symmetry property）确保了神经网络模型可以被训练且可以应用于任意顺序的顶点邻居特征集合上。因为要进行反向传播求梯度，需要聚合函数可导。</p>
-<p><strong>Mean aggregator</strong><br>mean aggregator将目标顶点和邻居顶点的第$k-1$层向量拼接起来，然后对向量的每个维度进行求均值的操作，将得到的结果做一次非线性变换产生目标顶点的第$k$层表示向量。<br>文中用下面的式子替换算法1中的4行AGGREGATE和5行CONCAT得到GCN的inductive变形：<br><img src="/images/GraphSAGE/4.png" width="40%"></p>
-<p><strong>LSTM aggregator</strong><br>LSTM本身是有顺序的，但是通过将输入节点随机排列（对顶点的邻居进行一次乱序操作），使得LSTM可以适用于无序的集合。</p>
-<p><strong>Pooling aggregator</strong><br>pooling聚合器，它既是对称的，又是可训练的。Pooling aggregator先对目标顶点的邻居顶点的embedding向量进行一次非线性变换，之后进行一次pooling操作(max pooling or mean pooling)，将得到结果与目标顶点的表示向量拼接，最后再经过一次非线性变换得到目标顶点的第k层表示向量。<br><img src="/images/GraphSAGE/5.png" width="50%"></p>
-<h1 id="Learning-the-parameters-of-GraphSAGE"><a href="#Learning-the-parameters-of-GraphSAGE" class="headerlink" title="Learning the parameters of GraphSAGE"></a>Learning the parameters of GraphSAGE</h1><p>GraphSAGE支持无监督训练和有监督训练两种方式。</p>
-<p>GraphSAGE的<strong>无监督学习</strong>的理论基于假设：节点 $u$ 与其邻居 $v$ 相似，那么其表征的距离也近，而与没有交集的节点 $v_n$ 不相似，那么其表征的距离也远，损失函数为：<br><img src="/images/GraphSAGE/6.png" width="50%"><br>其中 $z_u$ 为节点 $u$ 通过GraphSAGE得到的embedding，$v$ 是节点 $u$ 通过随机游走得到的邻居，$v_n \sim P_n(v)$ 表示负采样，$Q$为样本数。embedding之间相似度通过向量点积计算得到。<br>损失函数的目的是拉近正样本距离，拉远负样本距离。正样本是通过随机游走得到的。</p>
+<p><strong>采样</strong>：出于对计算效率的考虑，对每个顶点采样一定数量的邻居顶点作为待聚合信息的顶点。设采样数量为<span
+class="math inline">\(m\)</span>，若顶点邻居数少于<span
+class="math inline">\(m\)</span>,则采用有放回的抽样方法，直到采样出<span
+class="math inline">\(m\)</span>个顶点。若顶点邻居数大于<span
+class="math inline">\(m\)</span>，则采用无放回的抽样。作者给出了建议：在二层
+<span class="math inline">\(K=2\)</span> 时，第一次采样数量 <span
+class="math inline">\(S_1\)</span> 和第二次采样数量 <span
+class="math inline">\(S_2\)</span> 满足公式：<span
+class="math inline">\(S_1 · S_2 \leq 500\)</span>。<br />
+<strong>聚合</strong>：之后会单独介绍。<br />
+<img src="/images/GraphSAGE/2.png" width="80%"></p>
+<p>举个例子：<br />
+<img src="/images/GraphSAGE/2.1.png" width="80%"></p>
+<p>在GraphSAGE之前的GCN模型中，都是采用的全图的训练方式，也就是说每一轮的迭代都要对全图的节点进行更新，当图的规模很大时，这种训练方式无疑是很耗时甚至无法更新的。mini-batch的训练时深度学习一个非常重要的特点，那么能否将mini-batch的思想用到GraphSAGE中呢，GraphSAGE提出了一个解决方案：<strong>只需记录当前mini-batch用到的所有节点（包括邻居节点），存储下来，之后再进行训练，这样每次训练就不需要保存整个图的信息</strong>。<br />
+<img src="/images/GraphSAGE/3.png" width="80%"><br />
+注意，mini-batch采样是从中心点<span
+class="math inline">\(K\)</span>层到最外层<span
+class="math inline">\(1\)</span>，在聚合时是从最外层<span
+class="math inline">\(1\)</span>到中心层<span
+class="math inline">\(K\)</span>的。</p>
+<p>举个例子：<br />
+<img src="/images/GraphSAGE/3.1.png" width="80%"><br />
+<img src="/images/GraphSAGE/3.2.png" width="80%"></p>
+<h1 id="aggregator-architectures">Aggregator Architectures</h1>
+<p>在图中顶点的邻居是无序的，所以希望构造出的聚合函数是<strong>对称的</strong>（即也就是对它输入的各种排列，函数的输出结果不变）和<strong>可导的</strong>。
+聚合函数的对称性（symmetry
+property）确保了神经网络模型可以被训练且可以应用于任意顺序的顶点邻居特征集合上。因为要进行反向传播求梯度，需要聚合函数可导。</p>
+<p><strong>Mean aggregator</strong><br />
+mean aggregator将目标顶点和邻居顶点的第<span
+class="math inline">\(k-1\)</span>层向量拼接起来，然后对向量的每个维度进行求均值的操作，将得到的结果做一次非线性变换产生目标顶点的第<span
+class="math inline">\(k\)</span>层表示向量。<br />
+文中用下面的式子替换算法1中的4行AGGREGATE和5行CONCAT得到GCN的inductive变形：<br />
+<img src="/images/GraphSAGE/4.png" width="40%"></p>
+<p><strong>LSTM aggregator</strong><br />
+LSTM本身是有顺序的，但是通过将输入节点随机排列（对顶点的邻居进行一次乱序操作），使得LSTM可以适用于无序的集合。</p>
+<p><strong>Pooling aggregator</strong><br />
+pooling聚合器，它既是对称的，又是可训练的。Pooling
+aggregator先对目标顶点的邻居顶点的embedding向量进行一次非线性变换，之后进行一次pooling操作(max
+pooling or mean
+pooling)，将得到结果与目标顶点的表示向量拼接，最后再经过一次非线性变换得到目标顶点的第k层表示向量。<br />
+<img src="/images/GraphSAGE/5.png" width="50%"></p>
+<h1 id="learning-the-parameters-of-graphsage">Learning the parameters of
+GraphSAGE</h1>
+<p>GraphSAGE支持无监督训练和有监督训练两种方式。</p>
+<p>GraphSAGE的<strong>无监督学习</strong>的理论基于假设：节点 <span
+class="math inline">\(u\)</span> 与其邻居 <span
+class="math inline">\(v\)</span>
+相似，那么其表征的距离也近，而与没有交集的节点 <span
+class="math inline">\(v_n\)</span>
+不相似，那么其表征的距离也远，损失函数为：<br />
+<img src="/images/GraphSAGE/6.png" width="50%"><br />
+其中 <span class="math inline">\(z_u\)</span> 为节点 <span
+class="math inline">\(u\)</span> 通过GraphSAGE得到的embedding，<span
+class="math inline">\(v\)</span> 是节点 <span
+class="math inline">\(u\)</span> 通过随机游走得到的邻居，<span
+class="math inline">\(v_n \sim P_n(v)\)</span> 表示负采样，<span
+class="math inline">\(Q\)</span>为样本数。embedding之间相似度通过向量点积计算得到。<br />
+损失函数的目的是拉近正样本距离，拉远负样本距离。正样本是通过随机游走得到的。</p>
 <p><strong>有监督学习</strong>比较简单，使用满足预测目标的任务作为损失函数，例如交叉熵等。</p>
-<h1 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h1><p>实验使用baselines：</p>
-<ol>
-<li>Random，随机分类器</li>
-<li>Raw features，手工特征（非图特征）</li>
-<li>deepwalk（图拓扑特征）</li>
-<li>DeepWalk + features， deepwalk + 手工特征</li>
-</ol>
+<h1 id="experiments">Experiments</h1>
+<p>实验使用baselines：<br />
+1. Random，随机分类器<br />
+2. Raw features，手工特征（非图特征）<br />
+3. deepwalk（图拓扑特征）<br />
+4. DeepWalk + features， deepwalk + 手工特征</p>
 <p><img src="/images/GraphSAGE/7.png" width="80%"></p>
-<p><strong>实验结果1：分类准确率（micro-averaged F1 scores）</strong></p>
-<ol>
-<li>可以看到GraphSAGE的性能显著优于baseline方法。</li>
-<li>三个数据集上的实验结果表明，一般是LSTM或pooling效果比较好，有监督都比无监督好。</li>
-<li>无监督版本的GraphSAGE-pool对引文数据和Reddit数据的连接（concatenation）性能分别比DeepWalk embeddings和raw features的连接性能好13.8%和29.1%，而有监督版本的连接性能分别提高了19.7%和37.2%。</li>
-<li>尽管LSTM是为有序数据而不是无序集设计的，但是基于LSTM的聚合器显示了强大的性能。</li>
-<li>最后，可以看到无监督GraphSAGE的性能与完全监督的版本相比具有相当的竞争力，这表明文中的框架可以在不进行特定于任务的微调（task-specific fine-tuning）的情况下实现强大的性能</li>
-</ol>
-<p><strong>实验结果2：运行时间和参数敏感性</strong><br><strong>计算时间</strong>：GraphSAGE中LSTM训练速度最慢，但相比DeepWalk，GraphSAGE在预测时间减少100-500倍（因为对于未知节点，DeepWalk要重新进行随机游走以及通过SGD学习embedding）。<br><strong>邻居采样数量</strong>：图B中邻居采样数量递增，F1也增大，但计算时间也变大。 为了平衡F1和计算时间，将S1设为25<br><strong>聚合K跳内信息</strong>：在GraphSAGE， K=2 相比K=1 有10-15%的提升；但将K设置超过2，效果上只有0-5%的提升，但是计算时间却变大了10-100倍。</p>
-<p><strong>实验结果3：不同聚合器之间的比较</strong></p>
-<ol>
-<li>LSTM和pool的效果较好。</li>
-<li>为了更定量地了解这些趋势，实验中将设置六种不同的实验，即(3个数据集)×(非监督、监督)。</li>
-<li>GraphSAGE-LSTM比GraphSAGE-pool慢得多(≈2×)，这可能使基于pooling的聚合器在总体上略占优势。</li>
-<li>LSTM方法和pooling方法之间没有显著差异。</li>
-<li>文中使用非参数Wilcoxon Signed-Rank检验来量化实验中不同聚合器之间的差异，在适用的情况下报告T-statistic和p-value。</li>
-</ol>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>GraphSAGE的一个强大之处是它在一个子集学到的模型也可以应用到其它模型上，原因是因为GraphSAGE的参数是共享的（每层计算时的参数W是共享的）。当有一个新的图或者有一个节点加入到已训练的图中时，我们只需要知道这个新图或者新节点的结构信息，通过共享的参数，便可以得到它们的特征向量。</p>
+<p><strong>实验结果1：分类准确率（micro-averaged F1
+scores）</strong><br />
+1. 可以看到GraphSAGE的性能显著优于baseline方法。<br />
+2.
+三个数据集上的实验结果表明，一般是LSTM或pooling效果比较好，有监督都比无监督好。<br />
+3.
+无监督版本的GraphSAGE-pool对引文数据和Reddit数据的连接（concatenation）性能分别比DeepWalk
+embeddings和raw
+features的连接性能好13.8%和29.1%，而有监督版本的连接性能分别提高了19.7%和37.2%。<br />
+4.
+尽管LSTM是为有序数据而不是无序集设计的，但是基于LSTM的聚合器显示了强大的性能。<br />
+5.
+最后，可以看到无监督GraphSAGE的性能与完全监督的版本相比具有相当的竞争力，这表明文中的框架可以在不进行特定于任务的微调（task-specific
+fine-tuning）的情况下实现强大的性能</p>
+<p><strong>实验结果2：运行时间和参数敏感性</strong><br />
+<strong>计算时间</strong>：GraphSAGE中LSTM训练速度最慢，但相比DeepWalk，GraphSAGE在预测时间减少100-500倍（因为对于未知节点，DeepWalk要重新进行随机游走以及通过SGD学习embedding）。<br />
+<strong>邻居采样数量</strong>：图B中邻居采样数量递增，F1也增大，但计算时间也变大。
+为了平衡F1和计算时间，将S1设为25<br />
+<strong>聚合K跳内信息</strong>：在GraphSAGE， K=2 相比K=1
+有10-15%的提升；但将K设置超过2，效果上只有0-5%的提升，但是计算时间却变大了10-100倍。</p>
+<p><strong>实验结果3：不同聚合器之间的比较</strong><br />
+1. LSTM和pool的效果较好。<br />
+2.
+为了更定量地了解这些趋势，实验中将设置六种不同的实验，即(3个数据集)×(非监督、监督)。<br />
+3.
+GraphSAGE-LSTM比GraphSAGE-pool慢得多(≈2×)，这可能使基于pooling的聚合器在总体上略占优势。<br />
+4. LSTM方法和pooling方法之间没有显著差异。<br />
+5. 文中使用非参数Wilcoxon
+Signed-Rank检验来量化实验中不同聚合器之间的差异，在适用的情况下报告T-statistic和p-value。</p>
+<h1 id="总结">总结</h1>
+<p>GraphSAGE的一个强大之处是它在一个子集学到的模型也可以应用到其它模型上，原因是因为GraphSAGE的参数是共享的（每层计算时的参数W是共享的）。当有一个新的图或者有一个节点加入到已训练的图中时，我们只需要知道这个新图或者新节点的结构信息，通过共享的参数，便可以得到它们的特征向量。</p>
 <p>它最大的贡献在于给图模型赋予了归纳学习的能力，从而大范围的扩大了GNN的落地场景。另外GraphSAGE的预测速度非常之快，因为它只需要选择若干跳的若干个邻居即可，而这两个可以选择的参数往往也比较小，往往取两跳邻居就能得到不错的学习效果。GraphSAGE的第三个优点是它非常好理解，不需要复杂的图理论基础，对于学习图神经网络也是非常好的入门读物。</p>
-<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>Pytorch（最基础的实现）：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3dpbGxpYW1sZWlmL2dyYXBoc2FnZS1zaW1wbGUv">https://github.com/williamleif/graphsage-simple/<i class="fa fa-external-link-alt"></i></span><br>Tensorflow（全版本）：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3dpbGxpYW1sZWlmL0dyYXBoU0FHRQ==">https://github.com/williamleif/GraphSAGE<i class="fa fa-external-link-alt"></i></span><br>Pytorch（全版本）：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3R3amlhbmcvZ3JhcGhTQUdFLXB5dG9yY2g=">https://github.com/twjiang/graphSAGE-pytorch<i class="fa fa-external-link-alt"></i></span></p>
-<p>以Pytorch基础版本为例，节点分类任务：<br><figure class="highlight python"><figcaption><span>model.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">from</span> torch.nn <span class="keyword">import</span> init</span><br><span class="line"><span class="keyword">from</span> torch.autograd <span class="keyword">import</span> Variable</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> f1_score</span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> graphsage.encoders <span class="keyword">import</span> Encoder</span><br><span class="line"><span class="keyword">from</span> graphsage.aggregators <span class="keyword">import</span> MeanAggregator</span><br><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Simple supervised GraphSAGE model as well as examples running the model</span></span><br><span class="line"><span class="string">on the Cora and Pubmed datasets.</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="comment"># 有监督学习下的GraphSage</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SupervisedGraphSage</span>(<span class="params">nn.Module</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># num_classes类别数，这里是7</span></span><br><span class="line">    <span class="comment"># enc传入的是enc2，看作递归调用，从外层开始计算</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, num_classes, enc</span>):</span></span><br><span class="line">        <span class="built_in">super</span>(SupervisedGraphSage, self).__init__()</span><br><span class="line">        self.enc = enc</span><br><span class="line">        self.xent = nn.CrossEntropyLoss() <span class="comment"># 交叉熵损失</span></span><br><span class="line"></span><br><span class="line">        self.weight = nn.Parameter(torch.FloatTensor(num_classes, enc.embed_dim)) <span class="comment"># 初始权重</span></span><br><span class="line">        init.xavier_uniform(self.weight)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span>(<span class="params">self, nodes</span>):</span></span><br><span class="line">        embeds = self.enc(nodes)  <span class="comment"># 通过enc拿到nodes的embeddings</span></span><br><span class="line">        scores = self.weight.mm(embeds) <span class="comment"># 通过W得到score</span></span><br><span class="line">        <span class="keyword">return</span> scores.t() <span class="comment"># score转置</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">loss</span>(<span class="params">self, nodes, labels</span>):</span></span><br><span class="line">        scores = self.forward(nodes)</span><br><span class="line">        <span class="keyword">return</span> self.xent(scores, labels.squeeze()) <span class="comment"># score和labels交叉熵</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_cora</span>():</span></span><br><span class="line">    num_nodes = <span class="number">2708</span></span><br><span class="line">    num_feats = <span class="number">1433</span></span><br><span class="line">    feat_data = np.zeros((num_nodes, num_feats))</span><br><span class="line">    labels = np.empty((num_nodes,<span class="number">1</span>), dtype=np.int64)</span><br><span class="line">    node_map = &#123;&#125;</span><br><span class="line">    label_map = &#123;&#125;</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;cora/cora.content&quot;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        <span class="keyword">for</span> i,line <span class="keyword">in</span> <span class="built_in">enumerate</span>(fp):</span><br><span class="line">            info = line.strip().split()</span><br><span class="line">            feat_data[i,:] = <span class="built_in">map</span>(<span class="built_in">float</span>, info[<span class="number">1</span>:<span class="number">-1</span>])</span><br><span class="line">            node_map[info[<span class="number">0</span>]] = i</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> info[<span class="number">-1</span>] <span class="keyword">in</span> label_map:</span><br><span class="line">                label_map[info[<span class="number">-1</span>]] = <span class="built_in">len</span>(label_map)</span><br><span class="line">            labels[i] = label_map[info[<span class="number">-1</span>]]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 设定字典中默认value为set类型，当key不存在时也不会报错</span></span><br><span class="line">    adj_lists = defaultdict(<span class="built_in">set</span>) </span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;cora/cora.cites&quot;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        <span class="keyword">for</span> i,line <span class="keyword">in</span> <span class="built_in">enumerate</span>(fp):</span><br><span class="line">            info = line.strip().split()</span><br><span class="line">            paper1 = node_map[info[<span class="number">0</span>]] <span class="comment"># paper1的id</span></span><br><span class="line">            paper2 = node_map[info[<span class="number">1</span>]] <span class="comment"># paper2的id</span></span><br><span class="line">            adj_lists[paper1].add(paper2) <span class="comment"># paper1连接paper2</span></span><br><span class="line">            adj_lists[paper2].add(paper1) <span class="comment"># paper2连接paper1</span></span><br><span class="line">    <span class="comment"># feat_data：(2708,1433)</span></span><br><span class="line">    <span class="comment"># labels：(2708,1)</span></span><br><span class="line">    <span class="comment"># adj_lists：存储边的连接 defaultdict(&lt;class &#x27;set&#x27;&gt;,&#123;163:&#123;1536,2563...&#125;,...&#125;)</span></span><br><span class="line">    <span class="keyword">return</span> feat_data, labels, adj_lists</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run_cora</span>():</span></span><br><span class="line">    np.random.seed(<span class="number">1</span>)</span><br><span class="line">    random.seed(<span class="number">1</span>)</span><br><span class="line">    num_nodes = <span class="number">2708</span></span><br><span class="line">    feat_data, labels, adj_lists = load_cora()</span><br><span class="line">    features = nn.Embedding(<span class="number">2708</span>, <span class="number">1433</span>)</span><br><span class="line">    <span class="comment"># 权重矩阵</span></span><br><span class="line">    features.weight = nn.Parameter(torch.FloatTensor(feat_data), requires_grad=<span class="literal">False</span>)</span><br><span class="line">   <span class="comment"># features.cuda()</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 使用MeanAggregator和Encoder</span></span><br><span class="line">    agg1 = MeanAggregator(features, cuda=<span class="literal">True</span>)</span><br><span class="line">    enc1 = Encoder(features, <span class="number">1433</span>, <span class="number">128</span>, adj_lists, agg1, gcn=<span class="literal">True</span>, cuda=<span class="literal">False</span>)</span><br><span class="line">    agg2 = MeanAggregator(<span class="keyword">lambda</span> nodes : enc1(nodes).t(), cuda=<span class="literal">False</span>)</span><br><span class="line">    enc2 = Encoder(<span class="keyword">lambda</span> nodes : enc1(nodes).t(), enc1.embed_dim, <span class="number">128</span>, adj_lists, agg2,</span><br><span class="line">            base_model=enc1, gcn=<span class="literal">True</span>, cuda=<span class="literal">False</span>)</span><br><span class="line">    enc1.num_samples = <span class="number">5</span> <span class="comment"># 1层搜索size</span></span><br><span class="line">    enc2.num_samples = <span class="number">5</span> <span class="comment"># 2层搜索size</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># num_classes类别数，这里是7</span></span><br><span class="line">    <span class="comment"># 传入的是enc2，看作递归调用</span></span><br><span class="line">    graphsage = SupervisedGraphSage(<span class="number">7</span>, enc2)</span><br><span class="line"><span class="comment">#    graphsage.cuda()</span></span><br><span class="line">    <span class="comment"># permutation随机排列序列，对2708个节点随机排列</span></span><br><span class="line">    rand_indices = np.random.permutation(num_nodes)</span><br><span class="line">    test = rand_indices[:<span class="number">1000</span>] <span class="comment"># 测试集</span></span><br><span class="line">    val = rand_indices[<span class="number">1000</span>:<span class="number">1500</span>] <span class="comment"># 验证集</span></span><br><span class="line">    train = <span class="built_in">list</span>(rand_indices[<span class="number">1500</span>:]) <span class="comment"># 训练集</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 初始化优化器，并传递相关参数</span></span><br><span class="line">    optimizer = torch.optim.SGD(<span class="built_in">filter</span>(<span class="keyword">lambda</span> p : p.requires_grad, graphsage.parameters()), lr=<span class="number">0.7</span>)</span><br><span class="line">    times = []</span><br><span class="line">    <span class="keyword">for</span> batch <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100</span>):</span><br><span class="line">        batch_nodes = train[:<span class="number">256</span>] <span class="comment"># batch取前256个节点</span></span><br><span class="line">        random.shuffle(train) <span class="comment"># 随即打乱</span></span><br><span class="line">        start_time = time.time() <span class="comment"># 记录开始时间</span></span><br><span class="line">        optimizer.zero_grad() <span class="comment"># 初始化梯度为0</span></span><br><span class="line">        <span class="comment"># 前向传播计算损失</span></span><br><span class="line">        loss = graphsage.loss(batch_nodes, </span><br><span class="line">                Variable(torch.LongTensor(labels[np.array(batch_nodes)])))</span><br><span class="line">        loss.backward() <span class="comment"># 反向传播</span></span><br><span class="line">        optimizer.step() <span class="comment"># 更新梯度</span></span><br><span class="line">        end_time = time.time() <span class="comment"># 记录结束时间</span></span><br><span class="line">        times.append(end_time-start_time) <span class="comment"># 得到时间差</span></span><br><span class="line">        <span class="built_in">print</span> batch, loss.data[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    val_output = graphsage.forward(val) </span><br><span class="line">    <span class="built_in">print</span> <span class="string">&quot;Validation F1:&quot;</span>, f1_score(labels[val], val_output.data.numpy().argmax(axis=<span class="number">1</span>), average=<span class="string">&quot;micro&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span> <span class="string">&quot;Average batch time:&quot;</span>, np.mean(times)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_pubmed</span>():</span></span><br><span class="line">    <span class="comment">#hardcoded for simplicity...</span></span><br><span class="line">    num_nodes = <span class="number">19717</span></span><br><span class="line">    num_feats = <span class="number">500</span></span><br><span class="line">    feat_data = np.zeros((num_nodes, num_feats))</span><br><span class="line">    labels = np.empty((num_nodes, <span class="number">1</span>), dtype=np.int64)</span><br><span class="line">    node_map = &#123;&#125;</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;pubmed-data/Pubmed-Diabetes.NODE.paper.tab&quot;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        fp.readline()</span><br><span class="line">        feat_map = &#123;entry.split(<span class="string">&quot;:&quot;</span>)[<span class="number">1</span>]:i<span class="number">-1</span> <span class="keyword">for</span> i,entry <span class="keyword">in</span> <span class="built_in">enumerate</span>(fp.readline().split(<span class="string">&quot;\t&quot;</span>))&#125;</span><br><span class="line">        <span class="keyword">for</span> i, line <span class="keyword">in</span> <span class="built_in">enumerate</span>(fp):</span><br><span class="line">            info = line.split(<span class="string">&quot;\t&quot;</span>)</span><br><span class="line">            node_map[info[<span class="number">0</span>]] = i</span><br><span class="line">            labels[i] = <span class="built_in">int</span>(info[<span class="number">1</span>].split(<span class="string">&quot;=&quot;</span>)[<span class="number">1</span>])<span class="number">-1</span></span><br><span class="line">            <span class="keyword">for</span> word_info <span class="keyword">in</span> info[<span class="number">2</span>:<span class="number">-1</span>]:</span><br><span class="line">                word_info = word_info.split(<span class="string">&quot;=&quot;</span>)</span><br><span class="line">                feat_data[i][feat_map[word_info[<span class="number">0</span>]]] = <span class="built_in">float</span>(word_info[<span class="number">1</span>])</span><br><span class="line">    adj_lists = defaultdict(<span class="built_in">set</span>)</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;pubmed-data/Pubmed-Diabetes.DIRECTED.cites.tab&quot;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        fp.readline()</span><br><span class="line">        fp.readline()</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> fp:</span><br><span class="line">            info = line.strip().split(<span class="string">&quot;\t&quot;</span>)</span><br><span class="line">            paper1 = node_map[info[<span class="number">1</span>].split(<span class="string">&quot;:&quot;</span>)[<span class="number">1</span>]]</span><br><span class="line">            paper2 = node_map[info[<span class="number">-1</span>].split(<span class="string">&quot;:&quot;</span>)[<span class="number">1</span>]]</span><br><span class="line">            adj_lists[paper1].add(paper2)</span><br><span class="line">            adj_lists[paper2].add(paper1)</span><br><span class="line">    <span class="keyword">return</span> feat_data, labels, adj_lists</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run_pubmed</span>():</span></span><br><span class="line">    np.random.seed(<span class="number">1</span>)</span><br><span class="line">    random.seed(<span class="number">1</span>)</span><br><span class="line">    num_nodes = <span class="number">19717</span></span><br><span class="line">    feat_data, labels, adj_lists = load_pubmed()</span><br><span class="line">    features = nn.Embedding(<span class="number">19717</span>, <span class="number">500</span>)</span><br><span class="line">    features.weight = nn.Parameter(torch.FloatTensor(feat_data), requires_grad=<span class="literal">False</span>)</span><br><span class="line">   <span class="comment"># features.cuda()</span></span><br><span class="line"></span><br><span class="line">    agg1 = MeanAggregator(features, cuda=<span class="literal">True</span>)</span><br><span class="line">    enc1 = Encoder(features, <span class="number">500</span>, <span class="number">128</span>, adj_lists, agg1, gcn=<span class="literal">True</span>, cuda=<span class="literal">False</span>)</span><br><span class="line">    agg2 = MeanAggregator(<span class="keyword">lambda</span> nodes : enc1(nodes).t(), cuda=<span class="literal">False</span>)</span><br><span class="line">    enc2 = Encoder(<span class="keyword">lambda</span> nodes : enc1(nodes).t(), enc1.embed_dim, <span class="number">128</span>, adj_lists, agg2,</span><br><span class="line">            base_model=enc1, gcn=<span class="literal">True</span>, cuda=<span class="literal">False</span>)</span><br><span class="line">    enc1.num_samples = <span class="number">10</span></span><br><span class="line">    enc2.num_samples = <span class="number">25</span></span><br><span class="line"></span><br><span class="line">    graphsage = SupervisedGraphSage(<span class="number">3</span>, enc2)</span><br><span class="line"><span class="comment">#    graphsage.cuda()</span></span><br><span class="line">    rand_indices = np.random.permutation(num_nodes)</span><br><span class="line">    test = rand_indices[:<span class="number">1000</span>]</span><br><span class="line">    val = rand_indices[<span class="number">1000</span>:<span class="number">1500</span>]</span><br><span class="line">    train = <span class="built_in">list</span>(rand_indices[<span class="number">1500</span>:])</span><br><span class="line"></span><br><span class="line">    optimizer = torch.optim.SGD(<span class="built_in">filter</span>(<span class="keyword">lambda</span> p : p.requires_grad, graphsage.parameters()), lr=<span class="number">0.7</span>)</span><br><span class="line">    times = []</span><br><span class="line">    <span class="keyword">for</span> batch <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">200</span>):</span><br><span class="line">        batch_nodes = train[:<span class="number">1024</span>]</span><br><span class="line">        random.shuffle(train)</span><br><span class="line">        start_time = time.time()</span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line">        loss = graphsage.loss(batch_nodes, </span><br><span class="line">                Variable(torch.LongTensor(labels[np.array(batch_nodes)])))</span><br><span class="line">        loss.backward()</span><br><span class="line">        optimizer.step()</span><br><span class="line">        end_time = time.time()</span><br><span class="line">        times.append(end_time-start_time)</span><br><span class="line">        <span class="built_in">print</span> batch, loss.data[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    val_output = graphsage.forward(val) </span><br><span class="line">    <span class="built_in">print</span> <span class="string">&quot;Validation F1:&quot;</span>, f1_score(labels[val], val_output.data.numpy().argmax(axis=<span class="number">1</span>), average=<span class="string">&quot;micro&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span> <span class="string">&quot;Average batch time:&quot;</span>, np.mean(times)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    run_cora()</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight python"><figcaption><span>encoders.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">from</span> torch.nn <span class="keyword">import</span> init</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Encoder</span>(<span class="params">nn.Module</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Encodes a node&#x27;s using &#x27;convolutional&#x27; GraphSage approach</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, features, feature_dim, </span></span></span><br><span class="line"><span class="function"><span class="params">            embed_dim, adj_lists, aggregator,</span></span></span><br><span class="line"><span class="function"><span class="params">            num_sample=<span class="number">10</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">            base_model=<span class="literal">None</span>, gcn=<span class="literal">False</span>, cuda=<span class="literal">False</span>, </span></span></span><br><span class="line"><span class="function"><span class="params">            feature_transform=<span class="literal">False</span></span>):</span> </span><br><span class="line">        <span class="built_in">super</span>(Encoder, self).__init__()</span><br><span class="line"></span><br><span class="line">        self.features = features <span class="comment"># (2708, 1433)</span></span><br><span class="line">        self.feat_dim = feature_dim <span class="comment"># 输入维度1433</span></span><br><span class="line">        self.adj_lists = adj_lists  <span class="comment"># 边的连接defaultdict(&lt;class &#x27;set&#x27;&gt;,&#123;163:&#123;1536,2563...&#125;,...&#125;)</span></span><br><span class="line">        self.aggregator = aggregator <span class="comment"># MeanAggregator</span></span><br><span class="line">        self.num_sample = num_sample <span class="comment"># 采样邻居节点size</span></span><br><span class="line">        <span class="keyword">if</span> base_model != <span class="literal">None</span>:</span><br><span class="line">            self.base_model = base_model</span><br><span class="line"></span><br><span class="line">        self.gcn = gcn</span><br><span class="line">        self.embed_dim = embed_dim <span class="comment"># 输出维度128</span></span><br><span class="line">        self.cuda = cuda</span><br><span class="line">        self.aggregator.cuda = cuda</span><br><span class="line">        <span class="comment"># 注意concat之后维度是2倍</span></span><br><span class="line">        self.weight = nn.Parameter(</span><br><span class="line">                torch.FloatTensor(embed_dim, self.feat_dim <span class="keyword">if</span> self.gcn <span class="keyword">else</span> <span class="number">2</span> * self.feat_dim))</span><br><span class="line">        init.xavier_uniform(self.weight)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span>(<span class="params">self, nodes</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Generates embeddings for a batch of nodes.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        nodes     -- list of nodes</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 使用传递过来的aggregator计算（这里是mean），得到所有邻居节点的aggregator信息</span></span><br><span class="line">        neigh_feats = self.aggregator.forward(nodes, [self.adj_lists[<span class="built_in">int</span>(node)] <span class="keyword">for</span> node <span class="keyword">in</span> nodes], </span><br><span class="line">                self.num_sample)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.gcn:</span><br><span class="line">            <span class="keyword">if</span> self.cuda:</span><br><span class="line">                self_feats = self.features(torch.LongTensor(nodes).cuda())</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                self_feats = self.features(torch.LongTensor(nodes))</span><br><span class="line">            <span class="comment"># CONCAT当前节点和邻居节点</span></span><br><span class="line">            combined = torch.cat([self_feats, neigh_feats], dim=<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            combined = neigh_feats</span><br><span class="line">        <span class="comment"># W*CONCAT</span></span><br><span class="line">        combined = F.relu(self.weight.mm(combined.t()))</span><br><span class="line">        <span class="keyword">return</span> combined</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><figcaption><span>aggregators.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">from</span> torch.autograd <span class="keyword">import</span> Variable</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Set of modules for aggregating embeddings of neighbors.</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MeanAggregator</span>(<span class="params">nn.Module</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Aggregates a node&#x27;s embeddings using mean of neighbors&#x27; embeddings</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, features, cuda=<span class="literal">False</span>, gcn=<span class="literal">False</span></span>):</span> </span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Initializes the aggregator for a specific graph.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        features -- function mapping LongTensor of node ids to FloatTensor of feature values.</span></span><br><span class="line"><span class="string">        cuda -- whether to use GPU</span></span><br><span class="line"><span class="string">        gcn --- whether to perform concatenation GraphSAGE-style, or add self-loops GCN-style</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">super</span>(MeanAggregator, self).__init__()</span><br><span class="line"></span><br><span class="line">        self.features = features</span><br><span class="line">        self.cuda = cuda</span><br><span class="line">        self.gcn = gcn</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span>(<span class="params">self, nodes, to_neighs, num_sample=<span class="number">10</span></span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        nodes --- list of nodes in a batch</span></span><br><span class="line"><span class="string">        to_neighs --- list of sets, each set is the set of neighbors for node in batch</span></span><br><span class="line"><span class="string">        num_sample --- number of neighbors to sample. No sampling if None.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        nodes：batch节点列表</span></span><br><span class="line"><span class="string">        to_neighs：集合列表，每个集合是batch中一个节点的邻居集合</span></span><br><span class="line"><span class="string">        num_sample：邻居采样size</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># Local pointers to functions (speed hack)</span></span><br><span class="line">        _set = <span class="built_in">set</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> num_sample <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            _sample = random.sample</span><br><span class="line">            <span class="comment"># sample：截取列表的指定长度的随机数，但是不会改变列表本身的排序</span></span><br><span class="line">            <span class="comment"># 从to_neigh中采样num_sample个（当邻居节点数量to_neigh大于num_sample）</span></span><br><span class="line">            samp_neighs = [_set(_sample(to_neigh, </span><br><span class="line">                            num_sample,</span><br><span class="line">                            )) <span class="keyword">if</span> <span class="built_in">len</span>(to_neigh) &gt;= num_sample <span class="keyword">else</span> to_neigh <span class="keyword">for</span> to_neigh <span class="keyword">in</span> to_neighs]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            samp_neighs = to_neighs <span class="comment"># num_sample为None，每个节点都对其所有邻居节点全部计算</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.gcn:</span><br><span class="line">            samp_neighs = [samp_neigh + <span class="built_in">set</span>([nodes[i]]) <span class="keyword">for</span> i, samp_neigh <span class="keyword">in</span> <span class="built_in">enumerate</span>(samp_neighs)]</span><br><span class="line">        <span class="comment"># set.union():返回多个集合的并集，即包含了所有集合的元素，重复的元素只会出现一次</span></span><br><span class="line">        unique_nodes_list = <span class="built_in">list</span>(<span class="built_in">set</span>.union(*samp_neighs))</span><br><span class="line">        <span class="comment"># &#123;节点:编号&#125;</span></span><br><span class="line">        unique_nodes = &#123;n:i <span class="keyword">for</span> i,n <span class="keyword">in</span> <span class="built_in">enumerate</span>(unique_nodes_list)&#125;</span><br><span class="line">        <span class="comment"># (采样节点（包括了batch节点）,独一无二节点)</span></span><br><span class="line">        mask = Variable(torch.zeros(<span class="built_in">len</span>(samp_neighs), <span class="built_in">len</span>(unique_nodes)))</span><br><span class="line">        <span class="comment"># 得到采样节点对应的编号</span></span><br><span class="line">        column_indices = [unique_nodes[n] <span class="keyword">for</span> samp_neigh <span class="keyword">in</span> samp_neighs <span class="keyword">for</span> n <span class="keyword">in</span> samp_neigh]  </span><br><span class="line">        <span class="comment"># 每个节点对应采样数量个i作为行坐标 </span></span><br><span class="line">        row_indices = [i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(samp_neighs)) <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(samp_neighs[i]))]</span><br><span class="line">        <span class="comment"># 得到邻接矩阵</span></span><br><span class="line">        mask[row_indices, column_indices] = <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> self.cuda:</span><br><span class="line">            mask = mask.cuda()</span><br><span class="line">        <span class="comment"># 统计每个节点的邻居数量</span></span><br><span class="line">        num_neigh = mask.<span class="built_in">sum</span>(<span class="number">1</span>, keepdim=<span class="literal">True</span>) </span><br><span class="line">        <span class="comment"># 每个邻居节点占比</span></span><br><span class="line">        mask = mask.div(num_neigh)</span><br><span class="line">        <span class="comment"># 得到每个邻居节点的特征</span></span><br><span class="line">        <span class="keyword">if</span> self.cuda:</span><br><span class="line">            embed_matrix = self.features(torch.LongTensor(unique_nodes_list).cuda())</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            embed_matrix = self.features(torch.LongTensor(unique_nodes_list))</span><br><span class="line">        <span class="comment"># mean aggregators 计算每个邻居的节点特征mean</span></span><br><span class="line">        to_feats = mask.mm(embed_matrix)</span><br><span class="line">        <span class="keyword">return</span> to_feats</span><br></pre></td></tr></table></figure>
-<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p><span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE3MDYuMDIyMTYucGRm">Inductive Representation Learning on Large Graphs<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMzYxOTU4NjI=">GraphSAGE详解<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC83OTYzNzc4Nw==">【Graph Neural Network】GraphSAGE: 算法原理，实现和应用<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l5bDQyNDUyNS9hcnRpY2xlL2RldGFpbHMvMTAwNTMyODQ5">[论文笔记]：GraphSAGE：Inductive Representation Learning on Large Graphs 论文详解 NIPS 2017<i class="fa fa-external-link-alt"></i></span></p>
+<h1 id="code">Code</h1>
+<p>Pytorch（最基础的实现）：https://github.com/williamleif/graphsage-simple/<br />
+Tensorflow（全版本）：https://github.com/williamleif/GraphSAGE<br />
+Pytorch（全版本）：https://github.com/twjiang/graphSAGE-pytorch</p>
+<p>以Pytorch基础版本为例，节点分类任务：<br />
+<figure class="highlight python"><figcaption><span>model.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">from</span> torch.nn <span class="keyword">import</span> init</span><br><span class="line"><span class="keyword">from</span> torch.autograd <span class="keyword">import</span> Variable</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> f1_score</span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> graphsage.encoders <span class="keyword">import</span> Encoder</span><br><span class="line"><span class="keyword">from</span> graphsage.aggregators <span class="keyword">import</span> MeanAggregator</span><br><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Simple supervised GraphSAGE model as well as examples running the model</span></span><br><span class="line"><span class="string">on the Cora and Pubmed datasets.</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="comment"># 有监督学习下的GraphSage</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SupervisedGraphSage</span>(nn.Module):</span><br><span class="line"></span><br><span class="line">    <span class="comment"># num_classes类别数，这里是7</span></span><br><span class="line">    <span class="comment"># enc传入的是enc2，看作递归调用，从外层开始计算</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, num_classes, enc</span>):</span><br><span class="line">        <span class="built_in">super</span>(SupervisedGraphSage, self).__init__()</span><br><span class="line">        self.enc = enc</span><br><span class="line">        self.xent = nn.CrossEntropyLoss() <span class="comment"># 交叉熵损失</span></span><br><span class="line"></span><br><span class="line">        self.weight = nn.Parameter(torch.FloatTensor(num_classes, enc.embed_dim)) <span class="comment"># 初始权重</span></span><br><span class="line">        init.xavier_uniform(self.weight)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, nodes</span>):</span><br><span class="line">        embeds = self.enc(nodes)  <span class="comment"># 通过enc拿到nodes的embeddings</span></span><br><span class="line">        scores = self.weight.mm(embeds) <span class="comment"># 通过W得到score</span></span><br><span class="line">        <span class="keyword">return</span> scores.t() <span class="comment"># score转置</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">loss</span>(<span class="params">self, nodes, labels</span>):</span><br><span class="line">        scores = self.forward(nodes)</span><br><span class="line">        <span class="keyword">return</span> self.xent(scores, labels.squeeze()) <span class="comment"># score和labels交叉熵</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">load_cora</span>():</span><br><span class="line">    num_nodes = <span class="number">2708</span></span><br><span class="line">    num_feats = <span class="number">1433</span></span><br><span class="line">    feat_data = np.zeros((num_nodes, num_feats))</span><br><span class="line">    labels = np.empty((num_nodes,<span class="number">1</span>), dtype=np.int64)</span><br><span class="line">    node_map = &#123;&#125;</span><br><span class="line">    label_map = &#123;&#125;</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;cora/cora.content&quot;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        <span class="keyword">for</span> i,line <span class="keyword">in</span> <span class="built_in">enumerate</span>(fp):</span><br><span class="line">            info = line.strip().split()</span><br><span class="line">            feat_data[i,:] = <span class="built_in">map</span>(<span class="built_in">float</span>, info[<span class="number">1</span>:-<span class="number">1</span>])</span><br><span class="line">            node_map[info[<span class="number">0</span>]] = i</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> info[-<span class="number">1</span>] <span class="keyword">in</span> label_map:</span><br><span class="line">                label_map[info[-<span class="number">1</span>]] = <span class="built_in">len</span>(label_map)</span><br><span class="line">            labels[i] = label_map[info[-<span class="number">1</span>]]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 设定字典中默认value为set类型，当key不存在时也不会报错</span></span><br><span class="line">    adj_lists = defaultdict(<span class="built_in">set</span>) </span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;cora/cora.cites&quot;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        <span class="keyword">for</span> i,line <span class="keyword">in</span> <span class="built_in">enumerate</span>(fp):</span><br><span class="line">            info = line.strip().split()</span><br><span class="line">            paper1 = node_map[info[<span class="number">0</span>]] <span class="comment"># paper1的id</span></span><br><span class="line">            paper2 = node_map[info[<span class="number">1</span>]] <span class="comment"># paper2的id</span></span><br><span class="line">            adj_lists[paper1].add(paper2) <span class="comment"># paper1连接paper2</span></span><br><span class="line">            adj_lists[paper2].add(paper1) <span class="comment"># paper2连接paper1</span></span><br><span class="line">    <span class="comment"># feat_data：(2708,1433)</span></span><br><span class="line">    <span class="comment"># labels：(2708,1)</span></span><br><span class="line">    <span class="comment"># adj_lists：存储边的连接 defaultdict(&lt;class &#x27;set&#x27;&gt;,&#123;163:&#123;1536,2563...&#125;,...&#125;)</span></span><br><span class="line">    <span class="keyword">return</span> feat_data, labels, adj_lists</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">run_cora</span>():</span><br><span class="line">    np.random.seed(<span class="number">1</span>)</span><br><span class="line">    random.seed(<span class="number">1</span>)</span><br><span class="line">    num_nodes = <span class="number">2708</span></span><br><span class="line">    feat_data, labels, adj_lists = load_cora()</span><br><span class="line">    features = nn.Embedding(<span class="number">2708</span>, <span class="number">1433</span>)</span><br><span class="line">    <span class="comment"># 权重矩阵</span></span><br><span class="line">    features.weight = nn.Parameter(torch.FloatTensor(feat_data), requires_grad=<span class="literal">False</span>)</span><br><span class="line">   <span class="comment"># features.cuda()</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 使用MeanAggregator和Encoder</span></span><br><span class="line">    agg1 = MeanAggregator(features, cuda=<span class="literal">True</span>)</span><br><span class="line">    enc1 = Encoder(features, <span class="number">1433</span>, <span class="number">128</span>, adj_lists, agg1, gcn=<span class="literal">True</span>, cuda=<span class="literal">False</span>)</span><br><span class="line">    agg2 = MeanAggregator(<span class="keyword">lambda</span> nodes : enc1(nodes).t(), cuda=<span class="literal">False</span>)</span><br><span class="line">    enc2 = Encoder(<span class="keyword">lambda</span> nodes : enc1(nodes).t(), enc1.embed_dim, <span class="number">128</span>, adj_lists, agg2,</span><br><span class="line">            base_model=enc1, gcn=<span class="literal">True</span>, cuda=<span class="literal">False</span>)</span><br><span class="line">    enc1.num_samples = <span class="number">5</span> <span class="comment"># 1层搜索size</span></span><br><span class="line">    enc2.num_samples = <span class="number">5</span> <span class="comment"># 2层搜索size</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># num_classes类别数，这里是7</span></span><br><span class="line">    <span class="comment"># 传入的是enc2，看作递归调用</span></span><br><span class="line">    graphsage = SupervisedGraphSage(<span class="number">7</span>, enc2)</span><br><span class="line"><span class="comment">#    graphsage.cuda()</span></span><br><span class="line">    <span class="comment"># permutation随机排列序列，对2708个节点随机排列</span></span><br><span class="line">    rand_indices = np.random.permutation(num_nodes)</span><br><span class="line">    test = rand_indices[:<span class="number">1000</span>] <span class="comment"># 测试集</span></span><br><span class="line">    val = rand_indices[<span class="number">1000</span>:<span class="number">1500</span>] <span class="comment"># 验证集</span></span><br><span class="line">    train = <span class="built_in">list</span>(rand_indices[<span class="number">1500</span>:]) <span class="comment"># 训练集</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 初始化优化器，并传递相关参数</span></span><br><span class="line">    optimizer = torch.optim.SGD(<span class="built_in">filter</span>(<span class="keyword">lambda</span> p : p.requires_grad, graphsage.parameters()), lr=<span class="number">0.7</span>)</span><br><span class="line">    times = []</span><br><span class="line">    <span class="keyword">for</span> batch <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100</span>):</span><br><span class="line">        batch_nodes = train[:<span class="number">256</span>] <span class="comment"># batch取前256个节点</span></span><br><span class="line">        random.shuffle(train) <span class="comment"># 随即打乱</span></span><br><span class="line">        start_time = time.time() <span class="comment"># 记录开始时间</span></span><br><span class="line">        optimizer.zero_grad() <span class="comment"># 初始化梯度为0</span></span><br><span class="line">        <span class="comment"># 前向传播计算损失</span></span><br><span class="line">        loss = graphsage.loss(batch_nodes, </span><br><span class="line">                Variable(torch.LongTensor(labels[np.array(batch_nodes)])))</span><br><span class="line">        loss.backward() <span class="comment"># 反向传播</span></span><br><span class="line">        optimizer.step() <span class="comment"># 更新梯度</span></span><br><span class="line">        end_time = time.time() <span class="comment"># 记录结束时间</span></span><br><span class="line">        times.append(end_time-start_time) <span class="comment"># 得到时间差</span></span><br><span class="line">        <span class="built_in">print</span> batch, loss.data[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    val_output = graphsage.forward(val) </span><br><span class="line">    <span class="built_in">print</span> <span class="string">&quot;Validation F1:&quot;</span>, f1_score(labels[val], val_output.data.numpy().argmax(axis=<span class="number">1</span>), average=<span class="string">&quot;micro&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span> <span class="string">&quot;Average batch time:&quot;</span>, np.mean(times)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">load_pubmed</span>():</span><br><span class="line">    <span class="comment">#hardcoded for simplicity...</span></span><br><span class="line">    num_nodes = <span class="number">19717</span></span><br><span class="line">    num_feats = <span class="number">500</span></span><br><span class="line">    feat_data = np.zeros((num_nodes, num_feats))</span><br><span class="line">    labels = np.empty((num_nodes, <span class="number">1</span>), dtype=np.int64)</span><br><span class="line">    node_map = &#123;&#125;</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;pubmed-data/Pubmed-Diabetes.NODE.paper.tab&quot;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        fp.readline()</span><br><span class="line">        feat_map = &#123;entry.split(<span class="string">&quot;:&quot;</span>)[<span class="number">1</span>]:i-<span class="number">1</span> <span class="keyword">for</span> i,entry <span class="keyword">in</span> <span class="built_in">enumerate</span>(fp.readline().split(<span class="string">&quot;\t&quot;</span>))&#125;</span><br><span class="line">        <span class="keyword">for</span> i, line <span class="keyword">in</span> <span class="built_in">enumerate</span>(fp):</span><br><span class="line">            info = line.split(<span class="string">&quot;\t&quot;</span>)</span><br><span class="line">            node_map[info[<span class="number">0</span>]] = i</span><br><span class="line">            labels[i] = <span class="built_in">int</span>(info[<span class="number">1</span>].split(<span class="string">&quot;=&quot;</span>)[<span class="number">1</span>])-<span class="number">1</span></span><br><span class="line">            <span class="keyword">for</span> word_info <span class="keyword">in</span> info[<span class="number">2</span>:-<span class="number">1</span>]:</span><br><span class="line">                word_info = word_info.split(<span class="string">&quot;=&quot;</span>)</span><br><span class="line">                feat_data[i][feat_map[word_info[<span class="number">0</span>]]] = <span class="built_in">float</span>(word_info[<span class="number">1</span>])</span><br><span class="line">    adj_lists = defaultdict(<span class="built_in">set</span>)</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;pubmed-data/Pubmed-Diabetes.DIRECTED.cites.tab&quot;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        fp.readline()</span><br><span class="line">        fp.readline()</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> fp:</span><br><span class="line">            info = line.strip().split(<span class="string">&quot;\t&quot;</span>)</span><br><span class="line">            paper1 = node_map[info[<span class="number">1</span>].split(<span class="string">&quot;:&quot;</span>)[<span class="number">1</span>]]</span><br><span class="line">            paper2 = node_map[info[-<span class="number">1</span>].split(<span class="string">&quot;:&quot;</span>)[<span class="number">1</span>]]</span><br><span class="line">            adj_lists[paper1].add(paper2)</span><br><span class="line">            adj_lists[paper2].add(paper1)</span><br><span class="line">    <span class="keyword">return</span> feat_data, labels, adj_lists</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">run_pubmed</span>():</span><br><span class="line">    np.random.seed(<span class="number">1</span>)</span><br><span class="line">    random.seed(<span class="number">1</span>)</span><br><span class="line">    num_nodes = <span class="number">19717</span></span><br><span class="line">    feat_data, labels, adj_lists = load_pubmed()</span><br><span class="line">    features = nn.Embedding(<span class="number">19717</span>, <span class="number">500</span>)</span><br><span class="line">    features.weight = nn.Parameter(torch.FloatTensor(feat_data), requires_grad=<span class="literal">False</span>)</span><br><span class="line">   <span class="comment"># features.cuda()</span></span><br><span class="line"></span><br><span class="line">    agg1 = MeanAggregator(features, cuda=<span class="literal">True</span>)</span><br><span class="line">    enc1 = Encoder(features, <span class="number">500</span>, <span class="number">128</span>, adj_lists, agg1, gcn=<span class="literal">True</span>, cuda=<span class="literal">False</span>)</span><br><span class="line">    agg2 = MeanAggregator(<span class="keyword">lambda</span> nodes : enc1(nodes).t(), cuda=<span class="literal">False</span>)</span><br><span class="line">    enc2 = Encoder(<span class="keyword">lambda</span> nodes : enc1(nodes).t(), enc1.embed_dim, <span class="number">128</span>, adj_lists, agg2,</span><br><span class="line">            base_model=enc1, gcn=<span class="literal">True</span>, cuda=<span class="literal">False</span>)</span><br><span class="line">    enc1.num_samples = <span class="number">10</span></span><br><span class="line">    enc2.num_samples = <span class="number">25</span></span><br><span class="line"></span><br><span class="line">    graphsage = SupervisedGraphSage(<span class="number">3</span>, enc2)</span><br><span class="line"><span class="comment">#    graphsage.cuda()</span></span><br><span class="line">    rand_indices = np.random.permutation(num_nodes)</span><br><span class="line">    test = rand_indices[:<span class="number">1000</span>]</span><br><span class="line">    val = rand_indices[<span class="number">1000</span>:<span class="number">1500</span>]</span><br><span class="line">    train = <span class="built_in">list</span>(rand_indices[<span class="number">1500</span>:])</span><br><span class="line"></span><br><span class="line">    optimizer = torch.optim.SGD(<span class="built_in">filter</span>(<span class="keyword">lambda</span> p : p.requires_grad, graphsage.parameters()), lr=<span class="number">0.7</span>)</span><br><span class="line">    times = []</span><br><span class="line">    <span class="keyword">for</span> batch <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">200</span>):</span><br><span class="line">        batch_nodes = train[:<span class="number">1024</span>]</span><br><span class="line">        random.shuffle(train)</span><br><span class="line">        start_time = time.time()</span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line">        loss = graphsage.loss(batch_nodes, </span><br><span class="line">                Variable(torch.LongTensor(labels[np.array(batch_nodes)])))</span><br><span class="line">        loss.backward()</span><br><span class="line">        optimizer.step()</span><br><span class="line">        end_time = time.time()</span><br><span class="line">        times.append(end_time-start_time)</span><br><span class="line">        <span class="built_in">print</span> batch, loss.data[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    val_output = graphsage.forward(val) </span><br><span class="line">    <span class="built_in">print</span> <span class="string">&quot;Validation F1:&quot;</span>, f1_score(labels[val], val_output.data.numpy().argmax(axis=<span class="number">1</span>), average=<span class="string">&quot;micro&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span> <span class="string">&quot;Average batch time:&quot;</span>, np.mean(times)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    run_cora()</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight python"><figcaption><span>encoders.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">from</span> torch.nn <span class="keyword">import</span> init</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Encoder</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Encodes a node&#x27;s using &#x27;convolutional&#x27; GraphSage approach</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, features, feature_dim, </span></span><br><span class="line"><span class="params">            embed_dim, adj_lists, aggregator,</span></span><br><span class="line"><span class="params">            num_sample=<span class="number">10</span>,</span></span><br><span class="line"><span class="params">            base_model=<span class="literal">None</span>, gcn=<span class="literal">False</span>, cuda=<span class="literal">False</span>, </span></span><br><span class="line"><span class="params">            feature_transform=<span class="literal">False</span></span>): </span><br><span class="line">        <span class="built_in">super</span>(Encoder, self).__init__()</span><br><span class="line"></span><br><span class="line">        self.features = features <span class="comment"># (2708, 1433)</span></span><br><span class="line">        self.feat_dim = feature_dim <span class="comment"># 输入维度1433</span></span><br><span class="line">        self.adj_lists = adj_lists  <span class="comment"># 边的连接defaultdict(&lt;class &#x27;set&#x27;&gt;,&#123;163:&#123;1536,2563...&#125;,...&#125;)</span></span><br><span class="line">        self.aggregator = aggregator <span class="comment"># MeanAggregator</span></span><br><span class="line">        self.num_sample = num_sample <span class="comment"># 采样邻居节点size</span></span><br><span class="line">        <span class="keyword">if</span> base_model != <span class="literal">None</span>:</span><br><span class="line">            self.base_model = base_model</span><br><span class="line"></span><br><span class="line">        self.gcn = gcn</span><br><span class="line">        self.embed_dim = embed_dim <span class="comment"># 输出维度128</span></span><br><span class="line">        self.cuda = cuda</span><br><span class="line">        self.aggregator.cuda = cuda</span><br><span class="line">        <span class="comment"># 注意concat之后维度是2倍</span></span><br><span class="line">        self.weight = nn.Parameter(</span><br><span class="line">                torch.FloatTensor(embed_dim, self.feat_dim <span class="keyword">if</span> self.gcn <span class="keyword">else</span> <span class="number">2</span> * self.feat_dim))</span><br><span class="line">        init.xavier_uniform(self.weight)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, nodes</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Generates embeddings for a batch of nodes.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        nodes     -- list of nodes</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 使用传递过来的aggregator计算（这里是mean），得到所有邻居节点的aggregator信息</span></span><br><span class="line">        neigh_feats = self.aggregator.forward(nodes, [self.adj_lists[<span class="built_in">int</span>(node)] <span class="keyword">for</span> node <span class="keyword">in</span> nodes], </span><br><span class="line">                self.num_sample)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.gcn:</span><br><span class="line">            <span class="keyword">if</span> self.cuda:</span><br><span class="line">                self_feats = self.features(torch.LongTensor(nodes).cuda())</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                self_feats = self.features(torch.LongTensor(nodes))</span><br><span class="line">            <span class="comment"># CONCAT当前节点和邻居节点</span></span><br><span class="line">            combined = torch.cat([self_feats, neigh_feats], dim=<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            combined = neigh_feats</span><br><span class="line">        <span class="comment"># W*CONCAT</span></span><br><span class="line">        combined = F.relu(self.weight.mm(combined.t()))</span><br><span class="line">        <span class="keyword">return</span> combined</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><figcaption><span>aggregators.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">from</span> torch.autograd <span class="keyword">import</span> Variable</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Set of modules for aggregating embeddings of neighbors.</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MeanAggregator</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Aggregates a node&#x27;s embeddings using mean of neighbors&#x27; embeddings</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, features, cuda=<span class="literal">False</span>, gcn=<span class="literal">False</span></span>): </span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Initializes the aggregator for a specific graph.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        features -- function mapping LongTensor of node ids to FloatTensor of feature values.</span></span><br><span class="line"><span class="string">        cuda -- whether to use GPU</span></span><br><span class="line"><span class="string">        gcn --- whether to perform concatenation GraphSAGE-style, or add self-loops GCN-style</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">super</span>(MeanAggregator, self).__init__()</span><br><span class="line"></span><br><span class="line">        self.features = features</span><br><span class="line">        self.cuda = cuda</span><br><span class="line">        self.gcn = gcn</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, nodes, to_neighs, num_sample=<span class="number">10</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        nodes --- list of nodes in a batch</span></span><br><span class="line"><span class="string">        to_neighs --- list of sets, each set is the set of neighbors for node in batch</span></span><br><span class="line"><span class="string">        num_sample --- number of neighbors to sample. No sampling if None.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        nodes：batch节点列表</span></span><br><span class="line"><span class="string">        to_neighs：集合列表，每个集合是batch中一个节点的邻居集合</span></span><br><span class="line"><span class="string">        num_sample：邻居采样size</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># Local pointers to functions (speed hack)</span></span><br><span class="line">        _<span class="built_in">set</span> = <span class="built_in">set</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> num_sample <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            _sample = random.sample</span><br><span class="line">            <span class="comment"># sample：截取列表的指定长度的随机数，但是不会改变列表本身的排序</span></span><br><span class="line">            <span class="comment"># 从to_neigh中采样num_sample个（当邻居节点数量to_neigh大于num_sample）</span></span><br><span class="line">            samp_neighs = [_<span class="built_in">set</span>(_sample(to_neigh, </span><br><span class="line">                            num_sample,</span><br><span class="line">                            )) <span class="keyword">if</span> <span class="built_in">len</span>(to_neigh) &gt;= num_sample <span class="keyword">else</span> to_neigh <span class="keyword">for</span> to_neigh <span class="keyword">in</span> to_neighs]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            samp_neighs = to_neighs <span class="comment"># num_sample为None，每个节点都对其所有邻居节点全部计算</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.gcn:</span><br><span class="line">            samp_neighs = [samp_neigh + <span class="built_in">set</span>([nodes[i]]) <span class="keyword">for</span> i, samp_neigh <span class="keyword">in</span> <span class="built_in">enumerate</span>(samp_neighs)]</span><br><span class="line">        <span class="comment"># set.union():返回多个集合的并集，即包含了所有集合的元素，重复的元素只会出现一次</span></span><br><span class="line">        unique_nodes_list = <span class="built_in">list</span>(<span class="built_in">set</span>.union(*samp_neighs))</span><br><span class="line">        <span class="comment"># &#123;节点:编号&#125;</span></span><br><span class="line">        unique_nodes = &#123;n:i <span class="keyword">for</span> i,n <span class="keyword">in</span> <span class="built_in">enumerate</span>(unique_nodes_list)&#125;</span><br><span class="line">        <span class="comment"># (采样节点（包括了batch节点）,独一无二节点)</span></span><br><span class="line">        mask = Variable(torch.zeros(<span class="built_in">len</span>(samp_neighs), <span class="built_in">len</span>(unique_nodes)))</span><br><span class="line">        <span class="comment"># 得到采样节点对应的编号</span></span><br><span class="line">        column_indices = [unique_nodes[n] <span class="keyword">for</span> samp_neigh <span class="keyword">in</span> samp_neighs <span class="keyword">for</span> n <span class="keyword">in</span> samp_neigh]  </span><br><span class="line">        <span class="comment"># 每个节点对应采样数量个i作为行坐标 </span></span><br><span class="line">        row_indices = [i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(samp_neighs)) <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(samp_neighs[i]))]</span><br><span class="line">        <span class="comment"># 得到邻接矩阵</span></span><br><span class="line">        mask[row_indices, column_indices] = <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> self.cuda:</span><br><span class="line">            mask = mask.cuda()</span><br><span class="line">        <span class="comment"># 统计每个节点的邻居数量</span></span><br><span class="line">        num_neigh = mask.<span class="built_in">sum</span>(<span class="number">1</span>, keepdim=<span class="literal">True</span>) </span><br><span class="line">        <span class="comment"># 每个邻居节点占比</span></span><br><span class="line">        mask = mask.div(num_neigh)</span><br><span class="line">        <span class="comment"># 得到每个邻居节点的特征</span></span><br><span class="line">        <span class="keyword">if</span> self.cuda:</span><br><span class="line">            embed_matrix = self.features(torch.LongTensor(unique_nodes_list).cuda())</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            embed_matrix = self.features(torch.LongTensor(unique_nodes_list))</span><br><span class="line">        <span class="comment"># mean aggregators 计算每个邻居的节点特征mean</span></span><br><span class="line">        to_feats = mask.mm(embed_matrix)</span><br><span class="line">        <span class="keyword">return</span> to_feats</span><br></pre></td></tr></table></figure>
+<h1 id="参考文献">参考文献</h1>
+<p><span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE3MDYuMDIyMTYucGRm">Inductive
+Representation Learning on Large Graphs<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMzYxOTU4NjI=">GraphSAGE详解<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC83OTYzNzc4Nw==">【Graph Neural
+Network】GraphSAGE: 算法原理，实现和应用<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l5bDQyNDUyNS9hcnRpY2xlL2RldGFpbHMvMTAwNTMyODQ5">[论文笔记]：GraphSAGE：Inductive
+Representation Learning on Large Graphs 论文详解 NIPS 2017<i class="fa fa-external-link-alt"></i></span></p>
 
     </div>
 
     
     
     
-      
-  <div class="popular-posts-header">相关文章</div>
-  <ul class="popular-posts">
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2021\02\03\Graph\00.图深度表示\" rel="bookmark">图深度表示</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2021\02\05\Graph\01.GCN\" rel="bookmark">GCN</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2021\02\10\Graph\02.GAT\" rel="bookmark">GAT</a></div>
-    </li>
-  </ul>
-
 
     <footer class="post-footer">
           
@@ -455,7 +449,7 @@
       <a href="https://soundmemories.github.io/2021/02/12/Graph/03.GraphSAGE/" title="GraphSAGE">https://soundmemories.github.io/2021/02/12/Graph/03.GraphSAGE/</a>
   </li>
   <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
   </li>
 </ul>
 </div>
@@ -487,147 +481,63 @@
 
 
 
-      
-
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      const commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
-
-    </div>
+</div>
   </main>
 
   <footer class="footer">
     <div class="footer-inner">
-      
 
-      
-
-<div class="copyright">
-  
-  &copy; 2019 – 
-  <span itemprop="copyrightYear">2023</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">SoundMemories</span>
-</div>
-  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">SoundMemories</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
   </div>
 
     </div>
   </footer>
 
   
-  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '.page-configurations',
-    '.main-inner',
-    '.post-toc-wrap',
-    '.languages',
-    '.pjax'
-  ],
-  analytics: false,
-  cacheBust: false,
-  scrollRestoration: false,
-  scrollTo: !CONFIG.bookmark.enable
-});
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
 
-document.addEventListener('pjax:success', () => {
-  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.subMenu)
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  const hasTOC = document.querySelector('.post-toc');
-  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
-  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
-  NexT.utils.updateSidebarPosition();
-});
-</script>
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
 
 
   
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"neutral"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.min.js","integrity":"sha256-JFptYy4KzJ5OQP+Q9fubNf3cxpPPmZKqUOovyEONKrQ="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
 
 
-
-
-  <script src="/js/local-search.js"></script>
-
-
-
-
-
-
-
-
-<script data-pjax>
-document.querySelectorAll('.pdfobject-container').forEach(element => {
-  const url = element.dataset.target;
-  const pdfOpenParams = {
-    navpanes : 0,
-    toolbar  : 0,
-    statusbar: 0,
-    pagemode : 'thumbs',
-    view     : 'FitH'
-  };
-  const pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
-  const fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
-
-  if (NexT.utils.supportsPDFs()) {
-    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
-  } else {
-    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
-  }
-});
-</script>
-
-
-<script data-pjax>
-if (document.querySelectorAll('.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8.8.2/dist/mermaid.min.js', () => {
-    mermaid.init({
-      theme    : 'neutral',
-      logLevel : 3,
-      flowchart: { curve     : 'linear' },
-      gantt    : { axisFormat: '%m/%d/%Y' },
-      sequence : { actorMargin: 50 }
-    }, '.mermaid');
-  }, window.mermaid);
-}
-</script>
-
-
+  <script src="/js/third-party/fancybox.js"></script>
 
 
 
@@ -636,71 +546,15 @@ if (document.querySelectorAll('.mermaid').length) {
 
 
 
-
-
-
-
-    <div class="pjax">
   
 
-  
-      <script>
-  if (typeof MathJax === 'undefined') {
-    window.MathJax = {
-      tex: {
-        inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
-      },
-      options: {
-        renderActions: {
-          findScript: [10, doc => {
-            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-              const display = !!node.type.match(/; *mode=display/);
-              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-              const text = document.createTextNode('');
-              node.parentNode.replaceChild(text, node);
-              math.start = {node: text, delim: '', n: 0};
-              math.end = {node: text, delim: '', n: 0};
-              doc.math.push(math);
-            });
-          }, '', false],
-          insertedScript: [200, () => {
-            document.querySelectorAll('mjx-container').forEach(node => {
-              const target = node.parentNode;
-              if (target.nodeName.toLowerCase() === 'li') {
-                target.parentNode.classList.add('has-jax');
-              }
-            });
-          }, '', false]
-        }
-      }
-    };
-    const script = document.createElement('script');
-    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
-    script.defer = true;
-    document.head.appendChild(script);
-  } else {
-    MathJax.startup.document.state(0);
-    MathJax.typesetClear();
-    MathJax.texReset();
-    MathJax.typeset();
-  }
-</script>
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
 
-    
 
-  
-  <script src="//cdn.jsdelivr.net/npm/quicklink@2.0.0/dist/quicklink.umd.js"></script>
-  <script>
-      window.addEventListener('load', () => {
-      quicklink.listen({
-        timeout : 3000,
-        priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'https://soundmemories.github.io/2021/02/12/Graph/03.GraphSAGE/',]
-      });
-      });
-  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://soundmemories.github.io/2021/02/12/Graph/03.GraphSAGE/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
 
-    </div>
 </body>
 </html>

@@ -2,10 +2,9 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.2.0">
-
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
@@ -16,46 +15,37 @@
 
 <link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
 
-<script class="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.0.2","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
-  </script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.1","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-  <meta name="description" content="数据获取 数据仓库：   主旨面向数据分析，方便不同维度抽取和整理，面向主题存储（谁在什么时候干了什么，多维度信息）。    检测与抓取：   主要是爬虫      填写、日志、埋点：   用户填写的信息   APP或网页埋点，特定流程的信息记录点，比如访客停留时间，页面查看和跳出率…主要分为两类：页面统计、操作行为。记录了用户与产品的交互过程。   日志，分前端日志和后端日志    计算：">
+    <meta name="description" content="数据获取  数据仓库：  主旨面向数据分析，方便不同维度抽取和整理，面向主题存储（谁在什么时候干了什么，多维度信息）。  检测与抓取：  主要是爬虫   填写、日志、埋点：  用户填写的信息  APP或网页埋点，特定流程的信息记录点，比如访客停留时间，页面查看和跳出率...主要分为两类：页面统计、操作行为。记录了用户与产品的交互过程。  日志，分前端日志和后端日志">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ML-数据分析">
 <meta property="og:url" content="https://soundmemories.github.io/2020/06/10/Machine%20Learning/11.ML-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/index.html">
 <meta property="og:site_name" content="SoundMemories">
-<meta property="og:description" content="数据获取 数据仓库：   主旨面向数据分析，方便不同维度抽取和整理，面向主题存储（谁在什么时候干了什么，多维度信息）。    检测与抓取：   主要是爬虫      填写、日志、埋点：   用户填写的信息   APP或网页埋点，特定流程的信息记录点，比如访客停留时间，页面查看和跳出率…主要分为两类：页面统计、操作行为。记录了用户与产品的交互过程。   日志，分前端日志和后端日志    计算：">
+<meta property="og:description" content="数据获取  数据仓库：  主旨面向数据分析，方便不同维度抽取和整理，面向主题存储（谁在什么时候干了什么，多维度信息）。  检测与抓取：  主要是爬虫   填写、日志、埋点：  用户填写的信息  APP或网页埋点，特定流程的信息记录点，比如访客停留时间，页面查看和跳出率...主要分为两类：页面统计、操作行为。记录了用户与产品的交互过程。  日志，分前端日志和后端日志">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://soundmemories.github.io/images/数据分析/偏态.png">
-<meta property="og:image" content="https://soundmemories.github.io/images/数据分析/偏态和峰度.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/%E5%81%8F%E6%80%81.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/%E5%81%8F%E6%80%81%E5%92%8C%E5%B3%B0%E5%BA%A6.png">
 <meta property="article:published_time" content="2020-06-09T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-07-13T16:09:58.289Z">
+<meta property="article:modified_time" content="2023-05-25T15:05:07.038Z">
 <meta property="article:author" content="SoundMemories">
 <meta property="article:tag" content="Machine Learning">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://soundmemories.github.io/images/数据分析/偏态.png">
+<meta name="twitter:image" content="https://soundmemories.github.io/images/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/%E5%81%8F%E6%80%81.png">
 
 
 <link rel="canonical" href="https://soundmemories.github.io/2020/06/10/Machine%20Learning/11.ML-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">
 
 
-<script data-pjax class="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
 
-  <title>ML-数据分析 | SoundMemories</title>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://soundmemories.github.io/2020/06/10/Machine%20Learning/11.ML-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/","path":"2020/06/10/Machine Learning/11.ML-数据分析/","title":"ML-数据分析"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>ML-数据分析 | SoundMemories</title>
   
 
 
@@ -63,51 +53,21 @@
 
 
 
+
+
   <noscript>
-  <style>
-  body { margin-top: 2rem; }
-
-  .use-motion .menu-item,
-  .use-motion .sidebar,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header {
-    visibility: visible;
-  }
-
-  .use-motion .header,
-  .use-motion .site-brand-container .toggle,
-  .use-motion .footer { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle,
-  .use-motion .custom-logo-image {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line {
-    transform: scaleX(1);
-  }
-
-  .search-pop-overlay, .sidebar-nav { display: none; }
-  .sidebar-panel { display: block; }
-  </style>
-</noscript>
-
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
   <div class="headband"></div>
 
   <main class="main">
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
+    <div class="toggle" aria-label="切换导航栏" role="button">
         <span class="toggle-line"></span>
         <span class="toggle-line"></span>
         <span class="toggle-line"></span>
@@ -118,13 +78,13 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title">SoundMemories</h1>
+      <p class="site-title">SoundMemories</p>
       <i class="logo-line"></i>
     </a>
   </div>
 
   <div class="site-nav-right">
-    <div class="toggle popup-trigger">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
         <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
@@ -133,27 +93,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu">
-        <li class="menu-item menu-item-主页">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>主页</a>
-
-  </li>
-        <li class="menu-item menu-item-分类">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
-
-  </li>
-        <li class="menu-item menu-item-标签">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-归档">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">8</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">8</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">122</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -164,8 +104,7 @@
 
 
   <div class="search-pop-overlay">
-    <div class="popup search-popup">
-        <div class="search-header">
+    <div class="popup search-popup"><div class="search-header">
   <span class="search-icon">
     <i class="fa fa-search"></i>
   </span>
@@ -174,7 +113,7 @@
            placeholder="搜索..." spellcheck="false"
            type="search" class="search-input">
   </div>
-  <span class="popup-btn-close">
+  <span class="popup-btn-close" role="button">
     <i class="fa fa-times-circle"></i>
   </span>
 </div>
@@ -187,15 +126,9 @@
     </div>
   </div>
 
-</div>
+</header>
         
   
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-
   <aside class="sidebar">
 
     <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
@@ -207,43 +140,42 @@
           站点概览
         </li>
       </ul>
-	   
-		  
+
       <div class="sidebar-panel-container">
         <!--noindex-->
-        <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96"><span class="nav-number">1.</span> <span class="nav-text">数据获取</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">数据分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E4%B8%AD%E8%B6%8B%E5%8A%BF%EF%BC%9A%E8%81%9A%E6%8B%A2%E7%A8%8B%E5%BA%A6"><span class="nav-number">2.1.</span> <span class="nav-text">集中趋势：聚拢程度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A6%BB%E4%B8%AD%E8%B6%8B%E5%8A%BF%EF%BC%9A%E7%A6%BB%E6%95%A3%E7%A8%8B%E5%BA%A6"><span class="nav-number">2.2.</span> <span class="nav-text">离中趋势：离散程度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%88%86%E5%B8%83"><span class="nav-number">2.3.</span> <span class="nav-text">数据分布</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%8A%BD%E6%A0%B7"><span class="nav-number">2.4.</span> <span class="nav-text">数据抽样</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%88%86%E7%B1%BB"><span class="nav-number">2.5.</span> <span class="nav-text">数据分类</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97"><span class="nav-number">3.</span> <span class="nav-text">数据清洗</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E5%80%BC%E5%A4%84%E7%90%86"><span class="nav-number">3.1.</span> <span class="nav-text">异常值处理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">4.</span> <span class="nav-text">代码</span></a></li></ol></div>
-        </section>
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96"><span class="nav-number">1.</span> <span class="nav-text">数据获取</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">数据分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E4%B8%AD%E8%B6%8B%E5%8A%BF%E8%81%9A%E6%8B%A2%E7%A8%8B%E5%BA%A6"><span class="nav-number">2.1.</span> <span class="nav-text">集中趋势：聚拢程度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A6%BB%E4%B8%AD%E8%B6%8B%E5%8A%BF%E7%A6%BB%E6%95%A3%E7%A8%8B%E5%BA%A6"><span class="nav-number">2.2.</span> <span class="nav-text">离中趋势：离散程度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%88%86%E5%B8%83"><span class="nav-number">2.3.</span> <span class="nav-text">数据分布</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%8A%BD%E6%A0%B7"><span class="nav-number">2.4.</span> <span class="nav-text">数据抽样</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%88%86%E7%B1%BB"><span class="nav-number">2.5.</span> <span class="nav-text">数据分类</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97"><span class="nav-number">3.</span> <span class="nav-text">数据清洗</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E5%80%BC%E5%A4%84%E7%90%86"><span class="nav-number">3.1.</span> <span class="nav-text">异常值处理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">4.</span> <span class="nav-text">代码</span></a></li></ol></div>
+        </div>
         <!--/noindex-->
 
-        <section class="site-overview-wrap sidebar-panel">
-          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image" alt="SoundMemories"
-      src="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+      src="/images/avstar.png">
   <p class="site-author-name" itemprop="name">SoundMemories</p>
   <div class="site-description" itemprop="description">今日事，今日毕</div>
 </div>
-<div class="site-state-wrap site-overview-item animated">
+<div class="site-state-wrap animated">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
-          <a href="/archives">
-          <span class="site-state-item-count">120</span>
+        <a href="/archives/">
+          <span class="site-state-item-count">122</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-        <span class="site-state-item-count">9</span>
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-        <span class="site-state-item-count">9</span>
+          <a href="/tags/">
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>
-  <div class="links-of-author site-overview-item animated">
+  <div class="links-of-author animated">
       <span class="links-of-author-item">
         <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NvdW5kbWVtb3JpZXM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;soundmemories"><i class="fab fa-github fa-fw"></i>GitHub</span>
       </span>
@@ -251,37 +183,24 @@
         <span class="exturl" data-url="bWFpbHRvOnNvdW5kbWVtb3JpZXNAMTYzLmNvbQ==" title="E-Mail → mailto:soundmemories@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
       </span>
   </div>
-  <div class="cc-license site-overview-item animated" itemprop="license">
-    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></span>
   </div>
 
-
-
-        </section>
+        </div>
       </div>
     </div>
-  </aside>
-  <div class="sidebar-dimmer"></div>
-
-
-    </header>
 
     
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+        <div class="pjax">
+        </div>
+  </aside>
 
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
 
+    </div>
 
     <div class="main-inner post posts-expand">
-      
 
-      
 
   
 
@@ -294,13 +213,18 @@
     <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/06/10/Machine%20Learning/11.ML-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+      <meta itemprop="image" content="/images/avstar.png">
       <meta itemprop="name" content="SoundMemories">
-      <meta itemprop="description" content="今日事，今日毕">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="ML-数据分析 | SoundMemories">
+      <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -328,21 +252,20 @@
     </span>
 
   
-      </div>
-      <div class="post-meta">
+    <span class="post-meta-break"></span>
     <span class="post-meta-item" title="本文字数">
       <span class="post-meta-item-icon">
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>916</span>
+      <span>2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>7 分钟</span>
     </span>
 </div>
 
@@ -352,154 +275,195 @@
     
     
     
-    <div class="post-body" itemprop="articleBody">
-        <h1 id="数据获取"><a href="#数据获取" class="headerlink" title="数据获取"></a>数据获取</h1><ol>
-<li>数据仓库：  <ul>
-<li>主旨面向数据分析，方便不同维度抽取和整理，面向主题存储（谁在什么时候干了什么，多维度信息）。 </li>
-</ul>
+    <div class="post-body" itemprop="articleBody"><h1 id="数据获取">数据获取</h1>
+<ol type="1">
+<li>数据仓库：
+<ul>
+<li>主旨面向数据分析，方便不同维度抽取和整理，面向主题存储（谁在什么时候干了什么，多维度信息）。</li>
+</ul></li>
+<li>检测与抓取：
+<ul>
+<li>主要是爬虫<br />
 </li>
-<li>检测与抓取：  <ul>
-<li>主要是爬虫   </li>
-</ul>
+</ul></li>
+<li>填写、日志、埋点：
+<ul>
+<li>用户填写的信息<br />
 </li>
-<li>填写、日志、埋点：  <ul>
-<li>用户填写的信息  </li>
-<li>APP或网页埋点，特定流程的信息记录点，比如访客停留时间，页面查看和跳出率…主要分为两类：页面统计、操作行为。记录了用户与产品的交互过程。  </li>
-<li>日志，分前端日志和后端日志 </li>
-</ul>
+<li>APP或网页埋点，特定流程的信息记录点，比如访客停留时间，页面查看和跳出率...主要分为两类：页面统计、操作行为。记录了用户与产品的交互过程。<br />
 </li>
-<li>计算：  <ul>
-<li>某些指标不能直接获取，需要计算，比如适应率，投入产出比  <a id="more"></a>
-<h1 id="数据分析"><a href="#数据分析" class="headerlink" title="数据分析"></a>数据分析</h1></li>
-</ul>
-</li>
+<li>日志，分前端日志和后端日志</li>
+</ul></li>
+<li>计算：
+<ul>
+<li>某些指标不能直接获取，需要计算，比如适应率，投入产出比<br />
+<span id="more"></span></li>
+</ul></li>
 </ol>
+<h1 id="数据分析">数据分析</h1>
 <ul>
 <li>集中趋势：均值、中位数、众数、分位数。</li>
 <li>离中趋势：标准差、方差。</li>
 <li>数据分布：偏态与峰态、正态分布与三大分布。</li>
-<li>抽样理论：抽样误差、抽样精度。<h2 id="集中趋势：聚拢程度"><a href="#集中趋势：聚拢程度" class="headerlink" title="集中趋势：聚拢程度"></a>集中趋势：聚拢程度</h2></li>
+<li>抽样理论：抽样误差、抽样精度。</li>
 </ul>
-<ol>
+<h2 id="集中趋势聚拢程度">集中趋势：聚拢程度</h2>
+<ol type="1">
 <li>均值：主要衡量连续值集中趋势，分布均匀，规律的连续值效果最好。</li>
 <li>中位数：有异常值（离群点）时，衡量数据的集中趋势。</li>
 <li>众数：主要衡量离散值的集中趋势。</li>
 <li>分位数：共同作用，常用四分位数。</li>
-<li>四分位数(n是数据总数)：<ul>
+<li>四分位数(n是数据总数)：
+<ul>
 <li>Q1的位置：(n+1)*0.25</li>
 <li>Q2的位置：(n+1)*0.5</li>
-<li>Q3的位置：(n+1)*0.75<h2 id="离中趋势：离散程度"><a href="#离中趋势：离散程度" class="headerlink" title="离中趋势：离散程度"></a>离中趋势：离散程度</h2></li>
-</ul>
-</li>
+<li>Q3的位置：(n+1)*0.75</li>
+</ul></li>
 </ol>
+<h2 id="离中趋势离散程度">离中趋势：离散程度</h2>
 <ul>
-<li><p>方差：$\dfrac {\sum \limits_{i=1}^n (x_i - \bar x)^2} {n}$、标准差：$\sqrt{\dfrac {\sum \limits_{i=1}^n (x_i - \bar x)^2} {n}}$</p>
-</li>
-<li><p>方差和标准差的值，越大表示越离散，越小表示越聚拢。</p>
-</li>
-<li>正态分布的离中趋势（σ是标准差，如果算出σ，且该特征符合正态分布）：<pre><code>* 数据落在-1σ~+1σ的概率是69%，
-* 数据落在-1.96σ~+1.96σ的概率是95%，
-* 数据落在-2.58σ~+2.58σ的概率是99%。
-</code></pre><h2 id="数据分布"><a href="#数据分布" class="headerlink" title="数据分布"></a>数据分布</h2></li>
-<li>偏态系数：数据平均值偏离中位数状态的一种衡量。<ul>
+<li><p>方差：<span class="math inline">\(\dfrac {\sum \limits_{i=1}^n
+(x_i - \bar x)^2} {n}\)</span>、标准差：<span
+class="math inline">\(\sqrt{\dfrac {\sum \limits_{i=1}^n (x_i - \bar
+x)^2} {n}}\)</span></p></li>
+<li><p>方差和标准差的值，越大表示越离散，越小表示越聚拢。</p></li>
+<li><p>正态分布的离中趋势（σ是标准差，如果算出σ，且该特征符合正态分布）：<br />
+* 数据落在-1σ~+1σ的概率是69%，<br />
+* 数据落在-1.96σ~+1.96σ的概率是95%，<br />
+* 数据落在-2.58σ~+2.58σ的概率是99%。</p></li>
+</ul>
+<h2 id="数据分布">数据分布</h2>
+<ul>
+<li>偏态系数：数据平均值偏离中位数状态的一种衡量。
+<ul>
 <li>正常情况下，对称数据，数据的均值和中位数是接近甚至相等的。</li>
-<li>然而有的时候数据并非对称分布，其均值和中位数相差很大，这样的数据就是有偏态的分布。<!-- more --></li>
-</ul>
-</li>
-<li><p>偏态系数公式：</p>
+<li>然而有的时候数据并非对称分布，其均值和中位数相差很大，这样的数据就是有偏态的分布。<br />
+<!-- more --></li>
+</ul></li>
+<li>偏态系数公式：
 <ul>
-<li>$S = \dfrac{\dfrac{1}{n}\sum \limits_{i=1}^n (x_i - \bar x)^3}{[\dfrac{1}{n}\sum \limits_{i=1}^n (x_i - \bar x)^2]^{3/2}}$    </li>
-<li>S值&gt;0，就是正偏（右偏），表示均值&gt;中位数&gt;众数；<0表示负偏（左偏），表示均值<中位数<众数。
+<li><span class="math inline">\(S = \dfrac{\dfrac{1}{n}\sum
+\limits_{i=1}^n (x_i - \bar x)^3}{[\dfrac{1}{n}\sum \limits_{i=1}^n (x_i
+- \bar x)^2]^{3/2}}\)</span><br />
+</li>
+<li>S值&gt;0，就是正偏（右偏），表示均值&gt;中位数&gt;众数；&lt;0表示负偏（左偏），表示均值&lt;中位数&lt;众数。<br />
 <img src="/images/数据分析/偏态.png" width="74%"></li>
-</ul>
-</li>
-<li><p>峰态系数：数据分布集中强度的衡量。</p>
-</li>
-<li>峰态系数公式：<ul>
-<li>$K = \dfrac{\dfrac{1}{n}\sum \limits_{i=1}^n (x_i - \bar x)^4}{[\dfrac{1}{n}\sum \limits_{i=1}^n (x_i - \bar x)^2]^{2}}$ </li>
+</ul></li>
+<li>峰态系数：数据分布集中强度的衡量。</li>
+<li>峰态系数公式：
+<ul>
+<li><span class="math inline">\(K = \dfrac{\dfrac{1}{n}\sum
+\limits_{i=1}^n (x_i - \bar x)^4}{[\dfrac{1}{n}\sum \limits_{i=1}^n (x_i
+- \bar x)^2]^{2}}\)</span></li>
 <li>K值越大，顶峰越尖，越小，顶峰越平滑。</li>
+</ul></li>
+<li>重点：
+<ul>
+<li>正态分布的峰态系数是3，如果特征计算出的峰态系数
+K&gt;5或K&lt;1(和正态分布峰态系数之差大于2)，就说其不是正态分布了。</li>
+<li><strong>最重要作用就是可以拒绝正态分布的假设(和正态分布峰态系数之差大于2就可以拒绝正态分布假设)</strong><br />
+<img src="/images/数据分析/偏态和峰度.png" width="74%"></li>
+</ul></li>
 </ul>
-</li>
-<li>重点：<ul>
-<li>正态分布的峰态系数是3，如果特征计算出的峰态系数 K&gt;5或K&lt;1(和正态分布峰态系数之差大于2)，就说其不是正态分布了。</li>
-<li><strong>最重要作用就是可以拒绝正态分布的假设(和正态分布峰态系数之差大于2就可以拒绝正态分布假设)</strong><br><img src="/images/数据分析/偏态和峰度.png" width="74%"></li>
-</ul>
-</li>
-</ul>
-<p><strong>其他分布：</strong></p>
-<ol>
-<li><strong>正态分布</strong>：$f(x) = \dfrac{1}{\sqrt{2\pi} \sigma}  e^{ - \dfrac{(x- \mu) ^2 }{2 \sigma ^ 2}}$</li>
-<li><strong>卡方分布</strong>：<ul>
-<li>定义：设随机变量$X_1,X_2,\dots,X_n$ 相互独立，且$X_i(i=1,2,\dots,n)$服从标准正态分布$N(0,1)$，则他们的平方和$\sum \limits_{i=1}^n X^2_i$服从自由度为$n$的$\chi ^2$分布，记为$X \sim \chi^2(n)$。</li>
-<li>特征符合标准正态分布，那么其<strong>平方和</strong>符合卡方分布。</li>
-</ul>
-</li>
-<li><strong>t分布</strong>：<ul>
-<li>定义：设随机变量$X \sim N(0,1)$，$Y \sim \chi^2(n)$，且$X$和$Y$相互独立，则$t=\dfrac {X}{\sqrt{Y/n}}$服从自由度为$n$的$t$分布，记为$t \sim t(n)$。  </li>
-<li><strong>根据小样本来估计呈正态分布且方差未知的总体的均值</strong>。</li>
-</ul>
-</li>
-<li><strong>F分布</strong>：<ul>
-<li>定义：设随机变量$X \sim \chi^2(n_1)$，$Y \sim \chi^2(n_2)$,且$X$和$Y$相互独立，则$F=\dfrac {X/n_1}{Y/n_2}$服从自由度为$(n_1,n_2)$的$F$分布。<h2 id="数据抽样"><a href="#数据抽样" class="headerlink" title="数据抽样"></a>数据抽样</h2>抽样代表了总体。</li>
-</ul>
-</li>
-</ol>
+<p><strong>其他分布：</strong><br />
+1. <strong>正态分布</strong>：<span class="math inline">\(f(x) =
+\dfrac{1}{\sqrt{2\pi} \sigma} e^{ - \dfrac{(x- \mu) ^2 }{2 \sigma ^
+2}}\)</span><br />
+2. <strong>卡方分布</strong>：<br />
+- 定义：设随机变量<span class="math inline">\(X_1,X_2,\dots,X_n\)</span>
+相互独立，且<span
+class="math inline">\(X_i(i=1,2,\dots,n)\)</span>服从标准正态分布<span
+class="math inline">\(N(0,1)\)</span>，则他们的平方和<span
+class="math inline">\(\sum \limits_{i=1}^n
+X^2_i\)</span>服从自由度为<span class="math inline">\(n\)</span>的<span
+class="math inline">\(\chi ^2\)</span>分布，记为<span
+class="math inline">\(X \sim \chi^2(n)\)</span>。<br />
+-
+特征符合标准正态分布，那么其<strong>平方和</strong>符合卡方分布。<br />
+3. <strong>t分布</strong>：<br />
+- 定义：设随机变量<span class="math inline">\(X \sim
+N(0,1)\)</span>，<span class="math inline">\(Y \sim
+\chi^2(n)\)</span>，且<span class="math inline">\(X\)</span>和<span
+class="math inline">\(Y\)</span>相互独立，则<span
+class="math inline">\(t=\dfrac {X}{\sqrt{Y/n}}\)</span>服从自由度为<span
+class="math inline">\(n\)</span>的<span
+class="math inline">\(t\)</span>分布，记为<span class="math inline">\(t
+\sim t(n)\)</span>。<br />
+-
+<strong>根据小样本来估计呈正态分布且方差未知的总体的均值</strong>。<br />
+4. <strong>F分布</strong>：<br />
+- 定义：设随机变量<span class="math inline">\(X \sim
+\chi^2(n_1)\)</span>，<span class="math inline">\(Y \sim
+\chi^2(n_2)\)</span>,且<span class="math inline">\(X\)</span>和<span
+class="math inline">\(Y\)</span>相互独立，则<span
+class="math inline">\(F=\dfrac {X/n_1}{Y/n_2}\)</span>服从自由度为<span
+class="math inline">\((n_1,n_2)\)</span>的<span
+class="math inline">\(F\)</span>分布。</p>
+<h2 id="数据抽样">数据抽样</h2>
+<p>抽样代表了总体。</p>
 <ul>
 <li>主要分为：重复(有放回)和不重复(无放回)抽样。</li>
-<li>抽样方式：<ul>
+<li>抽样方式：
+<ul>
 <li>完全随机；</li>
 <li>等差距：按某个属性排序，等差距抽取；</li>
-<li>分类分层：根据各个类别的比例抽取。保证各个类别抽取的结果分布和原始一致；<!-- more --></li>
+<li>分类分层：根据各个类别的比例抽取。保证各个类别抽取的结果分布和原始一致；<br />
+<!-- more --></li>
+</ul></li>
+<li>抽样平均误差计算公式：
+<ul>
+<li>重复抽样：<span class="math inline">\(\mu_x =
+\sqrt{\dfrac{\sigma^2}{n}}\)</span>，<span
+class="math inline">\(\sigma^2\)</span>是总体方差，<span
+class="math inline">\(n\)</span>表示抽样数量。</li>
+<li>不重复抽样：<span class="math inline">\(\mu_x =
+\sqrt{\dfrac{\sigma^2}{n}(\dfrac{N-n}{N-1})}\)</span>，<span
+class="math inline">\(\sigma^2\)</span>是总体方差，<span
+class="math inline">\(n\)</span>表示抽样数量，<span
+class="math inline">\(N\)</span>总体样本数量。</li>
+</ul></li>
+<li>某些情况下，需要在一定误差之内，确定抽样数量。
+<ul>
+<li>重复抽样：<span
+class="math inline">\(n=\dfrac{Z_{\alpha/2}\delta^2}{\Delta^2}\)</span>，<span
+class="math inline">\(Z_{\alpha/2}\)</span>表示满足多少正确率所使用的倍数（比如正态分布满足95%正确率，这个值就是1.96，一般使用2），<span
+class="math inline">\(\delta^2\)</span>表示总体方差，<span
+class="math inline">\(\Delta^2\)</span>是我们要控制的方差(误差)。</li>
+<li>不重复抽样：<span
+class="math inline">\(n=\dfrac{NZ_{\alpha/2}\delta^2}{N\Delta^2+Z_{\alpha/2}\delta^2}\)</span>，参数同上，N是样本总体数量。</li>
+</ul></li>
 </ul>
-</li>
-<li>抽样平均误差计算公式：<ul>
-<li>重复抽样：$\mu_x = \sqrt{\dfrac{\sigma^2}{n}}$，$\sigma^2$是总体方差，$n$表示抽样数量。</li>
-<li>不重复抽样：$\mu_x = \sqrt{\dfrac{\sigma^2}{n}(\dfrac{N-n}{N-1})}$，$\sigma^2$是总体方差，$n$表示抽样数量，$N$总体样本数量。</li>
-</ul>
-</li>
-<li>某些情况下，需要在一定误差之内，确定抽样数量。<ul>
-<li>重复抽样：$n=\dfrac{Z_{\alpha/2}\delta^2}{\Delta^2}$，$Z_{\alpha/2}$表示满足多少正确率所使用的倍数（比如正态分布满足95%正确率，这个值就是1.96，一般使用2），$\delta^2$表示总体方差，$\Delta^2$是我们要控制的方差(误差)。</li>
-<li>不重复抽样：$n=\dfrac{NZ_{\alpha/2}\delta^2}{N\Delta^2+Z_{\alpha/2}\delta^2}$，参数同上，N是样本总体数量。<h2 id="数据分类"><a href="#数据分类" class="headerlink" title="数据分类"></a>数据分类</h2></li>
-</ul>
-</li>
-<li>统计学上把数据分为4类：<ul>
+<h2 id="数据分类">数据分类</h2>
+<ul>
+<li>统计学上把数据分为4类：
+<ul>
 <li>定类（类别）：根据事物离散、无差别属性进行分类。优点：类别间无差距。</li>
 <li>定序（顺序）：可以界定数据的大小，但不能测定差值。有差距，大小不能确定。</li>
 <li>定距（间隔）：可以界定数据大小的同时，可测定差值，但无绝对零点。乘法除法比率是无意义的。</li>
 <li>定比（比率）：可以界定数据的大小，可测定差值，有绝对零点。</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h1 id="数据清洗"><a href="#数据清洗" class="headerlink" title="数据清洗"></a>数据清洗</h1><h2 id="异常值处理"><a href="#异常值处理" class="headerlink" title="异常值处理"></a>异常值处理</h2><p>异常值包括：<strong>缺失值</strong>（空值null）、<strong>重复值</strong>、四分位数计算出来的<strong>超过上下界的值</strong>、<strong>超出常识的值</strong>。</p>
-<p>识别：<br>（1）缺失值：Pandas的<code>isnull()</code>。<br>（2）重复值：Pandas的<code>duplicated()</code>。<br>（2）异常值：需要自己定义上下界，提取出非异常数值。Pandas的</p>
-<p>处理：<br>（1）丢弃：缺失值用Pandas的<code>drop()</code>/<code>dropna()</code>。重复值用Pandas的<code>drop()</code>/<code>drop_duplocated()</code>。<br>（2）填充：离散：众数。连续：均值/中位数。也可以用边界值填充超过边界的异常值。Pandas的<code>fillna()</code>。插值填充（默认线性）Pandas的<code>interpolate()</code>—Series。</p>
-<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p>数据分析：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span>():</span></span><br><span class="line">    df=pd.read_csv(<span class="string">&#x27;./data/HR.csv&#x27;</span>)</span><br><span class="line">    <span class="comment">#查看数据梗概</span></span><br><span class="line">    print(df)</span><br><span class="line">    print(<span class="built_in">type</span>(df))<span class="comment">#类型</span></span><br><span class="line">    print(<span class="built_in">type</span>(df[<span class="string">&quot;satisfaction_level&quot;</span>]))</span><br><span class="line">    print(df.mean())<span class="comment">#平均值</span></span><br><span class="line">    print(df[<span class="string">&quot;satisfaction_level&quot;</span>].mean())</span><br><span class="line">    print(df.median())<span class="comment">#中位数</span></span><br><span class="line">    print(df[<span class="string">&quot;satisfaction_level&quot;</span>].median())</span><br><span class="line">    print(df.quantile(q=<span class="number">0.25</span>))<span class="comment">#四分位数</span></span><br><span class="line">    print(df[<span class="string">&quot;satisfaction_level&quot;</span>].quantile(q=<span class="number">0.25</span>))</span><br><span class="line">    print(df.mode())<span class="comment">#众数</span></span><br><span class="line">    print(df[<span class="string">&quot;department&quot;</span>].mode())</span><br><span class="line">    print(<span class="built_in">type</span>(df[<span class="string">&quot;department&quot;</span>].mode()))</span><br><span class="line">    print(df.<span class="built_in">sum</span>())<span class="comment">#求和</span></span><br><span class="line">    print(df[<span class="string">&quot;satisfaction_level&quot;</span>].<span class="built_in">sum</span>())</span><br><span class="line">    print(df.std())<span class="comment">#标准</span></span><br><span class="line">    print(df[<span class="string">&quot;satisfaction_level&quot;</span>].std())</span><br><span class="line">    print(df.var())<span class="comment">#方差</span></span><br><span class="line">    print(df[<span class="string">&quot;satisfaction_level&quot;</span>].var())</span><br><span class="line">    print(df.skew())<span class="comment">#偏态</span></span><br><span class="line">    print(df[<span class="string">&quot;satisfaction_level&quot;</span>].skew())</span><br><span class="line">    print(df.kurt())<span class="comment">#峰态</span></span><br><span class="line">    print(df[<span class="string">&quot;satisfaction_level&quot;</span>].kurt())</span><br><span class="line">    <span class="keyword">import</span> scipy.stats <span class="keyword">as</span> ss</span><br><span class="line">    mean,var,skew,kurt = ss.norm.stats(moments=<span class="string">&quot;mvsk&quot;</span>)</span><br><span class="line">    print(mean, var, skew, kurt)<span class="comment">#均值、方差、偏态、峰态</span></span><br><span class="line">    print(ss.norm.pdf(<span class="number">0</span>))<span class="comment">#概率密度函数</span></span><br><span class="line">    print(ss.norm.ppf(<span class="number">0.9</span>))<span class="comment">#分位值函数</span></span><br><span class="line">    print(ss.norm.cdf(<span class="number">2</span>))<span class="comment">#累积分布函数</span></span><br><span class="line">    print(ss.norm.cdf(<span class="number">2</span>)-ss.norm.cdf(<span class="number">-2</span>))</span><br><span class="line">    print(ss.norm.rvs(size=<span class="number">100</span>))<span class="comment">#分布随机值生成</span></span><br><span class="line">    print(ss.chi2)<span class="comment">#卡方</span></span><br><span class="line">    print(ss.t)<span class="comment">#t分布</span></span><br><span class="line">    print(ss.f)<span class="comment">#F分布</span></span><br><span class="line"></span><br><span class="line">    print(df.sample(<span class="number">100</span>))<span class="comment">#抽样</span></span><br><span class="line">    print(df[<span class="string">&quot;satisfaction_level&quot;</span>].sample(frac=<span class="number">0.01</span>))</span><br><span class="line">    <span class="comment">#df.mean()</span></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure><br>数据清洗：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> scipy.stats <span class="keyword">as</span> ss</span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line">sns.set_context(context=<span class="string">&quot;poster&quot;</span>,font_scale=<span class="number">1.2</span>)</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span>():</span></span><br><span class="line">    df = pd.DataFrame(&#123;<span class="string">&quot;A&quot;</span>: [<span class="string">&quot;a0&quot;</span>, <span class="string">&quot;a1&quot;</span>, <span class="string">&quot;a1&quot;</span>, <span class="string">&quot;a2&quot;</span>, <span class="string">&quot;a3&quot;</span>, <span class="string">&quot;a4&quot;</span>], <span class="string">&quot;B&quot;</span>: [<span class="string">&quot;b0&quot;</span>, <span class="string">&quot;b1&quot;</span>, <span class="string">&quot;b2&quot;</span>, <span class="string">&quot;b2&quot;</span>, <span class="string">&quot;b3&quot;</span>, <span class="literal">None</span>],</span><br><span class="line">                       <span class="string">&quot;C&quot;</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="literal">None</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>], <span class="string">&quot;D&quot;</span>: [<span class="number">0.1</span>, <span class="number">10.2</span>, <span class="number">11.4</span>, <span class="number">8.9</span>, <span class="number">9.1</span>, <span class="number">12</span>], <span class="string">&quot;E&quot;</span>: [<span class="number">10</span>, <span class="number">19</span>, <span class="number">32</span>, <span class="number">25</span>, <span class="number">8</span>, <span class="literal">None</span>],</span><br><span class="line">                       <span class="string">&quot;F&quot;</span>: [<span class="string">&quot;f0&quot;</span>, <span class="string">&quot;f1&quot;</span>, <span class="string">&quot;g2&quot;</span>, <span class="string">&quot;f3&quot;</span>, <span class="string">&quot;f4&quot;</span>, <span class="string">&quot;f5&quot;</span>]&#125;)</span><br><span class="line">    df.isnull()</span><br><span class="line">    df.dropna(subset=[<span class="string">&quot;B&quot;</span>,<span class="string">&quot;C&quot;</span>])</span><br><span class="line">    df.duplicated([<span class="string">&quot;A&quot;</span>],keep=<span class="string">&quot;first&quot;</span>)</span><br><span class="line">    df.drop_duplicates([<span class="string">&quot;A&quot;</span>,<span class="string">&quot;B&quot;</span>],keep=<span class="string">&quot;first&quot;</span>,inplace=<span class="literal">False</span>)</span><br><span class="line">    df[<span class="string">&quot;B&quot;</span>].fillna(<span class="string">&quot;b*&quot;</span>)</span><br><span class="line">    df[<span class="string">&quot;E&quot;</span>].fillna(df[<span class="string">&quot;E&quot;</span>].mean())</span><br><span class="line">    df[<span class="string">&quot;E&quot;</span>].interpolate(method=<span class="string">&quot;spline&quot;</span>,order=<span class="number">3</span>)</span><br><span class="line">    pd.Series([<span class="number">1</span>, <span class="literal">None</span>, <span class="number">4</span>, <span class="number">10</span>, <span class="number">8</span>]).interpolate()</span><br><span class="line">    df[df[<span class="string">&#x27;D&#x27;</span>] &lt; df[<span class="string">&quot;D&quot;</span>].quantile(<span class="number">0.75</span>) + <span class="number">1.5</span> * (df[<span class="string">&quot;D&quot;</span>].quantile(<span class="number">0.75</span>) - df[<span class="string">&quot;D&quot;</span>].quantile(<span class="number">0.25</span>))][df[<span class="string">&quot;D&quot;</span>] &gt; df[<span class="string">&quot;D&quot;</span>].quantile(<span class="number">0.25</span>) - <span class="number">1.5</span> * (df[<span class="string">&quot;D&quot;</span>].quantile(<span class="number">0.75</span>) - df[<span class="string">&quot;D&quot;</span>].quantile(<span class="number">0.25</span>))]</span><br><span class="line">    df[[<span class="literal">True</span> <span class="keyword">if</span> item.startswith(<span class="string">&quot;f&quot;</span>) <span class="keyword">else</span> <span class="literal">False</span> <span class="keyword">for</span> item <span class="keyword">in</span> <span class="built_in">list</span>(df[<span class="string">&quot;F&quot;</span>].values)]]</span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&quot;__main__&quot;</span>:</span><br></pre></td></tr></table></figure></p>
+<h1 id="数据清洗">数据清洗</h1>
+<h2 id="异常值处理">异常值处理</h2>
+<p>异常值包括：<strong>缺失值</strong>（空值null）、<strong>重复值</strong>、四分位数计算出来的<strong>超过上下界的值</strong>、<strong>超出常识的值</strong>。</p>
+<p>识别：<br />
+（1）缺失值：Pandas的<code>isnull()</code>。<br />
+（2）重复值：Pandas的<code>duplicated()</code>。<br />
+（2）异常值：需要自己定义上下界，提取出非异常数值。Pandas的</p>
+<p>处理：<br />
+（1）丢弃：缺失值用Pandas的<code>drop()</code>/<code>dropna()</code>。重复值用Pandas的<code>drop()</code>/<code>drop_duplocated()</code>。<br />
+（2）填充：离散：众数。连续：均值/中位数。也可以用边界值填充超过边界的异常值。Pandas的<code>fillna()</code>。插值填充（默认线性）Pandas的<code>interpolate()</code>--Series。</p>
+<h1 id="代码">代码</h1>
+<p>数据分析：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    df=pd.read_csv(<span class="string">&#x27;./data/HR.csv&#x27;</span>)</span><br><span class="line">    <span class="comment">#查看数据梗概</span></span><br><span class="line">    <span class="built_in">print</span>(df)</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">type</span>(df))<span class="comment">#类型</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">type</span>(df[<span class="string">&quot;satisfaction_level&quot;</span>]))</span><br><span class="line">    <span class="built_in">print</span>(df.mean())<span class="comment">#平均值</span></span><br><span class="line">    <span class="built_in">print</span>(df[<span class="string">&quot;satisfaction_level&quot;</span>].mean())</span><br><span class="line">    <span class="built_in">print</span>(df.median())<span class="comment">#中位数</span></span><br><span class="line">    <span class="built_in">print</span>(df[<span class="string">&quot;satisfaction_level&quot;</span>].median())</span><br><span class="line">    <span class="built_in">print</span>(df.quantile(q=<span class="number">0.25</span>))<span class="comment">#四分位数</span></span><br><span class="line">    <span class="built_in">print</span>(df[<span class="string">&quot;satisfaction_level&quot;</span>].quantile(q=<span class="number">0.25</span>))</span><br><span class="line">    <span class="built_in">print</span>(df.mode())<span class="comment">#众数</span></span><br><span class="line">    <span class="built_in">print</span>(df[<span class="string">&quot;department&quot;</span>].mode())</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">type</span>(df[<span class="string">&quot;department&quot;</span>].mode()))</span><br><span class="line">    <span class="built_in">print</span>(df.<span class="built_in">sum</span>())<span class="comment">#求和</span></span><br><span class="line">    <span class="built_in">print</span>(df[<span class="string">&quot;satisfaction_level&quot;</span>].<span class="built_in">sum</span>())</span><br><span class="line">    <span class="built_in">print</span>(df.std())<span class="comment">#标准</span></span><br><span class="line">    <span class="built_in">print</span>(df[<span class="string">&quot;satisfaction_level&quot;</span>].std())</span><br><span class="line">    <span class="built_in">print</span>(df.var())<span class="comment">#方差</span></span><br><span class="line">    <span class="built_in">print</span>(df[<span class="string">&quot;satisfaction_level&quot;</span>].var())</span><br><span class="line">    <span class="built_in">print</span>(df.skew())<span class="comment">#偏态</span></span><br><span class="line">    <span class="built_in">print</span>(df[<span class="string">&quot;satisfaction_level&quot;</span>].skew())</span><br><span class="line">    <span class="built_in">print</span>(df.kurt())<span class="comment">#峰态</span></span><br><span class="line">    <span class="built_in">print</span>(df[<span class="string">&quot;satisfaction_level&quot;</span>].kurt())</span><br><span class="line">    <span class="keyword">import</span> scipy.stats <span class="keyword">as</span> ss</span><br><span class="line">    mean,var,skew,kurt = ss.norm.stats(moments=<span class="string">&quot;mvsk&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(mean, var, skew, kurt)<span class="comment">#均值、方差、偏态、峰态</span></span><br><span class="line">    <span class="built_in">print</span>(ss.norm.pdf(<span class="number">0</span>))<span class="comment">#概率密度函数</span></span><br><span class="line">    <span class="built_in">print</span>(ss.norm.ppf(<span class="number">0.9</span>))<span class="comment">#分位值函数</span></span><br><span class="line">    <span class="built_in">print</span>(ss.norm.cdf(<span class="number">2</span>))<span class="comment">#累积分布函数</span></span><br><span class="line">    <span class="built_in">print</span>(ss.norm.cdf(<span class="number">2</span>)-ss.norm.cdf(-<span class="number">2</span>))</span><br><span class="line">    <span class="built_in">print</span>(ss.norm.rvs(size=<span class="number">100</span>))<span class="comment">#分布随机值生成</span></span><br><span class="line">    <span class="built_in">print</span>(ss.chi2)<span class="comment">#卡方</span></span><br><span class="line">    <span class="built_in">print</span>(ss.t)<span class="comment">#t分布</span></span><br><span class="line">    <span class="built_in">print</span>(ss.f)<span class="comment">#F分布</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(df.sample(<span class="number">100</span>))<span class="comment">#抽样</span></span><br><span class="line">    <span class="built_in">print</span>(df[<span class="string">&quot;satisfaction_level&quot;</span>].sample(frac=<span class="number">0.01</span>))</span><br><span class="line">    <span class="comment">#df.mean()</span></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure><br />
+数据清洗：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> scipy.stats <span class="keyword">as</span> ss</span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line">sns.set_context(context=<span class="string">&quot;poster&quot;</span>,font_scale=<span class="number">1.2</span>)</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    df = pd.DataFrame(&#123;<span class="string">&quot;A&quot;</span>: [<span class="string">&quot;a0&quot;</span>, <span class="string">&quot;a1&quot;</span>, <span class="string">&quot;a1&quot;</span>, <span class="string">&quot;a2&quot;</span>, <span class="string">&quot;a3&quot;</span>, <span class="string">&quot;a4&quot;</span>], <span class="string">&quot;B&quot;</span>: [<span class="string">&quot;b0&quot;</span>, <span class="string">&quot;b1&quot;</span>, <span class="string">&quot;b2&quot;</span>, <span class="string">&quot;b2&quot;</span>, <span class="string">&quot;b3&quot;</span>, <span class="literal">None</span>],</span><br><span class="line">                       <span class="string">&quot;C&quot;</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="literal">None</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>], <span class="string">&quot;D&quot;</span>: [<span class="number">0.1</span>, <span class="number">10.2</span>, <span class="number">11.4</span>, <span class="number">8.9</span>, <span class="number">9.1</span>, <span class="number">12</span>], <span class="string">&quot;E&quot;</span>: [<span class="number">10</span>, <span class="number">19</span>, <span class="number">32</span>, <span class="number">25</span>, <span class="number">8</span>, <span class="literal">None</span>],</span><br><span class="line">                       <span class="string">&quot;F&quot;</span>: [<span class="string">&quot;f0&quot;</span>, <span class="string">&quot;f1&quot;</span>, <span class="string">&quot;g2&quot;</span>, <span class="string">&quot;f3&quot;</span>, <span class="string">&quot;f4&quot;</span>, <span class="string">&quot;f5&quot;</span>]&#125;)</span><br><span class="line">    df.isnull()</span><br><span class="line">    df.dropna(subset=[<span class="string">&quot;B&quot;</span>,<span class="string">&quot;C&quot;</span>])</span><br><span class="line">    df.duplicated([<span class="string">&quot;A&quot;</span>],keep=<span class="string">&quot;first&quot;</span>)</span><br><span class="line">    df.drop_duplicates([<span class="string">&quot;A&quot;</span>,<span class="string">&quot;B&quot;</span>],keep=<span class="string">&quot;first&quot;</span>,inplace=<span class="literal">False</span>)</span><br><span class="line">    df[<span class="string">&quot;B&quot;</span>].fillna(<span class="string">&quot;b*&quot;</span>)</span><br><span class="line">    df[<span class="string">&quot;E&quot;</span>].fillna(df[<span class="string">&quot;E&quot;</span>].mean())</span><br><span class="line">    df[<span class="string">&quot;E&quot;</span>].interpolate(method=<span class="string">&quot;spline&quot;</span>,order=<span class="number">3</span>)</span><br><span class="line">    pd.Series([<span class="number">1</span>, <span class="literal">None</span>, <span class="number">4</span>, <span class="number">10</span>, <span class="number">8</span>]).interpolate()</span><br><span class="line">    df[df[<span class="string">&#x27;D&#x27;</span>] &lt; df[<span class="string">&quot;D&quot;</span>].quantile(<span class="number">0.75</span>) + <span class="number">1.5</span> * (df[<span class="string">&quot;D&quot;</span>].quantile(<span class="number">0.75</span>) - df[<span class="string">&quot;D&quot;</span>].quantile(<span class="number">0.25</span>))][df[<span class="string">&quot;D&quot;</span>] &gt; df[<span class="string">&quot;D&quot;</span>].quantile(<span class="number">0.25</span>) - <span class="number">1.5</span> * (df[<span class="string">&quot;D&quot;</span>].quantile(<span class="number">0.75</span>) - df[<span class="string">&quot;D&quot;</span>].quantile(<span class="number">0.25</span>))]</span><br><span class="line">    df[[<span class="literal">True</span> <span class="keyword">if</span> item.startswith(<span class="string">&quot;f&quot;</span>) <span class="keyword">else</span> <span class="literal">False</span> <span class="keyword">for</span> item <span class="keyword">in</span> <span class="built_in">list</span>(df[<span class="string">&quot;F&quot;</span>].values)]]</span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&quot;__main__&quot;</span>:</span><br></pre></td></tr></table></figure></p>
 
     </div>
 
     
     
     
-      
-  <div class="popular-posts-header">相关文章</div>
-  <ul class="popular-posts">
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\04\20\Machine Learning\00.ML-机器学习？\" rel="bookmark">ML-机器学习？</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\09\20\Machine Learning\16.Introduction\" rel="bookmark">Introduction</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\09\21\Machine Learning\17.MathBasics\" rel="bookmark">MathBasics</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\09\25\Machine Learning\18.LinearRegression\" rel="bookmark">LinearRegression</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\09\27\Machine Learning\19.LinearClassification\" rel="bookmark">LinearClassification</a></div>
-    </li>
-  </ul>
-
 
     <footer class="post-footer">
           
@@ -514,7 +478,7 @@
       <a href="https://soundmemories.github.io/2020/06/10/Machine%20Learning/11.ML-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" title="ML-数据分析">https://soundmemories.github.io/2020/06/10/Machine Learning/11.ML-数据分析/</a>
   </li>
   <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
   </li>
 </ul>
 </div>
@@ -546,147 +510,63 @@
 
 
 
-      
-
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      const commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
-
-    </div>
+</div>
   </main>
 
   <footer class="footer">
     <div class="footer-inner">
-      
 
-      
-
-<div class="copyright">
-  
-  &copy; 2019 – 
-  <span itemprop="copyrightYear">2023</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">SoundMemories</span>
-</div>
-  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">SoundMemories</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
   </div>
 
     </div>
   </footer>
 
   
-  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '.page-configurations',
-    '.main-inner',
-    '.post-toc-wrap',
-    '.languages',
-    '.pjax'
-  ],
-  analytics: false,
-  cacheBust: false,
-  scrollRestoration: false,
-  scrollTo: !CONFIG.bookmark.enable
-});
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
 
-document.addEventListener('pjax:success', () => {
-  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.subMenu)
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  const hasTOC = document.querySelector('.post-toc');
-  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
-  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
-  NexT.utils.updateSidebarPosition();
-});
-</script>
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
 
 
   
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"neutral"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.min.js","integrity":"sha256-JFptYy4KzJ5OQP+Q9fubNf3cxpPPmZKqUOovyEONKrQ="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
 
 
-
-
-  <script src="/js/local-search.js"></script>
-
-
-
-
-
-
-
-
-<script data-pjax>
-document.querySelectorAll('.pdfobject-container').forEach(element => {
-  const url = element.dataset.target;
-  const pdfOpenParams = {
-    navpanes : 0,
-    toolbar  : 0,
-    statusbar: 0,
-    pagemode : 'thumbs',
-    view     : 'FitH'
-  };
-  const pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
-  const fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
-
-  if (NexT.utils.supportsPDFs()) {
-    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
-  } else {
-    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
-  }
-});
-</script>
-
-
-<script data-pjax>
-if (document.querySelectorAll('.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8.8.2/dist/mermaid.min.js', () => {
-    mermaid.init({
-      theme    : 'neutral',
-      logLevel : 3,
-      flowchart: { curve     : 'linear' },
-      gantt    : { axisFormat: '%m/%d/%Y' },
-      sequence : { actorMargin: 50 }
-    }, '.mermaid');
-  }, window.mermaid);
-}
-</script>
-
-
+  <script src="/js/third-party/fancybox.js"></script>
 
 
 
@@ -695,71 +575,15 @@ if (document.querySelectorAll('.mermaid').length) {
 
 
 
-
-
-
-
-    <div class="pjax">
   
 
-  
-      <script>
-  if (typeof MathJax === 'undefined') {
-    window.MathJax = {
-      tex: {
-        inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
-      },
-      options: {
-        renderActions: {
-          findScript: [10, doc => {
-            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-              const display = !!node.type.match(/; *mode=display/);
-              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-              const text = document.createTextNode('');
-              node.parentNode.replaceChild(text, node);
-              math.start = {node: text, delim: '', n: 0};
-              math.end = {node: text, delim: '', n: 0};
-              doc.math.push(math);
-            });
-          }, '', false],
-          insertedScript: [200, () => {
-            document.querySelectorAll('mjx-container').forEach(node => {
-              const target = node.parentNode;
-              if (target.nodeName.toLowerCase() === 'li') {
-                target.parentNode.classList.add('has-jax');
-              }
-            });
-          }, '', false]
-        }
-      }
-    };
-    const script = document.createElement('script');
-    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
-    script.defer = true;
-    document.head.appendChild(script);
-  } else {
-    MathJax.startup.document.state(0);
-    MathJax.typesetClear();
-    MathJax.texReset();
-    MathJax.typeset();
-  }
-</script>
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
 
-    
 
-  
-  <script src="//cdn.jsdelivr.net/npm/quicklink@2.0.0/dist/quicklink.umd.js"></script>
-  <script>
-      window.addEventListener('load', () => {
-      quicklink.listen({
-        timeout : 3000,
-        priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'https://soundmemories.github.io/2020/06/10/Machine%20Learning/11.ML-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/',]
-      });
-      });
-  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://soundmemories.github.io/2020/06/10/Machine%20Learning/11.ML-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
 
-    </div>
 </body>
 </html>

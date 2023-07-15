@@ -2,10 +2,9 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.2.0">
-
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
@@ -16,21 +15,18 @@
 
 <link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
 
-<script class="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.0.2","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
-  </script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.1","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-  <meta name="description" content="摘要提出名为XGBoost的树提升系统。提出一种新颖的稀疏数据感知算法用于稀疏数据，一种带权值的分位数略图(weighted quantile sketch) 来近似实现树的学习。提出有关缓存访问模式，数据压缩和分片的见解，以构建有延展性的提升树系统。 导读机器学习方法里，GradientTree Boosting（GBDT）是一个在很多应用里都很出彩的技术。提升树方法在很多有标准分类基准的情况下">
+    <meta name="description" content="摘要 提出名为XGBoost的树提升系统。 提出一种新颖的稀疏数据感知算法用于稀疏数据，一种带权值的分位数略图(weighted quantile sketch) 来近似实现树的学习。 提出有关缓存访问模式，数据压缩和分片的见解，以构建有延展性的提升树系统。 导读 机器学习方法里，GradientTree Boosting（GBDT）是一个在很多应用里都很出彩的技术。提升树方法在很多">
 <meta property="og:type" content="article">
 <meta property="og:title" content="XGBoost A Scalable Tree Boosting System">
 <meta property="og:url" content="https://soundmemories.github.io/2021/06/25/Paper/02.XGBoost%20A%20Scalable%20Tree%20Boosting%20System/index.html">
 <meta property="og:site_name" content="SoundMemories">
-<meta property="og:description" content="摘要提出名为XGBoost的树提升系统。提出一种新颖的稀疏数据感知算法用于稀疏数据，一种带权值的分位数略图(weighted quantile sketch) 来近似实现树的学习。提出有关缓存访问模式，数据压缩和分片的见解，以构建有延展性的提升树系统。 导读机器学习方法里，GradientTree Boosting（GBDT）是一个在很多应用里都很出彩的技术。提升树方法在很多有标准分类基准的情况下">
+<meta property="og:description" content="摘要 提出名为XGBoost的树提升系统。 提出一种新颖的稀疏数据感知算法用于稀疏数据，一种带权值的分位数略图(weighted quantile sketch) 来近似实现树的学习。 提出有关缓存访问模式，数据压缩和分片的见解，以构建有延展性的提升树系统。 导读 机器学习方法里，GradientTree Boosting（GBDT）是一个在很多应用里都很出彩的技术。提升树方法在很多">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://soundmemories.github.io/images/XGB/01.png">
 <meta property="og:image" content="https://soundmemories.github.io/images/XGB/02.png">
@@ -38,9 +34,9 @@
 <meta property="og:image" content="https://soundmemories.github.io/images/XGB/04.png">
 <meta property="og:image" content="https://soundmemories.github.io/images/XGB/05.png">
 <meta property="og:image" content="https://soundmemories.github.io/images/XGB/06.png">
-<meta property="og:image" content="https://soundmemories.github.io/images/XGB/互信息.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/XGB/%E4%BA%92%E4%BF%A1%E6%81%AF.png">
 <meta property="article:published_time" content="2021-06-24T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-05-19T14:41:39.770Z">
+<meta property="article:modified_time" content="2023-05-25T16:15:35.879Z">
 <meta property="article:author" content="SoundMemories">
 <meta property="article:tag" content="Paper">
 <meta name="twitter:card" content="summary">
@@ -50,17 +46,11 @@
 <link rel="canonical" href="https://soundmemories.github.io/2021/06/25/Paper/02.XGBoost%20A%20Scalable%20Tree%20Boosting%20System/">
 
 
-<script data-pjax class="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
 
-  <title>XGBoost A Scalable Tree Boosting System | SoundMemories</title>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://soundmemories.github.io/2021/06/25/Paper/02.XGBoost%20A%20Scalable%20Tree%20Boosting%20System/","path":"2021/06/25/Paper/02.XGBoost A Scalable Tree Boosting System/","title":"XGBoost A Scalable Tree Boosting System"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>XGBoost A Scalable Tree Boosting System | SoundMemories</title>
   
 
 
@@ -68,51 +58,21 @@
 
 
 
+
+
   <noscript>
-  <style>
-  body { margin-top: 2rem; }
-
-  .use-motion .menu-item,
-  .use-motion .sidebar,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header {
-    visibility: visible;
-  }
-
-  .use-motion .header,
-  .use-motion .site-brand-container .toggle,
-  .use-motion .footer { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle,
-  .use-motion .custom-logo-image {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line {
-    transform: scaleX(1);
-  }
-
-  .search-pop-overlay, .sidebar-nav { display: none; }
-  .sidebar-panel { display: block; }
-  </style>
-</noscript>
-
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
   <div class="headband"></div>
 
   <main class="main">
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
+    <div class="toggle" aria-label="切换导航栏" role="button">
         <span class="toggle-line"></span>
         <span class="toggle-line"></span>
         <span class="toggle-line"></span>
@@ -123,13 +83,13 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title">SoundMemories</h1>
+      <p class="site-title">SoundMemories</p>
       <i class="logo-line"></i>
     </a>
   </div>
 
   <div class="site-nav-right">
-    <div class="toggle popup-trigger">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
         <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
@@ -138,27 +98,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu">
-        <li class="menu-item menu-item-主页">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>主页</a>
-
-  </li>
-        <li class="menu-item menu-item-分类">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
-
-  </li>
-        <li class="menu-item menu-item-标签">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-归档">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">8</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">8</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">122</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -169,8 +109,7 @@
 
 
   <div class="search-pop-overlay">
-    <div class="popup search-popup">
-        <div class="search-header">
+    <div class="popup search-popup"><div class="search-header">
   <span class="search-icon">
     <i class="fa fa-search"></i>
   </span>
@@ -179,7 +118,7 @@
            placeholder="搜索..." spellcheck="false"
            type="search" class="search-input">
   </div>
-  <span class="popup-btn-close">
+  <span class="popup-btn-close" role="button">
     <i class="fa fa-times-circle"></i>
   </span>
 </div>
@@ -192,15 +131,9 @@
     </div>
   </div>
 
-</div>
+</header>
         
   
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-
   <aside class="sidebar">
 
     <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
@@ -212,43 +145,44 @@
           站点概览
         </li>
       </ul>
-	   
-		  
+
       <div class="sidebar-panel-container">
         <!--noindex-->
-        <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AF%BC%E8%AF%BB"><span class="nav-number">2.</span> <span class="nav-text">导读</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E5%AE%B9"><span class="nav-number">3.</span> <span class="nav-text">内容</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Regularized-Learning-Objective"><span class="nav-number">3.1.</span> <span class="nav-text">Regularized Learning Objective</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gradient-Tree-Boosting"><span class="nav-number">3.2.</span> <span class="nav-text">Gradient Tree Boosting</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shrinkage-and-Column-Subsampling"><span class="nav-number">3.3.</span> <span class="nav-text">Shrinkage and Column Subsampling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SPLIT-FINDING-ALGORITHMS"><span class="nav-number">3.4.</span> <span class="nav-text">SPLIT FINDING ALGORITHMS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sparsity-aware-Split-Finding"><span class="nav-number">3.5.</span> <span class="nav-text">Sparsity-aware Split Finding</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SYSTEM-DESIGN"><span class="nav-number">3.6.</span> <span class="nav-text">SYSTEM DESIGN</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E8%AE%BA"><span class="nav-number">4.</span> <span class="nav-text">信息论</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%86%B5"><span class="nav-number">4.1.</span> <span class="nav-text">熵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%81%94%E5%90%88%E7%86%B5%E5%92%8C%E6%9D%A1%E4%BB%B6%E7%86%B5"><span class="nav-number">4.2.</span> <span class="nav-text">联合熵和条件熵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%92%E4%BF%A1%E6%81%AF"><span class="nav-number">4.3.</span> <span class="nav-text">互信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%AF%B9%E7%86%B5"><span class="nav-number">4.4.</span> <span class="nav-text">相对熵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%86%B5"><span class="nav-number">4.5.</span> <span class="nav-text">交叉熵</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">5.</span> <span class="nav-text">参考文献</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%89%A9%E5%B1%95"><span class="nav-number">6.</span> <span class="nav-text">扩展</span></a></li></ol></div>
-        </section>
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AF%BC%E8%AF%BB"><span class="nav-number">2.</span> <span class="nav-text">导读</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E5%AE%B9"><span class="nav-number">3.</span> <span class="nav-text">内容</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#regularized-learning-objective"><span class="nav-number">3.1.</span> <span class="nav-text">Regularized Learning
+Objective</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gradient-tree-boosting"><span class="nav-number">3.2.</span> <span class="nav-text">Gradient Tree Boosting</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#shrinkage-and-column-subsampling"><span class="nav-number">3.3.</span> <span class="nav-text">Shrinkage and Column
+Subsampling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#split-finding-algorithms"><span class="nav-number">3.4.</span> <span class="nav-text">SPLIT FINDING ALGORITHMS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sparsity-aware-split-finding"><span class="nav-number">3.5.</span> <span class="nav-text">Sparsity-aware Split Finding</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#system-design"><span class="nav-number">3.6.</span> <span class="nav-text">SYSTEM DESIGN</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E8%AE%BA"><span class="nav-number">4.</span> <span class="nav-text">信息论</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%86%B5"><span class="nav-number">4.1.</span> <span class="nav-text">熵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%81%94%E5%90%88%E7%86%B5%E5%92%8C%E6%9D%A1%E4%BB%B6%E7%86%B5"><span class="nav-number">4.2.</span> <span class="nav-text">联合熵和条件熵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%92%E4%BF%A1%E6%81%AF"><span class="nav-number">4.3.</span> <span class="nav-text">互信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%AF%B9%E7%86%B5"><span class="nav-number">4.4.</span> <span class="nav-text">相对熵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%86%B5"><span class="nav-number">4.5.</span> <span class="nav-text">交叉熵</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">5.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+        </div>
         <!--/noindex-->
 
-        <section class="site-overview-wrap sidebar-panel">
-          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image" alt="SoundMemories"
-      src="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+      src="/images/avstar.png">
   <p class="site-author-name" itemprop="name">SoundMemories</p>
   <div class="site-description" itemprop="description">今日事，今日毕</div>
 </div>
-<div class="site-state-wrap site-overview-item animated">
+<div class="site-state-wrap animated">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
-          <a href="/archives">
-          <span class="site-state-item-count">120</span>
+        <a href="/archives/">
+          <span class="site-state-item-count">122</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-        <span class="site-state-item-count">9</span>
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-        <span class="site-state-item-count">9</span>
+          <a href="/tags/">
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>
-  <div class="links-of-author site-overview-item animated">
+  <div class="links-of-author animated">
       <span class="links-of-author-item">
         <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NvdW5kbWVtb3JpZXM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;soundmemories"><i class="fab fa-github fa-fw"></i>GitHub</span>
       </span>
@@ -256,37 +190,24 @@
         <span class="exturl" data-url="bWFpbHRvOnNvdW5kbWVtb3JpZXNAMTYzLmNvbQ==" title="E-Mail → mailto:soundmemories@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
       </span>
   </div>
-  <div class="cc-license site-overview-item animated" itemprop="license">
-    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></span>
   </div>
 
-
-
-        </section>
+        </div>
       </div>
     </div>
-  </aside>
-  <div class="sidebar-dimmer"></div>
-
-
-    </header>
 
     
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+        <div class="pjax">
+        </div>
+  </aside>
 
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
 
+    </div>
 
     <div class="main-inner post posts-expand">
-      
 
-      
 
   
 
@@ -299,13 +220,18 @@
     <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2021/06/25/Paper/02.XGBoost%20A%20Scalable%20Tree%20Boosting%20System/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+      <meta itemprop="image" content="/images/avstar.png">
       <meta itemprop="name" content="SoundMemories">
-      <meta itemprop="description" content="今日事，今日毕">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="XGBoost A Scalable Tree Boosting System | SoundMemories">
+      <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -333,8 +259,7 @@
     </span>
 
   
-      </div>
-      <div class="post-meta">
+    <span class="post-meta-break"></span>
     <span class="post-meta-item" title="本文字数">
       <span class="post-meta-item-icon">
         <i class="far fa-file-word"></i>
@@ -347,7 +272,7 @@
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>4 分钟</span>
+      <span>17 分钟</span>
     </span>
 </div>
 
@@ -357,147 +282,378 @@
     
     
     
-    <div class="post-body" itemprop="articleBody">
-        <h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>提出名为XGBoost的树提升系统。<br>提出一种新颖的稀疏数据感知算法用于稀疏数据，一种带权值的分位数略图(weighted quantile sketch) 来近似实现树的学习。<br>提出有关缓存访问模式，数据压缩和分片的见解，以构建有延展性的提升树系统。</p>
-<h1 id="导读"><a href="#导读" class="headerlink" title="导读"></a>导读</h1><p>机器学习方法里，GradientTree Boosting（GBDT）是一个在很多应用里都很出彩的技术。提升树方法在很多有标准分类基准的情况下表现很出色。本文提出了一个可扩展的提升树机器学习系统（XGBoost）。XGBoost在2015年的29场比赛获胜队伍中，有17个都使用了XGBoost。</p>
-<p>主要贡献：<br>1、设计和构建高度可扩展的端到端提升树系统。（树的个数能灵活的增加或减少）<br>2、提出了一个理论上合理的加权分位法。（推荐分割点的时候用，能不用遍历所有的点，只用部分点就行）<br>3、引入了一种新颖的稀疏感知算法用于并行树学习。（令缺失值有默认方向，稀疏数据处理方法和并行计算）<br>4、提出了一个有效的用于核外树形学习的缓存感知块结构。（有效使用缓存块处理数据）</p>
-<h1 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h1><h2 id="Regularized-Learning-Objective"><a href="#Regularized-Learning-Objective" class="headerlink" title="Regularized Learning Objective"></a>Regularized Learning Objective</h2><p>给定一个数据集$\mathcal{D}$，$ n$个样本，每个样本有$ m$个特征：</p>
-<script type="math/tex; mode=display">
-\mathcal{D}= \{(x_i,y_i)\}(|\mathcal{D}|= n,x_i\in \Bbb{R}^m, y_i\in \Bbb{R})</script><p>第 $ k$ 棵树对于输入 $ x_i$ 的样本预测结果为$ f_k(x_i)$：</p>
-<script type="math/tex; mode=display">
- \hat{y}_i=\varnothing(x_i)=\sum\limits_{k=1}^{K}f_k(x_i),\quad f_k\in \mathcal{F}</script><p>其中，$\mathcal{F}= \{f(x)=w_{q(x)}\}(q:\Bbb{R}^m\to T,w\in \Bbb{R}^T)$ 是CART回归树。$ q(x)$ 表示映射样本 $ x$ 到叶子节点的下标。$ T$是叶子节点数量。$ w$ 是叶子节点最优解（$ w_i$表示第$i$个叶子节点的最优解）。每一棵树都有独立的 $ q$  和 $ w$。</p>
-<h2 id="Gradient-Tree-Boosting"><a href="#Gradient-Tree-Boosting" class="headerlink" title="Gradient Tree Boosting"></a>Gradient Tree Boosting</h2><p>以上定义了树模型的预测函数，那么接下来定义整个损失函数：</p>
-<script type="math/tex; mode=display">
-\mathcal{L}(\varnothing)= \sum\limits_i l(\hat{y}_i,y_i)+\sum\limits_k \Omega(f_k)\\</script><script type="math/tex; mode=display">
-\text{where} \quad \Omega( f)=\gamma  T + \frac{1}{2}\lambda||w||^2</script><p>其中，$ l$ 函数是一个可导的凸函数，用来表示预测值 $\hat{y}_i$ 和真实值 $ y_i$ 之间的差异。$\Omega$ 是是惩罚项（正则化），用来防止树的结构过于复杂。<br>损失函数 $\mathcal{L}$ 参数中包含了函数，所以不能用传统的优化算法来优化。假设 $\hat{y}_i^{t}$ 是 $ x_i$ 在第 $ t$ 次迭代中的预测值。那么则有：</p>
-<script type="math/tex; mode=display">
-\mathcal{L}^{( t)}= \sum\limits_{i= 1}^{n}l(y_i,\hat{y}_i^{(t-1)}+f_t(x_i))+\Omega(f_t)</script><p>把 $ y_i,\hat{y}_i^{(t-1)}$ 看成 $x$ ，把 $ f_t(x_i))$ 看成 $\Delta x$ ，对上式近似为二阶泰勒级展开：</p>
-<script type="math/tex; mode=display">
-\mathcal{L}^{( t)}\simeq \sum\limits_{i= 1}^{n}[l(y_i,\hat{y}_i^{(t-1)})+g_if_t(x_i)+\frac{1}{2} h_if_t^{ 2}(x_i)]+\Omega(f_t)</script><script type="math/tex; mode=display">
-\text{where} \quad  g_i=\partial_{\hat{y}^{(t-1)}}l(y_i,\hat{y}_i^{(t-1)})\quad \text{and} \quad h_i=\partial_{\hat{y}^{(t-1)}}^{ 2}l(y_i,\hat{y}_i^{(t-1)})</script><p>其中，$ g_i$$ h_i$是一阶偏导和二阶偏导。由于$ l(y_i,\hat{y}_i^{(t-1)})$为常数项，可以去除。<br>定义 $ I_j=\{i|q(x_i)=j\}$ 作为样本 $ x_i$ 被分割到第 $ j$ 个叶子节点下的样本下标集合（样本集合）。那么上面公式可以由<strong>对每棵树的样本求和</strong>转成<strong>对每棵树的叶子节点求和</strong>：</p>
-<script type="math/tex; mode=display">
+    <div class="post-body" itemprop="articleBody"><h1 id="摘要">摘要</h1>
+<p>提出名为XGBoost的树提升系统。<br />
+提出一种新颖的稀疏数据感知算法用于稀疏数据，一种带权值的分位数略图(weighted
+quantile sketch) 来近似实现树的学习。<br />
+提出有关缓存访问模式，数据压缩和分片的见解，以构建有延展性的提升树系统。</p>
+<h1 id="导读">导读</h1>
+<p>机器学习方法里，GradientTree
+Boosting（GBDT）是一个在很多应用里都很出彩的技术。提升树方法在很多有标准分类基准的情况下表现很出色。本文提出了一个可扩展的提升树机器学习系统（XGBoost）。XGBoost在2015年的29场比赛获胜队伍中，有17个都使用了XGBoost。</p>
+<p>主要贡献：<br />
+1、设计和构建高度可扩展的端到端提升树系统。（树的个数能灵活的增加或减少）<br />
+2、提出了一个理论上合理的加权分位法。（推荐分割点的时候用，能不用遍历所有的点，只用部分点就行）<br />
+3、引入了一种新颖的稀疏感知算法用于并行树学习。（令缺失值有默认方向，稀疏数据处理方法和并行计算）<br />
+4、提出了一个有效的用于核外树形学习的缓存感知块结构。（有效使用缓存块处理数据）</p>
+<h1 id="内容">内容</h1>
+<h2 id="regularized-learning-objective">Regularized Learning
+Objective</h2>
+<p>给定一个数据集<span class="math inline">\(\mathcal{D}\)</span>，$
+n<span class="math inline">\(个样本，每个样本有\)</span>
+m$个特征：<br />
+<span class="math display">\[
+\mathcal{D}= \{(x_i,y_i)\}(|\mathcal{D}|= n,x_i\in \Bbb{R}^m, y_i\in
+\Bbb{R})
+\]</span><br />
+第 $ k$ 棵树对于输入 $ x_i$ 的样本预测结果为$ f_k(x_i)$：<br />
+<span class="math display">\[
+\hat{y}_i=\varnothing(x_i)=\sum\limits_{k=1}^{K}f_k(x_i),\quad f_k\in
+\mathcal{F}
+\]</span><br />
+其中，<span class="math inline">\(\mathcal{F}=
+\{f(x)=w_{q(x)}\}(q:\Bbb{R}^m\to T,w\in \Bbb{R}^T)\)</span>
+是CART回归树。$ q(x)$ 表示映射样本 $ x$ 到叶子节点的下标。$ T<span
+class="math inline">\(是叶子节点数量。\)</span> w$ 是叶子节点最优解（$
+w_i<span
+class="math inline">\(表示第\)</span>i$个叶子节点的最优解）。每一棵树都有独立的
+$ q$ 和 $ w$。</p>
+<h2 id="gradient-tree-boosting">Gradient Tree Boosting</h2>
+以上定义了树模型的预测函数，那么接下来定义整个损失函数：<br />
+<span class="math display">\[
+\mathcal{L}(\varnothing)= \sum\limits_i l(\hat{y}_i,y_i)+\sum\limits_k
+\Omega(f_k)\\
+\]</span><br />
+<span class="math display">\[
+\text{where} \quad \Omega( f)=\gamma  T + \frac{1}{2}\lambda||w||^2
+\]</span><br />
+其中，$ l$ 函数是一个可导的凸函数，用来表示预测值 <span
+class="math inline">\(\hat{y}_i\)</span> 和真实值 $ y_i$
+之间的差异。<span class="math inline">\(\Omega\)</span>
+是是惩罚项（正则化），用来防止树的结构过于复杂。<br />
+损失函数 <span class="math inline">\(\mathcal{L}\)</span>
+参数中包含了函数，所以不能用传统的优化算法来优化。假设 <span
+class="math inline">\(\hat{y}_i^{t}\)</span> 是 $ x_i$ 在第 $ t$
+次迭代中的预测值。那么则有：<br />
+<span class="math display">\[
+\mathcal{L}^{( t)}= \sum\limits_{i=
+1}^{n}l(y_i,\hat{y}_i^{(t-1)}+f_t(x_i))+\Omega(f_t)
+\]</span><br />
+把 $ y_i,_i^{(t-1)}$ 看成 <span class="math inline">\(x\)</span> ，把 $
+f_t(x_i))$ 看成 <span class="math inline">\(\Delta x\)</span>
+，对上式近似为二阶泰勒级展开：<br />
+<span class="math display">\[
+\mathcal{L}^{( t)}\simeq \sum\limits_{i=
+1}^{n}[l(y_i,\hat{y}_i^{(t-1)})+g_if_t(x_i)+\frac{1}{2} h_if_t^{
+2}(x_i)]+\Omega(f_t)
+\]</span><br />
+<span class="math display">\[
+\text{where}
+\quad  g_i=\partial_{\hat{y}^{(t-1)}}l(y_i,\hat{y}_i^{(t-1)})\quad
+\text{and} \quad h_i=\partial_{\hat{y}^{(t-1)}}^{
+2}l(y_i,\hat{y}_i^{(t-1)})
+\]</span><br />
+其中，$ g_i<span class="math display">\[ h_i$是一阶偏导和二阶偏导。由于$
+l(y_i,\hat{y}_i^{(t-1)})$为常数项，可以去除。
+定义 $ I_j=\{i|q(x_i)=j\}$ 作为样本 $ x_i$ 被分割到第 $ j$
+个叶子节点下的样本下标集合（样本集合）。那么上面公式可以由**对每棵树的样本求和**转成**对每棵树的叶子节点求和**：
+\]</span><br />
+
+<span class="math display">\[\begin{aligned}
+\tilde{\mathcal{L}}^{( t)}&amp;= \sum\limits_{i=
+1}^{n}[g_if_t(x_i)+\frac{1}{2} h_if_t^{ 2}(x_i)]+\Omega(f_t)\\
+&amp;= \sum\limits_{i= 1}^{n}[g_if_t(x_i)+\frac{1}{2} h_if_t^{
+2}(x_i)]+\gamma  T + \frac{1}{2}\lambda \sum\limits_{ j= 1}^{T}w_j^{
+2}\\
+&amp;= \sum\limits_{i= 1}^{n}[g_iw_{q(x_i)}+\frac{1}{2}
+h_i(w_{q(x_i)})^{ 2}]+\gamma  T + \frac{1}{2}\lambda \sum\limits_{ j=
+1}^{T}w_j^{ 2}\\
+&amp;= \sum\limits_{j= 1}^{T}[\sum\limits_{i\in
+I_j}g_iw_{j}+\frac{1}{2}\sum\limits_{i\in  I_j} h_i(w_{j})^{
+2}]+\gamma  T + \frac{1}{2}\lambda \sum\limits_{ j= 1}^{T}w_j^{ 2}\\
+&amp;= \sum\limits_{j= 1}^{T}[(\sum\limits_{i\in
+I_j}g_i)w_{j}+\frac{1}{2}(\sum\limits_{i\in  I_j} h_i+\lambda)w_{j}^{
+2}]+\gamma  T
+\end{aligned}\]</span>
+<p><span class="math display">\[
+**1、如何求出每个叶子节点的最优解？**
+对上式求极值点（它是凸函数，求的是极小值），即对 $ w_j$
+求一阶导数等于零（也可以看成二元一次方程求解），解得：
+\]</span><br />
+w_j^*=-<br />
+<span class="math display">\[
+带入 $\tilde{\mathcal{L}}^{( t)}$ 求得最优值（最小值）：
+\]</span><br />
+^{( t)}=-_{j= 1}^{T}+T<br />
+$$<br />
+可以用这个公式来来衡量决策树的质量。有点像决策树信息熵一个道理。</p>
+<p><strong>2、对当前决策树做子树分裂时，如何选择哪个特征和特征值进行分裂，使损失函数最小？</strong><br />
+如果想要划分后损失函数得到最小值，意味这在做每次划分的时候，要尽量保证划分后的score比划分前的score要更小。那么应该找到
+(划分前的score - 划分后的score)
+这个差最大的切分点作为我们这一次的划分点。假设 $ I_L$和 $ I_R$
+为一个节点 $ I$ 划分后的左子集和右子集，节点 $ I=I_L I_R$
+，则得到以下公式：<br />
+<span class="math display">\[
 \begin{aligned}
-\tilde{\mathcal{L}}^{( t)}&= \sum\limits_{i= 1}^{n}[g_if_t(x_i)+\frac{1}{2} h_if_t^{ 2}(x_i)]+\Omega(f_t)\\
-&= \sum\limits_{i= 1}^{n}[g_if_t(x_i)+\frac{1}{2} h_if_t^{ 2}(x_i)]+\gamma  T + \frac{1}{2}\lambda \sum\limits_{ j= 1}^{T}w_j^{ 2}\\
-&= \sum\limits_{i= 1}^{n}[g_iw_{q(x_i)}+\frac{1}{2} h_i(w_{q(x_i)})^{ 2}]+\gamma  T + \frac{1}{2}\lambda \sum\limits_{ j= 1}^{T}w_j^{ 2}\\
-&= \sum\limits_{j= 1}^{T}[\sum\limits_{i\in I_j}g_iw_{j}+\frac{1}{2}\sum\limits_{i\in  I_j} h_i(w_{j})^{ 2}]+\gamma  T + \frac{1}{2}\lambda \sum\limits_{ j= 1}^{T}w_j^{ 2}\\
-&= \sum\limits_{j= 1}^{T}[(\sum\limits_{i\in I_j}g_i)w_{j}+\frac{1}{2}(\sum\limits_{i\in  I_j} h_i+\lambda)w_{j}^{ 2}]+\gamma  T 
-\end{aligned}</script><p><strong>1、如何求出每个叶子节点的最优解？</strong><br>对上式求极值点（它是凸函数，求的是极小值），即对 $ w_j$ 求一阶导数等于零（也可以看成二元一次方程求解），解得：</p>
-<script type="math/tex; mode=display">
- w_j^*=-\frac{\sum_{i\in I_j}g_i}{\sum_{i\in I_j}h_i+\lambda}</script><p>带入 $\tilde{\mathcal{L}}^{( t)}$ 求得最优值（最小值）：</p>
-<script type="math/tex; mode=display">
- \tilde{\mathcal{L}}^{( t)}=-\frac{1}{2}\sum\limits_{j= 1}^{T}\frac{(\sum_{i\in I_j}g_i)^{ 2}}{\sum_{i\in I_j}h_i+\lambda}+\gamma  T</script><p>可以用这个公式来来衡量决策树的质量。有点像决策树信息熵一个道理。</p>
-<p><strong>2、对当前决策树做子树分裂时，如何选择哪个特征和特征值进行分裂，使损失函数最小？</strong><br>如果想要划分后损失函数得到最小值，意味这在做每次划分的时候，要尽量保证划分后的score比划分前的score要更小。那么应该找到 (划分前的score - 划分后的score) 这个差最大的切分点作为我们这一次的划分点。假设 $ I_L$和 $ I_R$ 为一个节点 $ I$ 划分后的左子集和右子集，节点 $ I=I_L \cup I_R$ ，则得到以下公式：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
- \mathcal{L}_{split}&=- \dfrac{1}{2}[\frac{(\sum_{i\in I}g_i)^{ 2}}{\sum_{i\in I}h_i+\lambda}-\frac{(\sum_{i\in I_L}g_i)^{ 2}}{\sum_{i\in I_L}h_i+\lambda}-\frac{(\sum_{i\in I_R}g_i)^{ 2}}{\sum_{i\in I_R}h_i+\lambda}]-\gamma\\
-&= \dfrac{1}{2}  [\frac{(\sum_{i\in I_L}g_i)^{ 2}}{\sum_{i\in I_L}h_i+\lambda}+\frac{(\sum_{i\in I_R}g_i)^{ 2}}{\sum_{i\in I_R}h_i+\lambda}-\frac{(\sum_{i\in I}g_i)^{ 2}}{\sum_{i\in I}h_i+\lambda}]-\gamma
-\end{aligned}</script><p>可以用这个公式来衡量是否当前节点是否再应该继续划分下去。每次用不同的特征，计算分数，然后用最大的值那个特征，作为当前树节点的划分点。</p>
+\mathcal{L}_{split}&amp;=- \dfrac{1}{2}[\frac{(\sum_{i\in I}g_i)^{
+2}}{\sum_{i\in I}h_i+\lambda}-\frac{(\sum_{i\in I_L}g_i)^{
+2}}{\sum_{i\in I_L}h_i+\lambda}-\frac{(\sum_{i\in I_R}g_i)^{
+2}}{\sum_{i\in I_R}h_i+\lambda}]-\gamma\\
+&amp;= \dfrac{1}{2}  [\frac{(\sum_{i\in I_L}g_i)^{ 2}}{\sum_{i\in
+I_L}h_i+\lambda}+\frac{(\sum_{i\in I_R}g_i)^{ 2}}{\sum_{i\in
+I_R}h_i+\lambda}-\frac{(\sum_{i\in I}g_i)^{ 2}}{\sum_{i\in
+I}h_i+\lambda}]-\gamma
+\end{aligned}
+\]</span><br />
+可以用这个公式来衡量是否当前节点是否再应该继续划分下去。每次用不同的特征，计算分数，然后用最大的值那个特征，作为当前树节点的划分点。</p>
 <p>相对于GBDT，XGBoost一次性求解出<strong>最优解叶子节点区域</strong>和<strong>每个叶子节点区域最优解</strong>。而GBDT是基于残差（一阶泰勒）拟合一颗CART书，得到<strong>最优叶子节点区域</strong>，再求出<strong>每个叶子节点区域最优解</strong>。</p>
-<h2 id="Shrinkage-and-Column-Subsampling"><a href="#Shrinkage-and-Column-Subsampling" class="headerlink" title="Shrinkage and Column Subsampling"></a>Shrinkage and Column Subsampling</h2><p>除了之前提过的添加正则化的项来防止模型的过拟合之外，还可以用两种方式来防止过拟合：<br>（1）添加类似梯度下降优化问题中的学习率 $ \eta$ ，这个可以收缩每棵树的权重，让每棵树的生长更加稳定。<br>（2）对样本的特征子采样（随机森林用到过）。每次生成树的时候，只用其中一部分抽样的特征。这样子也能降低过拟合的风险。</p>
-<p><strong>精准的贪心算法</strong><br>贪心算法就是每次都希望找到最优的结果，但这样需每次都遍历所有的特征，对每个特征，又遍历所有划分的可能。然后通过 $ \mathcal{L}_{split}$ 的分数，计算每次划分后的score，取最大的score的对应的特征来进行划分。<br><img src="/images/XGB/01.png" width="60%"></p>
-<p><strong>近似的贪心算法</strong><br>用上面贪心算法来寻找最佳划分点，准确度非常不错，但是时间复杂度和空间复杂度都太高了，特别是对于连续值的变量来说，简直是一个大灾难。作者提出一种近似法分位法，先对数据进行分桶(Bucket)，然后桶内的数据相加起来，作为一个代表来进行计算。</p>
-<p>那我们应该在什么时候对数据进行分桶呢？有两种方式。<br>（1）全局分桶（Global Bucket），可以一开始就对全部的数据进行分桶。后面进行划分的时候只需要使用分桶数据就可以了。<br>（2）局部分桶（Local Bucket），每次需要对当前leaf node进行划分的时候，对当前节点里面的数据进行分桶。然后再划分。当然这个时间复杂度也会变的比较高。</p>
-<p>具体划分的伪代码如下：<br>（1）先计算1到M个特征，找出每个特征的分桶的候选点。<br>（2）然后将候选点之间的数据的g和h求和，装入到Bucket里面，代表这些数据。<br>（3）后面流程就跟精确的弹性分割算法一样。只是将每个Bucket看成一个x。<br><img src="/images/XGB/02.png" width="60%"></p>
-<p>下面是作者测试对几种不同的切分算法的AUC结果比较图。可以看得出，当eps=0.05，也就是将数据分成20个Bucket的时候，AUC的分数跟精准的贪心算法一样。<br><img src="/images/XGB/03.png" width="60%"></p>
-<h2 id="SPLIT-FINDING-ALGORITHMS"><a href="#SPLIT-FINDING-ALGORITHMS" class="headerlink" title="SPLIT FINDING ALGORITHMS"></a>SPLIT FINDING ALGORITHMS</h2><p>提出一种新的分桶的方法<strong>Weighted Quantile Sketch</strong>（加权分位法）。</p>
-<p><strong>加权分位法</strong><br>上面我们讨论了对数据分成Bucket，再来计算他的节点的split分数。来减少我们的计算量。那么我们如何对数据分桶，才能够比较合理呢？</p>
-<p>作者按照对loss的影响权重来进行分桶，让数据分桶后，每个桶对loss的影响权重相同。<br>定义一个数据集 $ \mathcal{D}_k=\{(x_{1k},h_1),(x_{2k},h_2),…,(x_{nk},h_n)\}$ ，$ k$ 为样本 $x$ 的特征数。<br>定义一个排序函数 $ r_k:\Bbb{R}\sim [0,\infty)$，则：</p>
-<script type="math/tex; mode=display">
- r_k(z)=\frac{1}{\sum_{(x,h)\in \mathcal{D}_k}h}\sum_{(x,h)\in \mathcal{D}_k,x<z}h</script><p>切分点集合 $ \{s_{k1}, s_{k2},…,s_{kl}\}$，满足：</p>
-<script type="math/tex; mode=display">
-|r_k(s_{k,j})-r_k(s_{k,j+1})|<\epsilon, \quad s_{k1}=\min\limits_i x_{ik},s_{kl}=\max\limits_i x_{ik}</script><p>这里 $\epsilon$ 用来衡量划分区间的大小（每个Bucket不能太大，以免错过最优切分点）。这个意味这数据集大约被分为 $\frac{1}{\epsilon}$ 个候选点。</p>
-<p>那么 $h_i$ 为什么能够代表 $x_i$ 的权重来进行排序呢？将公式 ${\tilde{\mathcal{L}}}^{(t)}$ 对 $ h_i$ 进行提取，可得到：</p>
-<script type="math/tex; mode=display">
+<h2 id="shrinkage-and-column-subsampling">Shrinkage and Column
+Subsampling</h2>
+<p>除了之前提过的添加正则化的项来防止模型的过拟合之外，还可以用两种方式来防止过拟合：<br />
+（1）添加类似梯度下降优化问题中的学习率 $ $
+，这个可以收缩每棵树的权重，让每棵树的生长更加稳定。<br />
+（2）对样本的特征子采样（随机森林用到过）。每次生成树的时候，只用其中一部分抽样的特征。这样子也能降低过拟合的风险。</p>
+<p><strong>精准的贪心算法</strong><br />
+贪心算法就是每次都希望找到最优的结果，但这样需每次都遍历所有的特征，对每个特征，又遍历所有划分的可能。然后通过
+$ _{split}$
+的分数，计算每次划分后的score，取最大的score的对应的特征来进行划分。<br />
+<img src="/images/XGB/01.png" width="60%"></p>
+<p><strong>近似的贪心算法</strong><br />
+用上面贪心算法来寻找最佳划分点，准确度非常不错，但是时间复杂度和空间复杂度都太高了，特别是对于连续值的变量来说，简直是一个大灾难。作者提出一种近似法分位法，先对数据进行分桶(Bucket)，然后桶内的数据相加起来，作为一个代表来进行计算。</p>
+<p>那我们应该在什么时候对数据进行分桶呢？有两种方式。<br />
+（1）全局分桶（Global
+Bucket），可以一开始就对全部的数据进行分桶。后面进行划分的时候只需要使用分桶数据就可以了。<br />
+（2）局部分桶（Local Bucket），每次需要对当前leaf
+node进行划分的时候，对当前节点里面的数据进行分桶。然后再划分。当然这个时间复杂度也会变的比较高。</p>
+<p>具体划分的伪代码如下：<br />
+（1）先计算1到M个特征，找出每个特征的分桶的候选点。<br />
+（2）然后将候选点之间的数据的g和h求和，装入到Bucket里面，代表这些数据。<br />
+（3）后面流程就跟精确的弹性分割算法一样。只是将每个Bucket看成一个x。<br />
+<img src="/images/XGB/02.png" width="60%"></p>
+<p>下面是作者测试对几种不同的切分算法的AUC结果比较图。可以看得出，当eps=0.05，也就是将数据分成20个Bucket的时候，AUC的分数跟精准的贪心算法一样。<br />
+<img src="/images/XGB/03.png" width="60%"></p>
+<h2 id="split-finding-algorithms">SPLIT FINDING ALGORITHMS</h2>
+<p>提出一种新的分桶的方法<strong>Weighted Quantile
+Sketch</strong>（加权分位法）。</p>
+<p><strong>加权分位法</strong><br />
+上面我们讨论了对数据分成Bucket，再来计算他的节点的split分数。来减少我们的计算量。那么我们如何对数据分桶，才能够比较合理呢？</p>
+<p>作者按照对loss的影响权重来进行分桶，让数据分桶后，每个桶对loss的影响权重相同。<br />
+定义一个数据集 $ <em>k={(x</em>{1k},h_1),(x_{2k},h_2),...,(x_{nk},h_n)}$
+，$ k$ 为样本 <span class="math inline">\(x\)</span> 的特征数。<br />
+定义一个排序函数 $ r_k:[0,)$，则：<br />
+<span class="math display">\[
+r_k(z)=\frac{1}{\sum_{(x,h)\in \mathcal{D}_k}h}\sum_{(x,h)\in
+\mathcal{D}_k,x&lt;z}h
+\]</span><br />
+切分点集合 $ {s_{k1}, s_{k2},...,s_{kl}}$，满足：<br />
+<span class="math display">\[
+|r_k(s_{k,j})-r_k(s_{k,j+1})|&lt;\epsilon, \quad s_{k1}=\min\limits_i
+x_{ik},s_{kl}=\max\limits_i x_{ik}
+\]</span><br />
+这里 <span class="math inline">\(\epsilon\)</span>
+用来衡量划分区间的大小（每个Bucket不能太大，以免错过最优切分点）。这个意味这数据集大约被分为
+<span class="math inline">\(\frac{1}{\epsilon}\)</span> 个候选点。</p>
+<p>那么 <span class="math inline">\(h_i\)</span> 为什么能够代表 <span
+class="math inline">\(x_i\)</span> 的权重来进行排序呢？将公式 <span
+class="math inline">\({\tilde{\mathcal{L}}}^{(t)}\)</span> 对 $ h_i$
+进行提取，可得到：<br />
+<span class="math display">\[
 \begin{aligned}
-\tilde{\mathcal{L}}^{( t)}&= \sum\limits_{i= 1}^{n}[g_if_t(x_i)+\frac{1}{2} h_if_t^{ 2}(x_i)]+\Omega(f_t)\\
-&= \sum\limits_{i= 1}^{n}[\frac{1}{2} h_i\frac{ 2* g_if_t(x_i)}{h_i}+\frac{1}{2} h_if_t^{ 2}(x_i)]+\Omega(f_t)\\
-&= \sum\limits_{i= 1}^{n}\frac{1}{2} h_i[ 2\times \frac{g_i}{h_i}f_t(x_i)+f_t^{ 2}(x_i)]+\Omega(f_t)\\
-&= \sum\limits_{i= 1}^{n}\frac{1}{2} h_i[ 2\times \frac{g_i}{h_i}f_t(x_i)+f_t^{ 2}(x_i)+(\frac{g_i}{h_i})^2-(\frac{g_i}{h_i})^2]+\Omega(f_t)\\
-&= \sum\limits_{i= 1}^{n}\frac{1}{2} h_i(f_t(x_i)+\frac{g_i}{h_i})^{ 2}+\Omega(f_t)\\
-&= \sum\limits_{i= 1}^{n}\frac{1}{2} h_i(f_t(x_i)-(-\frac{g_i}{h_i}))^{ 2}+\Omega(f_t)+\text{constant}
-\end{aligned}</script><p>发现 $ h_i$ 对结果影响最大，所以用它来进行排序。</p>
-<h2 id="Sparsity-aware-Split-Finding"><a href="#Sparsity-aware-Split-Finding" class="headerlink" title="Sparsity-aware Split Finding"></a>Sparsity-aware Split Finding</h2><p>对稀疏数据的处理，重点是针对特征为空时的处理，对<strong>精准的贪心算法</strong>做了改进：<br><img src="/images/XGB/04.png" width="60%"></p>
+\tilde{\mathcal{L}}^{( t)}&amp;= \sum\limits_{i=
+1}^{n}[g_if_t(x_i)+\frac{1}{2} h_if_t^{ 2}(x_i)]+\Omega(f_t)\\
+&amp;= \sum\limits_{i= 1}^{n}[\frac{1}{2} h_i\frac{ 2*
+g_if_t(x_i)}{h_i}+\frac{1}{2} h_if_t^{ 2}(x_i)]+\Omega(f_t)\\
+&amp;= \sum\limits_{i= 1}^{n}\frac{1}{2} h_i[ 2\times
+\frac{g_i}{h_i}f_t(x_i)+f_t^{ 2}(x_i)]+\Omega(f_t)\\
+&amp;= \sum\limits_{i= 1}^{n}\frac{1}{2} h_i[ 2\times
+\frac{g_i}{h_i}f_t(x_i)+f_t^{
+2}(x_i)+(\frac{g_i}{h_i})^2-(\frac{g_i}{h_i})^2]+\Omega(f_t)\\
+&amp;= \sum\limits_{i= 1}^{n}\frac{1}{2} h_i(f_t(x_i)+\frac{g_i}{h_i})^{
+2}+\Omega(f_t)\\
+&amp;= \sum\limits_{i= 1}^{n}\frac{1}{2}
+h_i(f_t(x_i)-(-\frac{g_i}{h_i}))^{ 2}+\Omega(f_t)+\text{constant}
+\end{aligned}
+\]</span><br />
+发现 $ h_i$ 对结果影响最大，所以用它来进行排序。</p>
+<h2 id="sparsity-aware-split-finding">Sparsity-aware Split Finding</h2>
+<p>对稀疏数据的处理，重点是针对特征为空时的处理，对<strong>精准的贪心算法</strong>做了改进：<br />
+<img src="/images/XGB/04.png" width="60%"></p>
 <p>简单来讲，通过两轮遍历可以确保稀疏值位于左子树和右子树的情形，就是对该特征划分为左节点还是右节点做了一次比较，哪个效果好就把它放在哪。</p>
-<h2 id="SYSTEM-DESIGN"><a href="#SYSTEM-DESIGN" class="headerlink" title="SYSTEM DESIGN"></a>SYSTEM DESIGN</h2><p>重点是优化：<br>（1）<strong>预排序</strong>：这个算法大量时间消耗在排序上。只需在最开始对每个特征排一次序即可。<br>这里XGB将所有的列数据都预先排了序。以压缩形式分别存到block里，不同的block可以分布式存储，甚至存到硬盘里。在特征选择的时候，可以并行的处理这些列数据，XGB就是在这实现的并行化，用多线程来实现加速。同时这里还用cache加了一个底层优化：当数据排序后，索引值是乱序的，可能指向了不同的内存地址，找的时候数据是不连续的，这里加了个缓存，让以后找的时候能找到小批量的连续地址，以实现加速！这里是在每个线程里申请了一个internal buffer来实现的！这个优化在小数据下看不出来，数据越多越明显。</p>
-<p>（2）<strong>预取</strong>：尽可能的把数据保存在缓存中，这样不用去磁盘进行读取，减少时间开销。并且给出了对比结果：<br><img src="/images/XGB/05.png" width="100%"></p>
-<p>（3）内存块的大小也会影响缓存速率。<br><img src="/images/XGB/06.png" width="50%"></p>
-<p>针对磁盘存储优化。磁盘block不大的情况下：<br>1.把block数据进行压缩，让它没有那么大。<br>2.把block数据放在多个磁盘，增大磁盘带宽，让读取速度更。</p>
-<h1 id="信息论"><a href="#信息论" class="headerlink" title="信息论"></a>信息论</h1><h2 id="熵"><a href="#熵" class="headerlink" title="熵"></a>熵</h2><p>如果$\textbf{X}$是一个离散型随机变量，取空间值为$\Bbb{R}$，其概率分布为$ p(x)=P(\textbf{X}=x),x\in\Bbb{R}$。那么，$\textbf{X}$的熵$H(\textbf{X})$定义为：</p>
-<script type="math/tex; mode=display">
-H(\textbf{X})=-\sum\limits_{x\in\Bbb{R}} p(x) log p(x)</script><p>其中，$H(\textbf{X})$可以写成$H( p)$。</p>
-<p><strong>熵又称为子信息（self-information），可以视为描述一个随机变量的不确定性的数量</strong>。它表示信源$\textbf{X}$每发一个符号（不论发什么符号）所提供的平均信息量。<strong>一个随机变量的熵越大，它的不确定性越大，那么，正确估计其值的可能性就越小。越不确定的随机变量越需要大的信息量用以确定其值。</strong></p>
-<p><strong>熵定义了随机变量的不确定性，当熵最大时，随机变量最不确定，最难准确地预测其行为。也就是说，在已知部分知识的前提下，关于未知分布最合理的推断应该是符合已知知识最不确定或最大随机的推断。</strong> </p>
-<h2 id="联合熵和条件熵"><a href="#联合熵和条件熵" class="headerlink" title="联合熵和条件熵"></a>联合熵和条件熵</h2><p>如果$\textbf{X},\textbf{Y}$是一对离散型随机变量$\textbf{X},\textbf{Y}\sim p(x,y)$，$\textbf{X},\textbf{Y}$的联合熵（joint entropy）$H(\textbf{X},\textbf{Y})$定义为：</p>
-<script type="math/tex; mode=display">
-H(\textbf{X},\textbf{Y})=-\sum\limits_{ x\in\textbf{X}}\sum\limits_{ y\in\textbf{Y}} p(x,y) log p(x,y)</script><p>联合熵实际上就是描述一对随机变量平均所需要的信息量。</p>
-<p>给定随机变量$\textbf{X}$的情况下， 随机变量$\textbf{Y}$的条件熵（conditionalentropy）：</p>
-<script type="math/tex; mode=display">
+<h2 id="system-design">SYSTEM DESIGN</h2>
+<p>重点是优化：<br />
+（1）<strong>预排序</strong>：这个算法大量时间消耗在排序上。只需在最开始对每个特征排一次序即可。<br />
+这里XGB将所有的列数据都预先排了序。以压缩形式分别存到block里，不同的block可以分布式存储，甚至存到硬盘里。在特征选择的时候，可以并行的处理这些列数据，XGB就是在这实现的并行化，用多线程来实现加速。同时这里还用cache加了一个底层优化：当数据排序后，索引值是乱序的，可能指向了不同的内存地址，找的时候数据是不连续的，这里加了个缓存，让以后找的时候能找到小批量的连续地址，以实现加速！这里是在每个线程里申请了一个internal
+buffer来实现的！这个优化在小数据下看不出来，数据越多越明显。</p>
+<p>（2）<strong>预取</strong>：尽可能的把数据保存在缓存中，这样不用去磁盘进行读取，减少时间开销。并且给出了对比结果：<br />
+<img src="/images/XGB/05.png" width="100%"></p>
+<p>（3）内存块的大小也会影响缓存速率。<br />
+<img src="/images/XGB/06.png" width="50%"></p>
+<p>针对磁盘存储优化。磁盘block不大的情况下：<br />
+1.把block数据进行压缩，让它没有那么大。<br />
+2.把block数据放在多个磁盘，增大磁盘带宽，让读取速度更。</p>
+<h1 id="信息论">信息论</h1>
+<h2 id="熵">熵</h2>
+<p>如果<span
+class="math inline">\(\textbf{X}\)</span>是一个离散型随机变量，取空间值为<span
+class="math inline">\(\Bbb{R}\)</span>，其概率分布为$ p(x)=P(=x),x<span
+class="math inline">\(。那么，\)</span><span
+class="math inline">\(的熵\)</span>H()$定义为：<br />
+<span class="math display">\[
+H(\textbf{X})=-\sum\limits_{x\in\Bbb{R}} p(x) log p(x)
+\]</span><br />
+其中，<span class="math inline">\(H(\textbf{X})\)</span>可以写成<span
+class="math inline">\(H( p)\)</span>。</p>
+<p><strong>熵又称为子信息（self-information），可以视为描述一个随机变量的不确定性的数量</strong>。它表示信源<span
+class="math inline">\(\textbf{X}\)</span>每发一个符号（不论发什么符号）所提供的平均信息量。<strong>一个随机变量的熵越大，它的不确定性越大，那么，正确估计其值的可能性就越小。越不确定的随机变量越需要大的信息量用以确定其值。</strong></p>
+<p><strong>熵定义了随机变量的不确定性，当熵最大时，随机变量最不确定，最难准确地预测其行为。也就是说，在已知部分知识的前提下，关于未知分布最合理的推断应该是符合已知知识最不确定或最大随机的推断。</strong></p>
+<h2 id="联合熵和条件熵">联合熵和条件熵</h2>
+<p>如果<span
+class="math inline">\(\textbf{X},\textbf{Y}\)</span>是一对离散型随机变量<span
+class="math inline">\(\textbf{X},\textbf{Y}\sim p(x,y)\)</span>，<span
+class="math inline">\(\textbf{X},\textbf{Y}\)</span>的联合熵（joint
+entropy）<span
+class="math inline">\(H(\textbf{X},\textbf{Y})\)</span>定义为：<br />
+<span class="math display">\[
+H(\textbf{X},\textbf{Y})=-\sum\limits_{ x\in\textbf{X}}\sum\limits_{
+y\in\textbf{Y}} p(x,y) log p(x,y)
+\]</span><br />
+联合熵实际上就是描述一对随机变量平均所需要的信息量。</p>
+<p>给定随机变量<span class="math inline">\(\textbf{X}\)</span>的情况下，
+随机变量<span
+class="math inline">\(\textbf{Y}\)</span>的条件熵（conditionalentropy）：<br />
+<span class="math display">\[
 \begin{aligned}
-H(\textbf{Y}|\textbf{X})&=\sum\limits_{ x\in\textbf{X}} p(x) H(\textbf{Y}|\textbf{X}= x)\\
-&=\sum\limits_{ x\in\textbf{X}} p(x)[-\sum\limits_{ y\in\textbf{Y}} p(y|x) log p(y|x)]\\
-&=-\sum\limits_{ x\in\textbf{X}}\sum\limits_{ y\in\textbf{Y}} p(x,y) log p(y|x)
-\end{aligned}</script><p>将其中的联合概率$log p(x,y)$展开，可得：</p>
-<script type="math/tex; mode=display">
+H(\textbf{Y}|\textbf{X})&amp;=\sum\limits_{ x\in\textbf{X}} p(x)
+H(\textbf{Y}|\textbf{X}= x)\\
+&amp;=\sum\limits_{ x\in\textbf{X}} p(x)[-\sum\limits_{ y\in\textbf{Y}}
+p(y|x) log p(y|x)]\\
+&amp;=-\sum\limits_{ x\in\textbf{X}}\sum\limits_{ y\in\textbf{Y}} p(x,y)
+log p(y|x)
+\end{aligned}
+\]</span><br />
+将其中的联合概率<span class="math inline">\(log
+p(x,y)\)</span>展开，可得：<br />
+<span class="math display">\[
 \begin{aligned}
-H(\textbf{X},\textbf{Y})&=-\sum\limits_{ x\in\textbf{X}}\sum\limits_{ y\in\textbf{Y}} p(x,y) log[ p(x)p(y|x)]\\
-&=-\sum\limits_{ x\in\textbf{X}}\sum\limits_{ y\in\textbf{Y}} p(x,y) [log p(x) + log p(y|x)]\\
-&=-\sum\limits_{ x\in\textbf{X}}\sum\limits_{ y\in\textbf{Y}} p(x,y) log p(x)-\sum\limits_{ x\in\textbf{X}}\sum\limits_{ y\in\textbf{Y}} p(x,y) log p(y|x)\\
-&=-\sum\limits_{ x\in\textbf{X}} p(x) log p(x)-\sum\limits_{ x\in\textbf{X}}\sum\limits_{ y\in\textbf{Y}} p(x,y) log p(y|x)\\
-&=H(\textbf{X})+H(\textbf{Y}|\textbf{X})
-\end{aligned}</script><p>我们称上式为熵的连锁规则。推广到一般情况，有：</p>
-<script type="math/tex; mode=display">
-H(\textbf{X}_1,\textbf{X}_2,...,\textbf{X}_n)=H(\textbf{X}_1)+H(\textbf{X}_2|\textbf{X}_1)+...+H(\textbf{X}_n|\textbf{X}_1,\textbf{X}_2,...,\textbf{X}_{n-1})</script><h2 id="互信息"><a href="#互信息" class="headerlink" title="互信息"></a>互信息</h2><p>根据熵的连锁规则， 有：</p>
-<script type="math/tex; mode=display">
-H(\textbf{X},\textbf{Y})=H(\textbf{X})+H(\textbf{Y}|\textbf{X})=H(\textbf{Y})+H(\textbf{X}|\textbf{Y})</script><p>因此：</p>
-<script type="math/tex; mode=display">
-H(\textbf{X})-H(\textbf{X}|\textbf{Y})=H(\textbf{Y})-H(\textbf{Y}|\textbf{X})</script><p>这个差叫做$\textbf{X}$和$\textbf{Y}$的互信息（mutual information, MI），记作$I(\textbf{X};\textbf{Y})$。<br>或者定义为：如果$(\textbf{X},\textbf{Y})\sim  p(x,y)$，则$\textbf{X},\textbf{Y}$之间的互信息$I(\textbf{X};\textbf{Y})=H(\textbf{X})-H(\textbf{X}|\textbf{Y})$。</p>
-<p><strong>$I(\textbf{X};\textbf{Y})$反映的是在知道了$\textbf{Y}$的值以后$\textbf{X}$的不确定性的减少量。可以理解为$\textbf{Y}$的值透露了多少关于$\textbf{X}$的信息量。</strong><br>互信息和熵之间的关系：<br><img src="/images/XGB/互信息.png" width="40%"></p>
-<p>如果将定义中的$H(\textbf{X})$和$H(\textbf{X}|\textbf{Y})$展开，可得：</p>
-<script type="math/tex; mode=display">
+H(\textbf{X},\textbf{Y})&amp;=-\sum\limits_{
+x\in\textbf{X}}\sum\limits_{ y\in\textbf{Y}} p(x,y) log[ p(x)p(y|x)]\\
+&amp;=-\sum\limits_{ x\in\textbf{X}}\sum\limits_{ y\in\textbf{Y}} p(x,y)
+[log p(x) + log p(y|x)]\\
+&amp;=-\sum\limits_{ x\in\textbf{X}}\sum\limits_{ y\in\textbf{Y}} p(x,y)
+log p(x)-\sum\limits_{ x\in\textbf{X}}\sum\limits_{ y\in\textbf{Y}}
+p(x,y) log p(y|x)\\
+&amp;=-\sum\limits_{ x\in\textbf{X}} p(x) log p(x)-\sum\limits_{
+x\in\textbf{X}}\sum\limits_{ y\in\textbf{Y}} p(x,y) log p(y|x)\\
+&amp;=H(\textbf{X})+H(\textbf{Y}|\textbf{X})
+\end{aligned}
+\]</span><br />
+我们称上式为熵的连锁规则。推广到一般情况，有：<br />
+<span class="math display">\[
+H(\textbf{X}_1,\textbf{X}_2,...,\textbf{X}_n)=H(\textbf{X}_1)+H(\textbf{X}_2|\textbf{X}_1)+...+H(\textbf{X}_n|\textbf{X}_1,\textbf{X}_2,...,\textbf{X}_{n-1})
+\]</span></p>
+<h2 id="互信息">互信息</h2>
+<p>根据熵的连锁规则， 有：<br />
+<span class="math display">\[
+H(\textbf{X},\textbf{Y})=H(\textbf{X})+H(\textbf{Y}|\textbf{X})=H(\textbf{Y})+H(\textbf{X}|\textbf{Y})
+\]</span><br />
+因此：<br />
+<span class="math display">\[
+H(\textbf{X})-H(\textbf{X}|\textbf{Y})=H(\textbf{Y})-H(\textbf{Y}|\textbf{X})
+\]</span><br />
+这个差叫做<span class="math inline">\(\textbf{X}\)</span>和<span
+class="math inline">\(\textbf{Y}\)</span>的互信息（mutual information,
+MI），记作<span
+class="math inline">\(I(\textbf{X};\textbf{Y})\)</span>。<br />
+或者定义为：如果<span class="math inline">\((\textbf{X},\textbf{Y})\sim
+p(x,y)\)</span>，则<span
+class="math inline">\(\textbf{X},\textbf{Y}\)</span>之间的互信息<span
+class="math inline">\(I(\textbf{X};\textbf{Y})=H(\textbf{X})-H(\textbf{X}|\textbf{Y})\)</span>。</p>
+<p><strong><span
+class="math inline">\(I(\textbf{X};\textbf{Y})\)</span>反映的是在知道了<span
+class="math inline">\(\textbf{Y}\)</span>的值以后<span
+class="math inline">\(\textbf{X}\)</span>的不确定性的减少量。可以理解为<span
+class="math inline">\(\textbf{Y}\)</span>的值透露了多少关于<span
+class="math inline">\(\textbf{X}\)</span>的信息量。</strong><br />
+互信息和熵之间的关系：<br />
+<img src="/images/XGB/互信息.png" width="40%"></p>
+<p>如果将定义中的<span
+class="math inline">\(H(\textbf{X})\)</span>和<span
+class="math inline">\(H(\textbf{X}|\textbf{Y})\)</span>展开，可得：<br />
+<span class="math display">\[
 \begin{aligned}
-I(\textbf{X};\textbf{Y})&=H(\textbf{X})-H(\textbf{X}|\textbf{Y})\\
-&=H(\textbf{X})+H(\textbf{Y})-H(\textbf{X},\textbf{Y})\\
-&=\sum\limits_{ x} p(x) log \frac{1}{p(x)}  + \sum\limits_{ y} p(y) log \frac{1}{p(y)}  + \sum\limits_{ x,y} p(x,y) log p(x,y) \\
-&=\sum\limits_{ x,y} p(x,y) log \frac{p(x,y)}{p(x)p(y)} \\
-\end{aligned}</script><p>由于$H(\textbf{X}|\textbf{X})=0$， 因此，</p>
-<script type="math/tex; mode=display">
-H(\textbf{X})=H(\textbf{X})-H(\textbf{X}|\textbf{X})=I(\textbf{X};\textbf{X})</script><p>这一方面说明了为什么熵又称为自信息，另一方面说明了两个完全相互依赖的变量之间的互信息并不是一个常量，而是取决于它们的熵。</p>
-<p>实际上，互信息体现了两变量之间的依赖程度：<br>如果$I(\textbf{X};\textbf{Y})≫0$，表明$\textbf{X}$和$\textbf{Y}$是高度相关的；<br>如果$I(\textbf{X};\textbf{Y})=0$，表明$\textbf{X}$和$\textbf{Y}$是相互独立的；<br>如果$I(\textbf{X};\textbf{Y})≪0$，表明$\textbf{Y}$的出现不但未使$\textbf{X}$的不确定性减小，反而增大了$\textbf{X}$的不确定性，是非常是不利的。</p>
-<h2 id="相对熵"><a href="#相对熵" class="headerlink" title="相对熵"></a>相对熵</h2><p>相对熵（relative entropy）又称Kullback-Leibler差异（KullbackLeibler divergence），或简称KL距离，是<strong>衡量相同事件空间里两个概率分布相对差距的测度</strong>。两个概率分布$ p(x)$和$ q(x)$的相对熵定义为：</p>
-<script type="math/tex; mode=display">
+I(\textbf{X};\textbf{Y})&amp;=H(\textbf{X})-H(\textbf{X}|\textbf{Y})\\
+&amp;=H(\textbf{X})+H(\textbf{Y})-H(\textbf{X},\textbf{Y})\\
+&amp;=\sum\limits_{ x} p(x) log \frac{1}{p(x)}  + \sum\limits_{ y} p(y)
+log \frac{1}{p(y)}  + \sum\limits_{ x,y} p(x,y) log p(x,y) \\
+&amp;=\sum\limits_{ x,y} p(x,y) log \frac{p(x,y)}{p(x)p(y)} \\
+\end{aligned}
+\]</span><br />
+由于<span class="math inline">\(H(\textbf{X}|\textbf{X})=0\)</span>，
+因此，<br />
+<span class="math display">\[
+H(\textbf{X})=H(\textbf{X})-H(\textbf{X}|\textbf{X})=I(\textbf{X};\textbf{X})
+\]</span><br />
+这一方面说明了为什么熵又称为自信息，另一方面说明了两个完全相互依赖的变量之间的互信息并不是一个常量，而是取决于它们的熵。</p>
+<p>实际上，互信息体现了两变量之间的依赖程度：<br />
+如果<span
+class="math inline">\(I(\textbf{X};\textbf{Y})≫0\)</span>，表明<span
+class="math inline">\(\textbf{X}\)</span>和<span
+class="math inline">\(\textbf{Y}\)</span>是高度相关的；<br />
+如果<span
+class="math inline">\(I(\textbf{X};\textbf{Y})=0\)</span>，表明<span
+class="math inline">\(\textbf{X}\)</span>和<span
+class="math inline">\(\textbf{Y}\)</span>是相互独立的；<br />
+如果<span
+class="math inline">\(I(\textbf{X};\textbf{Y})≪0\)</span>，表明<span
+class="math inline">\(\textbf{Y}\)</span>的出现不但未使<span
+class="math inline">\(\textbf{X}\)</span>的不确定性减小，反而增大了<span
+class="math inline">\(\textbf{X}\)</span>的不确定性，是非常是不利的。</p>
+<h2 id="相对熵">相对熵</h2>
+<p>相对熵（relative entropy）又称Kullback-Leibler差异（KullbackLeibler
+divergence），或简称KL距离，是<strong>衡量相同事件空间里两个概率分布相对差距的测度</strong>。两个概率分布$
+p(x)<span class="math inline">\(和\)</span> q(x)$的相对熵定义为：<br />
+<span class="math display">\[
 \begin{aligned}
-D( p||q)&=\sum\limits_{ x\in\textbf{X}} p(x) log\frac{ p(x)}{ q(x)}\\
-&=\sum\limits_{ x\in\textbf{X}} p(x) log  p(x)  - \sum\limits_{ x\in\textbf{X}} p(x) log q(x)\\
-&=-H( p)+H( p,q)
-\end{aligned}</script><p>其中，$H( p)$恒不变，只需考虑交叉熵$H( p,q)$即可。$ q(x)$ 分布越接近 $ p(x)$，那么散度值越小。<br>有时会将KL散度称为KL距离，但它并不满足距离的性质：KL散度不是对称的；KL散度不满足三角不等式。</p>
-<h2 id="交叉熵"><a href="#交叉熵" class="headerlink" title="交叉熵"></a>交叉熵</h2><p>根据前面熵的定义，知道熵是一个不确定性的测度，也就是说，我们对于某件事情知道得越多，那么，熵就越小，因而对于试验的结果我们越不感到意外。<strong>交叉熵的概念就是用来衡量估计模型与真实概率分布之间差异情况的。</strong><br>如果一个随机变量$\textbf{X}\sim p(x)$，$ q(x)$为用于近似$ p(x)$的概率分布，那么，随机变量$\textbf{X}$和模型$ p(x)$之间的交叉熵（cross entropy）定义为：</p>
-<script type="math/tex; mode=display">
+D( p||q)&amp;=\sum\limits_{ x\in\textbf{X}} p(x) log\frac{ p(x)}{
+q(x)}\\
+&amp;=\sum\limits_{ x\in\textbf{X}} p(x) log  p(x)  - \sum\limits_{
+x\in\textbf{X}} p(x) log q(x)\\
+&amp;=-H( p)+H( p,q)
+\end{aligned}
+\]</span><br />
+其中，<span class="math inline">\(H(
+p)\)</span>恒不变，只需考虑交叉熵<span class="math inline">\(H(
+p,q)\)</span>即可。$ q(x)$ 分布越接近 $ p(x)$，那么散度值越小。<br />
+有时会将KL散度称为KL距离，但它并不满足距离的性质：KL散度不是对称的；KL散度不满足三角不等式。</p>
+<h2 id="交叉熵">交叉熵</h2>
+<p>根据前面熵的定义，知道熵是一个不确定性的测度，也就是说，我们对于某件事情知道得越多，那么，熵就越小，因而对于试验的结果我们越不感到意外。<strong>交叉熵的概念就是用来衡量估计模型与真实概率分布之间差异情况的。</strong><br />
+如果一个随机变量<span class="math inline">\(\textbf{X}\sim
+p(x)\)</span>，$ q(x)<span class="math inline">\(为用于近似\)</span>
+p(x)<span class="math inline">\(的概率分布，那么，随机变量\)</span><span
+class="math inline">\(和模型\)</span> p(x)$之间的交叉熵（cross
+entropy）定义为：<br />
+<span class="math display">\[
 \begin{aligned}
-H( p,q)&=H( p)+D( p||q)\\
-&=-\sum\limits_{ x\in\textbf{X}} p(x) log  q(x)\\
-\end{aligned}</script><h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p><span class="exturl" data-url="aHR0cHM6Ly9kbC5hY20ub3JnL2RvaS9wZGYvMTAuMTE0NS8yOTM5NjcyLjI5Mzk3ODU=">XGBoost: A Scalable Tree Boosting System<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vcGluYXJkL3AvMTA5Nzk4MDguaHRtbA==">XGBoost算法原理小结<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FkYnN6c2ovYXJ0aWNsZS9kZXRhaWxzLzc5NjE1NzEy">XGBoost 论文翻译+个人注释<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC84OTU4OTIyMg==">XGBoost论文详解<i class="fa fa-external-link-alt"></i></span><br>[统计自然语言处理（第二版），宗成庆]</p>
-<h1 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h1><p><span class="exturl" data-url="aHR0cHM6Ly9tcC53ZWl4aW4ucXEuY29tL3MvRHk0cnRiX0JqMmI3Q0FCVEVWNFRuUQ==">Xgboost · 十三问十三答<i class="fa fa-external-link-alt"></i></span></p>
+H( p,q)&amp;=H( p)+D( p||q)\\
+&amp;=-\sum\limits_{ x\in\textbf{X}} p(x) log  q(x)\\
+\end{aligned}
+\]</span></p>
+<h1 id="参考文献">参考文献</h1>
+<p><span class="exturl" data-url="aHR0cHM6Ly9kbC5hY20ub3JnL2RvaS9wZGYvMTAuMTE0NS8yOTM5NjcyLjI5Mzk3ODU=">XGBoost:
+A Scalable Tree Boosting System<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vcGluYXJkL3AvMTA5Nzk4MDguaHRtbA==">XGBoost算法原理小结<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FkYnN6c2ovYXJ0aWNsZS9kZXRhaWxzLzc5NjE1NzEy">XGBoost
+论文翻译+个人注释<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC84OTU4OTIyMg==">XGBoost论文详解<i class="fa fa-external-link-alt"></i></span><br />
+[统计自然语言处理（第二版），宗成庆]<br />
+# 扩展<br />
+<span class="exturl" data-url="aHR0cHM6Ly9tcC53ZWl4aW4ucXEuY29tL3MvRHk0cnRiX0JqMmI3Q0FCVEVWNFRuUQ==">Xgboost ·
+十三问十三答<i class="fa fa-external-link-alt"></i></span></p>
 
     </div>
 
     
     
     
-      
-  <div class="popular-posts-header">相关文章</div>
-  <ul class="popular-posts">
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2021\06\19\Paper\00.Paper阅读技巧\" rel="bookmark">Paper阅读技巧</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2021\06\20\Paper\01.Unsupervised Data Augmentation for Consistency Training\" rel="bookmark">Unsupervised Data Augmentation for Consistency Training</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2021\07\18\Paper\03.Get To The Point. Summarization with Pointer-Generator Networks\" rel="bookmark">Get To The Point. Summarization with Pointer-Generator Networks</a></div>
-    </li>
-  </ul>
-
 
     <footer class="post-footer">
           
@@ -512,7 +668,7 @@ H( p,q)&=H( p)+D( p||q)\\
       <a href="https://soundmemories.github.io/2021/06/25/Paper/02.XGBoost%20A%20Scalable%20Tree%20Boosting%20System/" title="XGBoost A Scalable Tree Boosting System">https://soundmemories.github.io/2021/06/25/Paper/02.XGBoost A Scalable Tree Boosting System/</a>
   </li>
   <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
   </li>
 </ul>
 </div>
@@ -525,8 +681,8 @@ H( p,q)&=H( p)+D( p||q)\\
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/06/20/Paper/01.Unsupervised%20Data%20Augmentation%20for%20Consistency%20Training/" rel="prev" title="Unsupervised Data Augmentation for Consistency Training">
-                  <i class="fa fa-chevron-left"></i> Unsupervised Data Augmentation for Consistency Training
+                <a href="/2021/06/20/NLP/01.%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E5%92%8C%E8%AF%8D%E5%90%91%E9%87%8F/" rel="prev" title="语言模型和词向量">
+                  <i class="fa fa-chevron-left"></i> 语言模型和词向量
                 </a>
             </div>
             <div class="post-nav-item">
@@ -544,147 +700,63 @@ H( p,q)&=H( p)+D( p||q)\\
 
 
 
-      
-
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      const commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
-
-    </div>
+</div>
   </main>
 
   <footer class="footer">
     <div class="footer-inner">
-      
 
-      
-
-<div class="copyright">
-  
-  &copy; 2019 – 
-  <span itemprop="copyrightYear">2023</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">SoundMemories</span>
-</div>
-  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">SoundMemories</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
   </div>
 
     </div>
   </footer>
 
   
-  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '.page-configurations',
-    '.main-inner',
-    '.post-toc-wrap',
-    '.languages',
-    '.pjax'
-  ],
-  analytics: false,
-  cacheBust: false,
-  scrollRestoration: false,
-  scrollTo: !CONFIG.bookmark.enable
-});
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
 
-document.addEventListener('pjax:success', () => {
-  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.subMenu)
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  const hasTOC = document.querySelector('.post-toc');
-  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
-  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
-  NexT.utils.updateSidebarPosition();
-});
-</script>
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
 
 
   
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"neutral"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.min.js","integrity":"sha256-JFptYy4KzJ5OQP+Q9fubNf3cxpPPmZKqUOovyEONKrQ="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
 
 
-
-
-  <script src="/js/local-search.js"></script>
-
-
-
-
-
-
-
-
-<script data-pjax>
-document.querySelectorAll('.pdfobject-container').forEach(element => {
-  const url = element.dataset.target;
-  const pdfOpenParams = {
-    navpanes : 0,
-    toolbar  : 0,
-    statusbar: 0,
-    pagemode : 'thumbs',
-    view     : 'FitH'
-  };
-  const pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
-  const fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
-
-  if (NexT.utils.supportsPDFs()) {
-    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
-  } else {
-    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
-  }
-});
-</script>
-
-
-<script data-pjax>
-if (document.querySelectorAll('.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8.8.2/dist/mermaid.min.js', () => {
-    mermaid.init({
-      theme    : 'neutral',
-      logLevel : 3,
-      flowchart: { curve     : 'linear' },
-      gantt    : { axisFormat: '%m/%d/%Y' },
-      sequence : { actorMargin: 50 }
-    }, '.mermaid');
-  }, window.mermaid);
-}
-</script>
-
-
+  <script src="/js/third-party/fancybox.js"></script>
 
 
 
@@ -693,71 +765,15 @@ if (document.querySelectorAll('.mermaid').length) {
 
 
 
-
-
-
-
-    <div class="pjax">
   
 
-  
-      <script>
-  if (typeof MathJax === 'undefined') {
-    window.MathJax = {
-      tex: {
-        inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
-      },
-      options: {
-        renderActions: {
-          findScript: [10, doc => {
-            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-              const display = !!node.type.match(/; *mode=display/);
-              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-              const text = document.createTextNode('');
-              node.parentNode.replaceChild(text, node);
-              math.start = {node: text, delim: '', n: 0};
-              math.end = {node: text, delim: '', n: 0};
-              doc.math.push(math);
-            });
-          }, '', false],
-          insertedScript: [200, () => {
-            document.querySelectorAll('mjx-container').forEach(node => {
-              const target = node.parentNode;
-              if (target.nodeName.toLowerCase() === 'li') {
-                target.parentNode.classList.add('has-jax');
-              }
-            });
-          }, '', false]
-        }
-      }
-    };
-    const script = document.createElement('script');
-    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
-    script.defer = true;
-    document.head.appendChild(script);
-  } else {
-    MathJax.startup.document.state(0);
-    MathJax.typesetClear();
-    MathJax.texReset();
-    MathJax.typeset();
-  }
-</script>
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
 
-    
 
-  
-  <script src="//cdn.jsdelivr.net/npm/quicklink@2.0.0/dist/quicklink.umd.js"></script>
-  <script>
-      window.addEventListener('load', () => {
-      quicklink.listen({
-        timeout : 3000,
-        priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'https://soundmemories.github.io/2021/06/25/Paper/02.XGBoost%20A%20Scalable%20Tree%20Boosting%20System/',]
-      });
-      });
-  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://soundmemories.github.io/2021/06/25/Paper/02.XGBoost%20A%20Scalable%20Tree%20Boosting%20System/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
 
-    </div>
 </body>
 </html>

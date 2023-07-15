@@ -2,10 +2,9 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.2.0">
-
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
@@ -16,25 +15,22 @@
 
 <link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
 
-<script class="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.0.2","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
-  </script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.1","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-  <meta name="description" content="Python类型注解函数定义的弊端 Python是动态语言，变量随时可以被赋值，且能赋值为不同的类型；     Python不是静态编译型语言，变量类型是在运行期决定的；   动态语言很灵活，但是这种特性也是弊端；  123456def add(x, y):    return x + yprint(add(4, 5))#计算4+5print(add(&amp;#x27;hello&amp;#x27;, &amp;#x2">
+    <meta name="description" content="Python类型注解 函数定义的弊端  Python是动态语言，变量随时可以被赋值，且能赋值为不同的类型；  Python不是静态编译型语言，变量类型是在运行期决定的；  动态语言很灵活，但是这种特性也是弊端； 123456def add(x, y):    return x + yprint(add(4, 5))#计算4+5print(add(&amp;#x27;hello&amp;#x27;,">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python-类型注解">
 <meta property="og:url" content="https://soundmemories.github.io/2019/01/22/Python/11.Python-%E7%B1%BB%E5%9E%8B%E6%B3%A8%E9%87%8A/index.html">
 <meta property="og:site_name" content="SoundMemories">
-<meta property="og:description" content="Python类型注解函数定义的弊端 Python是动态语言，变量随时可以被赋值，且能赋值为不同的类型；     Python不是静态编译型语言，变量类型是在运行期决定的；   动态语言很灵活，但是这种特性也是弊端；  123456def add(x, y):    return x + yprint(add(4, 5))#计算4+5print(add(&amp;#x27;hello&amp;#x27;, &amp;#x2">
+<meta property="og:description" content="Python类型注解 函数定义的弊端  Python是动态语言，变量随时可以被赋值，且能赋值为不同的类型；  Python不是静态编译型语言，变量类型是在运行期决定的；  动态语言很灵活，但是这种特性也是弊端； 123456def add(x, y):    return x + yprint(add(4, 5))#计算4+5print(add(&amp;#x27;hello&amp;#x27;,">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20190120105419472.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTMzNDAyMTY=,size_16,color_FFFFFF,t_70">
 <meta property="article:published_time" content="2019-01-21T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-02-07T05:52:17.257Z">
+<meta property="article:modified_time" content="2023-05-29T15:49:45.750Z">
 <meta property="article:author" content="SoundMemories">
 <meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
@@ -44,17 +40,11 @@
 <link rel="canonical" href="https://soundmemories.github.io/2019/01/22/Python/11.Python-%E7%B1%BB%E5%9E%8B%E6%B3%A8%E9%87%8A/">
 
 
-<script data-pjax class="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
 
-  <title>Python-类型注解 | SoundMemories</title>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://soundmemories.github.io/2019/01/22/Python/11.Python-%E7%B1%BB%E5%9E%8B%E6%B3%A8%E9%87%8A/","path":"2019/01/22/Python/11.Python-类型注释/","title":"Python-类型注解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Python-类型注解 | SoundMemories</title>
   
 
 
@@ -62,51 +52,21 @@
 
 
 
+
+
   <noscript>
-  <style>
-  body { margin-top: 2rem; }
-
-  .use-motion .menu-item,
-  .use-motion .sidebar,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header {
-    visibility: visible;
-  }
-
-  .use-motion .header,
-  .use-motion .site-brand-container .toggle,
-  .use-motion .footer { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle,
-  .use-motion .custom-logo-image {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line {
-    transform: scaleX(1);
-  }
-
-  .search-pop-overlay, .sidebar-nav { display: none; }
-  .sidebar-panel { display: block; }
-  </style>
-</noscript>
-
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
   <div class="headband"></div>
 
   <main class="main">
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
+    <div class="toggle" aria-label="切换导航栏" role="button">
         <span class="toggle-line"></span>
         <span class="toggle-line"></span>
         <span class="toggle-line"></span>
@@ -117,13 +77,13 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title">SoundMemories</h1>
+      <p class="site-title">SoundMemories</p>
       <i class="logo-line"></i>
     </a>
   </div>
 
   <div class="site-nav-right">
-    <div class="toggle popup-trigger">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
         <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
@@ -132,27 +92,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu">
-        <li class="menu-item menu-item-主页">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>主页</a>
-
-  </li>
-        <li class="menu-item menu-item-分类">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
-
-  </li>
-        <li class="menu-item menu-item-标签">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-归档">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">8</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">8</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">122</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -163,8 +103,7 @@
 
 
   <div class="search-pop-overlay">
-    <div class="popup search-popup">
-        <div class="search-header">
+    <div class="popup search-popup"><div class="search-header">
   <span class="search-icon">
     <i class="fa fa-search"></i>
   </span>
@@ -173,7 +112,7 @@
            placeholder="搜索..." spellcheck="false"
            type="search" class="search-input">
   </div>
-  <span class="popup-btn-close">
+  <span class="popup-btn-close" role="button">
     <i class="fa fa-times-circle"></i>
   </span>
 </div>
@@ -186,15 +125,9 @@
     </div>
   </div>
 
-</div>
+</header>
         
   
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-
   <aside class="sidebar">
 
     <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
@@ -206,43 +139,42 @@
           站点概览
         </li>
       </ul>
-	   
-		  
+
       <div class="sidebar-panel-container">
         <!--noindex-->
-        <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Python%E7%B1%BB%E5%9E%8B%E6%B3%A8%E8%A7%A3"><span class="nav-number">1.</span> <span class="nav-text">Python类型注解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%AE%9A%E4%B9%89%E7%9A%84%E5%BC%8A%E7%AB%AF"><span class="nav-number">1.1.</span> <span class="nav-text">函数定义的弊端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E6%96%87%E6%A1%A3%E5%92%8C%E6%B3%A8%E9%87%8A"><span class="nav-number">1.2.</span> <span class="nav-text">函数文档和注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#inspect%E6%A8%A1%E5%9D%97"><span class="nav-number">1.3.</span> <span class="nav-text">inspect模块</span></a></li></ol></li></ol></div>
-        </section>
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#python%E7%B1%BB%E5%9E%8B%E6%B3%A8%E8%A7%A3"><span class="nav-number">1.</span> <span class="nav-text">Python类型注解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%AE%9A%E4%B9%89%E7%9A%84%E5%BC%8A%E7%AB%AF"><span class="nav-number">1.1.</span> <span class="nav-text">函数定义的弊端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E6%96%87%E6%A1%A3%E5%92%8C%E6%B3%A8%E9%87%8A"><span class="nav-number">1.2.</span> <span class="nav-text">函数文档和注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#inspect%E6%A8%A1%E5%9D%97"><span class="nav-number">1.3.</span> <span class="nav-text">inspect模块</span></a></li></ol></li></ol></div>
+        </div>
         <!--/noindex-->
 
-        <section class="site-overview-wrap sidebar-panel">
-          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image" alt="SoundMemories"
-      src="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+      src="/images/avstar.png">
   <p class="site-author-name" itemprop="name">SoundMemories</p>
   <div class="site-description" itemprop="description">今日事，今日毕</div>
 </div>
-<div class="site-state-wrap site-overview-item animated">
+<div class="site-state-wrap animated">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
-          <a href="/archives">
-          <span class="site-state-item-count">120</span>
+        <a href="/archives/">
+          <span class="site-state-item-count">122</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-        <span class="site-state-item-count">9</span>
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-        <span class="site-state-item-count">9</span>
+          <a href="/tags/">
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>
-  <div class="links-of-author site-overview-item animated">
+  <div class="links-of-author animated">
       <span class="links-of-author-item">
         <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NvdW5kbWVtb3JpZXM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;soundmemories"><i class="fab fa-github fa-fw"></i>GitHub</span>
       </span>
@@ -250,37 +182,24 @@
         <span class="exturl" data-url="bWFpbHRvOnNvdW5kbWVtb3JpZXNAMTYzLmNvbQ==" title="E-Mail → mailto:soundmemories@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
       </span>
   </div>
-  <div class="cc-license site-overview-item animated" itemprop="license">
-    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></span>
   </div>
 
-
-
-        </section>
+        </div>
       </div>
     </div>
-  </aside>
-  <div class="sidebar-dimmer"></div>
-
-
-    </header>
 
     
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+        <div class="pjax">
+        </div>
+  </aside>
 
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
 
+    </div>
 
     <div class="main-inner post posts-expand">
-      
 
-      
 
   
 
@@ -293,13 +212,18 @@
     <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2019/01/22/Python/11.Python-%E7%B1%BB%E5%9E%8B%E6%B3%A8%E9%87%8A/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+      <meta itemprop="image" content="/images/avstar.png">
       <meta itemprop="name" content="SoundMemories">
-      <meta itemprop="description" content="今日事，今日毕">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Python-类型注解 | SoundMemories">
+      <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -327,21 +251,20 @@
     </span>
 
   
-      </div>
-      <div class="post-meta">
+    <span class="post-meta-break"></span>
     <span class="post-meta-item" title="本文字数">
       <span class="post-meta-item-icon">
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3.3k</span>
+      <span>2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
+      <span>7 分钟</span>
     </span>
 </div>
 
@@ -351,114 +274,104 @@
     
     
     
-    <div class="post-body" itemprop="articleBody">
-        <h2 id="Python类型注解"><a href="#Python类型注解" class="headerlink" title="Python类型注解"></a>Python类型注解</h2><h3 id="函数定义的弊端"><a href="#函数定义的弊端" class="headerlink" title="函数定义的弊端"></a>函数定义的弊端</h3><ol>
-<li>Python是动态语言，变量随时可以被赋值，且能赋值为不同的类型；    </li>
-<li>Python不是静态编译型语言，变量类型是在运行期决定的；  </li>
-<li>动态语言很灵活，但是这种特性也是弊端；  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line">print(add(<span class="number">4</span>, <span class="number">5</span>))<span class="comment">#计算4+5</span></span><br><span class="line">print(add(<span class="string">&#x27;hello&#x27;</span>, <span class="string">&#x27;world&#x27;</span>))<span class="comment">#字符串拼接</span></span><br><span class="line">add(<span class="number">4</span>, <span class="string">&#x27;hello&#x27;</span>) <span class="comment">#错误，不同类型不能+</span></span><br></pre></td></tr></table></figure>
-通过上面示例发现：   </li>
-<li>难发现：由于不做任何类型检查，直到运行期问题才显现出来，或者线上运行时才能暴露出问题；  </li>
+    <div class="post-body" itemprop="articleBody"><h2 id="python类型注解">Python类型注解</h2>
+<h3 id="函数定义的弊端">函数定义的弊端</h3>
+<ol type="1">
+<li>Python是动态语言，变量随时可以被赋值，且能赋值为不同的类型；<br />
+</li>
+<li>Python不是静态编译型语言，变量类型是在运行期决定的；<br />
+</li>
+<li>动态语言很灵活，但是这种特性也是弊端；<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">x, y</span>):</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(add(<span class="number">4</span>, <span class="number">5</span>))<span class="comment">#计算4+5</span></span><br><span class="line"><span class="built_in">print</span>(add(<span class="string">&#x27;hello&#x27;</span>, <span class="string">&#x27;world&#x27;</span>))<span class="comment">#字符串拼接</span></span><br><span class="line">add(<span class="number">4</span>, <span class="string">&#x27;hello&#x27;</span>) <span class="comment">#错误，不同类型不能+</span></span><br></pre></td></tr></table></figure><br />
+通过上面示例发现：<br />
+</li>
+<li>难发现：由于不做任何类型检查，直到运行期问题才显现出来，或者线上运行时才能暴露出问题；<br />
+</li>
 <li>难使用：函数的使用者看到函数的时候，并不知道你的函数的设计，并不知道应该传入什么类型的数据；</li>
 </ol>
-<p>如何解决这种动态语言定义的弊端呢？  </p>
-<ol>
-<li>增加文档（Documentation String）；  </li>
-<li>这只是一个惯例，不是强制标准，不能要求程序员一定为函数提供说明文档；  </li>
-<li>有缺陷：函数定义更新了，文档未必同步更新；  <a id="more"></a>
-<h3 id="函数文档和注释"><a href="#函数文档和注释" class="headerlink" title="函数文档和注释"></a>函数文档和注释</h3>如何加文档：函数内直接使用引号书写，或者使用Pycharm，在函数定义下输入三引号后回车，自动提示文档注释：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">x, y</span>):</span><span class="comment">#下面的名字是Pycharm自动添加的，方便了文档编写</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    :param x: #这里填写对参数x的说明</span></span><br><span class="line"><span class="string">    :param y: #这里填写对参数y的说明</span></span><br><span class="line"><span class="string">    :return: #这里填写对返回值的说明</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line">print(<span class="built_in">help</span>(add))<span class="comment">#使用help就可以查看文档注释</span></span><br></pre></td></tr></table></figure>
-虽然文档帮助理解函数的功能，但并不适合参数类型的检查，Python对此引用了函数注释（Function Annotations）：   </li>
-<li>对函数的参数、返回值进行类型注解；  </li>
-<li>只对函数参数做的一个辅助说明，并不对函数参数进行类型检查；  </li>
-<li>提供第三方工具，做代码分析，发现隐藏的bug；   </li>
-<li>函数注解的信息，保存在<strong>annotations</strong>属性中；<br>！此外Python也可以使用变量注解，变量注解在3.6版本中引入；函数注解在3.5版本引入。  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#函数注释(3.5之后才支持)：</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">x:<span class="built_in">int</span>, y:<span class="built_in">int</span></span>):</span><span class="comment">#对x和y注释，它们为int类型</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"><span class="comment">#变量注释(3.6之后才支持)：</span></span><br><span class="line">i:<span class="built_in">list</span> = [] </span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>注意：所有注释都不会影响程序执行，它只是提示功能；<br>在Pycharm中设置了变量类型注释后，<code>.</code> 功能会自动匹配它类型的操作，非常实用；</p>
-</blockquote>
-</li>
-</ol>
-<h3 id="inspect模块"><a href="#inspect模块" class="headerlink" title="inspect模块"></a>inspect模块</h3><p>inspect模块主要提供以下功能：  </p>
-<ol>
-<li>对是否是模块，框架，函数等进行类型检查；  </li>
-<li>获取源码；  </li>
-<li>提供获取对象的函数，可以检查函数和类、类型；  </li>
-<li>解析堆栈； </li>
-</ol>
-<p>inspect模块中有很多is函数：  </p>
-<ol>
-<li>inspect.isfunction(object)：是否是函数；  </li>
-<li>inspect.ismethod(object))：是否是类的方法；  </li>
-<li>inspect.isgenerator(object)：是否是生成器对象；  </li>
-<li>inspect.isgeneratorfunction(object)：是否是生成器函数；  </li>
-<li>inspect.isclass(object)：是否是类；  </li>
-<li>inspect.ismodule(object)：是否是模块；  </li>
-<li>inspect.isbuiltin(object)：是否是内建对象；   </li>
-<li>inspect.isgeneratorfunction(object)：是否是生成器函数；  </li>
-<li>inspect.isgenerator(object)：是否是生成器；<br>其他is函数，请在需要的时候查阅inspect模块帮助。</li>
-</ol>
-<p>最常用的就是第3种功能，如需求：需要对函数参数类型检查？<br>思路：  </p>
-<ol>
-<li>函数参数的检查，一定是在函数外；  </li>
-<li>函数应该作为参数，擦混入到检查函数中；  </li>
-<li>检查函数拿到函数传入的实际参数，与形参声明对比；  </li>
-<li><code>__annotations__</code>属性是一个字典，其中包括返回值类型的声明。假设要做位置参数的判断，无法和字典中的声明对应。可以使用inspect模块；  </li>
-</ol>
-<p><code>inspect.signature(callable, *, follow_wrapped=True)</code>：获取签名；函数签名包含了一个函数的信息：函数名、它的参数类型、它所在的类和名称空间及其他信息。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> inspect</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">x:<span class="built_in">int</span>, y:<span class="built_in">int</span>, *args, **kwargs</span>) -&gt; int:</span><span class="comment">#只对x、y和返回值进行类型注释</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line">sig = inspect.signature(add)<span class="comment">#获取add函数签名</span></span><br><span class="line"></span><br><span class="line">print(sig)</span><br><span class="line"><span class="comment">#查看sig:</span></span><br><span class="line"><span class="comment">#(x:int, y:int, *args, **kwargs) -&gt; int</span></span><br><span class="line">print(<span class="built_in">type</span>(sig))</span><br><span class="line"><span class="comment">#查看sig的类型:</span></span><br><span class="line"><span class="comment">#&lt;class &#x27;inspect.Signature&#x27;&gt; </span></span><br><span class="line">print(sig.return_annotation)</span><br><span class="line"><span class="comment">#查看返回值注释：</span></span><br><span class="line"><span class="comment">#&lt;class &#x27;int&#x27;&gt;</span></span><br><span class="line">print(sig.parameters)</span><br><span class="line"><span class="comment">#parameters:参数名称到相应参数对象的有序映射；</span></span><br><span class="line"><span class="comment">#查看签名参数，是个有序字典(OrderedDict)：</span></span><br><span class="line"><span class="comment">#OrderedDict([(&#x27;x&#x27;, &lt;Parameter &quot;x:int&quot;&gt;), (&#x27;y&#x27;, &lt;Parameter &quot;y:int&quot;&gt;), (&#x27;args&#x27;, &lt;Parameter &quot;*args&quot;&gt;), (&#x27;kwargs&#x27;, &lt;Parameter &quot;**kwargs&quot;&gt;)])</span></span><br><span class="line">print(sig.parameters[<span class="string">&#x27;y&#x27;</span>],<span class="built_in">type</span>(sig.parameters[<span class="string">&#x27;y&#x27;</span>]),sig.parameters[<span class="string">&#x27;y&#x27;</span>].annotation)</span><br><span class="line"><span class="comment">#查看参数中的y、签名参数中y的类型、y的注解：</span></span><br><span class="line"><span class="comment">#y:int &lt;class &#x27;inspect.Parameter&#x27;&gt; &lt;class &#x27;int&#x27;&gt;</span></span><br><span class="line">print(sig.parameters[<span class="string">&#x27;args&#x27;</span>],sig.parameters[<span class="string">&#x27;args&#x27;</span>].annotation)</span><br><span class="line"><span class="comment">#查看参数中args、args的注解：</span></span><br><span class="line"><span class="comment">#*args &lt;class &#x27;inspect._empty&#x27;&gt;</span></span><br></pre></td></tr></table></figure><br>上面示例中y有注释，返回<code>&lt;class &#39;int&#39;&gt;</code>，而<em>args没有注释类型，返回<code>&lt;class &#39;inspect._empty&#39;&gt;</code>。<br>注意：可变类型不需要写注解，它们默认把数据包装成固定类型，</em>args是元组，**kwargs是字典。   </p>
-<p>Parameter对象（保存在元组中，是只读的）：  </p>
-<ol>
-<li>name：参数的名字；  </li>
-<li>annotation：参数的注解，可能没有定义；  </li>
-<li>default：参数的缺省值，可能没有定义；  </li>
-<li>empty：特殊的类，用来标记default属性或者注释annotation属性的空值；  </li>
-<li>kind：实参如何绑定到形参，就是形参的类型；  <ul>
-<li>POSITIONAL_ONLY，值必须是位置参数提供；    </li>
-<li>POSITIONAL_OR_KEYWORD，值可以作为关键字或者位置参数提供；  </li>
-<li>VAR_POSITIONAL，可变位置参数，对应<code>*args</code>；  </li>
-<li>KEYWORD_ONLY， keyword-only参数，对应<code>*</code>或者<code>*args</code>之后的出现的非可变关键字参数；  </li>
-<li>VAR_KEYWORD，可变关键字参数，对应<code>**kwargs</code>；  </li>
-</ul>
-</li>
-</ol>
-<p>inspect模块中使用的属性具体关系：  </p>
-<div  align=center> 
-<img src="https://img-blog.csdnimg.cn/20190120105419472.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTMzNDAyMTY=,size_16,color_FFFFFF,t_70" width=80%" height="80%">  
-</div>   
+<p>如何解决这种动态语言定义的弊端呢？<br />
+1. 增加文档（Documentation String）；<br />
+2.
+这只是一个惯例，不是强制标准，不能要求程序员一定为函数提供说明文档；<br />
+3. 有缺陷：函数定义更新了，文档未必同步更新；<br />
+<span id="more"></span></p>
+<h3 id="函数文档和注释">函数文档和注释</h3>
+<p>如何加文档：函数内直接使用引号书写，或者使用Pycharm，在函数定义下输入三引号后回车，自动提示文档注释：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">x, y</span>):<span class="comment">#下面的名字是Pycharm自动添加的，方便了文档编写</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    :param x: #这里填写对参数x的说明</span></span><br><span class="line"><span class="string">    :param y: #这里填写对参数y的说明</span></span><br><span class="line"><span class="string">    :return: #这里填写对返回值的说明</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">help</span>(add))<span class="comment">#使用help就可以查看文档注释</span></span><br></pre></td></tr></table></figure><br />
+虽然文档帮助理解函数的功能，但并不适合参数类型的检查，Python对此引用了函数注释（Function
+Annotations）：<br />
+1. 对函数的参数、返回值进行类型注解；<br />
+2. 只对函数参数做的一个辅助说明，并不对函数参数进行类型检查；<br />
+3. 提供第三方工具，做代码分析，发现隐藏的bug；<br />
+4. 函数注解的信息，保存在__annotations__属性中；<br />
+！此外Python也可以使用变量注解，变量注解在3.6版本中引入；函数注解在3.5版本引入。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#函数注释(3.5之后才支持)：</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">x:<span class="built_in">int</span>, y:<span class="built_in">int</span></span>):<span class="comment">#对x和y注释，它们为int类型</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"><span class="comment">#变量注释(3.6之后才支持)：</span></span><br><span class="line">i:<span class="built_in">list</span> = [] </span><br></pre></td></tr></table></figure><br />
+&gt;注意：所有注释都不会影响程序执行，它只是提示功能；<br />
+在Pycharm中设置了变量类型注释后，<code>.</code>
+功能会自动匹配它类型的操作，非常实用；</p>
+<h3 id="inspect模块">inspect模块</h3>
+<p>inspect模块主要提供以下功能：<br />
+1. 对是否是模块，框架，函数等进行类型检查；<br />
+2. 获取源码；<br />
+3. 提供获取对象的函数，可以检查函数和类、类型；<br />
+4. 解析堆栈；</p>
+<p>inspect模块中有很多is函数：<br />
+1. inspect.isfunction(object)：是否是函数；<br />
+2. inspect.ismethod(object))：是否是类的方法；<br />
+3. inspect.isgenerator(object)：是否是生成器对象；<br />
+4. inspect.isgeneratorfunction(object)：是否是生成器函数；<br />
+5. inspect.isclass(object)：是否是类；<br />
+6. inspect.ismodule(object)：是否是模块；<br />
+7. inspect.isbuiltin(object)：是否是内建对象；<br />
+8. inspect.isgeneratorfunction(object)：是否是生成器函数；<br />
+9. inspect.isgenerator(object)：是否是生成器；<br />
+其他is函数，请在需要的时候查阅inspect模块帮助。</p>
+<p>最常用的就是第3种功能，如需求：需要对函数参数类型检查？<br />
+思路：<br />
+1. 函数参数的检查，一定是在函数外；<br />
+2. 函数应该作为参数，擦混入到检查函数中；<br />
+3. 检查函数拿到函数传入的实际参数，与形参声明对比；<br />
+4.
+<code>__annotations__</code>属性是一个字典，其中包括返回值类型的声明。假设要做位置参数的判断，无法和字典中的声明对应。可以使用inspect模块；</p>
+<p><code>inspect.signature(callable, *, follow_wrapped=True)</code>：获取签名；函数签名包含了一个函数的信息：函数名、它的参数类型、它所在的类和名称空间及其他信息。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> inspect</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">x:<span class="built_in">int</span>, y:<span class="built_in">int</span>, *args, **kwargs</span>) -&gt; <span class="built_in">int</span>:<span class="comment">#只对x、y和返回值进行类型注释</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line">sig = inspect.signature(add)<span class="comment">#获取add函数签名</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(sig)</span><br><span class="line"><span class="comment">#查看sig:</span></span><br><span class="line"><span class="comment">#(x:int, y:int, *args, **kwargs) -&gt; int</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(sig))</span><br><span class="line"><span class="comment">#查看sig的类型:</span></span><br><span class="line"><span class="comment">#&lt;class &#x27;inspect.Signature&#x27;&gt; </span></span><br><span class="line"><span class="built_in">print</span>(sig.return_annotation)</span><br><span class="line"><span class="comment">#查看返回值注释：</span></span><br><span class="line"><span class="comment">#&lt;class &#x27;int&#x27;&gt;</span></span><br><span class="line"><span class="built_in">print</span>(sig.parameters)</span><br><span class="line"><span class="comment">#parameters:参数名称到相应参数对象的有序映射；</span></span><br><span class="line"><span class="comment">#查看签名参数，是个有序字典(OrderedDict)：</span></span><br><span class="line"><span class="comment">#OrderedDict([(&#x27;x&#x27;, &lt;Parameter &quot;x:int&quot;&gt;), (&#x27;y&#x27;, &lt;Parameter &quot;y:int&quot;&gt;), (&#x27;args&#x27;, &lt;Parameter &quot;*args&quot;&gt;), (&#x27;kwargs&#x27;, &lt;Parameter &quot;**kwargs&quot;&gt;)])</span></span><br><span class="line"><span class="built_in">print</span>(sig.parameters[<span class="string">&#x27;y&#x27;</span>],<span class="built_in">type</span>(sig.parameters[<span class="string">&#x27;y&#x27;</span>]),sig.parameters[<span class="string">&#x27;y&#x27;</span>].annotation)</span><br><span class="line"><span class="comment">#查看参数中的y、签名参数中y的类型、y的注解：</span></span><br><span class="line"><span class="comment">#y:int &lt;class &#x27;inspect.Parameter&#x27;&gt; &lt;class &#x27;int&#x27;&gt;</span></span><br><span class="line"><span class="built_in">print</span>(sig.parameters[<span class="string">&#x27;args&#x27;</span>],sig.parameters[<span class="string">&#x27;args&#x27;</span>].annotation)</span><br><span class="line"><span class="comment">#查看参数中args、args的注解：</span></span><br><span class="line"><span class="comment">#*args &lt;class &#x27;inspect._empty&#x27;&gt;</span></span><br></pre></td></tr></table></figure><br />
+上面示例中y有注释，返回<code>&lt;class 'int'&gt;</code>，而<em>args没有注释类型，返回<code>&lt;class 'inspect._empty'&gt;</code>。<br />
+注意：可变类型不需要写注解，它们默认把数据包装成固定类型，</em>args是元组，**kwargs是字典。</p>
+<p>Parameter对象（保存在元组中，是只读的）：<br />
+1. name：参数的名字；<br />
+2. annotation：参数的注解，可能没有定义；<br />
+3. default：参数的缺省值，可能没有定义；<br />
+4.
+empty：特殊的类，用来标记default属性或者注释annotation属性的空值；<br />
+5. kind：实参如何绑定到形参，就是形参的类型；<br />
+- POSITIONAL_ONLY，值必须是位置参数提供；<br />
+- POSITIONAL_OR_KEYWORD，值可以作为关键字或者位置参数提供；<br />
+- VAR_POSITIONAL，可变位置参数，对应<code>*args</code>；<br />
+- KEYWORD_ONLY，
+keyword-only参数，对应<code>*</code>或者<code>*args</code>之后的出现的非可变关键字参数；<br />
+- VAR_KEYWORD，可变关键字参数，对应<code>**kwargs</code>；</p>
+inspect模块中使用的属性具体关系：<br />
 
-<p>使用add函数，检查用户输入是否符合参数注解的要求？<br>思路：  </p>
-<ol>
-<li>调用时，判断用户输入的实参是否符合要求；  </li>
-<li>调用时，用户感觉上还是在调用add函数；  </li>
-<li>对用户输入的数据和声明的类型进行对比，如果不符合，提示用户；  </li>
-</ol>
-<p>先使用简单的方法做一下，可预先写成柯里化形式，方便后面做成装饰器，熟练些可以直接写成装饰器：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> inspect</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check</span>(<span class="params">fn</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">        <span class="comment">#完成参数检查</span></span><br><span class="line">        sig = inspect.signature(fn)</span><br><span class="line">        params= sig.parameters<span class="comment">#有序字典 &#123;变量名:参数对象&#125;</span></span><br><span class="line">        values = <span class="built_in">list</span>(params.values())</span><br><span class="line">        <span class="keyword">for</span> i,x <span class="keyword">in</span> <span class="built_in">enumerate</span>(args):<span class="comment">#处理*args接收的参数</span></span><br><span class="line">            <span class="comment">#*args形成元组，要从元组中取出值和其对应params字典中的类型判断</span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">isinstance</span>(x,values[i].annotation):</span><br><span class="line">                print(x,<span class="string">&quot;correct!&quot;</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                print(x,<span class="string">&quot;error!&quot;</span>)</span><br><span class="line">        <span class="keyword">for</span> k,v <span class="keyword">in</span> kwargs.items():<span class="comment">#处理**kwargs接收的参数</span></span><br><span class="line">            <span class="comment">#**kwargs形成字典，只需key就可以匹配</span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">isinstance</span>(v,params[k].annotation):</span><br><span class="line">                print(v, <span class="string">&quot;correct!&quot;</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                print(v, <span class="string">&quot;error!&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> fn(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="meta">@check</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">x:<span class="built_in">int</span>, y:<span class="built_in">int</span></span>) -&gt; int:</span><span class="comment">#这里不考虑没变量注释的情况</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line">add(<span class="number">4</span>,<span class="number">5</span>)</span><br><span class="line"><span class="comment">#4 correct!</span></span><br><span class="line"><span class="comment">#5 correct!</span></span><br><span class="line">add(<span class="string">&#x27;b&#x27;</span>,<span class="string">&#x27;a&#x27;</span>)</span><br><span class="line"><span class="comment">#b error!</span></span><br><span class="line"><span class="comment">#a error!</span></span><br><span class="line">add(<span class="number">4</span>,y=<span class="number">5</span>)</span><br><span class="line"><span class="comment">#4 correct!</span></span><br><span class="line"><span class="comment">#5 correct!</span></span><br><span class="line">add(x=<span class="string">&#x27;b&#x27;</span>,y=<span class="string">&#x27;a&#x27;</span>)</span><br><span class="line"><span class="comment">#b error!</span></span><br><span class="line"><span class="comment">#a error!</span></span><br><span class="line"></span><br></pre></td></tr></table></figure><br>上面示例使用isinstance类型判断完成，因为涉及到元组和字典匹配，所以先将字典的value转化成list类型再用下标去遍历即可。注意这里使用的是wrapper的签名。<br>上面示例有些缺陷，如果不写变量注释呢？应该不进行类型比较了，那么在上面示例基础上改进一下，顺便加上装饰器使签名和fn的一致，wrapper只判断是否错误即可：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"><span class="comment">#核心部分优化：</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check</span>(<span class="params">fn</span>):</span></span><br><span class="line"><span class="meta">    @functools.wraps(fn)#加上属性装饰</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">        <span class="comment">#完成参数检查</span></span><br><span class="line">        sig = inspect.signature(fn)</span><br><span class="line">        params= sig.parameters<span class="comment">#有序字典 &#123;变量名:参数对象&#125;</span></span><br><span class="line">        values = <span class="built_in">list</span>(params.values())</span><br><span class="line">        <span class="keyword">for</span> i,x <span class="keyword">in</span> <span class="built_in">enumerate</span>(args):<span class="comment">#处理*args接收的参数</span></span><br><span class="line">            <span class="comment">#参数注释不为空且类型不正确才报错</span></span><br><span class="line">            <span class="keyword">if</span> values[i].annotation != inspect._empty <span class="keyword">and</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(x,values[i].annotation):</span><br><span class="line">                print(x,<span class="string">&quot;error!&quot;</span>)</span><br><span class="line">                <span class="comment">#raise ValueError(&#x27;Param Error&#x27;)</span></span><br><span class="line">        <span class="keyword">for</span> k,v <span class="keyword">in</span> kwargs.items():<span class="comment">#处理**kwargs接收的参数</span></span><br><span class="line">            <span class="comment">#参数注释不为空且类型不正确才报错</span></span><br><span class="line">            <span class="keyword">if</span> params[k].annotation != params[k].empty <span class="keyword">and</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(v,params[k].annotation):</span><br><span class="line">                print(v, <span class="string">&quot;error!&quot;</span>)</span><br><span class="line">                <span class="comment">#raise ValueError(&#x27;Param Error&#x27;)</span></span><br><span class="line">        <span class="keyword">return</span> fn(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure></p>
-<blockquote>
-<p>inspect._empty、params[k].empty、inspect.Parameter.empty三者等价；</p>
-</blockquote>
+<div data-align="center">
+<p><img src="https://img-blog.csdnimg.cn/20190120105419472.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTMzNDAyMTY=,size_16,color_FFFFFF,t_70" width=80%" height="80%"></p>
+</div>
+<p>使用add函数，检查用户输入是否符合参数注解的要求？<br />
+思路：<br />
+1. 调用时，判断用户输入的实参是否符合要求；<br />
+2. 调用时，用户感觉上还是在调用add函数；<br />
+3. 对用户输入的数据和声明的类型进行对比，如果不符合，提示用户；</p>
+<p>先使用简单的方法做一下，可预先写成柯里化形式，方便后面做成装饰器，熟练些可以直接写成装饰器：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> inspect</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">check</span>(<span class="params">fn</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">        <span class="comment">#完成参数检查</span></span><br><span class="line">        sig = inspect.signature(fn)</span><br><span class="line">        params= sig.parameters<span class="comment">#有序字典 &#123;变量名:参数对象&#125;</span></span><br><span class="line">        values = <span class="built_in">list</span>(params.values())</span><br><span class="line">        <span class="keyword">for</span> i,x <span class="keyword">in</span> <span class="built_in">enumerate</span>(args):<span class="comment">#处理*args接收的参数</span></span><br><span class="line">            <span class="comment">#*args形成元组，要从元组中取出值和其对应params字典中的类型判断</span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">isinstance</span>(x,values[i].annotation):</span><br><span class="line">                <span class="built_in">print</span>(x,<span class="string">&quot;correct!&quot;</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="built_in">print</span>(x,<span class="string">&quot;error!&quot;</span>)</span><br><span class="line">        <span class="keyword">for</span> k,v <span class="keyword">in</span> kwargs.items():<span class="comment">#处理**kwargs接收的参数</span></span><br><span class="line">            <span class="comment">#**kwargs形成字典，只需key就可以匹配</span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">isinstance</span>(v,params[k].annotation):</span><br><span class="line">                <span class="built_in">print</span>(v, <span class="string">&quot;correct!&quot;</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="built_in">print</span>(v, <span class="string">&quot;error!&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> fn(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="meta">@check</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">x:<span class="built_in">int</span>, y:<span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:<span class="comment">#这里不考虑没变量注释的情况</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line">add(<span class="number">4</span>,<span class="number">5</span>)</span><br><span class="line"><span class="comment">#4 correct!</span></span><br><span class="line"><span class="comment">#5 correct!</span></span><br><span class="line">add(<span class="string">&#x27;b&#x27;</span>,<span class="string">&#x27;a&#x27;</span>)</span><br><span class="line"><span class="comment">#b error!</span></span><br><span class="line"><span class="comment">#a error!</span></span><br><span class="line">add(<span class="number">4</span>,y=<span class="number">5</span>)</span><br><span class="line"><span class="comment">#4 correct!</span></span><br><span class="line"><span class="comment">#5 correct!</span></span><br><span class="line">add(x=<span class="string">&#x27;b&#x27;</span>,y=<span class="string">&#x27;a&#x27;</span>)</span><br><span class="line"><span class="comment">#b error!</span></span><br><span class="line"><span class="comment">#a error!</span></span><br><span class="line"></span><br></pre></td></tr></table></figure><br />
+上面示例使用isinstance类型判断完成，因为涉及到元组和字典匹配，所以先将字典的value转化成list类型再用下标去遍历即可。注意这里使用的是wrapper的签名。<br />
+上面示例有些缺陷，如果不写变量注释呢？应该不进行类型比较了，那么在上面示例基础上改进一下，顺便加上装饰器使签名和fn的一致，wrapper只判断是否错误即可：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"><span class="comment">#核心部分优化：</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">check</span>(<span class="params">fn</span>):</span><br><span class="line"><span class="meta">    @functools.wraps(<span class="params">fn</span>)</span><span class="comment">#加上属性装饰</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">        <span class="comment">#完成参数检查</span></span><br><span class="line">        sig = inspect.signature(fn)</span><br><span class="line">        params= sig.parameters<span class="comment">#有序字典 &#123;变量名:参数对象&#125;</span></span><br><span class="line">        values = <span class="built_in">list</span>(params.values())</span><br><span class="line">        <span class="keyword">for</span> i,x <span class="keyword">in</span> <span class="built_in">enumerate</span>(args):<span class="comment">#处理*args接收的参数</span></span><br><span class="line">            <span class="comment">#参数注释不为空且类型不正确才报错</span></span><br><span class="line">            <span class="keyword">if</span> values[i].annotation != inspect._empty <span class="keyword">and</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(x,values[i].annotation):</span><br><span class="line">                <span class="built_in">print</span>(x,<span class="string">&quot;error!&quot;</span>)</span><br><span class="line">                <span class="comment">#raise ValueError(&#x27;Param Error&#x27;)</span></span><br><span class="line">        <span class="keyword">for</span> k,v <span class="keyword">in</span> kwargs.items():<span class="comment">#处理**kwargs接收的参数</span></span><br><span class="line">            <span class="comment">#参数注释不为空且类型不正确才报错</span></span><br><span class="line">            <span class="keyword">if</span> params[k].annotation != params[k].empty <span class="keyword">and</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(v,params[k].annotation):</span><br><span class="line">                <span class="built_in">print</span>(v, <span class="string">&quot;error!&quot;</span>)</span><br><span class="line">                <span class="comment">#raise ValueError(&#x27;Param Error&#x27;)</span></span><br><span class="line">        <span class="keyword">return</span> fn(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure><br />
+&gt;inspect._empty、params[k].empty、inspect.Parameter.empty三者等价；</p>
 
     </div>
 
     
     
     
-      
-  <div class="popular-posts-header">相关文章</div>
-  <ul class="popular-posts">
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2019\01\09\Python\00.Python-pdb\" rel="bookmark">Python-pdb调试器</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2019\01\11\Python\01.Python-基础语法\" rel="bookmark">Python-基础语法</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2019\01\12\Python\02.Python-列表、元组\" rel="bookmark">Python-列表、元组</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2019\01\13\Python\03.Python-字符串\" rel="bookmark">Python-字符串</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2019\01\14\Python\04.Python-集合\" rel="bookmark">Python-集合</a></div>
-    </li>
-  </ul>
-
 
     <footer class="post-footer">
           
@@ -473,7 +386,7 @@
       <a href="https://soundmemories.github.io/2019/01/22/Python/11.Python-%E7%B1%BB%E5%9E%8B%E6%B3%A8%E9%87%8A/" title="Python-类型注解">https://soundmemories.github.io/2019/01/22/Python/11.Python-类型注释/</a>
   </li>
   <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
   </li>
 </ul>
 </div>
@@ -505,147 +418,63 @@
 
 
 
-      
-
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      const commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
-
-    </div>
+</div>
   </main>
 
   <footer class="footer">
     <div class="footer-inner">
-      
 
-      
-
-<div class="copyright">
-  
-  &copy; 2019 – 
-  <span itemprop="copyrightYear">2023</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">SoundMemories</span>
-</div>
-  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">SoundMemories</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
   </div>
 
     </div>
   </footer>
 
   
-  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '.page-configurations',
-    '.main-inner',
-    '.post-toc-wrap',
-    '.languages',
-    '.pjax'
-  ],
-  analytics: false,
-  cacheBust: false,
-  scrollRestoration: false,
-  scrollTo: !CONFIG.bookmark.enable
-});
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
 
-document.addEventListener('pjax:success', () => {
-  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.subMenu)
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  const hasTOC = document.querySelector('.post-toc');
-  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
-  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
-  NexT.utils.updateSidebarPosition();
-});
-</script>
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
 
 
   
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"neutral"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.min.js","integrity":"sha256-JFptYy4KzJ5OQP+Q9fubNf3cxpPPmZKqUOovyEONKrQ="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
 
 
-
-
-  <script src="/js/local-search.js"></script>
-
-
-
-
-
-
-
-
-<script data-pjax>
-document.querySelectorAll('.pdfobject-container').forEach(element => {
-  const url = element.dataset.target;
-  const pdfOpenParams = {
-    navpanes : 0,
-    toolbar  : 0,
-    statusbar: 0,
-    pagemode : 'thumbs',
-    view     : 'FitH'
-  };
-  const pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
-  const fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
-
-  if (NexT.utils.supportsPDFs()) {
-    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
-  } else {
-    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
-  }
-});
-</script>
-
-
-<script data-pjax>
-if (document.querySelectorAll('.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8.8.2/dist/mermaid.min.js', () => {
-    mermaid.init({
-      theme    : 'neutral',
-      logLevel : 3,
-      flowchart: { curve     : 'linear' },
-      gantt    : { axisFormat: '%m/%d/%Y' },
-      sequence : { actorMargin: 50 }
-    }, '.mermaid');
-  }, window.mermaid);
-}
-</script>
-
-
+  <script src="/js/third-party/fancybox.js"></script>
 
 
 
@@ -654,71 +483,15 @@ if (document.querySelectorAll('.mermaid').length) {
 
 
 
-
-
-
-
-    <div class="pjax">
   
 
-  
-      <script>
-  if (typeof MathJax === 'undefined') {
-    window.MathJax = {
-      tex: {
-        inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
-      },
-      options: {
-        renderActions: {
-          findScript: [10, doc => {
-            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-              const display = !!node.type.match(/; *mode=display/);
-              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-              const text = document.createTextNode('');
-              node.parentNode.replaceChild(text, node);
-              math.start = {node: text, delim: '', n: 0};
-              math.end = {node: text, delim: '', n: 0};
-              doc.math.push(math);
-            });
-          }, '', false],
-          insertedScript: [200, () => {
-            document.querySelectorAll('mjx-container').forEach(node => {
-              const target = node.parentNode;
-              if (target.nodeName.toLowerCase() === 'li') {
-                target.parentNode.classList.add('has-jax');
-              }
-            });
-          }, '', false]
-        }
-      }
-    };
-    const script = document.createElement('script');
-    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
-    script.defer = true;
-    document.head.appendChild(script);
-  } else {
-    MathJax.startup.document.state(0);
-    MathJax.typesetClear();
-    MathJax.texReset();
-    MathJax.typeset();
-  }
-</script>
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
 
-    
 
-  
-  <script src="//cdn.jsdelivr.net/npm/quicklink@2.0.0/dist/quicklink.umd.js"></script>
-  <script>
-      window.addEventListener('load', () => {
-      quicklink.listen({
-        timeout : 3000,
-        priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'https://soundmemories.github.io/2019/01/22/Python/11.Python-%E7%B1%BB%E5%9E%8B%E6%B3%A8%E9%87%8A/',]
-      });
-      });
-  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://soundmemories.github.io/2019/01/22/Python/11.Python-%E7%B1%BB%E5%9E%8B%E6%B3%A8%E9%87%8A/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
 
-    </div>
 </body>
 </html>

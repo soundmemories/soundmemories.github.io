@@ -2,10 +2,9 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.2.0">
-
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
@@ -16,25 +15,22 @@
 
 <link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
 
-<script class="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.0.2","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
-  </script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.1","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-  <meta name="description" content="Java语言 Java是一门面向对象编程语言，不仅吸收了 C++ 语言的各种优点，还摒弃了 C++ 里难以理解的多继承、指针等概念，因此Java语言具有功能强大和简单易用两个特征。 主要用于面向对象编程，Java语言适用于JavaEE、大数据开发、Android开发等领域。">
+    <meta name="description" content="Java语言 Java是一门面向对象编程语言，不仅吸收了 C++ 语言的各种优点，还摒弃了 C++ 里难以理解的多继承、指针等概念，因此Java语言具有功能强大和简单易用两个特征。 主要用于面向对象编程，Java语言适用于JavaEE、大数据开发、Android开发等领域。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java语言简介和环境搭建">
 <meta property="og:url" content="https://soundmemories.github.io/2020/01/20/Java/01.Java%E8%AF%AD%E8%A8%80%E7%AE%80%E4%BB%8B%E5%92%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/index.html">
 <meta property="og:site_name" content="SoundMemories">
-<meta property="og:description" content="Java语言 Java是一门面向对象编程语言，不仅吸收了 C++ 语言的各种优点，还摒弃了 C++ 里难以理解的多继承、指针等概念，因此Java语言具有功能强大和简单易用两个特征。 主要用于面向对象编程，Java语言适用于JavaEE、大数据开发、Android开发等领域。">
+<meta property="og:description" content="Java语言 Java是一门面向对象编程语言，不仅吸收了 C++ 语言的各种优点，还摒弃了 C++ 里难以理解的多继承、指针等概念，因此Java语言具有功能强大和简单易用两个特征。 主要用于面向对象编程，Java语言适用于JavaEE、大数据开发、Android开发等领域。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.loli.net/2021/01/13/3POGt6wlITFxfEi.png">
 <meta property="article:published_time" content="2020-01-19T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-01-13T07:37:18.162Z">
+<meta property="article:modified_time" content="2023-05-07T11:47:48.554Z">
 <meta property="article:author" content="SoundMemories">
 <meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
@@ -44,17 +40,11 @@
 <link rel="canonical" href="https://soundmemories.github.io/2020/01/20/Java/01.Java%E8%AF%AD%E8%A8%80%E7%AE%80%E4%BB%8B%E5%92%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
 
 
-<script data-pjax class="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
 
-  <title>Java语言简介和环境搭建 | SoundMemories</title>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://soundmemories.github.io/2020/01/20/Java/01.Java%E8%AF%AD%E8%A8%80%E7%AE%80%E4%BB%8B%E5%92%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/","path":"2020/01/20/Java/01.Java语言简介和环境搭建/","title":"Java语言简介和环境搭建"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Java语言简介和环境搭建 | SoundMemories</title>
   
 
 
@@ -62,51 +52,21 @@
 
 
 
+
+
   <noscript>
-  <style>
-  body { margin-top: 2rem; }
-
-  .use-motion .menu-item,
-  .use-motion .sidebar,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header {
-    visibility: visible;
-  }
-
-  .use-motion .header,
-  .use-motion .site-brand-container .toggle,
-  .use-motion .footer { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle,
-  .use-motion .custom-logo-image {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line {
-    transform: scaleX(1);
-  }
-
-  .search-pop-overlay, .sidebar-nav { display: none; }
-  .sidebar-panel { display: block; }
-  </style>
-</noscript>
-
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
   <div class="headband"></div>
 
   <main class="main">
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
+    <div class="toggle" aria-label="切换导航栏" role="button">
         <span class="toggle-line"></span>
         <span class="toggle-line"></span>
         <span class="toggle-line"></span>
@@ -117,13 +77,13 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title">SoundMemories</h1>
+      <p class="site-title">SoundMemories</p>
       <i class="logo-line"></i>
     </a>
   </div>
 
   <div class="site-nav-right">
-    <div class="toggle popup-trigger">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
         <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
@@ -132,27 +92,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu">
-        <li class="menu-item menu-item-主页">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>主页</a>
-
-  </li>
-        <li class="menu-item menu-item-分类">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
-
-  </li>
-        <li class="menu-item menu-item-标签">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-归档">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">8</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">8</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">122</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -163,8 +103,7 @@
 
 
   <div class="search-pop-overlay">
-    <div class="popup search-popup">
-        <div class="search-header">
+    <div class="popup search-popup"><div class="search-header">
   <span class="search-icon">
     <i class="fa fa-search"></i>
   </span>
@@ -173,7 +112,7 @@
            placeholder="搜索..." spellcheck="false"
            type="search" class="search-input">
   </div>
-  <span class="popup-btn-close">
+  <span class="popup-btn-close" role="button">
     <i class="fa fa-times-circle"></i>
   </span>
 </div>
@@ -186,15 +125,9 @@
     </div>
   </div>
 
-</div>
+</header>
         
   
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-
   <aside class="sidebar">
 
     <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
@@ -206,43 +139,42 @@
           站点概览
         </li>
       </ul>
-	   
-		  
+
       <div class="sidebar-panel-container">
         <!--noindex-->
-        <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java%E8%AF%AD%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">Java语言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java%E5%AD%A6%E4%B9%A0%E6%B5%81%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">Java学习流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java%E6%A6%82%E8%BF%B0"><span class="nav-number">3.</span> <span class="nav-text">Java概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Java%E8%AF%AD%E8%A8%80%E5%8F%91%E5%B1%95%E5%8F%B2"><span class="nav-number">3.1.</span> <span class="nav-text">Java语言发展史</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java%E8%AF%AD%E8%A8%80%E7%89%B9%E5%BE%81"><span class="nav-number">3.2.</span> <span class="nav-text">Java语言特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java%E8%AF%AD%E8%A8%80%E7%89%B9%E7%82%B9"><span class="nav-number">3.3.</span> <span class="nav-text">Java语言特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java%E4%B8%A4%E7%A7%8D%E6%A0%B8%E5%BF%83%E6%9C%BA%E5%88%B6"><span class="nav-number">3.4.</span> <span class="nav-text">Java两种核心机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-number">4.</span> <span class="nav-text">开发环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JRE%E3%80%81JDK%E4%BB%8B%E7%BB%8D"><span class="nav-number">4.1.</span> <span class="nav-text">JRE、JDK介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD%E4%B8%8E%E5%AE%89%E8%A3%85"><span class="nav-number">4.2.</span> <span class="nav-text">下载与安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-number">4.3.</span> <span class="nav-text">环境变量</span></a></li></ol></li></ol></div>
-        </section>
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#java%E8%AF%AD%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">Java语言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#java%E5%AD%A6%E4%B9%A0%E6%B5%81%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">Java学习流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#java%E6%A6%82%E8%BF%B0"><span class="nav-number">3.</span> <span class="nav-text">Java概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#java%E8%AF%AD%E8%A8%80%E5%8F%91%E5%B1%95%E5%8F%B2"><span class="nav-number">3.1.</span> <span class="nav-text">Java语言发展史</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java%E8%AF%AD%E8%A8%80%E7%89%B9%E5%BE%81"><span class="nav-number">3.2.</span> <span class="nav-text">Java语言特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java%E8%AF%AD%E8%A8%80%E7%89%B9%E7%82%B9"><span class="nav-number">3.3.</span> <span class="nav-text">Java语言特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java%E4%B8%A4%E7%A7%8D%E6%A0%B8%E5%BF%83%E6%9C%BA%E5%88%B6"><span class="nav-number">3.4.</span> <span class="nav-text">Java两种核心机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-number">4.</span> <span class="nav-text">开发环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#jrejdk%E4%BB%8B%E7%BB%8D"><span class="nav-number">4.1.</span> <span class="nav-text">JRE、JDK介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD%E4%B8%8E%E5%AE%89%E8%A3%85"><span class="nav-number">4.2.</span> <span class="nav-text">下载与安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-number">4.3.</span> <span class="nav-text">环境变量</span></a></li></ol></li></ol></div>
+        </div>
         <!--/noindex-->
 
-        <section class="site-overview-wrap sidebar-panel">
-          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image" alt="SoundMemories"
-      src="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+      src="/images/avstar.png">
   <p class="site-author-name" itemprop="name">SoundMemories</p>
   <div class="site-description" itemprop="description">今日事，今日毕</div>
 </div>
-<div class="site-state-wrap site-overview-item animated">
+<div class="site-state-wrap animated">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
-          <a href="/archives">
-          <span class="site-state-item-count">120</span>
+        <a href="/archives/">
+          <span class="site-state-item-count">122</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-        <span class="site-state-item-count">9</span>
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-        <span class="site-state-item-count">9</span>
+          <a href="/tags/">
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>
-  <div class="links-of-author site-overview-item animated">
+  <div class="links-of-author animated">
       <span class="links-of-author-item">
         <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NvdW5kbWVtb3JpZXM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;soundmemories"><i class="fab fa-github fa-fw"></i>GitHub</span>
       </span>
@@ -250,37 +182,24 @@
         <span class="exturl" data-url="bWFpbHRvOnNvdW5kbWVtb3JpZXNAMTYzLmNvbQ==" title="E-Mail → mailto:soundmemories@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
       </span>
   </div>
-  <div class="cc-license site-overview-item animated" itemprop="license">
-    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></span>
   </div>
 
-
-
-        </section>
+        </div>
       </div>
     </div>
-  </aside>
-  <div class="sidebar-dimmer"></div>
-
-
-    </header>
 
     
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+        <div class="pjax">
+        </div>
+  </aside>
 
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
 
+    </div>
 
     <div class="main-inner post posts-expand">
-      
 
-      
 
   
 
@@ -293,13 +212,18 @@
     <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/01/20/Java/01.Java%E8%AF%AD%E8%A8%80%E7%AE%80%E4%BB%8B%E5%92%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://i.loli.net/2020/11/04/6JhNuwtBe4adylS.png">
+      <meta itemprop="image" content="/images/avstar.png">
       <meta itemprop="name" content="SoundMemories">
-      <meta itemprop="description" content="今日事，今日毕">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Java语言简介和环境搭建 | SoundMemories">
+      <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -327,21 +251,20 @@
     </span>
 
   
-      </div>
-      <div class="post-meta">
+    <span class="post-meta-break"></span>
     <span class="post-meta-item" title="本文字数">
       <span class="post-meta-item-icon">
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3.3k</span>
+      <span>1.9k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
+      <span>7 分钟</span>
     </span>
 </div>
 
@@ -351,10 +274,14 @@
     
     
     
-    <div class="post-body" itemprop="articleBody">
-        <h2 id="Java语言"><a href="#Java语言" class="headerlink" title="Java语言"></a>Java语言</h2><p> Java是一门面向对象编程语言，不仅吸收了 C++ 语言的各种优点，还摒弃了 C++ 里难以理解的多继承、指针等概念，因此Java语言具有功能强大和简单易用两个特征。</p>
-<p>主要用于面向对象编程，Java语言适用于JavaEE、大数据开发、Android开发等领域。<br><a id="more"></a></p>
-<h2 id="Java学习流程"><a href="#Java学习流程" class="headerlink" title="Java学习流程"></a>Java学习流程</h2><div class="mermaid">
+    <div class="post-body" itemprop="articleBody"><h2 id="java语言">Java语言</h2>
+<p>Java是一门面向对象编程语言，不仅吸收了 C++ 语言的各种优点，还摒弃了
+C++
+里难以理解的多继承、指针等概念，因此Java语言具有功能强大和简单易用两个特征。<br />
+主要用于面向对象编程，Java语言适用于JavaEE、大数据开发、Android开发等领域。<br />
+<span id="more"></span></p>
+<h2 id="java学习流程">Java学习流程</h2>
+<pre class="mermaid">
 graph TD
 A(Java发展历程) --&gt; B(Java环境搭建)
 B --&gt; C(基础程序设计)
@@ -363,113 +290,157 @@ B --&gt; E(应用程序开发)
 B --&gt; F(Java新特性使用)
 B --&gt; Eclipse使用
 B --&gt; IDEA使用
-</div>
-<hr>
-<div class="mermaid">
+</pre>
+<hr />
+<pre class="mermaid">
 graph TD
 A(基础程序设计)
 A --&gt; 关键字 &amp; 数据类型 &amp; 运算符 &amp; 流程控制 &amp; B(数组)
 B --&gt; 排序算法 &amp; 数据结构
-</div>
-<hr>
-<div class="mermaid">
+</pre>
+<hr />
+<pre class="mermaid">
 graph TD
 A(面向对象编程)
 A --&gt; 类&#x2F;对象 &amp; 类的结构 &amp; 三大特性 &amp; 接口 &amp; 设计模式
-</div>
-<hr>
-<div class="mermaid">
+</pre>
+<hr />
+<pre class="mermaid">
 graph TD
 A(应用程序开发)
 A --&gt; B(JDBC) &amp; 集合 &amp; IO&#x2F;NIO &amp; 类库 &amp; 多线程 &amp; 异常处理 &amp; 反射 &amp; 网络
 B --&gt; Oracle&#x2F;MySQL
-</div>
-<hr>
-<div class="mermaid">
+</pre>
+<hr />
+<pre class="mermaid">
 graph TD
 A(Java新特性使用)
 A --&gt; 泛型 &amp; 元注解 &amp; 装箱&#x2F;拆箱 &amp; 枚举 &amp; 可变参数 &amp; Lambda表达式 &amp; B(Stream API) &amp; C(Data&#x2F;Time API)
-</div>
-<h2 id="Java概述"><a href="#Java概述" class="headerlink" title="Java概述"></a>Java概述</h2><h3 id="Java语言发展史"><a href="#Java语言发展史" class="headerlink" title="Java语言发展史"></a>Java语言发展史</h3><p>Java语言诞生于SUN（Stanford University Network）公司，最初命名为Oak（橡树）。<br>研发Java的小组命名为 Green Team ，小组成员有 James Gosling、Bill Joy、Patrick Naughton、Mike Sheridan。<br>最初的目的是跨平台与家电一起使用，直到1994年，小组意识到Oak非常适用于互联网。</p>
-<p>1995年5月23日发布定名为Java。<br>1996年1月，第一个JDK-JDK1.0正式版本诞生。<br>1997年2月18日，JDK1.1发布。<br>1999年6月，SUN公司发布Java的三个版本：标准版（J2SE）、企业版（J2EE）和微型版（J2ME）。<br>2009年4月20日，Oracle公司以现金收购Sun微系统公司，交易价格达74亿美元，其主要目标是MySQL。<br>2014年3月18日，Oracle公司发表Java SE 8(LTS)。一共有10大新特性，包括Lambda表达式、Stream API、Data/Time API、函数接口、默认方法和静态方法等。<br>2017年9月21日，Oracle公司发表Java SE 9，尝试把JavaSE、JavaEE、JavaME合起来，用模块的方式进行区分。<br>2018年3月21日，Oracle公司发表Java SE 10。<br>2018年9月25日，Oracle公司发表Java SE 11 (LTS)。<br>2019年3月17日，Oracle公司发表Java SE 12。</p>
+</pre>
+<h2 id="java概述">Java概述</h2>
+<h3 id="java语言发展史">Java语言发展史</h3>
+<p>Java语言诞生于SUN（Stanford University
+Network）公司，最初命名为Oak（橡树）。<br />
+研发Java的小组命名为 Green Team ，小组成员有 James Gosling、Bill
+Joy、Patrick Naughton、Mike Sheridan。<br />
+最初的目的是跨平台与家电一起使用，直到1994年，小组意识到Oak非常适用于互联网。</p>
+<p>1995年5月23日发布定名为Java。<br />
+1996年1月，第一个JDK-JDK1.0正式版本诞生。<br />
+1997年2月18日，JDK1.1发布。<br />
+1999年6月，SUN公司发布Java的三个版本：标准版（J2SE）、企业版（J2EE）和微型版（J2ME）。<br />
+2009年4月20日，Oracle公司以现金收购Sun微系统公司，交易价格达74亿美元，其主要目标是MySQL。<br />
+2014年3月18日，Oracle公司发表Java SE
+8(LTS)。一共有10大新特性，包括Lambda表达式、Stream API、Data/Time
+API、函数接口、默认方法和静态方法等。<br />
+2017年9月21日，Oracle公司发表Java SE
+9，尝试把JavaSE、JavaEE、JavaME合起来，用模块的方式进行区分。<br />
+2018年3月21日，Oracle公司发表Java SE 10。<br />
+2018年9月25日，Oracle公司发表Java SE 11 (LTS)。<br />
+2019年3月17日，Oracle公司发表Java SE 12。</p>
 <p>目前大多数公司使用Java SE 8。</p>
-<h3 id="Java语言特征"><a href="#Java语言特征" class="headerlink" title="Java语言特征"></a>Java语言特征</h3><ul>
-<li><strong>Java语言是强制<mark class="label success">面向对象</mark>的。</strong> Java语言提供类、接口、继承等原语，为简单起见，只支持类之间的单继承，但支持接口之间的多继承、并支持类与接口之间的实现机制（关键字为implements）。</li>
-<li><strong>Java语言是分布式的。</strong> Java语言支持Internet应用的开发，在基本的Java应用编程接口中有一个网络应用接口（java net），它提供了用于网络应用编程的类库，包括URL、URLConnection、Socket、ServerSocket等。Java的RMI（远程方法激活）机制也是开发分布式应用的重要手段。</li>
-<li><strong>Java语言是健壮的。</strong> Java的<mark class="label success">强类型</mark>机制、异常处理、垃圾的自动收集等是Java程序健壮性的重要保证。对指针的丢弃是Java的明智选择。</li>
-<li><strong>Java语言是安全的。</strong> Java通常被用在网络环境中，为此Java提供了一个安全机制以防止恶意代码的攻击。如：安全防范机制（类ClassLoader），如分配不同的名空间以防替代本地的同名类、字节代码检查。</li>
-<li><strong>Java语言是解释型的、体系结构中立的。</strong> Java程序（.java的文件）在Java平台上被编译为体系结构中立的字节码格式（<mark class="label success">.class的文件</mark>），然后可以在实现这个Java平台的任何系统中运行。</li>
-<li><strong>Java语言是原生支持多线程的。</strong> Java语言中，线程是一种特殊的对象，它必须由Thread类或其子（孙）类来创建。  </li>
+<h3 id="java语言特征">Java语言特征</h3>
+<ul>
+<li><strong>Java语言是强制<mark class="label success">面向对象</mark>的。</strong>
+Java语言提供类、接口、继承等原语，为简单起见，只支持类之间的单继承，但支持接口之间的多继承、并支持类与接口之间的实现机制（关键字为implements）。</li>
+<li><strong>Java语言是分布式的。</strong>
+Java语言支持Internet应用的开发，在基本的Java应用编程接口中有一个网络应用接口（java
+net），它提供了用于网络应用编程的类库，包括URL、URLConnection、Socket、ServerSocket等。Java的RMI（远程方法激活）机制也是开发分布式应用的重要手段。</li>
+<li><strong>Java语言是健壮的。</strong>
+Java的<mark class="label success">强类型</mark>机制、异常处理、垃圾的自动收集等是Java程序健壮性的重要保证。对指针的丢弃是Java的明智选择。</li>
+<li><strong>Java语言是安全的。</strong>
+Java通常被用在网络环境中，为此Java提供了一个安全机制以防止恶意代码的攻击。如：安全防范机制（类ClassLoader），如分配不同的名空间以防替代本地的同名类、字节代码检查。</li>
+<li><strong>Java语言是解释型的、体系结构中立的。</strong>
+Java程序（.java的文件）在Java平台上被编译为体系结构中立的字节码格式（<mark class="label success">.class的文件</mark>），然后可以在实现这个Java平台的任何系统中运行。</li>
+<li><strong>Java语言是原生支持多线程的。</strong>
+Java语言中，线程是一种特殊的对象，它必须由Thread类或其子（孙）类来创建。</li>
 </ul>
-<h3 id="Java语言特点"><a href="#Java语言特点" class="headerlink" title="Java语言特点"></a>Java语言特点</h3><ul>
-<li>特点一：面向对象<ul>
+<h3 id="java语言特点">Java语言特点</h3>
+<ul>
+<li>特点一：面向对象
+<ul>
 <li>两个基本概念：类、对象。</li>
 <li>三大特性：封装、继承、多态。</li>
-</ul>
-</li>
-<li>特点二：健壮性<ul>
-<li>吸收了 C/C++ 语言的优点，但去掉了影响程序健壮性的部分（如指针、内存的申请与释放等），提供了一个相对安全的内存管理和访问机制。</li>
-</ul>
-</li>
-<li>特点三：跨平台<ul>
+</ul></li>
+<li>特点二：健壮性
+<ul>
+<li>吸收了 C/C++
+语言的优点，但去掉了影响程序健壮性的部分（如指针、内存的申请与释放等），提供了一个相对安全的内存管理和访问机制。</li>
+</ul></li>
+<li>特点三：跨平台
+<ul>
 <li>Java语言编写的应用程序在不同的系统平台上都可以运行，只要在需要运行Java应用程序的操作系统上，先安装一个Java虚拟机（JVM）即可，由JVM来负责Java程序在该系统中的运行。</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h3 id="Java两种核心机制"><a href="#Java两种核心机制" class="headerlink" title="Java两种核心机制"></a>Java两种核心机制</h3><ul>
-<li>Java虚拟机（Java Virtal Machine）<ul>
+<h3 id="java两种核心机制">Java两种核心机制</h3>
+<ul>
+<li>Java虚拟机（Java Virtal Machine）
+<ul>
 <li>JVM是一个虚拟计算机，具有指令集并使用不同的存储区域。负责执行指令，管理数据、内存、寄存器。对于不同的平台，有不同的虚拟机。</li>
 <li>Java虚拟机机制屏蔽了底层运行平台的差别。</li>
-</ul>
-</li>
-<li>垃圾回收机制（Garbage Collection）<ul>
-<li>不再使用的内存空间应回收。在 C/C++ 语言中，由程序员负责回收无用内存，而Java提供一种系统级线程跟踪存储空间分配情况，并在JVM空闲时，检查并释放那些可被释放的存储空间。</li>
+</ul></li>
+<li>垃圾回收机制（Garbage Collection）
+<ul>
+<li>不再使用的内存空间应回收。在 C/C++
+语言中，由程序员负责回收无用内存，而Java提供一种系统级线程跟踪存储空间分配情况，并在JVM空闲时，检查并释放那些可被释放的存储空间。</li>
 <li>垃圾回收在Java程序运行中自动进行，有其自己的一套算法，程序员无法精确控制和干预。</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h2 id="开发环境搭建"><a href="#开发环境搭建" class="headerlink" title="开发环境搭建"></a>开发环境搭建</h2><h3 id="JRE、JDK介绍"><a href="#JRE、JDK介绍" class="headerlink" title="JRE、JDK介绍"></a>JRE、JDK介绍</h3><ul>
-<li>JRE（Java Runtime Environment）Java运行环境<ul>
+<h2 id="开发环境搭建">开发环境搭建</h2>
+<h3 id="jrejdk介绍">JRE、JDK介绍</h3>
+<ul>
+<li>JRE（Java Runtime Environment）Java运行环境
+<ul>
 <li>包括Java虚拟机（JVM）和Java程序所需的核心类库等，如果想运行一个开发好的Java程序，计算机中只需要安装JRE即可。</li>
 <li>JRE = JVM + JavaSE标准类库。</li>
-</ul>
-</li>
-<li>JDK（Java Development Kit）Java开发工具包<ul>
-<li>JDK是提供给Java开发人员使用的，其中包含了Java的开发工具，也包括了JRE。所以安装了JDK，就不用单独安装JRE了。Java开发工具：编译工具（java.exe）+ 打包工具（jar.exe）等。</li>
+</ul></li>
+<li>JDK（Java Development Kit）Java开发工具包
+<ul>
+<li>JDK是提供给Java开发人员使用的，其中包含了Java的开发工具，也包括了JRE。所以安装了JDK，就不用单独安装JRE了。Java开发工具：编译工具（java.exe）+
+打包工具（jar.exe）等。</li>
 <li>简言之，使用JDK的开发工具完成的Java程序，交给JRE去运行。</li>
 <li>JDK = JRE + 开发工具集（如javac编译工具等）</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<p><img src="https://i.loli.net/2021/01/13/3POGt6wlITFxfEi.png" alt="Description of Java Conceptual Diagram .png"></p>
-<h3 id="下载与安装"><a href="#下载与安装" class="headerlink" title="下载与安装"></a>下载与安装</h3><ul>
-<li>下载：进入<span class="exturl" data-url="aHR0cHM6Ly93d3cub3JhY2xlLmNvbS9pbmRleC5odG1s">Oracle官网<i class="fa fa-external-link-alt"></i></span>-&gt; Products -&gt; Software -&gt; Java -&gt; 页面右侧Download Java -&gt; Java SE 8 -&gt; Oracle JDK -&gt; JDK Download -&gt; 选择适合自己的下载即可。</li>
-<li>安装：安装目录不要有中文，然后一直next。<ul>
-<li>安装可选项中<span id="inline-purple">开发工具</span>和<span id="inline-purple">公共JRE</span>都会安装一个JRE，不想多安装一个JRE可以取消<span id="inline-purple">公共JRE</span>的安装。</li>
+<figure>
+<img src="https://i.loli.net/2021/01/13/3POGt6wlITFxfEi.png"
+alt="Description of Java Conceptual Diagram .png" />
+<figcaption aria-hidden="true">Description of Java Conceptual Diagram
+.png</figcaption>
+</figure>
+<h3 id="下载与安装">下载与安装</h3>
+<ul>
+<li>下载：进入<span class="exturl" data-url="aHR0cHM6Ly93d3cub3JhY2xlLmNvbS9pbmRleC5odG1s">Oracle官网<i class="fa fa-external-link-alt"></i></span>-&gt; Products
+-&gt; Software -&gt; Java -&gt; 页面右侧Download Java -&gt; Java SE 8
+-&gt; Oracle JDK -&gt; JDK Download -&gt; 选择适合自己的下载即可。</li>
+<li>安装：安装目录不要有中文，然后一直next。
+<ul>
+<li>安装可选项中<span id="inline-purple">开发工具</span>和<span
+id="inline-purple">公共JRE</span>都会安装一个JRE，不想多安装一个JRE可以取消<span
+id="inline-purple">公共JRE</span>的安装。</li>
 <li>建议每一个软件的安装建立自己的目录，方便记住安装的位置，避免环境冲突何和覆盖。</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h3 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h3><ul>
-<li>为什么配置环境变量？<ul>
+<h3 id="环境变量">环境变量</h3>
+<ul>
+<li>为什么配置环境变量？
+<ul>
 <li>Windows等操作系统，默认是在当前路径下找“命令“等工具的。如果希望它在指定的目录下去查找，就需要在path这个环境变量中，把目录添加上去。</li>
 <li>Windows等操作系统，除了在当前目录下查找，还会去path环境变量指定的目录下查找。</li>
-</ul>
-</li>
-<li>Windows的path在哪？<ul>
+</ul></li>
+<li>Windows的path在哪？
+<ul>
 <li>计算机-&gt;右键-&gt;属性-&gt;高级系统设置-&gt;高级-&gt;环境变量。</li>
-</ul>
-</li>
-<li>用户环境变量和系统环境变量区别？<ul>
+</ul></li>
+<li>用户环境变量和系统环境变量区别？
+<ul>
 <li>用户环境变量：只针对当前操作系统登陆的用户。</li>
 <li>系统环境变量：针对所有用户。</li>
-</ul>
-</li>
-<li>如何添加环境变量？<ul>
-<li>在系统环境变量中选择Path，在里面新建一条，把软件安装目录添加进去，如E:\Java.…\bin。</li>
-<li>Windows7对path添加时尾部加上 ; ，如E:\Java.…\bin;。</li>
-</ul>
-</li>
+</ul></li>
+<li>如何添加环境变量？
+<ul>
+<li>在系统环境变量中选择Path，在里面新建一条，把软件安装目录添加进去，如E:....。</li>
+<li>Windows7对path添加时尾部加上 ; ，如E:....;。</li>
+</ul></li>
 </ul>
 
     </div>
@@ -477,26 +448,6 @@ A --&gt; 泛型 &amp; 元注解 &amp; 装箱&#x2F;拆箱 &amp; 枚举 &amp; 可�
     
     
     
-      
-  <div class="popular-posts-header">相关文章</div>
-  <ul class="popular-posts">
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\01\21\Java\02.第一个Java程序\" rel="bookmark">第一个Java程序</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\01\23\Java\04.Java数据类型、进制和补码\" rel="bookmark">Java数据类型、进制和补码</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\01\22\Java\03.Java标识符和变量\" rel="bookmark">Java标识符和变量</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\01\24\Java\05.Java类型转换\" rel="bookmark">Java类型转换</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\01\25\Java\06.Java算术运算符\" rel="bookmark">Java算术运算符</a></div>
-    </li>
-  </ul>
-
 
     <footer class="post-footer">
           
@@ -511,7 +462,7 @@ A --&gt; 泛型 &amp; 元注解 &amp; 装箱&#x2F;拆箱 &amp; 枚举 &amp; 可�
       <a href="https://soundmemories.github.io/2020/01/20/Java/01.Java%E8%AF%AD%E8%A8%80%E7%AE%80%E4%BB%8B%E5%92%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" title="Java语言简介和环境搭建">https://soundmemories.github.io/2020/01/20/Java/01.Java语言简介和环境搭建/</a>
   </li>
   <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
   </li>
 </ul>
 </div>
@@ -543,147 +494,63 @@ A --&gt; 泛型 &amp; 元注解 &amp; 装箱&#x2F;拆箱 &amp; 枚举 &amp; 可�
 
 
 
-      
-
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      const commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
-
-    </div>
+</div>
   </main>
 
   <footer class="footer">
     <div class="footer-inner">
-      
 
-      
-
-<div class="copyright">
-  
-  &copy; 2019 – 
-  <span itemprop="copyrightYear">2023</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">SoundMemories</span>
-</div>
-  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">SoundMemories</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
   </div>
 
     </div>
   </footer>
 
   
-  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '.page-configurations',
-    '.main-inner',
-    '.post-toc-wrap',
-    '.languages',
-    '.pjax'
-  ],
-  analytics: false,
-  cacheBust: false,
-  scrollRestoration: false,
-  scrollTo: !CONFIG.bookmark.enable
-});
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
 
-document.addEventListener('pjax:success', () => {
-  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.subMenu)
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  const hasTOC = document.querySelector('.post-toc');
-  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
-  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
-  NexT.utils.updateSidebarPosition();
-});
-</script>
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
 
 
   
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"neutral"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.min.js","integrity":"sha256-JFptYy4KzJ5OQP+Q9fubNf3cxpPPmZKqUOovyEONKrQ="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
 
 
-
-
-  <script src="/js/local-search.js"></script>
-
-
-
-
-
-
-
-
-<script data-pjax>
-document.querySelectorAll('.pdfobject-container').forEach(element => {
-  const url = element.dataset.target;
-  const pdfOpenParams = {
-    navpanes : 0,
-    toolbar  : 0,
-    statusbar: 0,
-    pagemode : 'thumbs',
-    view     : 'FitH'
-  };
-  const pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
-  const fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
-
-  if (NexT.utils.supportsPDFs()) {
-    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
-  } else {
-    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
-  }
-});
-</script>
-
-
-<script data-pjax>
-if (document.querySelectorAll('.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8.8.2/dist/mermaid.min.js', () => {
-    mermaid.init({
-      theme    : 'neutral',
-      logLevel : 3,
-      flowchart: { curve     : 'linear' },
-      gantt    : { axisFormat: '%m/%d/%Y' },
-      sequence : { actorMargin: 50 }
-    }, '.mermaid');
-  }, window.mermaid);
-}
-</script>
-
-
+  <script src="/js/third-party/fancybox.js"></script>
 
 
 
@@ -692,71 +559,15 @@ if (document.querySelectorAll('.mermaid').length) {
 
 
 
-
-
-
-
-    <div class="pjax">
   
 
-  
-      <script>
-  if (typeof MathJax === 'undefined') {
-    window.MathJax = {
-      tex: {
-        inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
-      },
-      options: {
-        renderActions: {
-          findScript: [10, doc => {
-            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-              const display = !!node.type.match(/; *mode=display/);
-              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-              const text = document.createTextNode('');
-              node.parentNode.replaceChild(text, node);
-              math.start = {node: text, delim: '', n: 0};
-              math.end = {node: text, delim: '', n: 0};
-              doc.math.push(math);
-            });
-          }, '', false],
-          insertedScript: [200, () => {
-            document.querySelectorAll('mjx-container').forEach(node => {
-              const target = node.parentNode;
-              if (target.nodeName.toLowerCase() === 'li') {
-                target.parentNode.classList.add('has-jax');
-              }
-            });
-          }, '', false]
-        }
-      }
-    };
-    const script = document.createElement('script');
-    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
-    script.defer = true;
-    document.head.appendChild(script);
-  } else {
-    MathJax.startup.document.state(0);
-    MathJax.typesetClear();
-    MathJax.texReset();
-    MathJax.typeset();
-  }
-</script>
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
 
-    
 
-  
-  <script src="//cdn.jsdelivr.net/npm/quicklink@2.0.0/dist/quicklink.umd.js"></script>
-  <script>
-      window.addEventListener('load', () => {
-      quicklink.listen({
-        timeout : 3000,
-        priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'https://soundmemories.github.io/2020/01/20/Java/01.Java%E8%AF%AD%E8%A8%80%E7%AE%80%E4%BB%8B%E5%92%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/',]
-      });
-      });
-  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://soundmemories.github.io/2020/01/20/Java/01.Java%E8%AF%AD%E8%A8%80%E7%AE%80%E4%BB%8B%E5%92%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
 
-    </div>
 </body>
 </html>
