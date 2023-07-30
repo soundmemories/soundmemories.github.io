@@ -87,7 +87,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">8</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">8</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">122</span></a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">9</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">124</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -152,18 +152,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">122</span>
+          <span class="site-state-item-count">124</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -202,7 +202,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/11/Machine%20Learning/33.BayesianLR/">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/13/ML/35.RBM/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avstar.png">
@@ -220,7 +220,393 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/10/11/Machine%20Learning/33.BayesianLR/" class="post-title-link" itemprop="url">BayesianLR</a>
+          <a href="/2020/10/13/ML/35.RBM/" class="post-title-link" itemprop="url">RBM</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-13 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-13T00:00:00+08:00">2020-10-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="受限玻尔兹曼机">受限玻尔兹曼机</h1>
+<p>玻尔兹曼机是一种存在隐节点的无向图模型。在图模型中最简单的是朴素贝叶斯模型（朴素贝叶斯假设），引入单个隐变量后，发展出了
+GMM，如果单个隐变量变成序列的隐变量，就得到了状态空间模型（引入齐次马尔可夫假设和观测独立假设就有HMM，Kalman
+Filter，Particle
+Filter），为了引入观测变量之间的关联，引入了一种最大熵模型-MEMM，为了克服
+MEMM 中的局域问题，又引入了 CRF，CRF
+是一个无向图，其中，破坏了齐次马尔可夫假设，如果隐变量是一个链式结构，那么又叫线性链
+CRF。</p>
+<p>在无向图的基础上，引入隐变量得到了玻尔兹曼机，这个图模型的概率密度函数是一个指数族分布。对隐变量和观测变量作出一定的限制，就得到了受限玻尔兹曼机（RBM）。</p>
+<p>我们看到，不同的概率图模型对下面几个特点作出假设：</p>
+<ol type="1">
+<li>方向-边的性质</li>
+<li>离散/连续/混合-点的性质</li>
+<li>条件独立性-边的性质</li>
+<li>隐变量-节点的性质</li>
+<li>指数族-结构特点</li>
+</ol>
+<p>将观测变量和隐变量分别记为 <span
+class="math inline">\(v,h,h=\{h_1,\cdots,h_m\},v=\{v_1,\cdots,v_n\}\)</span>。我们知道，无向图根据最大团的分解，可以写为玻尔兹曼分布的形式
+<span
+class="math inline">\(p(x)=\frac{1}{Z}\prod\limits_{i=1}^K\psi_i(x_{ci})=\frac{1}{Z}\exp(-\sum\limits_{i=1}^KE(x_{ci}))\)</span>，这也是一个指数族分布。</p>
+<p>一个玻尔兹曼机存在一系列的问题，在其推断任务中，想要精确推断，是无法进行的，想要近似推断，计算量过大。为了解决这个问题，一种简化的玻尔兹曼机-受限玻尔兹曼机作出了假设，所有隐变量内部以及观测变量内部没有连接，只在隐变量和观测变量之间有连接，这样一来：<br />
+<span class="math display">\[
+p(x)=p(h,v)=\frac{1}{Z}\exp(-E(v,h))
+\]</span><br />
+其中能量函数 <span class="math inline">\(E(v,h)\)</span>
+可以写出三个部分，包括与节点集合相关的两项以及与边 <span
+class="math inline">\(w\)</span> 相关的一项，记为：<br />
+<span class="math display">\[
+E(v,h)=-(h^Twv+\alpha^T v+\beta^T h)
+\]</span><br />
+所以：<br />
+<span class="math display">\[
+p(x)=\frac{1}{Z}\exp(h^Twv)\exp(\alpha^T v)\exp(\beta^T
+h)=\frac{1}{Z}\prod_{i=1}^m\prod_{j=1}^n\exp(h_iw_{ij}v_j)\prod_{j=1}^n\exp(\alpha_jv_j)\prod_{i=1}^m\exp(\beta_ih_i)
+\]</span><br />
+上面这个式子也和 RBM 的因子图一一对应。</p>
+<h2 id="推断">推断</h2>
+<p>推断任务包括求后验概率 $ p(v|h),p(h|v)$ 以及求边缘概率 <span
+class="math inline">\(p(v)\)</span>。</p>
+<h3 id="phv"><span class="math inline">\(p(h|v)\)</span></h3>
+<p>对于一个无向图，满足局域的 Markov 性质，即 <span
+class="math inline">\(p(h_1|h-\{h_1\},v)=p(h_1|Neighbour(h_1))=p(h_1|v)\)</span>。我们可以得到：<br />
+<span class="math display">\[
+p(h|v)=\prod_{i=1}^mp(h_i|v)
+\]</span><br />
+考虑 Binary RBM，所有的隐变量只有两个取值 <span
+class="math inline">\(0,1\)</span>：<br />
+<span class="math display">\[
+p(h_l=1|v)=\frac{p(h_l=1,h_{-l},v)}{p(h_{-l},v)}=\frac{p(h_l=1,h_{-l},v)}{p(h_l=1,h_{-l},v)+p(h_l=0,h_{-l},v)}
+\]</span><br />
+将能量函数写成和 <span class="math inline">\(l\)</span>
+相关或不相关的两项：<br />
+<span class="math display">\[
+E(v,h)=-(\sum\limits_{i=1,i\ne
+l}^m\sum\limits_{j=1}^nh_iw_{ij}v_j+h_l\sum\limits_{j=1}^nw_{lj}v_j+\sum\limits_{j=1}^n\alpha_j
+v_j+\sum\limits_{i=1,i\ne l}^m\beta_ih_i+\beta_lh_l)
+\]</span><br />
+定义：<span
+class="math inline">\(h_lH_l(v)=h_l\sum\limits_{j=1}^nw_{lj}v_j+\beta_lh_l,\overline{H}(h_{-l},v)=\sum\limits_{i=1,i\ne
+l}^m\sum\limits_{j=1}^nh_iw_{ij}v_j+\sum\limits_{j=1}^n\alpha_j
+v_j+\sum\limits_{i=1,i\ne l}^m\beta_ih_i\)</span>。</p>
+<p>代入，有：<br />
+<span class="math display">\[
+p(h_l=1|v)=\frac{\exp(H_l(v)+\overline{H}(h_{-l},v))}{\exp(H_l(v)+\overline{H}(h_{-l},v))+\exp(\overline{H}(h_{-l},v))}=\frac{1}{1+\exp(-H_l(v))}=\sigma(H_l(v))
+\]</span><br />
+于是就得到了后验概率。对于 <span class="math inline">\(v\)</span>
+的后验是对称的，所以类似的可以求解。</p>
+<h3 id="pv"><span class="math inline">\(p(v)\)</span></h3>
+<p><span class="math display">\[
+\begin{align}p(v)&amp;=\sum\limits_hp(h,v)=\sum\limits_h\frac{1}{Z}\exp(h^Twv+\alpha^Tv+\beta^Th)\nonumber\\
+&amp;=\exp(\alpha^Tv)\frac{1}{Z}\sum\limits_{h_1}\exp(h_1w_1v+\beta_1h_1)\cdots\sum\limits_{h_m}\exp(h_mw_mv+\beta_mh_m)\nonumber\\
+&amp;=\exp(\alpha^Tv)\frac{1}{Z}(1+\exp(w_1v+\beta_1))\cdots(1+\exp(w_mv+\beta_m))\nonumber\\
+&amp;=\frac{1}{Z}\exp(\alpha^Tv+\sum\limits_{i=1}^m\log(1+\exp(w_iv+\beta_i)))
+\end{align}
+\]</span></p>
+<p>其中，<span class="math inline">\(\log(1+\exp(x))\)</span> 叫做
+Softplus 函数。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/12/ML/34.GaussianProcess/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/10/12/ML/34.GaussianProcess/" class="post-title-link" itemprop="url">GaussianProcess</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-12 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-12T00:00:00+08:00">2020-10-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="高斯过程回归">高斯过程回归</h1>
+<p>将一维高斯分布推广到多变量中就得到了高斯网络，将多变量推广到无限维，就得到了高斯过程，高斯过程是定义在连续域（时间空间）上的无限多个高维随机变量所组成的随机过程。</p>
+<p>在时间轴上的任意一个点都满足高斯分布吗，将这些点的集合叫做高斯过程的一个样本。</p>
+<blockquote>
+<p>对于时间轴上的序列 <span class="math inline">\(\xi_t\)</span>，如果
+<span class="math inline">\(\forall n\in N^+，t_i\in T\)</span>，有
+<span class="math inline">\(\xi_{t_1-t_n}\sim
+\mathcal{N}(\mu_{t_1-t_n},\Sigma_{t_1-t_n})\)</span>， 那么 <span
+class="math inline">\(\{\xi_t\}_{t\in T}\)</span> 是一个高斯过程。</p>
+<p>高斯过程有两个参数（高斯过程存在性定理），均值函数 <span
+class="math inline">\(m(t)=\mathbb{E}[\xi_t]\)</span> 和协方差函数 <span
+class="math inline">\(k(s,t)=\mathbb{E}[(\xi_s-\mathbb{E}[\xi_s])(\xi_t-\mathbb{E}[\xi_t])]\)</span>。</p>
+</blockquote>
+<p>我们将贝叶斯线性回归添加核技巧的这个模型叫做高斯过程回归，高斯过程回归分为两种视角：</p>
+<ol type="1">
+<li>权空间的视角-核贝叶斯线性回归，相当于 <span
+class="math inline">\(x\)</span> 为 <span
+class="math inline">\(t\)</span>，在每个时刻的高斯分布来源于权重，根据上面的推导，预测的函数依然是高斯分布。</li>
+<li>函数空间的视角-高斯分布通过函数 <span
+class="math inline">\(f(x)\)</span> 来体现。</li>
+</ol>
+<h2 id="核贝叶斯线性回归">核贝叶斯线性回归</h2>
+<p>贝叶斯线性回归可以通过加入核函数的方法来解决非线性函数的问题，将
+<span class="math inline">\(f(x)=x^Tw\)</span> 这个函数变为 <span
+class="math inline">\(f(x)=\phi(x)^Tw\)</span>（当然这个时候，$ _p$
+也要变为更高维度的），变换到更高维的空间，有：<br />
+<span class="math display">\[
+\begin{align}f(x^*)\sim
+\mathcal{N}(\phi(x^*)^{T}\sigma^{-2}A^{-1}\Phi^TY,\phi(x^*)^{T}A^{-1}\phi(x^*))\\
+A=\sigma^{-2}\Phi^T\Phi+\Sigma_p^{-1}
+\end{align}
+\]</span><br />
+其中，<span
+class="math inline">\(\Phi=(\phi(x_1),\phi(x_2),\cdots,\phi(x_N))^T\)</span>。</p>
+<p>为了求解 <span class="math inline">\(A^{-1}\)</span>，可以利用
+Woodbury Formula，<span
+class="math inline">\(A=\Sigma_p^{-1},C=\sigma^{-2}\mathbb{I}\)</span>：<br />
+<span class="math display">\[
+(A+UCV)^{-1}=A^{-1}-A^{-1}U(C^{-1}+VA^{-1}U)^{-1}VA^{-1}
+\]</span><br />
+所以 <span
+class="math inline">\(A^{-1}=\Sigma_p-\Sigma_p\Phi^T(\sigma^2\mathbb{I}+\Phi\Sigma_p\Phi^T)^{-1}\Phi\Sigma_p\)</span></p>
+<p>也可以用另一种方法：<br />
+<span class="math display">\[
+\begin{align}
+A&amp;=\sigma^{-2}\Phi^T\Phi+\Sigma_p^{-1}\nonumber\\
+\Leftrightarrow
+A\Sigma_p&amp;=\sigma^{-2}\Phi^T\Phi\Sigma_p+\mathbb{I}\nonumber\\
+\Leftrightarrow
+A\Sigma_p\Phi^T&amp;=\sigma^{-2}\Phi^T\Phi\Sigma_p\Phi^T+\Phi^T=\sigma^{-2}\Phi^T(k+\sigma^2\mathbb{I})\nonumber\\
+\Leftrightarrow
+\Sigma_p\Phi^T&amp;=\sigma^{-2}A^{-1}\Phi^T(k+\sigma^2\mathbb{I})\nonumber\\
+\Leftrightarrow
+\sigma^{-2}A^{-1}\Phi^T&amp;=\Sigma_p\Phi^T(k+\sigma^2\mathbb{I})^{-1}\nonumber\\
+\Leftrightarrow
+\phi(x^*)^T\sigma^{-2}A^{-1}\Phi^T&amp;=\phi(x^*)^T\Sigma_p\Phi^T(k+\sigma^2\mathbb{I})^{-1}
+\end{align}
+\]</span><br />
+上面的左边的式子就是变换后的均值，而右边的式子就是不含 <span
+class="math inline">\(A^{-1}\)</span> 的式子，其中 <span
+class="math inline">\(k=\Phi\Sigma_p\Phi^T\)</span>。</p>
+<p>根据 <span class="math inline">\(A^{-1}\)</span> 得到方差为：<br />
+<span class="math display">\[
+\phi(x^*)^T\Sigma_p\phi(x^*)-\phi(x^*)^T\Sigma_p\Phi^T(\sigma^2\mathbb{I}+k)^{-1}\Phi\Sigma_p\phi(x^*)
+\]</span><br />
+上面定义了：<br />
+<span class="math display">\[
+k=\Phi\Sigma_p\Phi^T
+\]</span><br />
+我们看到，在均值和方差中，含有下面四项：<br />
+<span class="math display">\[
+\phi(x^*)^T\Sigma_p\Phi^T,\phi(x^*)^T\Sigma_p\phi(x^*),\phi(x^*)^T\Sigma_p\Phi^T,\Phi\Sigma_p\phi(x^*)
+\]</span><br />
+展开后，可以看到，有共同的项：<span
+class="math inline">\(k(x,x&#39;)=\phi(x)^T\Sigma_p\phi(x‘)\)</span>。由于
+<span class="math inline">\(\Sigma_p\)</span>
+是正定对称的方差矩阵，所以，这是一个核函数。</p>
+<p>对于高斯过程中的协方差：<br />
+<span class="math display">\[
+k(t,s)=Cov[f(x),f(x&#39;)]=\mathbb{E}[\phi(x)^Tww^T\phi(x&#39;)]=\phi(x)^T\mathbb{E}[ww^T]\phi(x&#39;)=\phi(x)^T\Sigma_p\phi(x&#39;)
+\]</span><br />
+我们可以看到，这个就对应着上面的核函数。因此我们看到 <span
+class="math inline">\(\{f(x)\}\)</span> 组成的组合就是一个高斯过程。</p>
+<h2 id="函数空间的观点">函数空间的观点</h2>
+<p>相比权重空间，我们也可以直接关注 <span
+class="math inline">\(f\)</span>
+这个空间，对于预测任务，这就是类似于求：<br />
+<span class="math display">\[
+p(y^*|X,Y,x^*)=\int_fp(y^*|f,X,Y,x^*)p(f|X,Y,x^*)df
+\]</span><br />
+对于数据集来说，取 <span
+class="math inline">\(f(X)\sim\mathcal{N}(\mu(X),k(X,X)),Y=f(X)+\varepsilon\sim\mathcal{N}(\mu(X),k(X,X)+\sigma^2\mathbb{I})\)</span>。预测任务的目的是给定一个新数据序列
+<span
+class="math inline">\(X^\ast=(x_1^\ast,\cdots,x_M^\ast)^T\)</span>，得到
+<span
+class="math inline">\(Y^\ast=f(X^\ast)+\varepsilon\)</span>。我们可以写出：<br />
+<span class="math display">\[
+\begin{pmatrix}Y\\f(X^*)\end{pmatrix}\sim\mathcal{N}\left(\begin{pmatrix}\mu(X)\\\mu(X^*)\end{pmatrix},\begin{pmatrix}k(X,X)+\sigma^2\mathbb{I}&amp;k(X,X^*)\\k(X^*,X)&amp;k(X^*,X^*)\end{pmatrix}\right)
+\]</span><br />
+根据高斯分布的方法：<br />
+<span class="math display">\[
+\begin{align}x=\begin{pmatrix}x_a\\x_b\end{pmatrix}\sim\mathcal{N}\left(\begin{pmatrix}\mu_a\\\mu_b\end{pmatrix},\begin{pmatrix}\Sigma_{aa}&amp;\Sigma_{ab}\\\Sigma_{ba}&amp;\Sigma_{bb}\end{pmatrix}\right)\\
+x_b|x_a\sim\mathcal{N}(\mu_{b|a},\Sigma_{b|a})\\
+\mu_{b|a}=\Sigma_{ba}\Sigma_{aa}^{-1}(x_a-\mu_a)+\mu_b\\
+\Sigma_{b|a}=\Sigma_{bb}-\Sigma_{ba}\Sigma_{aa}^{-1}\Sigma_{ab}
+\end{align}
+\]</span><br />
+可以直接写出：<br />
+<span class="math display">\[
+\begin{align}
+p(f(X^*)|X,Y,X^*)=p(f(X^*)|Y)\\
+=\mathcal{N}(k(X^*,X)[k(X,X)+\sigma^2\mathbb{I}]^{-1}(Y-\mu(X))+\mu(X^*),\\
+k(X^*,X^*)-k(X^*,X)[k(X,X)+\sigma^2\mathbb{I}]^{1}k(X,X^*))
+\end{align}
+\]</span><br />
+所以对于 <span
+class="math inline">\(Y=f(X^*)+\varepsilon\)</span>：<br />
+<span class="math display">\[
+\begin{align}
+\mathcal{N}(k(X^*,X)[k(X,X)+\sigma^2\mathbb{I}]^{-1}(Y-\mu(X))+\mu(X^*),\\
+k(X^*,X^*)-k(X^*,X)[k(X,X)+\sigma^2\mathbb{I}]^{1}k(X,X^*)+\sigma^2\mathbb{I})
+\end{align}
+\]</span><br />
+我们看到，函数空间的观点更加简单易于求解。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/11/ML/33.BayesianLR/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/10/11/ML/33.BayesianLR/" class="post-title-link" itemprop="url">BayesianLR</a>
         </h2>
 
         <div class="post-meta-container">
@@ -239,7 +625,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
         </span>
     </span>
 
@@ -361,7 +747,7 @@ p(y^*|X,Y,x^*)=\int_wp(y^*|w,X,Y,x^*)p(w|X,Y,x^*)dw=\int_wp(y^*|w,x^*)p(w|X,Y)dw
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/10/Machine%20Learning/32.GaussianNetwork/">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/10/ML/32.GaussianNetwork/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avstar.png">
@@ -379,7 +765,7 @@ p(y^*|X,Y,x^*)=\int_wp(y^*|w,X,Y,x^*)p(w|X,Y,x^*)dw=\int_wp(y^*|w,x^*)p(w|X,Y)dw
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/10/10/Machine%20Learning/32.GaussianNetwork/" class="post-title-link" itemprop="url">GaussianNetwork</a>
+          <a href="/2020/10/10/ML/32.GaussianNetwork/" class="post-title-link" itemprop="url">GaussianNetwork</a>
         </h2>
 
         <div class="post-meta-container">
@@ -398,7 +784,7 @@ p(y^*|X,Y,x^*)=\int_wp(y^*|w,X,Y,x^*)p(w|X,Y,x^*)dw=\int_wp(y^*|w,x^*)p(w|X,Y)dw
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
         </span>
     </span>
 
@@ -530,7 +916,7 @@ $x_ix_j|(X-{x_i,x_j})_{ij}=0 $。</p>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/09/Machine%20Learning/31.CRF/">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/09/ML/31.CRF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avstar.png">
@@ -548,7 +934,7 @@ $x_ix_j|(X-{x_i,x_j})_{ij}=0 $。</p>
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/10/09/Machine%20Learning/31.CRF/" class="post-title-link" itemprop="url">CRF</a>
+          <a href="/2020/10/09/ML/31.CRF/" class="post-title-link" itemprop="url">CRF</a>
         </h2>
 
         <div class="post-meta-container">
@@ -567,7 +953,7 @@ $x_ix_j|(X-{x_i,x_j})_{ij}=0 $。</p>
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
         </span>
     </span>
 
@@ -867,7 +1253,7 @@ L=\sum\limits_{i=1}^N\sum\limits_{t=1}^T[f(y_{t-1},y_t,x^i)-\sum\limits_{y_{t-1}
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/08/Machine%20Learning/30.particleFilter/">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/08/ML/30.particleFilter/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avstar.png">
@@ -885,7 +1271,7 @@ L=\sum\limits_{i=1}^N\sum\limits_{t=1}^T[f(y_{t-1},y_t,x^i)-\sum\limits_{y_{t-1}
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/10/08/Machine%20Learning/30.particleFilter/" class="post-title-link" itemprop="url">particleFilter</a>
+          <a href="/2020/10/08/ML/30.particleFilter/" class="post-title-link" itemprop="url">particleFilter</a>
         </h2>
 
         <div class="post-meta-container">
@@ -904,7 +1290,7 @@ L=\sum\limits_{i=1}^N\sum\limits_{t=1}^T[f(y_{t-1},y_t,x^i)-\sum\limits_{y_{t-1}
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
         </span>
     </span>
 
@@ -1028,7 +1414,7 @@ class="math inline">\(p(z_t|z_{t-1})\)</span>，这就叫做生成与测试方�
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/07/Machine%20Learning/29.LDS/">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/07/ML/29.LDS/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avstar.png">
@@ -1046,7 +1432,7 @@ class="math inline">\(p(z_t|z_{t-1})\)</span>，这就叫做生成与测试方�
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/10/07/Machine%20Learning/29.LDS/" class="post-title-link" itemprop="url">LDS</a>
+          <a href="/2020/10/07/ML/29.LDS/" class="post-title-link" itemprop="url">LDS</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1065,7 +1451,7 @@ class="math inline">\(p(z_t|z_{t-1})\)</span>，这就叫做生成与测试方�
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
         </span>
     </span>
 
@@ -1191,7 +1577,7 @@ p(z_t|x_{1:t})\propto p(x_t|z_t)p(z_t|x_{1:t-1})
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/06/Machine%20Learning/28.HMM/">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/06/ML/28.HMM/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avstar.png">
@@ -1209,7 +1595,7 @@ p(z_t|x_{1:t})\propto p(x_t|z_t)p(z_t|x_{1:t-1})
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/10/06/Machine%20Learning/28.HMM/" class="post-title-link" itemprop="url">HMM</a>
+          <a href="/2020/10/06/ML/28.HMM/" class="post-title-link" itemprop="url">HMM</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1228,7 +1614,7 @@ p(z_t|x_{1:t})\propto p(x_t|z_t)p(z_t|x_{1:t-1})
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
         </span>
     </span>
 
@@ -1604,7 +1990,7 @@ p(x_{t+1}|x_{1:t})=\sum\limits_{z_{t+1}}p(x_{t+1},z_{t+1}|x_{1:t})=\sum\limits_{
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/05/Machine%20Learning/27.MCMC/">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/05/ML/27.MCMC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avstar.png">
@@ -1622,7 +2008,7 @@ p(x_{t+1}|x_{1:t})=\sum\limits_{z_{t+1}}p(x_{t+1},z_{t+1}|x_{1:t})=\sum\limits_{
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/10/05/Machine%20Learning/27.MCMC/" class="post-title-link" itemprop="url">MCMC</a>
+          <a href="/2020/10/05/ML/27.MCMC/" class="post-title-link" itemprop="url">MCMC</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1641,7 +2027,7 @@ p(x_{t+1}|x_{1:t})=\sum\limits_{z_{t+1}}p(x_{t+1},z_{t+1}|x_{1:t})=\sum\limits_{
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
         </span>
     </span>
 
@@ -1866,7 +2252,7 @@ RBM 假设隐变量之间无关。<br />
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/04/Machine%20Learning/26.VI/">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/04/ML/26.VI/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avstar.png">
@@ -1884,7 +2270,7 @@ RBM 假设隐变量之间无关。<br />
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/10/04/Machine%20Learning/26.VI/" class="post-title-link" itemprop="url">VI</a>
+          <a href="/2020/10/04/ML/26.VI/" class="post-title-link" itemprop="url">VI</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1903,7 +2289,7 @@ RBM 假设隐变量之间无关。<br />
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
         </span>
     </span>
 
@@ -2117,460 +2503,6 @@ q_\phi(z)]\nabla_\phi g_\phi(\varepsilon,x^i)]
 \end{aligned}
 \]</span><br />
 对这个式子进行蒙特卡洛采样，然后计算期望，得到梯度。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/03/Machine%20Learning/25.GMM/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avstar.png">
-      <meta itemprop="name" content="SoundMemories">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SoundMemories">
-      <meta itemprop="description" content="今日事，今日毕">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | SoundMemories">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/10/03/Machine%20Learning/25.GMM/" class="post-title-link" itemprop="url">GMM</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-10-03 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-03T00:00:00+08:00">2020-10-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>894</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="高斯混合模型">高斯混合模型</h1>
-<p>为了解决高斯模型的单峰性的问题，我们引入多个高斯模型的加权平均来拟合多峰数据：<br />
-<span class="math display">\[
-p(x)=\sum\limits_{k=1}^K\alpha_k\mathcal{N}(\mu_k,\Sigma_k)
-\]</span><br />
-引入隐变量 <span
-class="math inline">\(z\)</span>，这个变量表示对应的样本 <span
-class="math inline">\(x\)</span>
-属于哪一个高斯分布，这个变量是一个离散的随机变量：<br />
-<span class="math display">\[
-p(z=i)=p_i,\sum\limits_{i=1}^kp(z=i)=1
-\]</span><br />
-作为一个生成式模型，高斯混合模型通过隐变量 <span
-class="math inline">\(z\)</span> 的分布来生成样本。</p>
-<pre class="mermaid">
-graph LR
-z((z))--&gt;x((x))
-</pre>
-<p>其中，节点 <span class="math inline">\(z\)</span>
-就是上面的概率，<span class="math inline">\(x\)</span>
-就是生成的高斯分布。于是对 <span
-class="math inline">\(p(x)\)</span>：<br />
-<span class="math display">\[
-p(x)=\sum\limits_zp(x,z)=\sum\limits_{k=1}^Kp(x,z=k)=\sum\limits_{k=1}^Kp(z=k)p(x|z=k)
-\]</span><br />
-因此：<br />
-<span class="math display">\[
-p(x)=\sum\limits_{k=1}^Kp_k\mathcal{N}(x|\mu_k,\Sigma_k)
-\]</span></p>
-<h2 id="极大似然估计">极大似然估计</h2>
-<p>样本为 <span
-class="math inline">\(X=(x_1,x_2,\cdots,x_N)\)</span>，$ (X,Z)$
-为完全参数，参数为 <span
-class="math inline">\(\theta=\{p_1,p_2,\cdots,p_K,\mu_1,\mu_2,\cdots,\mu_K\Sigma_1,\Sigma_2,\cdots,\Sigma_K\}\)</span>。我们通过极大似然估计得到
-<span class="math inline">\(\theta\)</span> 的值：<br />
-<span class="math display">\[
-\begin{aligned}\theta_{MLE}&amp;=\mathop{argmax}\limits_{\theta}\log
-p(X)=\mathop{argmax}_{\theta}\sum\limits_{i=1}^N\log p(x_i)\\
-&amp;=\mathop{argmax}_\theta\sum\limits_{i=1}^N\log
-\sum\limits_{k=1}^Kp_k\mathcal{N}(x_i|\mu_k,\Sigma_k)
-\end{aligned}
-\]</span><br />
-这个表达式直接通过求导，由于连加号的存在，无法得到解析解。因此需要使用
-EM 算法。</p>
-<h2 id="em-求解-gmm">EM 求解 GMM</h2>
-<p>EM 算法的基本表达式为：<span
-class="math inline">\(\theta^{t+1}=\mathop{argmax}\limits_{\theta}\mathbb{E}_{z|x,\theta_t}[p(x,z|\theta)]\)</span>。套用
-GMM 的表达式，对数据集来说：<br />
-<span class="math display">\[
-\begin{aligned}Q(\theta,\theta^t)&amp;=\sum\limits_z[\log\prod\limits_{i=1}^Np(x_i,z_i|\theta)]\prod
-\limits_{i=1}^Np(z_i|x_i,\theta^t)\\
-&amp;=\sum\limits_z[\sum\limits_{i=1}^N\log p(x_i,z_i|\theta)]\prod
-\limits_{i=1}^Np(z_i|x_i,\theta^t)
-\end{aligned}
-\]</span><br />
-对于中间的那个求和号，展开，第一项为：<br />
-<span class="math display">\[
-\begin{aligned}
-\sum\limits_z\log
-p(x_1,z_1|\theta)\prod\limits_{i=1}^Np(z_i|x_i,\theta^t)&amp;=\sum\limits_z\log
-p(x_1,z_1|\theta)p(z_1|x_1,\theta^t)\prod\limits_{i=2}^Np(z_i|x_i,\theta^t)\\
-&amp;=\sum\limits_{z_1}\log p(x_1,z_1|\theta)
-p(z_1|x_1,\theta^t)\sum\limits_{z_2,\cdots,z_K}\prod\limits_{i=2}^Np(z_i|x_i,\theta^t)\\
-&amp;=\sum\limits_{z_1}\log
-p(x_1,z_1|\theta)p(z_1|x_1,\theta^t)\end{aligned}
-\]</span><br />
-类似地，<span class="math inline">\(Q\)</span> 可以写为：<br />
-<span class="math display">\[
-Q(\theta,\theta^t)=\sum\limits_{i=1}^N\sum\limits_{z_i}\log
-p(x_i,z_i|\theta)p(z_i|x_i,\theta^t)
-\]</span><br />
-对于 <span class="math inline">\(p(x,z|\theta)\)</span>：<br />
-<span class="math display">\[
-p(x,z|\theta)=p(z|\theta)p(x|z,\theta)=p_z\mathcal{N}(x|\mu_z,\Sigma_z)
-\]</span><br />
-对 <span class="math inline">\(p(z|x,\theta^t)\)</span>：<br />
-<span class="math display">\[
-p(z|x,\theta^t)=\frac{p(x,z|\theta^t)}{p(x|\theta^t)}=\frac{p_z^t\mathcal{N}(x|\mu_z^t,\Sigma_z^t)}{\sum\limits_kp_k^t\mathcal{N}(x|\mu_k^t,\Sigma_k^t)}
-\]</span><br />
-代入 <span class="math inline">\(Q\)</span>：<br />
-<span class="math display">\[
-Q=\sum\limits_{i=1}^N\sum\limits_{z_i}\log
-p_{z_i}\mathcal{N(x_i|\mu_{z_i},\Sigma_{z_i})}\frac{p_{z_i}^t\mathcal{N}(x_i|\mu_{z_i}^t,\Sigma_{z_i}^t)}{\sum\limits_kp_k^t\mathcal{N}(x_i|\mu_k^t,\Sigma_k^t)}
-\]</span><br />
-下面需要对 <span class="math inline">\(Q\)</span> 值求最大值：<br />
-<span class="math display">\[
-Q=\sum\limits_{k=1}^K\sum\limits_{i=1}^N[\log p_k+\log
-\mathcal{N}(x_i|\mu_k,\Sigma_k)]p(z_i=k|x_i,\theta^t)
-\]</span></p>
-<ol type="1">
-<li><p><span class="math inline">\(p_k^{t+1}\)</span>：<br />
-<span class="math display">\[
-p_k^{t+1}=\mathop{argmax}_{p_k}\sum\limits_{k=1}^K\sum\limits_{i=1}^N[\log
-p_k+\log \mathcal{N}(x_i|\mu_k,\Sigma_k)]p(z_i=k|x_i,\theta^t)\ s.t.\
-\sum\limits_{k=1}^Kp_k=1
-\]</span><br />
-即：<br />
-<span class="math display">\[
-p_k^{t+1}=\mathop{argmax}_{p_k}\sum\limits_{k=1}^K\sum\limits_{i=1}^N\log
-p_kp(z_i=k|x_i,\theta^t)\ s.t.\ \sum\limits_{k=1}^Kp_k=1
-\]</span><br />
-引入 Lagrange 乘子：<span
-class="math inline">\(L(p_k,\lambda)=\sum\limits_{k=1}^K\sum\limits_{i=1}^N\log
-p_kp(z_i=k|x_i,\theta^t)-\lambda(1-\sum\limits_{k=1}^Kp_k)\)</span>。所以：<br />
-<span class="math display">\[
-\frac{\partial}{\partial
-p_k}L=\sum\limits_{i=1}^N\frac{1}{p_k}p(z_i=k|x_i,\theta^t)+\lambda=0\\
-\Rightarrow
-\sum\limits_k\sum\limits_{i=1}^N\frac{1}{p_k}p(z_i=k|x_i,\theta^t)+\lambda\sum\limits_kp_k=0\\
-\Rightarrow\lambda=-N
-\]</span></p>
-<p>于是有：<br />
-<span class="math display">\[
-p_k^{t+1}=\frac{1}{N}\sum\limits_{i=1}^Np(z_i=k|x_i,\theta^t)
-\]</span></p></li>
-<li><p><span
-class="math inline">\(\mu_k,\Sigma_k\)</span>，这两个参数是无约束的，直接求导即可。</p></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/02/Machine%20Learning/24.EM/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avstar.png">
-      <meta itemprop="name" content="SoundMemories">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SoundMemories">
-      <meta itemprop="description" content="今日事，今日毕">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | SoundMemories">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/10/02/Machine%20Learning/24.EM/" class="post-title-link" itemprop="url">EM</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-10-02 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-02T00:00:00+08:00">2020-10-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="期望最大">期望最大</h1>
-<p>期望最大算法的目的是解决具有隐变量的混合模型的参数估计（极大似然估计）。MLE
-对 <span class="math inline">\(p(x|\theta)\)</span>
-参数的估计记为：<span
-class="math inline">\(\theta_{MLE}=\mathop{argmax}\limits_\theta\log
-p(x|\theta)\)</span>。EM
-算法对这个问题的解决方法是采用迭代的方法：<br />
-<span class="math display">\[
-\theta^{t+1}=\mathop{argmax}\limits_{\theta}\int_z\log
-[p(x,z|\theta)]p(z|x,\theta^t)dz=\mathbb{E}_{z|x,\theta^t}[\log
-p(x,z|\theta)]
-\]</span><br />
-这个公式包含了迭代的两步：<br />
-（1）E step：计算 <span class="math inline">\(\log
-p(x,z|\theta)\)</span> 在概率分布 <span
-class="math inline">\(p(z|x,\theta^t)\)</span> 下的期望<br />
-（2）M step：计算使这个期望最大化的参数得到下一个 EM 步骤的输入</p>
-<blockquote>
-<p>收敛性证明，求证：<span class="math inline">\(\log
-p(x|\theta^t)\le\log p(x|\theta^{t+1})\)</span></p>
-<p>证明：<span class="math inline">\(\log p(x|\theta)=\log
-p(z,x|\theta)-\log p(z|x,\theta)\)</span>，对左右两边求积分：<br />
-<span class="math display">\[
-  Left:\int_zp(z|x,\theta^t)\log p(x|\theta)dz=\log p(x|\theta)
-  \]</span></p>
-<p><span class="math display">\[
-  Right:\int_zp(z|x,\theta^t)\log
-p(x,z|\theta)dz-\int_zp(z|x,\theta^t)\log
-p(z|x,\theta)dz=Q(\theta,\theta^t)-H(\theta,\theta^t)
-  \]</span></p>
-<p>所以：<br />
-<span class="math display">\[
-  \log p(x|\theta)=Q(\theta,\theta^t)-H(\theta,\theta^t)
-  \]</span><br />
-由于 <span
-class="math inline">\(Q(\theta,\theta^t)=\int_zp(z|x,\theta^t)\log
-p(x,z|\theta)dz\)</span>，而 <span
-class="math inline">\(\theta^{t+1}=\mathop{argmax}\limits_{\theta}\int_z\log
-[p(x,z|\theta)]p(z|x,\theta^t)dz\)</span>，所以 <span
-class="math inline">\(Q(\theta^{t+1},\theta^t)\ge
-Q(\theta^t,\theta^t)\)</span>。要证 <span class="math inline">\(\log
-p(x|\theta^t)\le\log p(x|\theta^{t+1})\)</span>，需证：<span
-class="math inline">\(H(\theta^t,\theta^t)\ge
-H(\theta^{t+1},\theta^t)\)</span>：<br />
-<span class="math display">\[
-  \begin{aligned}H(\theta^{t+1},\theta^t)-H(\theta^{t},\theta^t)&amp;=\int_zp(z|x,\theta^{t})\log
-p(z|x,\theta^{t+1})dz-\int_zp(z|x,\theta^t)\log p(z|x,\theta^{t})dz\\
-  &amp;=\int_zp(z|x,\theta^t)\log\frac{p(z|x,\theta^{t+1})}{p(z|x,\theta^t)}=-KL(p(z|x,\theta^t),p(z|x,\theta^{t+1}))\le0
-  \end{aligned}
-  \]</span><br />
-综合上面的结果：<br />
-<span class="math display">\[
-  \log p(x|\theta^t)\le\log p(x|\theta^{t+1})
-  \]</span></p>
-</blockquote>
-<p>根据上面的证明，我们看到，似然函数在每一步都会增大。进一步的，我们看
-EM 迭代过程中的式子是怎么来的：<br />
-<span class="math display">\[
-\log p(x|\theta)=\log p(z,x|\theta)-\log p(z|x,\theta)=\log
-\frac{p(z,x|\theta)}{q(z)}-\log \frac{p(z|x,\theta)}{q(z)}
-\]</span><br />
-分别对两边求期望 <span
-class="math inline">\(\mathbb{E}_{q(z)}\)</span>：<br />
-<span class="math display">\[
-\begin{aligned}
-&amp;Left:\int_zq(z)\log p(x|\theta)dz=\log p(x|\theta)\\
-&amp;Right:\int_zq(z)\log \frac{p(z,x|\theta)}{q(z)}dz-\int_zq(z)\log
-\frac{p(z|x,\theta)}{q(z)}dz=ELBO+KL(q(z),p(z|x,\theta))
-\end{aligned}
-\]</span><br />
-上式中，Evidence Lower Bound(ELBO)，是一个下界，所以 <span
-class="math inline">\(\log p(x|\theta)\ge ELBO\)</span>，等于号取在 KL
-散度为0是，即：<span
-class="math inline">\(q(z)=p(z|x,\theta)\)</span>，EM 算法的目的是将
-ELBO 最大化，根据上面的证明过程，在每一步 EM
-后，求得了最大的ELBO，并根据这个使 ELBO 最大的参数代入下一步中：<br />
-<span class="math display">\[
-\hat{\theta}=\mathop{argmax}_{\theta}ELBO=\mathop{argmax}_\theta\int_zq(z)\log\frac{p(x,z|\theta)}{q(z)}dz
-\]</span><br />
-由于 <span class="math inline">\(q(z)=p(z|x,\theta^t)\)</span>
-的时候，这一步的最大值才能取等号，所以：<br />
-<span class="math display">\[
-\begin{aligned}
-\hat{\theta}=\mathop{argmax}_{\theta}ELBO&amp;=\mathop{argmax}_\theta\int_zq(z)\log\frac{p(x,z|\theta)}{q(z)}dz\\
-&amp;=\mathop{argmax}_\theta\int_zp(z|x,\theta^t)\log\frac{p(x,z|\theta)}{p(z|x,\theta^t)}d
-z\\
-&amp;=\mathop{argmax}_\theta\int_z p(z|x,\theta^t)\log p(x,z|\theta)
-\end{aligned}
-\]</span><br />
-这个式子就是上面 EM 迭代过程中的式子。</p>
-<p>从 Jensen 不等式出发，也可以导出这个式子：<br />
-<span class="math display">\[
-\log
-p(x|\theta)=\log\int_zp(x,z|\theta)dz=\log\int_z\frac{p(x,z|\theta)q(z)}{q(z)}dz\\
-=\log \mathbb{E}_{q(z)}[\frac{p(x,z|\theta)}{q(z)}]\ge
-\mathbb{E}_{q(z)}[\log\frac{p(x,z|\theta)}{q(z)}]
-\]</span><br />
-其中，右边的式子就是 ELBO，等号在 <span
-class="math inline">\(p(x,z|\theta)=Cq(z)\)</span> 时成立。于是：<br />
-<span class="math display">\[
-\int_zq(z)dz=\frac{1}{C}\int_zp(x,z|\theta)dz=\frac{1}{C}p(x|\theta)=1\\
-\Rightarrow q(z)=\frac{1}{p(x|\theta)}p(x,z|\theta)=p(z|x,\theta)
-\]</span><br />
-我们发现，这个过程就是上面的最大值取等号的条件。</p>
-<h2 id="广义-em">广义 EM</h2>
-<p>EM 模型解决了概率生成模型的参数估计的问题，通过引入隐变量 <span
-class="math inline">\(z\)</span>，来学习 <span
-class="math inline">\(\theta\)</span>，具体的模型对 <span
-class="math inline">\(z\)</span> 有不同的假设。对学习任务 <span
-class="math inline">\(p(x|\theta)\)</span>，就是学习任务 <span
-class="math inline">\(\frac{p(x,z|\theta)}{p(z|x,\theta)}\)</span>。在这个式子中，我们假定了在
-E 步骤中，<span
-class="math inline">\(q(z)=p(z|x,\theta)\)</span>，但是这个<span
-class="math inline">\(p(z|x,\theta)\)</span>
-如果无法求解，那么必须使用采样（MCMC）或者变分推断等方法来近似推断这个后验。我们观察
-KL 散度的表达式，为了最大化 ELBO，在固定的 <span
-class="math inline">\(\theta\)</span> 时，我们需要最小化 KL
-散度，于是：<br />
-<span class="math display">\[
-\hat{q}(z)=\mathop{argmin}_qKL(p,q)=\mathop{argmax}_qELBO
-\]</span><br />
-这就是广义 EM 的基本思路：</p>
-<ol type="1">
-<li><p>E step：<br />
-<span class="math display">\[
-\hat{q}^{t+1}(z)=\mathop{argmax}_q\int_zq^t(z)\log\frac{p(x,z|\theta)}{q^t(z)}dz,fixed\
-\theta
-\]</span></p></li>
-<li><p>M step：<br />
-<span class="math display">\[
-\hat{\theta}=\mathop{argmax}_\theta
-\int_zq^{t+1}(z)\log\frac{p(x,z|\theta)}{q^{t+1}(z)}dz,fixed\ \hat{q}
-\]</span></p></li>
-</ol>
-<p>对于上面的积分：<br />
-<span class="math display">\[
-\begin{aligned}
-ELBO&amp;=\int_zq(z)\log\frac{p(x,z|\theta)}{q(z)}dz\\
-&amp;=\mathbb{E}_{q(z)}[\log p(x,z|\theta)-\log q(z)]\\
-&amp;=\mathbb{E}_{q(z)}[\log p(x,z|\theta)]+Entropy(q(z))
-\end{aligned}
-\]</span><br />
-因此，我们看到，广义 EM 相当于在原来的式子中加入熵这一项。</p>
-<h2 id="em-的推广">EM 的推广</h2>
-<p>EM
-算法类似于坐标上升法，固定部分坐标，优化其他坐标，再一遍一遍的迭代。如果在
-EM 框架中，无法求解 <span class="math inline">\(z\)</span>
-后验概率，那么需要采用一些变种的 EM 来估算这个后验。</p>
-<ol type="1">
-<li>基于平均场的变分推断，VBEM/VEM</li>
-<li>基于蒙特卡洛的EM，MCEM</li>
-</ol>
 
       
     </div>
