@@ -44,8 +44,10 @@
 <meta property="og:image" content="https://soundmemories.github.io/images/%E7%BA%A0%E9%94%99/bilstm+crf2.jpg">
 <meta property="og:image" content="https://soundmemories.github.io/images/%E7%BA%A0%E9%94%99/bert+crf.jpg">
 <meta property="og:image" content="https://soundmemories.github.io/images/%E7%BA%A0%E9%94%99/bert+span.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E7%BA%A0%E9%94%99/bert+mrc.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E7%BA%A0%E9%94%99/bert+mrc1.jpg">
 <meta property="article:published_time" content="2023-05-20T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-08-13T14:53:54.453Z">
+<meta property="article:modified_time" content="2023-09-24T13:59:30.861Z">
 <meta property="article:author" content="SoundMemories">
 <meta property="article:tag" content="NLP">
 <meta name="twitter:card" content="summary">
@@ -272,14 +274,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>7.4k</span>
+      <span>8k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>27 分钟</span>
+      <span>29 分钟</span>
     </span>
 </div>
 
@@ -551,7 +553,7 @@ all reduce 之前各 GPU 梯度的均值：<br />
 需要注意梯度溢出的问题。<br />
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torch.cuda.amp <span class="keyword">import</span> autocast <span class="keyword">as</span> ac</span><br><span class="line"><span class="comment"># 训练时加上, 不然一直报梯度溢出, 训练的模型可能有问题</span></span><br><span class="line"><span class="keyword">with</span> ac():</span><br><span class="line">    loss = model(input_ids=input_ids, attention_mask=attention_mask,token_type_ids=token_type_ids, labels=label)[<span class="number">0</span>]</span><br></pre></td></tr></table></figure></p>
 <h1 id="成分抽取">成分抽取</h1>
-<p>文本的错误类型有多种，但是没有⼀种纠错技术可以纠正所有类型的文本错误，对于特定的错误类型来说，需要设计特定的方式去纠错，其中，垂直领域下的专属名词，例如：金融领域的股票和基金名称、医疗领域的药物和疾病名称、地图和本地生活领域的poi名称，等等，这些名词⼀旦发生错误，很难通过端到端的方式直接进行纠错，需要定制化的策略去应对。</p>
+<p>文本的错误类型有多种，但是没有⼀种纠错技术可以纠正所有类型的文本错误，对于特定的错误类型来说，需要设计特定的方式去纠错，其中，垂直领域下的专属名词，例如：金融领域的股票和基金名称、医疗领域的药物和疾病名称、地图和本地生活领域的poi名称，等等，这些<strong>专有名词</strong>⼀旦发生错误，<strong>很难通过端到端</strong>的方式直接进行纠错，需要定制化的策略去应对。</p>
 <p>如何对垂直领域下的专属名词进行抽取就是一个需要考虑的问题，目前工业界常见的成分抽取框架，例如<strong>序列标注</strong>、<strong>指针⽹络</strong>、<strong>⽚段排列</strong>等技术⽅案。</p>
 <h2 id="序列标注">序列标注</h2>
 <p>实现序列标注的常⽤⽅法有BiLSTM/IDCNN/BERT+CRF等，与BiLSTM/IDCNN/BERT+Softmax相⽐，CRF使模型考虑到了标签之间的相关性，标签之间的相关性就是标签之间的转移概率，CRF层可以学习到标签之间的转移概率。</p>
@@ -567,7 +569,28 @@ all reduce 之前各 GPU 梯度的均值：<br />
 <h2 id="指针络">指针⽹络</h2>
 <p><strong>BERT+SPAN</strong>：<br />
 从句⼦中正确的抽取出实体，需要知道三个要素：开始位置、结束位置、实体类型。<br />
+下图中，有两个识别层，分别预测起始位置和结束位置，label中的颜色代表实体类型。<br />
+指针网络的后半部分是全连接层，不管是训练还是推理都比带crf的快，crf毕竟是串行维特比解码的。<br />
 <img src="/images/纠错/bert+span.jpg" width="80%"></p>
+<p><strong>BERT+MRC</strong>：<br />
+BERT-MRC模型在不同的数据集上的表现<strong>差异较⼤</strong>，并且不同的数据处理（主要是数据处理影响很大）对模型的性能影响也很⼤，需要使⽤者理解其内部的原理后采⽤合适的⽅法来使⽤。<br />
+在数据预处理阶段需要将实<strong>体类型的描述</strong>作为query，拼接到每个输⼊句⼦的前⾯，然后针对性的修改原有的标注。<br />
+（1）数据扩充：根据实体类型扩充；<br />
+（2）类别均衡：平衡负例；</p>
+<p>假设现在现在待抽取的成分有三种：<br />
+（1）股票名称：从公司全称中精选出2到4个字的称呼；<br />
+（2）⾦融指标：⽤于衡量公司经营状况⾦融描述；<br />
+（3）⼈名：⼈物的名称；<br />
+例如下⾯的例⼦：<br />
+（1）每个样本，根据要识别实体的数量，扩充对应数量的样本。<br />
+（2）每个样本不可能有全部要识别的实体，那么扩充后，没有query对应实体的样本负例很大，需要平衡负例，只需抽取部分负例训练而不是全部拿来训练。<br />
+<img src="/images/纠错/bert+mrc.jpg" width="60%"></p>
+<p>模型结构如下：<br />
+从下图label可以看出，没有用颜色来区分实体类别，是因为在输入时的query已经确定了要是别的实体类型了。<br />
+<img src="/images/纠错/bert+mrc1.jpg" width="80%"></p>
+<p>所以，总结起来，BERT-MRC模型能取得⽐其他模型更好的性能的原因是它特殊的数据处理⽅法使得变相做了<strong>数据扩充</strong>，其次在输⼊⽂本前加上了实体类型的描述信息，这些实体类型的描述作为<strong>先验知识</strong>提⾼了模型抽取的效果，所以BERT-MRC模型在数据量匮乏的场景下，通过在输⼊⽂本前⾯拼接的query获得了⼀定的先验信息，提升了性能。<br />
+作者论文使用了不同的query形式实验，结论是使用自然语言描述的大白话作为query效果最好。<br />
+实际使用时，数据量少的时候使用效果很好，数据量足够效果和其他模型比劣势，因为数据量大增，训练成本大；实体类型多时，推理次数也会10次，速度也很差。可以考虑用于小数据扩充方法。</p>
 <h2 id="段排列">⽚段排列</h2>
 <h1 id="参考文献">参考文献</h1>
 <p><span class="exturl" data-url="aHR0cHM6Ly93d3cuamlhbnNodS5jb20vcC84ZDJmMDk5MWI4NDA=">中文文本纠错任务简介<i class="fa fa-external-link-alt"></i></span><br />
@@ -642,7 +665,7 @@ Cloud恒源云-可分布式练习<i class="fa fa-external-link-alt"></i></span><
 
   <div class="copyright">
     &copy; 2019 – 
-    <span itemprop="copyrightYear">2023</span>
+    <span itemprop="copyrightYear">2024</span>
     <span class="with-love">
       <i class="fa fa-heart"></i>
     </span>

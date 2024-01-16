@@ -52,7 +52,7 @@
 <meta property="og:image" content="https://i.loli.net/2021/04/22/71shqV4xR3rdBXv.jpg">
 <meta property="og:image" content="https://i.loli.net/2021/04/22/bJhClzFfZiyKPnr.jpg">
 <meta property="article:published_time" content="2019-03-22T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-05-25T15:34:38.154Z">
+<meta property="article:modified_time" content="2024-01-16T07:54:36.002Z">
 <meta property="article:author" content="SoundMemories">
 <meta property="article:tag" content="MySQL">
 <meta name="twitter:card" content="summary">
@@ -628,18 +628,18 @@ Integrity）：例如：年龄范围0-120，性别范围“男/女”。<br />
 （3）引用完整性（Referential
 Integrity）：例如：员工所在部门，在部门表中要能找到这个部门。<br />
 （4）用户自定义完整性（User-defined
-Integrity）：例如：用户名唯一、密码不能为空等，本部门经理的工资不得高于本部门职工的平均工资的5倍。</p>
+Integrity）：例如：用户名唯一、密码不能为空、部门经理工资不得高于本部门职工的平均工资等。</p>
 <p>根据约束的特点，可将约束分为：<br />
 （1）键约束：主键约束、外键约束、唯一键约束。<br />
-（2）Not NULL约束：非空约束。<br />
-（3）Check约束：检查约束。<br />
-（4）Default约束：缺省约束。</p>
+（2）Not NULL 约束：非空约束。<br />
+（3）Check 约束：检查约束。<br />
+（4）Default 约束：缺省约束。</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查看某个表的约束</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> information_schema.table_constraints <span class="keyword">WHERE</span> table_name <span class="operator">=</span> <span class="string">&#x27;表名称&#x27;</span>;</span><br><span class="line"><span class="keyword">SHOW</span> <span class="keyword">CREATE</span> <span class="keyword">TABLE</span> 表名;</span><br><span class="line"><span class="comment">-- 查看某个表的索引</span></span><br><span class="line"><span class="keyword">SHOW</span> INDEX <span class="keyword">FROM</span> 表名称;</span><br></pre></td></tr></table></figure>
-<p><strong>1、主键约束PRIMARY KEY</strong><br />
-主键：Primary
-key，简称PK，数据库主键作用保证实体的完整性，可以是一个列或多列的组合。<br />
-（1）主键约束相当于<strong>唯一约束+非空约束</strong>的组合，主键约束列不允许重复，也不允许出现空值，如果是多列组合的主键约束，那么这些列都不允许为空值，并且组合的值不允许重复。<br />
-（2）<strong>每个表有且最多只允许一个主键约束。</strong><br />
+<p><strong>1、主键 PRIMARY KEY，简称PK</strong><br />
+主键：数据库主键作用保证实体的完整性，可以是一个列或多列的组合。<br />
+（1）主键约束相当于<strong>唯一约束 +
+非空约束</strong>的组合，主键约束列不允许重复、空值，如果是多列组合的主键约束，那么这些列都不允许为空值，并且组合的值不允许重复。<br />
+（2）每个表有且最多只允许<strong>一个</strong>主键约束。<br />
 （3）MySQL的主键名总是PRIMARY，就算自己命名了主键约束名也没用。<br />
 （4）当创建主键约束时，MySQL默认在对应的列上建立<strong>主键索引</strong>。删除主键时，也会直接删除主键索引。</p>
 <p>如何建立主键？<br />
@@ -663,29 +663,28 @@ key，简称PK，数据库主键作用保证实体的完整性，可以是一个
 （2）在创建外键约束时，如果不给外键约束名称，默认名不是列名，而是自动产生一个外键名，也可以自己指定外键约束名。<br />
 （3）当创建外键约束时，系统默认会在所在的列上建立对应的<strong>普通索引</strong>。但是索引名是列名，不是外键的约束名。<br />
 （4）删除外键时，关于外键列上的普通<strong>索引需要单独删除</strong>。<br />
-要求：<br />
+外键使用要求：<br />
 （1）一个表可以建立多个外键约束。一个表的两个字段或是两个表的两个字段之间的外键约束。<br />
 （2）在从表上建立外键，而且主表要先存在。如果要删除表，需要先删除从表，才能删除主表。<br />
 （3）从表的外键列，在主表中引用的只能是键列（主键，唯一键，外键）。<br />
 （4）从表的外键列与主表被参照的列名字可以不相同，但是数据类型必须一样。<br />
 外键是双向约束：<br />
 （1）约束从表：从表的外键值必须“在主表中能找到”或者为NULL，从而约束了从表的外键列的值的“添加和修改”。<br />
-（6）主表约束：当主表的记录被从表参照时，主表中被参考记录的“删除和更新”也会受到限制。<br />
-　　（1）默认情况下，主表和从表是严格依赖关系RESTRICT。当主表的记录被从表参照时，主表的记录将不允许删除，如果要删除数据，需要先删除从表中依赖该记录的数据，然后才可以删除主表的数据。对于外键约束，最好是采用“更新级联，删除严格”的方式，即ON
-UPDATE CASCADE ON DELETE RESTRICT。<br />
-　　（2）ON DELETE SET NULL(级联置空)：当外键设置了SET
+（2）主表约束：当主表的记录被从表参照时，主表中被参考记录的“删除和更新”也会受到限制。<br />
+　　（1）默认情况下，主表和从表是严格依赖关系（RESTRICT）。当主表的记录被从表参照时，主表的记录将不允许删除，如果要删除数据，需要先删除从表中依赖该记录的数据，然后才可以删除主表的数据。对于外键约束，最好是采用“<strong>更新级联，删除严格</strong>”的方式，即<code>ON UPDATE CASCADE ON DELETE RESTRICT</code>。<br />
+　　（2）ON DELETE SET NULL（级联置空）：当外键设置了SET
 NULL，当主表的相关记录删除时，从表对应的字段改为NULL。注意从表外键字段得允许为空才行。<br />
 　　（3）ON DELETE
-CASCADE(级联删除)：当外键设置了CASCADE（级联），当主表的相关记录删除时，从表对应的行都删除了。</p>
-<p>5个约束方式：<br />
-（1）CASCADE：主动权在主表。在主表上update/delete记录时，同步update/delete掉从表的匹配记录。<br />
-（2）SET
-NULL：主动权在主表。在主表上update/delete记录时，将从表上匹配记录的列设为NULL，但是要注意从表的外键列不能为NOT
+CASCADE（级联删除）：当外键设置了CASCADE（级联），当主表的相关记录删除时，从表对应的行都删除了。</p>
+<p><strong>4类约束方式</strong>：<br />
+（1）<strong>CASCADE</strong>：主动权在主表。在主表上update/delete记录时，同步update/delete掉从表的匹配记录。<br />
+（2）<strong>SET
+NULL</strong>：主动权在主表。在主表上update/delete记录时，将从表上匹配记录的列设为NULL，但是要注意从表的外键列不能为NOT
 NULL。<br />
-（3）NO
-ACTION、RESTRICT：主动权在从表。立即检查外键约束，如果从表中有匹配的记录，则不允许对主表对应候选键进行update/delete操作。<br />
-（4）Set
-DEFAULT：MySQL的Innodb引擎不支持。主表有变更时，从表将外键列设置成一个默认的值。在可视化工具SQLyog中可能显示空白。<br />
+（3）<strong>NO
+ACTION、RESTRICT</strong>：主动权在从表。立即检查外键约束，如果从表中有匹配的记录，则不允许对主表对应候选键进行update/delete操作。<br />
+（4）<strong>Set
+DEFAULT</strong>：MySQL的Innodb引擎不支持。主表有变更时，从表将外键列设置成一个默认的值。在可视化工具SQLyog中可能显示空白。<br />
 如果没有指定等级，就相当于RESTRICT方式。</p>
 <p>如何建立外键约束？<br />
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">【constraint 外键约束名】 foreign key (从表字段) references 主表名(主表字段) 【on update 外键约束等级】【on delete 外键约束等级】</span></span><br><span class="line"><span class="comment">-- 外键只能在所有字段列表后面单独指定</span></span><br><span class="line"><span class="comment">-- 如果要自己命名外键约束名，建议“主表名_从表名_关联字段名_fk”</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建外键</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> t_department(</span><br><span class="line">    did <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">    dname <span class="type">VARCHAR</span>(<span class="number">100</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> <span class="keyword">UNIQUE</span>,</span><br><span class="line">    description <span class="type">VARCHAR</span>(<span class="number">200</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span></span><br><span class="line">);</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> t_employee(</span><br><span class="line">    eid <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">    ename <span class="type">VARCHAR</span>(<span class="number">100</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">    dept_id <span class="type">INT</span>,</span><br><span class="line">    <span class="keyword">CONSTRAINT</span> fk_emp_dept_did <span class="keyword">FOREIGN</span> KEY(dept_id) <span class="keyword">REFERENCES</span> t_department(did) <span class="keyword">ON</span> <span class="keyword">UPDATE</span> CASCADE <span class="keyword">ON</span> <span class="keyword">DELETE</span> RESTRICT</span><br><span class="line">    </span><br><span class="line">);</span><br><span class="line"><span class="comment">-- 其中CONSTRAINT fk_emp_dept_did可以省略</span></span><br><span class="line"><span class="comment">-- ON UPDATE CASCADE ON DELETE RESTRICT如果省略表示都是RESTRICT</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 一个表可以有多个外键，而且主表和从表可以是一张表</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> t_emp(</span><br><span class="line">    eid <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">    ename <span class="type">VARCHAR</span>(<span class="number">100</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">    manager_id <span class="type">INT</span>,</span><br><span class="line">    dept_id <span class="type">INT</span>,</span><br><span class="line">    <span class="keyword">CONSTRAINT</span> fk_emp_dept_did <span class="keyword">FOREIGN</span> KEY(dept_id) <span class="keyword">REFERENCES</span> t_department(did)  <span class="keyword">ON</span> <span class="keyword">UPDATE</span> CASCADE <span class="keyword">ON</span> <span class="keyword">DELETE</span> RESTRICT,</span><br><span class="line">    <span class="keyword">CONSTRAINT</span> fk_emp_mid_eid <span class="keyword">FOREIGN</span> KEY(manager_id) <span class="keyword">REFERENCES</span> t_emp(eid)  <span class="keyword">ON</span> <span class="keyword">UPDATE</span> CASCADE <span class="keyword">ON</span> <span class="keyword">DELETE</span> RESTRICT</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 建表后创建外键</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span>表名称 <span class="keyword">add</span> 【<span class="keyword">constraint</span> 约束名】 <span class="keyword">foreign</span> key (从表字段名) <span class="keyword">references</span> 主表名(主表被参照字段名) 【<span class="keyword">on</span> <span class="keyword">update</span> 外键约束等级】【<span class="keyword">on</span> <span class="keyword">delete</span> 外键约束等级】;</span><br><span class="line"><span class="comment">-- 举例：</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> t_emp <span class="keyword">ADD</span> <span class="keyword">CONSTRAINT</span> fk_emp_dept_did <span class="keyword">FOREIGN</span> KEY(dept_id) <span class="keyword">REFERENCES</span> t_department(did)  <span class="keyword">ON</span> <span class="keyword">UPDATE</span> CASCADE <span class="keyword">ON</span> <span class="keyword">DELETE</span> RESTRICT;</span><br></pre></td></tr></table></figure><br />
@@ -1208,7 +1207,7 @@ PRIVILEGES。<br />
 
   <div class="copyright">
     &copy; 2019 – 
-    <span itemprop="copyrightYear">2023</span>
+    <span itemprop="copyrightYear">2024</span>
     <span class="with-love">
       <i class="fa fa-heart"></i>
     </span>

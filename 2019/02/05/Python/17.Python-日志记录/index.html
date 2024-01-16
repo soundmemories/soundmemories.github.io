@@ -29,7 +29,7 @@
 <meta property="og:description" content="日志记录 日志是对软件执行时所发生事件的一种追踪方式。 开发者对代码添加日志调用，借此来指示某事件的发生。 一个事件通过一些包含变量数据的描述信息来描述，每个事件发生时的数据都是不同的。 开发者还会区分事件的重要性，重要性也被称为 等级 或 严重性。 一般情况下，任务和其日志工具： （1）对于命令行或程序的应用，结果显示在控制台：print()。 （2）在对程序的普通操作发生时提交事">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-02-04T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-05-29T15:57:47.157Z">
+<meta property="article:modified_time" content="2023-12-12T00:25:51.463Z">
 <meta property="article:author" content="SoundMemories">
 <meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
@@ -292,21 +292,21 @@
 logging模块最主要的好处是，所有的 Python
 模块都可能参与日志输出，包括你的日志消息和第三方模块的日志消息。</p>
 <p>logging模块采用模块化方法，并提供几类组件：<br />
-（1）记录器：暴露了应用程序代码直接使用的接口。<br />
-（2）处理程序：将日志记录（由记录器创建）发送到适当的目标。<br />
-（3）过滤器：提供了更精细的附加功能，用于确定要输出的日志记录。<br />
-（4）格式化程序：指定最终输出中日志记录的样式。<br />
+（1）<code>记录器</code>：暴露了应用程序代码直接使用的接口。<br />
+（2）<code>处理程序</code>：将日志记录（由记录器创建）发送到适当的目标。<br />
+（3）<code>过滤器</code>：提供了更精细的附加功能，用于确定要输出的日志记录。<br />
+（4）<code>格式化程序</code>：指定最终输出中日志记录的样式。<br />
 <span id="more"></span></p>
 <p>日志事件信息在 LogRecord
 实例中的记录器、处理程序、过滤器和格式化程序之间传递。<br />
 每一个日志事件就是一个LogRecord实例，每当有日志被记录时由 Logger
 自动创建的，并且可通过 makeLogRecord() 手动创建。</p>
 <p><code>logging.basicConfig(**kwargs)</code>可以对日志记录进行基本配置，可选参数有：<br />
-（1）filename：输出到的文件目录。<br />
-（2）filemode：输出到的文件方式。<br />
-（3）format：信息记录模板。<br />
-（4）datefmt：时间记录模板。<br />
-（5）level：设定日志记录级别，未达到此级别的信息不记录。<br />
+（1）<code>filename</code>：输出到的文件目录。<br />
+（2）<code>filemode</code>：输出到的文件方式。<br />
+（3）<code>format</code>：信息记录模板。<br />
+（4）<code>datefmt</code>：时间记录模板。<br />
+（5）<code>level</code>：设定日志记录级别，未达到此级别的信息不记录。<br />
 可通过<code>getattr(object, name[, default])</code>获取当前日志记录信息。</p>
 <p>logging.basicConfig方法，默认创建一个StreamHandler，如果设置了filename，就创建一个FileHandler。<br />
 如果设置了format参数，就会用它生成一个Formatter对象，否则会生成缺省Formatter对象，并把它加入到刚才创建的handler上，然后把这些handler加入到root.handlers列表上。level是设置给root
@@ -316,11 +316,10 @@ logger的。</p>
 <p>其中format可使用的格式字符串种类：<br />
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">格式                 描述</span><br><span class="line">%(message)s         日志消息内容 ，当调用Formatter.format()时设置。</span><br><span class="line">%(asctime)s         创建LogRecord时的可读时间。默认格式为&#x27;2019-01-08 16:49:45,896&#x27;（逗号后面的数字是毫秒部分的时间）。</span><br><span class="line">%(funcName)s        函数名。</span><br><span class="line">%(levelname)s       日志级别名称，&#x27;DEBUG&#x27;, &#x27;INFO&#x27;, &#x27;WARNING&#x27;, &#x27;ERROR&#x27;, &#x27;CRITICAL&#x27;。</span><br><span class="line">%(levelno)s         日记级别数值，对应DEBUG, INFO, WARNING, ERROR, CRITICAL。</span><br><span class="line">%(lineno)d          日志调用所在的源码行号。</span><br><span class="line">%(module)s          模块（filename的名字部分）。</span><br><span class="line">%(process)d         进程 ID。</span><br><span class="line">%(thread)d          线程 ID。</span><br><span class="line">%(processName)s     进程名。</span><br><span class="line">%(threadName)s      线程名。</span><br></pre></td></tr></table></figure></p>
 <h3 id="logger">Logger</h3>
-<p>通过调用 Logger 类（以下称为 loggers ，
-记录器）的实例来执行日志记录。
-每个实例都有一个名称，它们在概念上以点（句点）作为分隔符排列在命名空间的层次结构中。<br />
-Loggers 有以下的属性和方法。注意 永远 不要直接实例化
-Loggers，应当通过模块级别的函数 <code>logging.getLogger(name)</code>
+<p>通过调用 Logger 类（以下称为
+loggers，记录器）的实例来执行日志记录，每个实例都有一个名称，它们在概念上以点（句点）作为分隔符排列在命名空间的层次结构中。<br />
+注意 永远 不要直接实例化 Loggers，应当通过模块级别的函数
+<code>logging.getLogger(name)</code>
 返回一个实例。多次使用相同的名字调用 <code>getLogger()</code>
 会一直返回相同的 Logger 对象的引用。</p>
 <p>记录器层次结构的根称为根记录器。 这是函数 <code>debug()</code>
@@ -329,8 +328,11 @@ Loggers，应当通过模块级别的函数 <code>logging.getLogger(name)</code>
 功能和方法具有相同的签名。 根记录器的名称在记录的输出中打印为 'root'
 。</p>
 <p>Logger
-对象有三重任务。首先，它们向应用程序代码公开了几种方法，以便应用程序可以在运行时记录消息。其次，记录器对象根据严重性（默认过滤工具）或过滤器对象确定要处理的日志消息。第三，记录器对象将相关的日志消息传递给所有感兴趣的日志处理程序。</p>
+对象有三重任务。第一，它们向应用程序代码公开了几种方法，以便应用程序可以在运行时记录消息。第二，记录器对象根据严重性（默认过滤工具）或过滤器对象确定要处理的日志消息。第三，记录器对象将相关的日志消息传递给所有感兴趣的日志处理程序。</p>
 <p>记录器对象上使用最广泛的方法分为两类：配置和消息发送。<br />
+获取记录器：<br />
+<code>getLogger()</code>：返回对具有指定名称的记录器实例的引用（如果已提供），或者如果没有则返回
+root 。<br />
 记录器的配置方法：<br />
 （1）<code>Logger.setLevel()</code>：指定记录器将处理的最低严重性日志消息，其中
 debug 是最低内置严重性级别， critical 是最高内置严重性级别。<br />
@@ -347,9 +349,6 @@ debug 是最低内置严重性级别， critical 是最高内置严重性级别�
 （4）<code>Logger.error()</code>：error信息。<br />
 （5）<code>Logger.critical()</code>：critical信息。<br />
 （6）<code>Logger.exception()</code>：创建和Logger.error()相同信息，并且还记录当前的堆栈追踪。仅从异常处理程序调用此方法。</p>
-<p>其他方法：<br />
-<code>getLogger()</code>：返回对具有指定名称的记录器实例的引用（如果已提供），或者如果没有则返回
-root 。</p>
 <h3 id="handler">Handler</h3>
 <p>Handler
 对象负责将适当的日志消息（基于日志消息的严重性）分派给处理程序的指定目标，即控制日志信息的输出目的地，可以是控制台、文件。<br />
@@ -365,29 +364,29 @@ Handler有的方法：<br />
 （3）<code>addFilter()</code>：处理程序上配置过滤器对象。<br />
 （4）<code>removeFilter()</code>：处理程序上移除配置的过滤器对象。</p>
 <p>Handler类子类提供了丰富的处理方式：<br />
-（1）StreamHandler：实例发送消息到流（类似文件对象）。<br />
-（2）FileHandler：实例将消息发送到硬盘文件。<br />
-（3）BaseRotatingHandler：是轮换日志文件的处理程序的基类。它并不应该直接实例化。而应该使用
+（1）<code>StreamHandler</code>：实例发送消息到流（类似文件对象）。<br />
+（2）<code>FileHandler</code>：实例将消息发送到硬盘文件。<br />
+（3）<code>BaseRotatingHandler</code>：是轮换日志文件的处理程序的基类。它并不应该直接实例化。而应该使用
 RotatingFileHandler 或 TimedRotatingFileHandler 代替它。<br />
-（4）RotatingFileHandler：实例将消息发送到硬盘文件，支持最大日志文件大小和日志文件轮换。<br />
-（5）TimedRotatingFileHandler：实例将消息发送到硬盘文件，以特定的时间间隔轮换日志文件。<br />
-（6）SocketHandler：实例将消息发送到 TCP/IP 套接字。从 3.4 开始，也支持
-Unix 域套接字。<br />
-（7）DatagramHandler：实例将消息发送到 UDP 套接字。从 3.4 开始，也支持
-Unix 域套接字。<br />
-（8）SMTPHandler：实例将消息发送到指定的电子邮件地址。<br />
-（9）SysLogHandler：实例将消息发送到 Unix syslog
+（4）<code>RotatingFileHandler</code>：实例将消息发送到硬盘文件，支持最大日志文件大小和日志文件轮换。<br />
+（5）<code>TimedRotatingFileHandler</code>：实例将消息发送到硬盘文件，以特定的时间间隔轮换日志文件。<br />
+（6）<code>SocketHandler</code>：实例将消息发送到 TCP/IP 套接字。从 3.4
+开始，也支持 Unix 域套接字。<br />
+（7）<code>DatagramHandler</code>：实例将消息发送到 UDP 套接字。从 3.4
+开始，也支持 Unix 域套接字。<br />
+（8）<code>SMTPHandler</code>：实例将消息发送到指定的电子邮件地址。<br />
+（9）<code>SysLogHandler</code>：实例将消息发送到 Unix syslog
 守护程序，可能在远程计算机上。<br />
-（10）NTEventLogHandler：实例将消息发送到 Windows NT/2000/XP
-事件日志。<br />
-（11）MemoryHandler：实例将消息发送到内存中的缓冲区，只要满足特定条件，缓冲区就会刷新。<br />
-（12）HTTPHandler：实例使用 GET 或 POST 方法将消息发送到 HTTP
-服务器。<br />
-（13）WatchedFileHandler：实例会监视他们要写入日志的文件。如果文件发生更改，则会关闭该文件并使用文件名重新打开。此处理程序仅在类
+（10）<code>NTEventLogHandler</code>：实例将消息发送到 Windows
+NT/2000/XP 事件日志。<br />
+（11）<code>MemoryHandler</code>：实例将消息发送到内存中的缓冲区，只要满足特定条件，缓冲区就会刷新。<br />
+（12）<code>HTTPHandler</code>：实例使用 GET 或 POST 方法将消息发送到
+HTTP 服务器。<br />
+（13）<code>WatchedFileHandler</code>：实例会监视他们要写入日志的文件。如果文件发生更改，则会关闭该文件并使用文件名重新打开。此处理程序仅在类
 Unix 系统上有用； Windows 不支持依赖的基础机制。<br />
-（14）QueueHandler：实例将消息发送到队列，例如在 queue 或
+（14）<code>QueueHandler</code>：实例将消息发送到队列，例如在 queue 或
 multiprocessing 模块中实现的队列。<br />
-（15）NullHandler：实例对错误消息不执行任何操作。它们由想要使用日志记录的库开发人员使用，但是想要避免如果库用户没有配置日志记录，则显示
+（15）<code>NullHandler</code>：实例对错误消息不执行任何操作。它们由想要使用日志记录的库开发人员使用，但是想要避免如果库用户没有配置日志记录，则显示
 "无法找到记录器XXX的消息处理器" 消息的情况。有关更多信息，请参阅
 配置库的日志记录 。</p>
 <h3 id="filter">Filter</h3>
@@ -413,7 +412,7 @@ Formatter 构造函数：<br />
 （4）如果日志记录传递到了父logger，不需要和父logger的level比较，而是直接交给父的所有handler，重复2、3步骤，直到父logger是None退出，一般最后是root
 logger（是否能到root logger要看中间的logger是否允许propagate）。</p>
 <p>logger实例初始的propagate属性为True，即允许向父logger传递消息。<br />
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> logging</span><br><span class="line">logging.basicConfig(level=logging.INFO, <span class="built_in">format</span>=<span class="string">&quot;%(name)-10s [%(message)s]&quot;</span>)</span><br><span class="line"></span><br><span class="line">log1 = logging.getLogger(<span class="string">&#x27;s&#x27;</span>)</span><br><span class="line"><span class="comment"># 设置logger的level</span></span><br><span class="line">log1.setLevel(logging.WARNING)<span class="comment"># &lt;的不输出</span></span><br><span class="line"><span class="comment"># 创建handle</span></span><br><span class="line">h1 = logging.StreamHandler()</span><br><span class="line"><span class="comment"># 设置handle的level</span></span><br><span class="line">h1.setLevel(logging.INFO)<span class="comment"># &lt;=的不处理</span></span><br><span class="line"><span class="comment"># 设置设置handle的format</span></span><br><span class="line">h1.setFormatter(logging.Formatter(<span class="string">&#x27;h1 %(message)s&#x27;</span>))</span><br><span class="line"><span class="comment"># 设置logger的handle</span></span><br><span class="line">log1.addHandler(h1)</span><br><span class="line"></span><br><span class="line">log1.info(<span class="string">&quot;log1.info&quot;</span>)</span><br><span class="line">log1.warning(<span class="string">&quot;log1.warning&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;&quot;输出结果：</span></span><br><span class="line"><span class="string">h1 log1.warning</span></span><br><span class="line"><span class="string">s          [log1.warning]</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure><br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> logging</span><br><span class="line">logging.basicConfig(level=logging.INFO, <span class="built_in">format</span>=<span class="string">&quot;%(name)-10s [%(message)s]&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 制定记录器名称为&#x27;s&#x27;，不指定为root记录器</span></span><br><span class="line">log1 = logging.getLogger(<span class="string">&#x27;s&#x27;</span>)</span><br><span class="line"><span class="comment"># 设置logger的level</span></span><br><span class="line">log1.setLevel(logging.WARNING)<span class="comment"># &lt;的不输出</span></span><br><span class="line"><span class="comment"># 创建handle</span></span><br><span class="line">h1 = logging.StreamHandler()</span><br><span class="line"><span class="comment"># 设置handle的level</span></span><br><span class="line">h1.setLevel(logging.INFO)<span class="comment"># &lt;=的不处理</span></span><br><span class="line"><span class="comment"># 设置设置handle的format</span></span><br><span class="line">h1.setFormatter(logging.Formatter(<span class="string">&#x27;h1 %(message)s&#x27;</span>))</span><br><span class="line"><span class="comment"># 设置logger的handle</span></span><br><span class="line">log1.addHandler(h1)</span><br><span class="line"></span><br><span class="line">log1.info(<span class="string">&quot;log1.info&quot;</span>)</span><br><span class="line">log1.warning(<span class="string">&quot;log1.warning&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;&quot;输出结果：</span></span><br><span class="line"><span class="string">h1 log1.warning</span></span><br><span class="line"><span class="string">s          [log1.warning]</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure><br />
 再增加一个handler：<br />
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> logging</span><br><span class="line">logging.basicConfig(level=logging.INFO, <span class="built_in">format</span>=<span class="string">&quot;%(name)-10s [%(message)s]&quot;</span>)</span><br><span class="line"></span><br><span class="line">log1 = logging.getLogger(<span class="string">&#x27;s&#x27;</span>)</span><br><span class="line">log1.setLevel(logging.WARNING)<span class="comment"># &lt;的不输出</span></span><br><span class="line"></span><br><span class="line">h1 = logging.StreamHandler()</span><br><span class="line">h1.setLevel(logging.INFO)<span class="comment"># &lt;=的不处理</span></span><br><span class="line">h1.setFormatter(logging.Formatter(<span class="string">&#x27;h1 %(message)s&#x27;</span>))</span><br><span class="line"></span><br><span class="line">h2 = logging.StreamHandler()</span><br><span class="line">h2.setLevel(logging.INFO)</span><br><span class="line">h2.setFormatter(logging.Formatter(<span class="string">&#x27;h2 %(message)s&#x27;</span>))</span><br><span class="line"></span><br><span class="line">log1.addHandler(h1)</span><br><span class="line">log1.addHandler(h2)</span><br><span class="line"></span><br><span class="line">log1.info(<span class="string">&quot;log1.info&quot;</span>)</span><br><span class="line">log1.warning(<span class="string">&quot;log1.warning&quot;</span>)</span><br><span class="line"><span class="string">&quot;&quot;&quot;输出结果：</span></span><br><span class="line"><span class="string">h1 log1.warning</span></span><br><span class="line"><span class="string">h2 log1.warning</span></span><br><span class="line"><span class="string">s          [log1.warning]</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure><br />
 增加Filter：<br />
@@ -482,7 +481,7 @@ logger（是否能到root logger要看中间的logger是否允许propagate）。
 
   <div class="copyright">
     &copy; 2019 – 
-    <span itemprop="copyrightYear">2023</span>
+    <span itemprop="copyrightYear">2024</span>
     <span class="with-love">
       <i class="fa fa-heart"></i>
     </span>
