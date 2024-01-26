@@ -1234,67 +1234,78 @@ Boosting（GBDT）是一个在很多应用里都很出彩的技术。提升树�
 <h1 id="内容">内容</h1>
 <h2 id="regularized-learning-objective">Regularized Learning
 Objective</h2>
-<p>给定一个数据集<span class="math inline">\(\mathcal{D}\)</span>，$
-n<span class="math inline">\(个样本，每个样本有\)</span>
-m$个特征：<br />
+<p>给定一个数据集<span class="math inline">\(\mathcal{D}\)</span>，<span
+class="math inline">\(n\)</span>个样本，每个样本有<span
+class="math inline">\(m\)</span>个特征：<br />
 <span class="math display">\[
 \mathcal{D}= \{(x_i,y_i)\}(|\mathcal{D}|= n,x_i\in \Bbb{R}^m, y_i\in
 \Bbb{R})
 \]</span><br />
-第 $ k$ 棵树对于输入 $ x_i$ 的样本预测结果为$ f_k(x_i)$：<br />
+第 <span class="math inline">\(k\)</span> 棵树对于输入 <span
+class="math inline">\(x_i\)</span> 的样本预测结果为<span
+class="math inline">\(f_k(x_i)\)</span>：<br />
 <span class="math display">\[
 \hat{y}_i=\varnothing(x_i)=\sum\limits_{k=1}^{K}f_k(x_i),\quad f_k\in
 \mathcal{F}
 \]</span><br />
 其中，<span class="math inline">\(\mathcal{F}=
 \{f(x)=w_{q(x)}\}(q:\Bbb{R}^m\to T,w\in \Bbb{R}^T)\)</span>
-是CART回归树。$ q(x)$ 表示映射样本 $ x$ 到叶子节点的下标。$ T<span
-class="math inline">\(是叶子节点数量。\)</span> w$ 是叶子节点最优解（$
-w_i<span
-class="math inline">\(表示第\)</span>i$个叶子节点的最优解）。每一棵树都有独立的
-$ q$ 和 $ w$。</p>
+是CART回归树。<span class="math inline">\(q(x)\)</span> 表示映射样本
+<span class="math inline">\(x\)</span> 到叶子节点的下标。<span
+class="math inline">\(T\)</span>是叶子节点数量。<span
+class="math inline">\(w\)</span> 是叶子节点最优解（<span
+class="math inline">\(w_i\)</span>表示第<span
+class="math inline">\(i\)</span>个叶子节点的最优解）。每一棵树都有独立的
+<span class="math inline">\(q\)</span> 和$ w$。</p>
 <h2 id="gradient-tree-boosting">Gradient Tree Boosting</h2>
-以上定义了树模型的预测函数，那么接下来定义整个损失函数：<br />
+<p>以上定义了树模型的预测函数，那么接下来定义整个损失函数：<br />
 <span class="math display">\[
 \mathcal{L}(\varnothing)= \sum\limits_i l(\hat{y}_i,y_i)+\sum\limits_k
 \Omega(f_k)\\
-\]</span><br />
-<span class="math display">\[
+\]</span></p>
+<p><span class="math display">\[
 \text{where} \quad \Omega( f)=\gamma  T + \frac{1}{2}\lambda||w||^2
-\]</span><br />
-其中，$ l$ 函数是一个可导的凸函数，用来表示预测值 <span
-class="math inline">\(\hat{y}_i\)</span> 和真实值 $ y_i$
-之间的差异。<span class="math inline">\(\Omega\)</span>
+\]</span></p>
+<p>其中，<span class="math inline">\(l\)</span>
+函数是一个可导的凸函数，用来表示预测值 <span
+class="math inline">\(\hat{y}_i\)</span> 和真实值 <span
+class="math inline">\(y_i\)</span> 之间的差异。<span
+class="math inline">\(\Omega\)</span>
 是是惩罚项（正则化），用来防止树的结构过于复杂。<br />
 损失函数 <span class="math inline">\(\mathcal{L}\)</span>
 参数中包含了函数，所以不能用传统的优化算法来优化。假设 <span
-class="math inline">\(\hat{y}_i^{t}\)</span> 是 $ x_i$ 在第 $ t$
-次迭代中的预测值。那么则有：<br />
+class="math inline">\(\hat{y}_i^{t}\)</span> 是 <span
+class="math inline">\(x_i\)</span> 在第 <span
+class="math inline">\(t\)</span> 次迭代中的预测值。那么则有：<br />
 <span class="math display">\[
 \mathcal{L}^{( t)}= \sum\limits_{i=
 1}^{n}l(y_i,\hat{y}_i^{(t-1)}+f_t(x_i))+\Omega(f_t)
-\]</span><br />
-把 $ y_i,_i^{(t-1)}$ 看成 <span class="math inline">\(x\)</span> ，把 $
-f_t(x_i))$ 看成 <span class="math inline">\(\Delta x\)</span>
+\]</span></p>
+<p>把 <span class="math inline">\(y_i,\hat{y}_i^{(t-1)}\)</span> 看成
+<span class="math inline">\(x\)</span> ，把 <span
+class="math inline">\(f_t(x_i)\)</span> 看成 <span
+class="math inline">\(\Delta x\)</span>
 ，对上式近似为二阶泰勒级展开：<br />
 <span class="math display">\[
 \mathcal{L}^{( t)}\simeq \sum\limits_{i=
 1}^{n}[l(y_i,\hat{y}_i^{(t-1)})+g_if_t(x_i)+\frac{1}{2} h_if_t^{
 2}(x_i)]+\Omega(f_t)
-\]</span><br />
-<span class="math display">\[
+\]</span></p>
+<p><span class="math display">\[
 \text{where}
 \quad  g_i=\partial_{\hat{y}^{(t-1)}}l(y_i,\hat{y}_i^{(t-1)})\quad
 \text{and} \quad h_i=\partial_{\hat{y}^{(t-1)}}^{
 2}l(y_i,\hat{y}_i^{(t-1)})
-\]</span><br />
-其中，$ g_i<span class="math display">\[ h_i$是一阶偏导和二阶偏导。由于$
-l(y_i,\hat{y}_i^{(t-1)})$为常数项，可以去除。
-定义 $ I_j=\{i|q(x_i)=j\}$ 作为样本 $ x_i$ 被分割到第 $ j$
-个叶子节点下的样本下标集合（样本集合）。那么上面公式可以由**对每棵树的样本求和**转成**对每棵树的叶子节点求和**：
-\]</span><br />
-
-<span class="math display">\[\begin{aligned}
+\]</span></p>
+<p>其中，<span class="math inline">\(g_i\)</span>和<span
+class="math inline">\(h_i\)</span>是一阶偏导和二阶偏导。由于<span
+class="math inline">\(l(y_i,\hat{y}_i^{(t-1)})\)</span>为常数项，可以去除。<br />
+定义 <span class="math inline">\(I_j=\{i|q(x_i)=j\}\)</span> 作为样本
+<span class="math inline">\(x_i\)</span> 被分割到第 <span
+class="math inline">\(j\)</span>
+个叶子节点下的样本下标集合（样本集合）。那么上面公式可以由<strong>对每棵树的样本求和</strong>转成<strong>对每棵树的叶子节点求和</strong>：<br />
+<span class="math display">\[
+\begin{aligned}
 \tilde{\mathcal{L}}^{( t)}&amp;= \sum\limits_{i=
 1}^{n}[g_if_t(x_i)+\frac{1}{2} h_if_t^{ 2}(x_i)]+\Omega(f_t)\\
 &amp;= \sum\limits_{i= 1}^{n}[g_if_t(x_i)+\frac{1}{2} h_if_t^{
@@ -1309,25 +1320,31 @@ I_j}g_iw_{j}+\frac{1}{2}\sum\limits_{i\in  I_j} h_i(w_{j})^{
 &amp;= \sum\limits_{j= 1}^{T}[(\sum\limits_{i\in
 I_j}g_i)w_{j}+\frac{1}{2}(\sum\limits_{i\in  I_j} h_i+\lambda)w_{j}^{
 2}]+\gamma  T
-\end{aligned}\]</span>
-<p><span class="math display">\[
-**1、如何求出每个叶子节点的最优解？**
-对上式求极值点（它是凸函数，求的是极小值），即对 $ w_j$
-求一阶导数等于零（也可以看成二元一次方程求解），解得：
-\]</span><br />
-w_j^*=-<br />
+\end{aligned}
+\]</span></p>
+<p><strong>1、如何求出每个叶子节点的最优解？</strong><br />
+对上式求极值点（它是凸函数，求的是极小值），即对 <span
+class="math inline">\(w_j\)</span>
+求一阶导数等于零（也可以看成二元一次方程求解），解得：<br />
 <span class="math display">\[
-带入 $\tilde{\mathcal{L}}^{( t)}$ 求得最优值（最小值）：
+w_j^*=-\frac{\sum_{i\in I_j}g_i}{\sum_{i\in I_j}h_i+\lambda}
 \]</span><br />
-^{( t)}=-_{j= 1}^{T}+T<br />
-$$<br />
+带入 <span class="math inline">\(\tilde{\mathcal{L}}^{( t)}\)</span>
+求得最优值（最小值）：<br />
+<span class="math display">\[
+\tilde{\mathcal{L}}^{( t)}=-\frac{1}{2}\sum\limits_{j=
+1}^{T}\frac{(\sum_{i\in I_j}g_i)^{ 2}}{\sum_{i\in
+I_j}h_i+\lambda}+\gamma  T
+\]</span><br />
 可以用这个公式来来衡量决策树的质量。有点像决策树信息熵一个道理。</p>
 <p><strong>2、对当前决策树做子树分裂时，如何选择哪个特征和特征值进行分裂，使损失函数最小？</strong><br />
 如果想要划分后损失函数得到最小值，意味这在做每次划分的时候，要尽量保证划分后的score比划分前的score要更小。那么应该找到
 (划分前的score - 划分后的score)
-这个差最大的切分点作为我们这一次的划分点。假设 $ I_L$和 $ I_R$
-为一个节点 $ I$ 划分后的左子集和右子集，节点 $ I=I_L I_R$
-，则得到以下公式：<br />
+这个差最大的切分点作为我们这一次的划分点。假设 <span
+class="math inline">\(I_L\)</span>和 <span
+class="math inline">\(I_R\)</span> 为一个节点 <span
+class="math inline">\(I\)</span> 划分后的左子集和右子集，节点 <span
+class="math inline">\(I=I_L \cup I_R\)</span> ，则得到以下公式：<br />
 <span class="math display">\[
 \begin{aligned}
 \mathcal{L}_{split}&amp;=- \dfrac{1}{2}[\frac{(\sum_{i\in I}g_i)^{
@@ -1345,7 +1362,8 @@ I}h_i+\lambda}]-\gamma
 <h2 id="shrinkage-and-column-subsampling">Shrinkage and Column
 Subsampling</h2>
 <p>除了之前提过的添加正则化的项来防止模型的过拟合之外，还可以用两种方式来防止过拟合：<br />
-（1）添加类似梯度下降优化问题中的学习率 $ $
+（1）添加类似梯度下降优化问题中的学习率 <span
+class="math inline">\(\eta\)</span>
 ，这个可以收缩每棵树的权重，让每棵树的生长更加稳定。<br />
 （2）对样本的特征子采样（随机森林用到过）。每次生成树的时候，只用其中一部分抽样的特征。这样子也能降低过拟合的风险。</p>
 <p><strong>精准的贪心算法</strong><br />
@@ -1373,14 +1391,18 @@ Sketch</strong>（加权分位法）。</p>
 <p><strong>加权分位法</strong><br />
 上面我们讨论了对数据分成Bucket，再来计算他的节点的split分数。来减少我们的计算量。那么我们如何对数据分桶，才能够比较合理呢？</p>
 <p>作者按照对loss的影响权重来进行分桶，让数据分桶后，每个桶对loss的影响权重相同。<br />
-定义一个数据集 $ <em>k={(x</em>{1k},h_1),(x_{2k},h_2),...,(x_{nk},h_n)}$
-，$ k$ 为样本 <span class="math inline">\(x\)</span> 的特征数。<br />
-定义一个排序函数 $ r_k:[0,)$，则：<br />
+定义一个数据集 <span
+class="math inline">\(\mathcal{D}_k=\{(x_{1k},h_1),(x_{2k},h_2),...,(x_{nk},h_n)\}\)</span>
+，<span class="math inline">\(k\)</span> 为样本 <span
+class="math inline">\(x\)</span> 的特征数。<br />
+定义一个排序函数 <span class="math inline">\(r_k:\Bbb{R}\sim
+[0,\infty)\)</span>，则：<br />
 <span class="math display">\[
 r_k(z)=\frac{1}{\sum_{(x,h)\in \mathcal{D}_k}h}\sum_{(x,h)\in
 \mathcal{D}_k,x&lt;z}h
 \]</span><br />
-切分点集合 $ {s_{k1}, s_{k2},...,s_{kl}}$，满足：<br />
+切分点集合 <span class="math inline">\(\{s_{k1},
+s_{k2},...,s_{kl}\}\)</span>，满足：<br />
 <span class="math display">\[
 |r_k(s_{k,j})-r_k(s_{k,j+1})|&lt;\epsilon, \quad s_{k1}=\min\limits_i
 x_{ik},s_{kl}=\max\limits_i x_{ik}
@@ -1390,8 +1412,8 @@ x_{ik},s_{kl}=\max\limits_i x_{ik}
 <span class="math inline">\(\frac{1}{\epsilon}\)</span> 个候选点。</p>
 <p>那么 <span class="math inline">\(h_i\)</span> 为什么能够代表 <span
 class="math inline">\(x_i\)</span> 的权重来进行排序呢？将公式 <span
-class="math inline">\({\tilde{\mathcal{L}}}^{(t)}\)</span> 对 $ h_i$
-进行提取，可得到：<br />
+class="math inline">\({\tilde{\mathcal{L}}}^{(t)}\)</span> 对 <span
+class="math inline">\(h_i\)</span> 进行提取，可得到：<br />
 <span class="math display">\[
 \begin{aligned}
 \tilde{\mathcal{L}}^{( t)}&amp;= \sum\limits_{i=
@@ -1409,7 +1431,8 @@ g_if_t(x_i)}{h_i}+\frac{1}{2} h_if_t^{ 2}(x_i)]+\Omega(f_t)\\
 h_i(f_t(x_i)-(-\frac{g_i}{h_i}))^{ 2}+\Omega(f_t)+\text{constant}
 \end{aligned}
 \]</span><br />
-发现 $ h_i$ 对结果影响最大，所以用它来进行排序。</p>
+发现 <span class="math inline">\(h_i\)</span>
+对结果影响最大，所以用它来进行排序。</p>
 <h2 id="sparsity-aware-split-finding">Sparsity-aware Split Finding</h2>
 <p>对稀疏数据的处理，重点是针对特征为空时的处理，对<strong>精准的贪心算法</strong>做了改进：<br />
 <img src="/images/XGB/04.png" width="60%"></p>
@@ -1430,9 +1453,10 @@ buffer来实现的！这个优化在小数据下看不出来，数据越多越�
 <h2 id="熵">熵</h2>
 <p>如果<span
 class="math inline">\(\textbf{X}\)</span>是一个离散型随机变量，取空间值为<span
-class="math inline">\(\Bbb{R}\)</span>，其概率分布为$ p(x)=P(=x),x<span
-class="math inline">\(。那么，\)</span><span
-class="math inline">\(的熵\)</span>H()$定义为：<br />
+class="math inline">\(\Bbb{R}\)</span>，其概率分布为<span
+class="math inline">\(p(x)=P(\textbf{X}=x),x\in\Bbb{R}\)</span>。那么，<span
+class="math inline">\(\textbf{X}\)</span>的熵<span
+class="math inline">\(H(\textbf{X})\)</span>定义为：<br />
 <span class="math display">\[
 H(\textbf{X})=-\sum\limits_{x\in\Bbb{R}} p(x) log p(x)
 \]</span><br />
@@ -1545,8 +1569,9 @@ class="math inline">\(\textbf{X}\)</span>的不确定性减小，反而增大了
 class="math inline">\(\textbf{X}\)</span>的不确定性，是非常是不利的。</p>
 <h2 id="相对熵">相对熵</h2>
 <p>相对熵（relative entropy）又称Kullback-Leibler差异（KullbackLeibler
-divergence），或简称KL距离，是<strong>衡量相同事件空间里两个概率分布相对差距的测度</strong>。两个概率分布$
-p(x)<span class="math inline">\(和\)</span> q(x)$的相对熵定义为：<br />
+divergence），或简称KL距离，是<strong>衡量相同事件空间里两个概率分布相对差距的测度</strong>。两个概率分布<span
+class="math inline">\(p(x)\)</span>和<span
+class="math inline">\(q(x)\)</span>的相对熵定义为：<br />
 <span class="math display">\[
 \begin{aligned}
 D( p||q)&amp;=\sum\limits_{ x\in\textbf{X}} p(x) log\frac{ p(x)}{
@@ -1556,20 +1581,22 @@ x\in\textbf{X}} p(x) log q(x)\\
 &amp;=-H( p)+H( p,q)
 \end{aligned}
 \]</span><br />
-其中，<span class="math inline">\(H(
-p)\)</span>恒不变，只需考虑交叉熵<span class="math inline">\(H(
-p,q)\)</span>即可。$ q(x)$ 分布越接近 $ p(x)$，那么散度值越小。<br />
+其中，<span
+class="math inline">\(H(p)\)</span>恒不变，只需考虑交叉熵<span
+class="math inline">\(H(p,q)\)</span>即可。<span
+class="math inline">\(q(x)\)</span> 分布越接近 <span
+class="math inline">\(p(x)\)</span>，那么散度值越小。<br />
 有时会将KL散度称为KL距离，但它并不满足距离的性质：KL散度不是对称的；KL散度不满足三角不等式。</p>
 <h2 id="交叉熵">交叉熵</h2>
 <p>根据前面熵的定义，知道熵是一个不确定性的测度，也就是说，我们对于某件事情知道得越多，那么，熵就越小，因而对于试验的结果我们越不感到意外。<strong>交叉熵的概念就是用来衡量估计模型与真实概率分布之间差异情况的。</strong><br />
 如果一个随机变量<span class="math inline">\(\textbf{X}\sim
-p(x)\)</span>，$ q(x)<span class="math inline">\(为用于近似\)</span>
-p(x)<span class="math inline">\(的概率分布，那么，随机变量\)</span><span
-class="math inline">\(和模型\)</span> p(x)$之间的交叉熵（cross
-entropy）定义为：<br />
+p(x)\)</span>，<span class="math inline">\(q(x)\)</span>为用于近似<span
+class="math inline">\(p(x)\)</span>的概率分布，那么，随机变量<span
+class="math inline">\(\textbf{X}\)</span>和模型$
+p(x)$之间的交叉熵（cross entropy）定义为：<br />
 <span class="math display">\[
 \begin{aligned}
-H( p,q)&amp;=H( p)+D( p||q)\\
+H(p,q)&amp;=H(p)+D(p||q)\\
 &amp;=-\sum\limits_{ x\in\textbf{X}} p(x) log  q(x)\\
 \end{aligned}
 \]</span></p>
