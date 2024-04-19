@@ -87,7 +87,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">9</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">126</span></a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">128</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -152,18 +152,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-count">128</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -193,6 +193,127 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/16/ML/39.ApproInference/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/10/16/ML/39.ApproInference/" class="post-title-link" itemprop="url">ApproInference</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-16 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-16T00:00:00+08:00">2020-10-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>367</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="近似推断">近似推断</h1>
+<p>这一讲中的近似推断具体描述在深度生成模型中的近似推断。推断的目的有下面几个部分：</p>
+<ol type="1">
+<li>推断本身，根据结果（观测）得到原因（隐变量）。</li>
+<li>为参数的学习提供帮助。</li>
+</ol>
+<p>但是推断本身是一个困难的额任务，计算复杂度往往很高，对于无向图，由于节点之间的联系过多，那么因子分解很难进行，并且相互之间都有耦合，于是很难求解，仅仅在某些情况如
+RBM
+中可解，在有向图中，常常由于条件独立性问题，如两个节点之间条件相关（explain
+away），于是求解这些节点的条件概率就很困难，仅仅在某些概率假设情况下可解如高斯模型，于是需要近似推断。</p>
+<p>事实上，我们常常讲推断问题变为优化问题，即：<br />
+<span class="math display">\[
+Log-likehood:\sum\limits_{v\in V}\log p(v)
+\]</span><br />
+对上面这个问题，由于：<br />
+<span class="math display">\[
+\log
+p(v)=\log\frac{p(v,h)}{p(h|v)}=\log\frac{p(v,h)}{q(h|v)}+\log\frac{q(h|v)}{p(h|v)}
+\]</span><br />
+左右两边对 <span class="math inline">\(h\)</span> 积分：<br />
+<span class="math display">\[
+\int_h\log p(v)\cdot q(h|v)dh=\log p(v)
+\]</span><br />
+右边积分有：<br />
+<span class="math display">\[
+\mathbb{E}_{q(h|v)}[\log\frac{p(v,h)}{q(h|v)}]+KL(q(h|v)||p(h|v))=\mathbb{E}_{q(h|v)}[\log
+p(v,h)]+H(q)+KL(q||p)
+\]</span><br />
+其中前两项是 ELBO，于是这就变成一个优化 ELBO 的问题。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -333,6 +454,271 @@ Theorem，但是于此同时，由于深度和宽度的相对效率不知道，�
 定理），从而变为一个线性问题。</li>
 <li>核方法，由于非线性转换是变换为高维空间，因此可能导致维度灾难，并且可能很难得到这个变换函数，核方法不直接寻找这个转换，而是寻找一个内积。</li>
 <li>神经网络方法，将复合运算变为基本的线性运算的组合。</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/15/ML/38.PartitionFunction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/10/15/ML/38.PartitionFunction/" class="post-title-link" itemprop="url">PartitionFunction</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-15 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-15T00:00:00+08:00">2020-10-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="配分函数">配分函数</h1>
+<p>在学习和推断中，对于一个概率的归一化因子很难处理，这个归一化因子和配分函数相关。假设一个概率分布：<br />
+<span class="math display">\[
+p(x|\theta)=\frac{1}{Z(\theta)}\hat{p}(x|\theta),Z(\theta)=\int\hat{p}(x|\theta)dx
+\]</span></p>
+<h2 id="包含配分函数的-mle">包含配分函数的 MLE</h2>
+<p>在学习任务中，采用最大似然：<br />
+<span class="math display">\[
+\begin{align}
+\hat{\theta}&amp;=\mathop{argmax}_{\theta}p(x|\theta)=\mathop{argmax}_\theta\sum\limits_{i=1}^N\log
+p(x_i|\theta)\nonumber\\
+&amp;=\mathop{argmax}_\theta\sum\limits_{i=1}^N\log
+\hat{p}(x|\theta)-N\log Z(\theta)\nonumber\\
+&amp;=\mathop{argmax}_{\theta}\frac{1}{N}\sum\limits_{i=1}^N\log
+\hat{p}(x|\theta)-\log Z(\theta)=\mathop{argmax}_\theta l(\theta)
+\end{align}
+\]</span><br />
+求导：<br />
+<span class="math display">\[
+\begin{align}\nabla_\theta\log
+Z(\theta)&amp;=\frac{1}{Z(\theta)}\nabla_\theta Z(\theta)\nonumber\\
+&amp;=\frac{p(x|\theta)}{\hat{p}(x|\theta)}\int\nabla_\theta
+\hat{p}(x|\theta)dx\nonumber\\
+&amp;=\int\frac{p(x|\theta)}{\hat{p}(x|\theta)}\nabla_\theta\hat{p}(x|\theta)dx\nonumber\\
+&amp;=\mathbb{E}_{p(x|\theta)}[\nabla_\theta\log\hat{p}(x|\theta)]
+\end{align}
+\]</span><br />
+由于这个表达式和未知的概率相关，于是无法直接精确求解，需要近似采样，如果没有这一项，那么可以采用梯度下降，但是存在配分函数就无法直接采用梯度下降了。</p>
+<p>上面这个期望值，是对模型假设的概率分布，定义真实概率分布为 <span
+class="math inline">\(p_{data}\)</span>，于是，<span
+class="math inline">\(l(\theta)\)</span>
+中的第一项的梯度可以看成是从这个概率分布中采样出来的 <span
+class="math inline">\(N\)</span> 个点求和平均，可以近似期望值。<br />
+<span class="math display">\[
+\nabla_\theta
+l(\theta)=\mathbb{E}_{p_{data}}[\nabla_\theta\log\hat{p}(x|\theta)]-\mathbb{E}_{p(x|\theta)}[\nabla_\theta\log\hat{p}(x|\theta)]
+\]</span><br />
+于是，相当于真实分布和模型假设越接近越好。上面这个式子第一项叫做正相，第二项叫做负相。为了得到负相的值，需要采用各种采样方法，如
+MCMC。</p>
+<p>采样得到 <span class="math inline">\(\hat{x}_{1-m}\sim
+p_{model}(x|\theta^t)\)</span>，那么：<br />
+<span class="math display">\[
+\theta^{t+1}=\theta^t+\eta(\sum\limits_{i=1}^m\nabla_\theta \log
+\hat{p}(x_i|\theta^t)-\sum\limits_{i=1}^m\nabla_\theta\log
+\hat{p}(\hat{x_i}|\theta^t))
+\]</span><br />
+这个算法也叫做基于 MCMC
+采样的梯度上升。每次通过采样得到的样本叫做幻想粒子，如果这些幻想粒子区域的概率高于实际分布，那么最大化参数的结果就是降低这些部分的概率。</p>
+<h2 id="对比散度-cd-learning">对比散度-CD Learning</h2>
+<p>上面对于负相的采样，最大的问题是，采样到达平稳分布的步骤数量是未知的。对比散度的方法，是对上述的采样是的初始值作出限制，直接采样
+<span
+class="math inline">\(\hat{x}_i=x_i\)</span>，这样可以缩短采样的混合时间。这个算法叫做
+CD-k 算法，<span class="math inline">\(k\)</span>
+就是初始化后进行的演化时间，很多时候，即使 <span
+class="math inline">\(k=1\)</span> 也是可以的。</p>
+<p>我们看 MLE 的表达式：<br />
+<span class="math display">\[
+\begin{align}\hat{\theta}&amp;=\mathop{argmax}_{\theta}p(x|\theta)=\mathop{argmax}_{\theta}\frac{1}{N}\sum\limits_{i=1}^N\log
+p(x_i|\theta)=\mathbb{E}_{p_{data}}[\log p_{model}(x|\theta)]\nonumber\\
+&amp;=\mathop{argmax}_\theta\int p_{data}\log p_{model}dx\nonumber\\
+&amp;=\mathop{argmax}_\theta\int p_{data}\log
+\frac{p_{model}}{p_{data}}dx\nonumber\\
+&amp;=\mathop{argmin}_\theta KL(p_{data}||p_{model})
+\end{align}
+\]</span><br />
+对于 CD-k 的采样过程，可以将初始值这些点表示为：<br />
+<span class="math display">\[
+p^0=p_{data}
+\]</span><br />
+而我们的模型需要采样过程达到平稳分布：<br />
+<span class="math display">\[
+p^\infty=p_{model}
+\]</span><br />
+因此，我们需要的是 <span
+class="math inline">\(KL(p^0||p^\infty)\)</span>。定义 CD：<br />
+<span class="math display">\[
+KL(p^0||p^\infty)-KL(p^k||p^\infty)
+\]</span><br />
+这就是 CD-k 算法第 <span class="math inline">\(k\)</span>
+次采样的目标函数。</p>
+<h2 id="rbm-的学习问题">RBM 的学习问题</h2>
+<p>RBM 的参数为：<br />
+<span class="math display">\[
+\begin{align}
+h=(h_1,\cdots,h_m)^T\\
+v=(v_1,\cdots,v_n)^T\\
+w=(w_{ij})_{mn}\\
+\alpha=(\alpha_1,\cdots,\alpha_n)^T\\
+\beta=(\beta_1,\cdots,\beta_m)^T
+\end{align}
+\]</span><br />
+学习问题关注的概率分布为：<br />
+<span class="math display">\[
+\begin{align}
+\log p(v)&amp;=\log\sum\limits_{h}p(h,v)\nonumber\\
+&amp;=\log\sum\limits_h\frac{1}{Z}\exp(-E(v,h))\nonumber\\
+&amp;=\log\sum\limits_{h}\exp(-E(v,h))-\log\sum\limits_{v,h}\exp(-E(h,v))
+\end{align}
+\]</span><br />
+对上面这个式子求导第一项：<br />
+<span class="math display">\[
+\frac{\partial
+\log\sum\limits_{h}\exp(-E(v,h))}{\partial\theta}=-\frac{\sum\limits_h\exp(-E(v,h))\frac{\partial
+E(v,h)}{\partial\theta}}{\sum\limits_{h}\exp(-E(v,h))}\\
+=-\sum\limits_h\frac{\exp(-E(v,h))\frac{\partial
+E(v,h)}{\partial\theta}}{\sum\limits_{h}\exp(-E(v,h))}=-\sum\limits_hp(h|v)\frac{\partial
+E(v,h)}{\partial\theta}
+\]</span><br />
+第二项：<br />
+<span class="math display">\[
+\frac{\partial
+\log\sum\limits_{v,h}\exp(-E(h,v))}{\partial\theta}=-\sum\limits_{h,v}\frac{\exp(-E(v,h))\frac{\partial
+E(v,h)}{\partial\theta}}{\sum\limits_{h,v}\exp(-E(v,h))}=-\sum\limits_{v,h}p(v,h)\frac{\partial
+E(v,h)}{\partial\theta}
+\]</span><br />
+所以有：<br />
+<span class="math display">\[
+\frac{\partial}{\partial\theta}\log
+p(v)=-\sum\limits_hp(h|v)\frac{\partial
+E(v,h)}{\partial\theta}+\sum\limits_{v,h}p(v,h)\frac{\partial
+E(v,h)}{\partial\theta}
+\]</span><br />
+将 RBM 的模型假设代入：<br />
+<span class="math display">\[
+E(v,h)=-(h^Twv+\alpha^Tv+\beta^Th)
+\]</span></p>
+<ol type="1">
+<li><p><span class="math inline">\(w_{ij}\)</span>：<br />
+<span class="math display">\[
+\frac{\partial}{\partial w_{ij}}E(v,h)=-h_iv_j
+\]</span><br />
+于是：<br />
+<span class="math display">\[
+\frac{\partial}{\partial\theta}\log
+p(v)=\sum\limits_{h}p(h|v)h_iv_j-\sum\limits_{h,v}p(h,v)h_iv_j
+\]</span><br />
+第一项：<br />
+<span class="math display">\[
+\sum\limits_{h_1,h_2,\cdots,h_m}p(h_1,h_2,\cdots,h_m|v)h_iv_j=\sum\limits_{h_i}p(h_i|v)h_iv_j=p(h_i=1|v)v_j
+\]</span><br />
+这里假设了 <span class="math inline">\(h_i\)</span> 是二元变量。</p>
+<p>第二项：<br />
+<span class="math display">\[
+\sum\limits_{h,v}p(h,v)h_iv_j=\sum\limits_{h,v}p(v)p(h|v)h_iv_j=\sum\limits_vp(v)p(h_i=1|v)v_j
+\]</span><br />
+这个求和是指数阶的，于是需要采样解决，我么使用 CD-k 方法。</p>
+<p>对于第一项，可以直接使用训练样本得到，第二项采用 CD-k
+采样方法，首先使用样本 <span
+class="math inline">\(v^0=v\)</span>，然后采样得到 <span
+class="math inline">\(h^0\)</span>，然后采样得到 <span
+class="math inline">\(v^1\)</span>，这样顺次进行，最终得到 <span
+class="math inline">\(v^k\)</span>，对于每个样本都得到一个 <span
+class="math inline">\(v^k\)</span>，最终采样得到 <span
+class="math inline">\(N\)</span> 个 $v^k $，于是第二项就是：<br />
+<span class="math display">\[
+p(h_i=1|v^k)v_j^k
+\]</span><br />
+具体的算法为：</p>
+<ol type="1">
+<li>对每一个样本中的 <span class="math inline">\(v\)</span>，进行采样：
+<ol type="1">
+<li>使用这个样本初始化采样</li>
+<li>进行 <span class="math inline">\(k\)</span> 次采样（0-k-1）：
+<ol type="1">
+<li><span class="math inline">\(h_i^l\sim p(h_i|v^l)\)</span></li>
+<li><span class="math inline">\(v_i^{l+1}\sim p(v_i|h^l)\)</span></li>
+</ol></li>
+<li>将这些采样出来的结果累加进梯度中</li>
+</ol></li>
+<li>重复进行上述过程，最终的梯度除以 <span
+class="math inline">\(N\)</span></li>
+</ol></li>
 </ol>
 
       
@@ -1757,582 +2143,6 @@ class="math inline">\(p(z_t|z_{t-1})\)</span>，这就叫做生成与测试方�
 <p>采用重采样的 SIS
 算法就是基本的粒子滤波算法。如果像上面那样选择提议分布，这个算法叫做 SIR
 算法。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/07/ML/29.LDS/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avstar.png">
-      <meta itemprop="name" content="SoundMemories">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SoundMemories">
-      <meta itemprop="description" content="今日事，今日毕">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | SoundMemories">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/10/07/ML/29.LDS/" class="post-title-link" itemprop="url">LDS</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-10-07 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-07T00:00:00+08:00">2020-10-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>712</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="线性动态系统">线性动态系统</h1>
-<p>HMM 模型适用于隐变量是离散的值的时候，对于连续隐变量的
-HMM，常用线性动态系统描述线性高斯模型的态变量，使用粒子滤波来表述非高斯非线性的态变量。</p>
-<p>LDS
-又叫卡尔曼滤波，其中，线性体现在上一时刻和这一时刻的隐变量以及隐变量和观测之间：<br />
-<span class="math display">\[
-\begin{align}
-z_t&amp;=A\cdot z_{t-1}+B+\varepsilon\\
-x_t&amp;=C\cdot z_t+D+\delta\\
-\varepsilon&amp;\sim\mathcal{N}(0,Q)\\
-\delta&amp;\sim\mathcal{N}(0,R)
-\end{align}
-\]</span><br />
-类比 HMM 中的几个参数：<br />
-<span class="math display">\[
-\begin{align}
-p(z_t|z_{t-1})&amp;\sim\mathcal{N}(A\cdot z_{t-1}+B,Q)\\
-p(x_t|z_t)&amp;\sim\mathcal{N}(C\cdot z_t+D,R)\\
-z_1&amp;\sim\mathcal{N}(\mu_1,\Sigma_1)
-\end{align}
-\]</span><br />
-在含时的概率图中，除了对参数估计的学习问题外，在推断任务中，包括译码，证据概率，滤波，平滑，预测问题，LDS
-更关心滤波这个问题：<span
-class="math inline">\(p(z_t|x_1,x_2,\cdots,x_t)\)</span>。类似 HMM
-中的前向算法，我们需要找到一个递推关系。<br />
-<span class="math display">\[
-p(z_t|x_{1:t})=p(x_{1:t},z_t)/p(x_{1:t})=Cp(x_{1:t},z_t)
-\]</span><br />
-对于 <span class="math inline">\(p(x_{1:t},z_t)\)</span>：<br />
-<span class="math display">\[
-\begin{align}p(x_{1:t},z_t)&amp;=p(x_t|x_{1:t-1},z_t)p(x_{1:t-1},z_t)=p(x_t|z_t)p(x_{1:t-1},z_t)\nonumber\\
-&amp;=p(x_t|z_t)p(z_t|x_{1:t-1})p(x_{1:t-1})=Cp(x_t|z_t)p(z_t|x_{1:t-1})\\
-\end{align}
-\]</span><br />
-我们看到，右边除了只和观测相关的常数项，还有一项是预测任务需要的概率。对这个值：<br />
-<span class="math display">\[
-\begin{align}
-p(z_t|x_{1:t-1})&amp;=\int_{z_{t-1}}p(z_t,z_{t-1}|x_{1:t-1})dz_{t-1}\nonumber\\
-&amp;=\int_{z_{t-1}}p(z_t|z_{t-1},x_{1:t-1})p(z_{t-1}|x_{1:t-1})dz_{t-1}\nonumber\\
-&amp;=\int_{z_{t-1}}p(z_t|z_{t-1})p(z_{t-1}|x_{1:t-1})dz_{t-1}
-\end{align}
-\]</span><br />
-我们看到，这又化成了一个滤波问题。于是我们得到了一个递推公式：</p>
-<ol type="1">
-<li><span class="math inline">\(t=1\)</span>，<span
-class="math inline">\(p(z_1|x_1)\)</span>，称为 update 过程，然后计算
-<span
-class="math inline">\(p(z_2|x_1)\)</span>，通过上面的积分进行，称为
-prediction 过程。</li>
-<li><span class="math inline">\(t=2\)</span>，<span
-class="math inline">\(p(z_2|x_2,x_1)\)</span> 和 <span
-class="math inline">\(p(z_3|x_1,x_2)\)</span></li>
-</ol>
-<p>我们看到，这个过程是一个 Online
-的过程，对于我们的线性高斯假设，这个计算过程都可以得到解析解。</p>
-<ol type="1">
-<li><p>Prediction：<br />
-<span class="math display">\[
-p(z_t|x_{1:t-1})=\int_{z_{t-1}}p(z_t|z_{t-1})p(z_{t-1}|x_{1:t-1})dz_{t-1}=\int_{z_{t-1}}\mathcal{N}(Az_{t-1}+B,Q)\mathcal{N}(\mu_{t-1},\Sigma_{t-1})dz_{t-1}
-\]</span><br />
-其中第二个高斯分布是上一步的 Update
-过程，所以根据线性高斯模型，直接可以写出这个积分：<br />
-<span class="math display">\[
-p(z_t|x_{1:t-1})=\mathcal{N}(A\mu_{t-1}+B,Q+A\Sigma_{t-1}A^T)
-\]</span></p></li>
-<li><p>Update:<br />
-<span class="math display">\[
-p(z_t|x_{1:t})\propto p(x_t|z_t)p(z_t|x_{1:t-1})
-\]</span><br />
-同样利用线性高斯模型，也可以直接写出这个高斯分布。</p></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/06/ML/28.HMM/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avstar.png">
-      <meta itemprop="name" content="SoundMemories">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SoundMemories">
-      <meta itemprop="description" content="今日事，今日毕">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | SoundMemories">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/10/06/ML/28.HMM/" class="post-title-link" itemprop="url">HMM</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-10-06 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-06T00:00:00+08:00">2020-10-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.8k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>10 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="隐马尔可夫模型">隐马尔可夫模型</h1>
-<p>隐马尔可夫模型是一种概率图模型。我们知道，机器学习模型可以从频率派和贝叶斯派两个方向考虑，<strong>在频率派的方法中的核心是优化问题</strong>；<strong>而在贝叶斯派的方法中，核心是积分问题（求后验概率）</strong>，贝叶斯派也发展出来了一系列的积分方法如变分推断，MCMC
-等。</p>
-<p>概率图模型最基本的模型可以分为有向图（贝叶斯网络）和无向图（马尔可夫随机场）两个方面，例如
-GMM。如果在这些基本的模型上，样本之间存在关联，可以认为样本中附带了时序信息，从而样本之间不独立全同分布的，这种模型就叫做动态模型，<strong>隐变量随着时间发生变化，于是观测变量也发生变化（z为隐状态，x为观测值）</strong>：</p>
-<pre class="mermaid">
-graph LR
-z1--&gt;z2--&gt;z3;
-   x1--&gt;x2--&gt;x3;
-</pre>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">|-概率图</span><br><span class="line">    |-有向：Bayesiam Network</span><br><span class="line">    |-无向：Markov Random Field(Markov Network)</span><br><span class="line">    </span><br><span class="line">|-概率图+时间time：Dynamic Model</span><br><span class="line">    |-HMM(状态变量（隐变量）是离散的)</span><br><span class="line">    |-Kalman Filter(状态变量是连续的，线性的)</span><br><span class="line">    |-Particle Filter(状态变量是连续的，非线性的)</span><br></pre></td></tr></table></figure>
-<h1 id="hmm">HMM</h1>
-<p>HMM 用概率图表示为：</p>
-<pre class="mermaid">
-graph TD
-z1--&gt;z2;
-subgraph four
-	z4--&gt;x4((x4))
-end
-subgraph three
-	z3--&gt;x3((x3))
-end
-subgraph two
-	z2--&gt;x2((x2))
-end
-subgraph one
-	z1--&gt;x1((x1))
-end
-
-z2--&gt;z3;
-z3--&gt;z4;
-</pre>
-<p>上图表示了四个时刻的隐变量变化。用参数 <span
-class="math inline">\(\lambda=(\pi,A,B)\)</span> 来表示，其中 <span
-class="math inline">\(\pi\)</span> 是开始的概率分布，<span
-class="math inline">\(A\)</span> 为状态转移矩阵，<span
-class="math inline">\(B\)</span> 为发射矩阵（观测矩阵）。</p>
-<p><span class="math inline">\(o_t\)</span> 表示观测变量，<span
-class="math inline">\(V=\{v_1,v_2,\cdots,v_M\}\)</span>
-表示观测变量的值域，<span class="math inline">\(O\)</span>
-为观测序列。<br />
-<span class="math inline">\(i_t\)</span> 表示状态变量，<span
-class="math inline">\(Q=\{q_1,q_2,\cdots,q_N\}\)</span>
-表示状态变量的值域，<span class="math inline">\(I\)</span>
-为状态序列。<br />
-定义 <span
-class="math inline">\(A=(a_{ij}=p(i_{t+1}=q_j|i_t=q_i))\)</span>
-表示状态转移矩阵，<span
-class="math inline">\(B=(b_j(k)=p(o_t=v_k|i_t=q_j))\)</span>
-表示发射矩阵。</p>
-<p>在 HMM 中，有两个基本假设：</p>
-<ol type="1">
-<li><p>齐次 Markov 假设（未来只依赖于当前）：<br />
-<span class="math display">\[
-p(i_{t+1}|i_t,i_{t-1},\cdots,i_1,o_t,o_{t-1},\cdots,o_1)=p(i_{t+1}|i_t)
-\]</span></p></li>
-<li><p>观测独立假设：<br />
-<span class="math display">\[
-p(o_t|i_t,i_{t-1},\cdots,i_1,o_{t-1},\cdots,o_1)=p(o_t|i_t)
-\]</span></p></li>
-</ol>
-<p>HMM 要解决三个问题：</p>
-<ol type="1">
-<li>Evaluation：已知模型和观测序列，计算在该模型下观测序列出现的概率。<span
-class="math inline">\(p(O|\lambda)\)</span> -&gt; Forward-Backward
-算法</li>
-<li>Learning：已知观测序列，估计模型参数，使得该模型下观测序列概率最大。<span
-class="math inline">\(\lambda=\mathop{argmax}\limits_{\lambda}p(O|\lambda)\)</span>
-<ol type="1">
-<li>有监督学习（训练数据包含状态序列）-&gt; 最大似然估计</li>
-<li>无监督学习（训练数据不包含状态序列）-&gt; EM 算法（Baum-Welch）</li>
-</ol></li>
-<li>Decoding：已知模型参数和观测序列，求最有可能对应的状态序列。<span
-class="math inline">\(I=\mathop{argmax}\limits_{I}p(I|O,\lambda)\)</span>
--&gt; Vierbi 算法
-<ol type="1">
-<li>预测问题：<span
-class="math inline">\(p(i_{t+1}|o_1,o_2,\cdots,o_t)\)</span>，已知 <span
-class="math inline">\(t\)</span> 时刻的观测序列，求下一时刻的状态。</li>
-<li>滤波问题：<span
-class="math inline">\(p(i_t|o_1,o_2,\cdots,o_t)\)</span>，已知 <span
-class="math inline">\(t\)</span> 时刻的观测序列，求 <span
-class="math inline">\(t\)</span> 时刻的状态。</li>
-</ol></li>
-</ol>
-<h2 id="evaluation">Evaluation</h2>
-<h3 id="直接计算法">直接计算法</h3>
-<p><span class="math display">\[
-p(O|\lambda)=\sum\limits_{I}p(I,O|\lambda)=\sum\limits_{I}p(O|I,\lambda)p(I|\lambda)
-\]</span></p>
-<p><span class="math display">\[
-p(I|\lambda)=p(i_1,i_2,\cdots,i_t|\lambda)=p(i_t|i_1,i_2,\cdots,i_{t-1},\lambda)p(i_1,i_2,\cdots,i_{t-1}|\lambda)
-\]</span></p>
-<p>根据齐次 Markov 假设：<br />
-<span class="math display">\[
-p(i_t|i_1,i_2,\cdots,i_{t-1},\lambda)=p(i_t|i_{t-1})=a_{i_{t-1}i_t}
-\]</span><br />
-所以：<br />
-<span class="math display">\[
-p(I|\lambda)=\pi_1\prod\limits_{t=2}^Ta_{i_{t-1},i_t}
-\]</span><br />
-又由于：<br />
-<span class="math display">\[
-p(O|I,\lambda)=\prod\limits_{t=1}^Tb_{i_t}(o_t)
-\]</span><br />
-于是：<br />
-<span class="math display">\[
-p(O|\lambda)=\sum\limits_{I}\pi_{i_1}\prod\limits_{t=2}^Ta_{i_{t-1},i_t}\prod\limits_{t=1}^Tb_{i_t}(o_t)
-\]</span><br />
-我们看到，上面的式子中的求和符号是对状态序列求和，于是复杂度为 <span
-class="math inline">\(O(TN^T)\)</span>，这种算法不可行。</p>
-<h3 id="前向算法">前向算法</h3>
-<p>下面，记 <span
-class="math inline">\(\alpha_t(i)=p(o_1,o_2,\cdots,o_t,i_t=q_i|\lambda)\)</span>
-为（<span class="math inline">\(t\)</span> 时刻状态序列+ <span
-class="math inline">\(t\)</span> 时刻前所有观测序列）的联合概率。<br />
-所以整个序列最后一项可写为：<span
-class="math inline">\(\alpha_T(i)=p(O,i_T=q_i|\lambda)\)</span>。那么对所有状态序列求和可得：<br />
-<span class="math display">\[
-p(O|\lambda)=\sum\limits_{i=1}^Np(O,i_T=q_i|\lambda)=\sum\limits_{i=1}^N\alpha_T(i)
-\]</span><br />
-对 <span class="math inline">\(\alpha_{t+1}(j)\)</span>：<br />
-<span class="math display">\[
-\begin{align}\alpha_{t}(i) \to
-\alpha_{t+1}(j)&amp;=p(o_1,o_2,\cdots,o_{t+1},i_{t+1}=q_j|\lambda)\nonumber\\
-&amp;=\sum\limits_{i=1}^Np(o_1,o_2,\cdots,o_{t},o_{t+1},i_t=q_i,i_{t+1}=q_j|\lambda)\nonumber\\
-&amp;=\sum\limits_{i=1}^Np(o_{t+1}|o_1,o_2,\cdots,o_{t},i_t=q_i,i_{t+1}=q_j,\lambda)p(o_1,\cdots,o_t,i_t=q_i,i_{t+1}=q_j|\lambda)
-\end{align}
-\]</span><br />
-利用观测独立假设+齐次 Markov 假设：<br />
-<span class="math display">\[
-\begin{align}\alpha_{t}(i) \to
-\alpha_{t+1}(j)&amp;=\sum\limits_{i=1}^Np(o_{t+1}|i_{t+1}=q_j)p(o_1,\cdots,o_t,i_t=q_i,i_{t+1}=q_j|\lambda)\nonumber\\
-&amp;=\sum\limits_{i=1}^Np(o_{t+1}|i_{t+1}=q_j)p(i_{t+1}=q_j|o_1,\cdots,o_t,i_t=q_i,\lambda)p(o_1,\cdots,o_t,i_t=q_i|\lambda)\nonumber\\
-&amp;=\sum\limits_{i=1}^Np(o_{t+1}|i_{t+1}=q_j)p(i_{t+1}=q_j|i_{t}=q_i)\alpha_t(i)\nonumber\\
-&amp;=\sum\limits_{i=1}^Nb_{j}(o_{t+1})a_{ij}\alpha_t(i)
-\end{align}
-\]</span><br />
-上面利用了齐次 Markov 假设得到了一个递推公式，这个算法叫做前向算法。</p>
-<h3 id="后向算法">后向算法</h3>
-<p>下面，记 <span
-class="math inline">\(\beta_t(i)=p(o_{t+1},o_{t+2},\cdots，o_T|i_t=q_i,\lambda)\)</span>
-为（<span class="math inline">\(t\)</span> 时刻状态序列+ <span
-class="math inline">\(t\)</span> 时刻后所有观测序列）的联合概率。<br />
-进一步可写为：<span
-class="math inline">\(\beta_t(i)=\sum\limits_{j=1}^Nb_j(o_{t+1})a_{ij}\beta_{t+1}(j)\)</span>。那么对所有状态序列求和可得：：<br />
-<span class="math display">\[
-\begin{align}p(O|\lambda)&amp;=p(o_1,\cdots,o_T|\lambda)\nonumber\\
-&amp;=\sum\limits_{i=1}^Np(o_1,o_2,\cdots,o_T,i_1=q_i|\lambda)\nonumber\\
-&amp;=\sum\limits_{i=1}^Np(o_1,o_2,\cdots,o_T|i_1=q_i,\lambda)p(i_1=q_i,|\lambda)\nonumber\\
-&amp;=\sum\limits_{i=1}^Np(o_1,o_2,\cdots,o_T|i_1=q_i,\lambda)\pi_i\nonumber\\
-&amp;=\sum\limits_{i=1}^Np(o_1|o_2,\cdots,o_T,i_1=q_i,\lambda)p(o_2,\cdots,o_T|i_1=q_i,\lambda)\pi_i\nonumber\\
-&amp;=\sum\limits_{i=1}^Nb_i(o_1)\beta_1(i)\pi_i
-\end{align}
-\]</span><br />
-对于这个 <span class="math inline">\(\beta_1(i)\)</span> 可通过 <span
-class="math inline">\(\beta_t(i)\)</span> 得到，利用观测序列只与 <span
-class="math inline">\(i_{t+1}\)</span>有关，化简<span
-class="math inline">\(p(O|i_{t+1},i_t)\)</span>：<br />
-<span class="math display">\[
-\begin{align}\beta_{t+1}(j) \to
-\beta_t(i)&amp;=p(o_{t+1},\cdots,o_T|i_t=q_i,\lambda)\nonumber\\
-&amp;=\sum\limits_{j=1}^Np(o_{t+1},\cdots,o_T,i_{t+1}=q_j|i_t=q_i,\lambda)\nonumber\\
-&amp;=\sum\limits_{j=1}^Np(o_{t+1},\cdots,o_T|i_{t+1}=q_j,i_t=q_i,\lambda)p(i_{t+1}=q_j|i_t=q_i,\lambda)\nonumber\\
-&amp;=\sum\limits_{j=1}^Np(o_{t+1},\cdots,o_T|i_{t+1}=q_j,\lambda)a_{ij}\nonumber\\
-&amp;=\sum\limits_{j=1}^Np(o_{t+1}|o_{t+2},\cdots,o_T,i_{t+1}=q_j,\lambda)p(o_{t+2},\cdots,o_T|i_{t+1}=q_j,\lambda)a_{ij}\nonumber\\
-&amp;=\sum\limits_{j=1}^Nb_j(o_{t+1})\beta_{t+1}(j)a_{ij}
-\end{align}
-\]</span><br />
-于是后向地得到了第一项。</p>
-<h2 id="learning">Learning</h2>
-<p>为了学习得到参数的最优值，在 MLE 中：<br />
-<span class="math display">\[
-\lambda_{MLE}=\mathop{argmax}_\lambda p(O|\lambda)
-\]</span><br />
-我们采用 EM 算法（在这里也叫 Baum Welch
-算法），用上标表示迭代（时刻）：<br />
-<span class="math display">\[
-\theta^{t+1}=\mathop{argmax}_{\theta}\int_z\log
-p(X,Z|\theta)p(Z|X,\theta^t)dz
-\]</span><br />
-其中，<span class="math inline">\(X\)</span> 是观测变量，<span
-class="math inline">\(Z\)</span> 是隐变量序列。对应替换成HMM变量：<br />
-<span class="math display">\[
-\lambda^{t+1}=\mathop{argmax}_\lambda\sum\limits_I\log
-p(O,I|\lambda)p(I|O,\lambda^t)\\
-=\mathop{argmax}_\lambda\sum\limits_I\log p(O,I|\lambda)p(O,I|\lambda^t)
-\]</span><br />
-上式 <span
-class="math inline">\(p(I|O,\lambda^t)=p(O,I|\lambda^t)/p(O|\lambda^t)\)</span>
-利用了 <span class="math inline">\(p(O|\lambda^t)\)</span> 和<span
-class="math inline">\(\lambda\)</span> 无关为常量。</p>
-<p>定义 <span class="math inline">\(Q(\lambda,\lambda^t)\)</span>
-函数：<br />
-<span class="math display">\[
-Q(\lambda,\lambda^t)=\sum\limits_I\log p(O,I|\lambda)p(O,I|\lambda^t)
-\]</span><br />
-将 Evaluation 中的直接计算式子代入：<br />
-<span class="math display">\[
-\sum\limits_I\log p(O,I|\lambda)p(O,I|\lambda^t)=\sum\limits_I[(\log
-\pi_{i_1}+\sum\limits_{t=2}^T\log
-a_{i_{t-1},i_t}+\sum\limits_{t=1}^T\log b_{i_t}(o_t))p(O,I|\lambda^t)]
-\]</span></p>
-<p>因为求参数 <span
-class="math inline">\(\lambda^t=(\pi^t,A^t,B^t)\)</span>，有三个参数但求解方法一样这里以对求
-<span class="math inline">\(\pi^{t+1}\)</span> 求解为例，它与后面 <span
-class="math inline">\(a_{i_{t-1},i_t}\)</span> 和 <span
-class="math inline">\(b_{i_t}(o_t)\)</span> 不相关：<br />
-<span class="math display">\[
-\begin{align}\pi^{t+1}&amp;=\mathop{argmax}_\pi Q(\lambda,\lambda^t)
-\nonumber\\
-&amp;=\mathop{argmax}_\pi\sum\limits_I[\log
-\pi_{i_1}p(O,I|\lambda^t)]\nonumber\\
-&amp;=\mathop{argmax}_\pi\sum\limits_{i_1}\cdots \sum\limits_{i_T}[\log
-\pi_{i_1}\cdot p(O,i_1,i_2,\cdots,i_T|\lambda^t)]
-\end{align}
-\]</span><br />
-上面的式子中，对 <span class="math inline">\(i_2,\cdots,i_T\)</span>
-求和可以将这些参数消掉：<br />
-<span class="math display">\[
-\begin{aligned}
-\pi^{t+1}&amp;=\mathop{argmax}_\pi\sum\limits_{i_1}[\log \pi_{i_1}\cdot
-p(O,i_1|\lambda^t)]\\
-&amp;=\mathop{argmax}_\pi \sum\limits_{i=1}^N[\log \pi_{i}\cdot
-p(O,i_1=q_i|\lambda^t)]
-\end{aligned}
-\]</span><br />
-上面的式子还有对 <span class="math inline">\(\pi\)</span> 的约束 <span
-class="math inline">\(\sum\limits_i\pi_i=1\)</span>。使用拉格朗日乘子法，定义
-Lagrange 函数：<br />
-<span class="math display">\[
-L(\pi,\eta)=\sum\limits_{i=1}^N\log \pi_i\cdot
-p(O,i_1=q_i|\lambda^t)+\eta(\sum\limits_{i=1}^N\pi_i-1)
-\]</span><br />
-于是：<br />
-<span class="math display">\[
-\begin{aligned}
-\frac{\partial
-L}{\partial\pi_i}&amp;=\frac{1}{\pi_i}p(O,i_1=q_i|\lambda^t)+\eta=0\\
-&amp;\Rightarrow p(O,i_1=q_i|\lambda^t)+\pi_i\eta=0
-\end{aligned}
-\]</span><br />
-对上式 <span class="math inline">\(i\)</span> 求和消去 <span
-class="math inline">\(q_i\)</span> 和 <span
-class="math inline">\(\pi_i\)</span>：<br />
-<span class="math display">\[
-\begin{aligned}
-&amp;\sum\limits_{i=1}^N[p(O,i_1=q_i|\lambda^t)+\pi_i\eta]=0\\
-&amp;\Rightarrow p(O|\lambda^t)+\eta=0\\
-&amp;\Rightarrow\eta=-p(O|\lambda^t)
-\end{aligned}
-\]</span><br />
-所以：<br />
-<span class="math display">\[
-\pi_i^{t+1}=\frac{p(O,i_1=q_i|\lambda^t)}{p(O|\lambda^t)}
-\]</span></p>
-<h2 id="decoding">Decoding</h2>
-<p>Decoding 问题表述为：<br />
-<span class="math display">\[
-I=\mathop{argmax}\limits_{I}p(I|O,\lambda)
-\]</span><br />
-我们需要找到一个状态序列，其概率最大，这个序列就是在参数空间中的一个路径，可以采用动态规划的思想。</p>
-<p>定义在 <span class="math inline">\(t\)</span> 时刻状态为 <span
-class="math inline">\(i\)</span> 的所有单个路径中概率最大值：<br />
-<span class="math display">\[
-\delta_{t}(i)=\max\limits_{i_1,\cdots,i_{t-1}}p(o_1,\cdots,o_t,i_1,\cdots,i_{t-1},i_t=q_i)
-\]</span><br />
-由定义可得其递推公式：<br />
-<span class="math display">\[
-\delta_{t+1}(j)=\max\limits_{1\le i\le N}\delta_t(i)a_{ij}b_j(o_{t+1})
-\]</span><br />
-从上一步到下一步的概率再求最大值，记这个路径为：<br />
-<span class="math display">\[
-\psi_{t+1}(j)=\mathop{argmax}\limits_{1\le i\le N}\delta_t(i)a_{ij}
-\]</span></p>
-<h1 id="小结">小结</h1>
-<p>HMM 是一种动态模型，是由混合树形模型和时序结合起来的一种模型（类似
-GMM + Time）。对于类似 HMM 的这种状态空间模型，普遍的除了学习任务（采用
-EM ）外，还有推断任务，推断任务包括：</p>
-<ol type="1">
-<li><p>译码 Decoding：<span
-class="math inline">\(p(z_1,z_2,\cdots,z_t|x_1,x_2,\cdots,x_t)\)</span></p></li>
-<li><p>似然 Prob of evidence：<span
-class="math inline">\(p(x_1,x_2,\cdots,x_t|\theta)\)</span></p></li>
-<li><p>滤波 Filtering：$ p(z_t|x_1,,x_t)$，Online<br />
-<span class="math display">\[
-p(z_t|x_{1:t})=\frac{p(x_{1:t},z_t)}{p(x_{1:t})}\propto
-p(x_{1:t},z_t)=\alpha_t (前向算法)
-\]</span><br />
-记 <span
-class="math inline">\(\alpha_t=p(x_1,\cdots,x_t,z_t)\)</span>，<span
-class="math inline">\(\beta_t=p(x_{t+1},\cdots,x_T|z_t)\)</span>。</p></li>
-<li><p>平滑 Smoothing：<span
-class="math inline">\(p(z_t|x_1,\cdots,x_T)\)</span>，Offline<br />
-<span class="math display">\[
-p(z_t|x_{1:T})=\frac{p(x_{1:T},z_t)}{p(x_{1:T})}=\frac{p(x_{1:t},x_{t+1:T},z_t)}{p(x_{1:T})}=\frac{p(x_{1:t},z_t)p(x_{t+1:T}|x_{1:t},z_t)}{p(x_{1:T})}=\frac{\alpha_t
-p(x_{t+1:T}|x_{1:t},z_t)}{p(x_{1:T})}
-\]</span><br />
-根据概率图的条件独立性 <span class="math inline">\(x_{t+1:T}\)</span> 和
-<span class="math inline">\(x_{1:t}\)</span> 相互独立，有 <span
-class="math inline">\(p(x_{t+1:T}|x_{1:t},z_t)=p(x_{t+1:T}|z_t)\)</span>
-：<br />
-<span class="math display">\[
-p(z_t|x_{1:T})=\frac{\alpha_t p(x_{t+1:T}|z_t)}{p(x_{1:T})}\propto
-\alpha_t\beta_t
-\]</span><br />
-这个算法叫做前向后向算法。</p></li>
-<li><p>预测 Prediction：预测下一时刻隐状态<span
-class="math inline">\(p(z_{t+1},z_{t+2}|x_1,\cdots,x_t)\)</span>，预测下一时刻观测状态<span
-class="math inline">\(p(x_{t+1},x_{t+2}|x_1,\cdots,x_t)\)</span><br />
-<span class="math display">\[
-p(z_{t+1}|x_{1:t})=\sum_{z_t}p(z_{t+1},z_t|x_{1:t})=\sum\limits_{z_t}p(z_{t+1}|z_t,x_{1:t})p(z_t|x_{1:t})=\sum\limits_{z_t}p(z_{t+1}|z_t)p(z_t|x_{1:t})
-\]</span><br />
-其中 <span class="math inline">\(p(z_t|x_{1:t})\)</span>
-是Filtering问题。<br />
-<span class="math display">\[
-p(x_{t+1}|x_{1:t})=\sum\limits_{z_{t+1}}p(x_{t+1},z_{t+1}|x_{1:t})=\sum\limits_{z_{t+1}}p(x_{t+1}|z_{t+1},x_{1:t})p(z_{t+1}|x_{1:t})=\sum\limits_{z_{t+1}}p(x_{t+1}|z_{t+1})p(z_{t+1}|x_{1:t})
-\]</span><br />
-其中 <span class="math inline">\(p(z_{t+1}|x_{1:t})\)</span>
-是上一个问题。</p></li>
-</ol>
 
       
     </div>
