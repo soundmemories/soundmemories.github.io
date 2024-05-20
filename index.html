@@ -692,7 +692,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.4k</span>
+      <span>2.5k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -776,6 +776,10 @@ Server版本选择及安装<i class="fa fa-external-link-alt"></i></span>和<spa
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvidia-smi</span><br></pre></td></tr></table></figure></p>
 <p>显示如下，cuda的版本是12.4：<br />
 <img src="/images/系统安装和环境配置/4.显卡驱动.png" width="70%"></p>
+<p>显卡驱动在电脑重启后失效：<br />
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># nvidia-smi出现如下提示：</span></span><br><span class="line">NVIDIA-SMI has failed because it couldn<span class="string">&#x27;t communicate with the NVIDIA driver. </span></span><br><span class="line"><span class="string">Make sure that the latest NVIDIA driver is installed and running.</span></span><br></pre></td></tr></table></figure></p>
+<p>解决办法：<br />
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看驱动版本，比如结果为nvidia-470.103.01</span></span><br><span class="line"><span class="built_in">ls</span> /usr/src | grep nvidia</span><br><span class="line"><span class="comment"># 安装dkms</span></span><br><span class="line">sudo apt install dkms</span><br><span class="line"><span class="comment"># 根据nvidia版本重新安装</span></span><br><span class="line">sudo dkms install -m nvidia -v 470.103.01</span><br></pre></td></tr></table></figure></p>
 <h2 id="cuda安装">Cuda安装</h2>
 <p>1.进入<span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIubnZpZGlhLmNvbS9jdWRhLXRvb2xraXQtYXJjaGl2ZQ==">官网<i class="fa fa-external-link-alt"></i></span>，选择和驱动显示的cuda版本号一致的cuda驱动，既进入后选择平台和系统版本，下面会给出具体的安装命令：<br />
 <img src="/images/系统安装和环境配置/5.显卡驱动.png" width="70%"></p>
@@ -839,10 +843,12 @@ AMD-V"表示已开启虚拟化，这里我的系统返回如下：<br />
 <p>找到JDK安装地址后，配置环境变量：<br />
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 编辑.bashrc</span></span><br><span class="line">vim ~/.bashrc</span><br><span class="line"><span class="comment"># 插入环境变量，保存退出</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>/bin</span><br><span class="line"><span class="comment"># 生效</span></span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br><span class="line"><span class="comment"># 验证</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$JAVA_HOME</span></span><br></pre></td></tr></table></figure></p>
 <p><strong>2.Win版本</strong><br />
-1.<span class="exturl" data-url="aHR0cHM6Ly93d3cub3JhY2xlLmNvbS9jbi9qYXZhL3RlY2hub2xvZ2llcy9kb3dubG9hZHMvI2phdmEyMQ==">官网<i class="fa fa-external-link-alt"></i></span>选择exe版本JDK下载安装。<br />
-2.安装后在系统变量中增加<code>JAVA_HOME</code>变量，默认为安装路径<code>C:\Program Files\Java\jdk-21</code>，PATH中增加<code>%JAVA_HOME%\bin</code>。<br />
-3.注意，默认安装后PATH中会多一个路径<code>C:\Program Files\Common Files\Oracle\Java\javapath</code>，把这个路径移动到<code>%JAVA_HOME%\bin</code>下面，这样系统默认寻找的就是我们配置的路径，在有多版本的时候可避免使用的JDK不一致问题。<br />
-4.VScode搜索<code>Extension Pack for Java</code>安装即可。</p>
+1.<span class="exturl" data-url="aHR0cHM6Ly93d3cub3JhY2xlLmNvbS9jbi9qYXZhL3RlY2hub2xvZ2llcy9kb3dubG9hZHMvI2phdmEyMQ==">官网<i class="fa fa-external-link-alt"></i></span>选择exe版本JDK下载。默认安装。<br />
+2.安装后在<span
+id="inline-purple">系统变量</span>中增加<code>JAVA_HOME</code>变量，值为安装路径<code>C:\Program Files\Java\jdk-21</code>，<br />
+3.PATH中增加<code>%JAVA_HOME%\bin</code>。<br />
+4.注意，默认安装后PATH中会多一个路径<code>C:\Program Files\Common Files\Oracle\Java\javapath</code>，把这个路径移动到<code>%JAVA_HOME%\bin</code>下面，这样系统默认寻找的就是我们配置的路径，在有多版本的时候可避免使用的JDK不一致问题。<br />
+5.VScode搜索<code>Extension Pack for Java</code>安装即可。</p>
 <h2 id="mvn配置">Mvn配置</h2>
 <p>找到/etc/maven/settings.xml，mirror节点中增加国内节点：<br />
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mirror</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">id</span>&gt;</span>aliyunmaven<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mirrorOf</span>&gt;</span>*<span class="tag">&lt;/<span class="name">mirrorOf</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">name</span>&gt;</span>阿里云公共仓库<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">url</span>&gt;</span>https://maven.aliyun.com/repository/public<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mirror</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
@@ -1720,251 +1726,6 @@ cases/in some circumstances/may/be likely to/might）。<br />
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2022/07/16/IELTS/02.%E5%90%AC%E5%8A%9B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avstar.png">
-      <meta itemprop="name" content="SoundMemories">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SoundMemories">
-      <meta itemprop="description" content="今日事，今日毕">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | SoundMemories">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/07/16/IELTS/02.%E5%90%AC%E5%8A%9B/" class="post-title-link" itemprop="url">听力</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-16 00:00:00" itemprop="dateCreated datePublished" datetime="2022-07-16T00:00:00+08:00">2022-07-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/IELTS/" itemprop="url" rel="index"><span itemprop="name">IELTS</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.1k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>8 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="听力题型">听力题型</h2>
-<p>part1：10个题必须全对。<br />
-part2：个人独白，单选、多选、配对、地图，每次最多2种题型，目标对7-8。<br />
-part3：学生、学校的生活对话，单选、多选、配对，很难，目标对5-6。<br />
-part4：填空题，专业场景，很难，目标对6-7。</p>
-<p>长期 - 积累 - 单词 - 表达</p>
-<h2 id="听力p1">听力P1</h2>
-<p>原则：<br />
-<strong>1.出现的题和答案是顺序的</strong>。<br />
-<strong>2.填空题，原文原词，听力能听出来，时态、单复数词</strong>。<br />
-<strong>3.题目要求only one word / one word and or a
-number，比如日期January 1</strong>。</p>
-<p>做题步骤：<br />
-<strong>1.读题：给6s时间读题，读题找到定位词(答案要来了)、预测答案形式(v、adj...)</strong>。<br />
-<strong>2.听题：定位词出现，耳朵灵敏，知道考点就知道要填什么</strong>。<br />
-<strong>3.填写：机考，注意打字别打错</strong>。<br />
-<strong>4.机考2min，42s废话时间可以开始看题</strong>。</p>
-<p>细节：<br />
-<strong>1.大小写不用注意，但平时尊重习惯</strong>。<br />
-<strong>2.单复数，扣分项</strong>。<br />
-<strong>3.拼写，扣分项</strong>。<br />
-<strong>4.不能超过两个单词时候，satefy rules（n+n都保留），
-<del>restricted</del>
-rules（adj+n，只保留n），限定作用词，也保留</strong>。</p>
-<p>考点数字：<br />
-<strong>1.$150.50（整数-单位-分数） One hundred fifty dollars
-fifty</strong>。<br />
-<strong>2.15鼻音 vs 50无鼻音</strong>。<br />
-<strong>3.222 222 222 222，two hundred and twenty two billion，...
-million，... thousand，two hundred and twenty two</strong>。</p>
-<p>考点日期邮编：<br />
-<strong>1.29 March，数字+单词</strong>。<br />
-<strong>2.DH1 4QQ（DH城市名，QQ路名），字母2个+数字（最多2位）
-数字+字母2个</strong>。</p>
-<p>考点字母读法：<br />
-<strong>1.Z，在的</strong>。<br />
-<strong>2.O，zero</strong>。<br />
-<strong>3.W</strong>，<br />
-<strong>4.L</strong>，<br />
-<strong>5.M</strong>，<br />
-<strong>6.N</strong>，</p>
-<p>考点人名地址：<br />
-<strong>1.门牌号+人名，这俩个位置都可能被考</strong>。</p>
-<p>职业：<strong>dentist、journalist、specialist（plumber electrician
-programmer）</strong>。</p>
-<p>考点替换：<br />
-<strong>1.否定替换</strong>。<br />
-doesn't have _________.<br />
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">|-<span class="keyword">not</span>的替换</span><br><span class="line">  |-couldn<span class="string">&#x27;t / haven&#x27;</span>t</span><br><span class="line">  |-hardly 几乎不</span><br><span class="line">  |-barely</span><br><span class="line">  |-rarely</span><br><span class="line">  |-free of 不许</span><br><span class="line">  |-failed 失败/不 </span><br><span class="line">  |-im/un/dis/anti 否定前缀</span><br></pre></td></tr></table></figure></p>
-<p>原题：making sure the beach <span id="inline-purple">does not
-have</span> _____ on it.<br />
-原文：try to make the beach <span id="inline-purple">free of</span>
-litter.</p>
-<p><strong>2.先行词、抽象-具体替换</strong>。<br />
-hot ____rock___.<br />
-空前如果有形容词，原句定语从句，答案大概率就是先行词（引导词前面的那一个）。<br />
-原文：we place pieces of rock which become very hot from the Sun.</p>
-<p>appropriate（合适的） ____n____.<br />
-原文：make sure your boots are waterproof（adj, 防水的）.<br />
-appropriate 合适的 = waterproof adj 防水的， 抽象-具体替换。</p>
-<p>Elephant damaged _____.<br />
-Elephant knock down some fences.<br />
-reach = walk to，抽象-具体替换。</p>
-<p><strong>3.并列替换</strong>。<br />
-_______ and B<br />
-参考阅读。</p>
-<p><strong>4.A of B = BA</strong>。</p>
-<p><strong>5.注意，要no，还是，非no</strong>。</p>
-<p><strong>6.对话间给答案</strong>。<br />
-no _____.<br />
-女：Can I take dogs with me ?<br />
-男：No you cant ｜ yes you can，but you cant take cats</p>
-<p>作业1：<br />
-做题<br />
-复盘学习：打开原文 - 精听练习 - 跟读模仿 - 遇到不认识的生词摘抄到本子上
--<br />
-重新做题 100%正确率<br />
-每一篇 20个生词，每天一篇 - 天天整</p>
-<p>作业2：<br />
-复盘学习：打开原文 - 精听练习 - 跟读模仿 - 遇到不认识的生词摘抄到本子上
--<br />
-周日-周三：C16C17P1 课文朗读 - 一天至少发给我2个录音<br />
-周日-周三：10个答案句听写出来，听不出来看原文照抄，整理替换，每天至少提交两片<br />
-周四-周六：C15P1 做题+ 朗读+听写</p>
-<h2 id="听力p2">听力P2</h2>
-<p>part2：单选、多选、配对、地图。</p>
-<h3 id="地图题">地图题</h3>
-<p>地图种类：layout平面结构、area（park/development规划）。</p>
-<p><strong>做题步骤：</strong><br />
-<strong>1.找入口：you are here、entrance、way
-in、gate、door、reception（前台），或<code>｜ ｜</code>靠着地图边表示入口或楼梯</strong>。<br />
-<strong>2.找方向：平面图一般为Left、Right，区域图一般为东east/南south/西west/北north</strong>。<br />
-<strong>3.找路：corridor走廊、road、path、footpath</strong>。<br />
-<strong>4.找参照物：有文字建筑物、key图例</strong>。<br />
-<strong>5.题干的原词，发音，准备和听力材料听到原词定位对上号</strong>。<br />
-<strong>6.听题，原词定位成功，一般会给3-4个信息点，只需听懂关键的1-2key
-information</strong>。</p>
-<p><strong>1.平面地图考点</strong>：<br />
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">|-直走: </span><br><span class="line">  |-walk along the corridor until the end</span><br><span class="line">  |-go straight on </span><br><span class="line">|-转弯</span><br><span class="line">  |-turn left</span><br><span class="line">  |-take the second</span><br><span class="line">  |-first trunning on your left</span><br><span class="line">  |-lead to the left 通向</span><br><span class="line">  |-head to the left</span><br><span class="line">  |-running the to left </span><br><span class="line">  <span class="comment"># 特殊right(右边;就在): it is right here next to the reception(就在前台边上)</span></span><br><span class="line">|-面对</span><br><span class="line">  |-face to / opposite to / on the other side of</span><br><span class="line">  <span class="comment"># there is a door facing you </span></span><br><span class="line">|-介词</span><br><span class="line">  |-between A <span class="keyword">and</span> B</span><br><span class="line">  |-<span class="built_in">next</span> to / beside</span><br><span class="line">|-在前面</span><br><span class="line">  |-<span class="keyword">in</span> the front of</span><br><span class="line">|-在后边</span><br><span class="line">  |-at the back of </span><br><span class="line">|-经过</span><br><span class="line">  |-<span class="keyword">pass</span> / go past </span><br><span class="line">|-穿过</span><br><span class="line">  |-cross the XXX</span><br></pre></td></tr></table></figure></p>
-<p><strong>2.区域地图考点</strong><br />
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 方向不需要脑中翻译中文，直接英文思考找图位置</span></span><br><span class="line"><span class="comment"># 难点：题干中有new时，会有新老交替，必须听到老的地点</span></span><br><span class="line">|-road</span><br><span class="line">  |-boundary边界</span><br><span class="line">|-river</span><br><span class="line">  |-riverbank河岸, walk along the riverbank</span><br><span class="line">  |-bridge桥 - cross the birdge / go across the bridge / over the bridge  过桥</span><br><span class="line">  <span class="comment"># 特殊: pass/past a bridge 经过/路过桥，而不是穿过桥</span></span><br><span class="line">|-名词</span><br><span class="line">  |-bend弯道 / curve曲线 / winding road崎岖的路 </span><br><span class="line">  |-corner角落 - <span class="keyword">in</span> the corner of carpark在停车场的角落, turn right at the second corner(转角=turning)在第二个拐角向右转</span><br><span class="line">|-介词</span><br><span class="line">  |-towards朝向 - go towards the bridge <span class="keyword">and</span> turn right just before it 朝着桥的方向走，但是提前右转</span><br><span class="line">  |-beyond超越 - we purchase another place beyond line of tree 我们购买了树线之外的另一个地方</span><br><span class="line">  |-opposite to 在对面 </span><br><span class="line">  |-leading to 通向</span><br><span class="line">  |-branch off 分叉 - branch off <span class="keyword">from</span> the main road 从主路分支出去</span><br></pre></td></tr></table></figure></p>
-<p>作业3：<br />
-做题<br />
-重听 - 定位成功 - 只要有信息就写下来<br />
-重新自己说一遍 -音频<br />
-地图题 C18T2P2Q15-20; C16T1P2Q15-20; C16T4P2Q15-20; C15T2P2Q15-20;
-C15T4P2Q11-16; C14T2P2Q16-20; C13T1P2Q14-20; C12T8P2Q15-20;
-C11T1P2Q15-20; C11T2P2Q17-20; C11T4P2Q17-20</p>
-<h3 id="选择题">选择题</h3>
-<p>单选题：三选一，ABC所有选项都会出现，算是<strong>带着问题去判断</strong>哪个选项正确。</p>
-<p><strong>做题步骤：</strong><br />
-<strong>1.读题干，找定位词，知道它的考点是什么，对比选项差异点</strong>。<br />
-<strong>2.听题，先定位到当前题，然后筛选/排除所说的选项是否符合题干</strong>。<br />
-<strong>3.答案句一般转折词后是重要内容，if条件句中带重要内容</strong>。</p>
-<p><strong>1.基本信息：数字、人、地点、时间</strong>。<br />
-<strong>2.限定词：</strong><br />
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 新/旧</span></span><br><span class="line">new = latest = plan = 将来时</span><br><span class="line">past / old / previous / <span class="number">10</span> years before / 过去时态 </span><br><span class="line">now / today / at present / currently / 进行时态doing</span><br><span class="line">future / plan to do / <span class="number">10</span> years later / 将来时态 will do / be going to</span><br><span class="line"><span class="comment"># 立即/长远</span></span><br><span class="line">immediately benefit 立即受益</span><br><span class="line">long term plan 长远计划</span><br></pre></td></tr></table></figure></p>
-<p><strong>3.因果：</strong><br />
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 因果连接词的附近</span></span><br><span class="line">so+结果 = therefore = thus = <span class="keyword">as</span> a consequence</span><br><span class="line">because+原因 = due to = <span class="keyword">as</span> a result of </span><br><span class="line"><span class="comment"># 目的状语</span></span><br><span class="line">to do sth </span><br><span class="line"><span class="comment"># 特殊词</span></span><br><span class="line">want = aim = order = intension 意图 </span><br></pre></td></tr></table></figure></p>
-<p><strong>4.what do we learn from：考动词替换</strong>。</p>
-<p>一些注意的词：<br />
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ex- 向外 export 出口 extrovert 外向 exterior 外部</span><br><span class="line">in -向内 import 进口 introvert 内向 interior 内部</span><br><span class="line"></span><br><span class="line">fish: cod 鳕鱼 / tuna 金枪鱼 / salmon三文鱼</span><br><span class="line">meat: lamb 羊肉 / pork 猪肉 / rib 排骨 / ham 火腿 / sausage 香肠 / </span><br><span class="line">      beef -&gt; steak 牛排  rare - medium - well done  </span><br><span class="line">      chicken -&gt; wings legs breast </span><br><span class="line">cheese roll 芝士卷</span><br></pre></td></tr></table></figure></p>
-<p>作业：<br />
-C17T1P2Q11-14;; C17T2P2Q11-14; ; C17T3P2Q13-15; C17T4P2Q11-14;
-C16T1P2Q11-14; C16T2P2Q11-15; ; C16T4P2Q11-14<br />
-做题+复盘 - 定位成功 - 全文听写 - 分析</p>
-<h3 id="配对题">配对题</h3>
-<p>此题比较快，考察词词替换：<br />
-<strong>1.看题目，从中找到目标范围和背景</strong>。<br />
-<strong>2.看选项，需要提前思考选项可能的替换方向</strong>。<br />
-<strong>3.看题干，原词是顺序出现，熟悉发音</strong>。<br />
-<strong>4.听题，题干定位成功，找选项</strong>。<br />
-一定先选确定的，不确定的先不选，不然选项用了，一错就是两个！</p>
-<p>作业：C15C16C17 Part2 文章 做题+复盘<br />
-单选 - 为啥对 为啥错<br />
-多选 - 同上<br />
-配对 - 定位 写内容<br />
-地图- 同上</p>
-<h2 id="听力p4">听力P4</h2>
-<h3 id="填空题">填空题</h3>
-<p>填空题：一篇长文章，大概8min，10个题只给一次看题时间，题到一半会有3s暂停，会出现很长时间说不到题别着急。</p>
-<p>步骤：<br />
-1.时间不够先看有填空的句子，再看其他句子。<br />
-2.读懂题，思考定位词，预测词性和内容。<br />
-3.听原文，定位句子，替换定位词，正确拼写单词。</p>
-<p>1.替换考点<br />
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 空前 &amp; 空后</span></span><br><span class="line">动词: 词词/抽象-具体/被动语态，如 sth be done by sb = sb do sth</span><br><span class="line">形容词: 词词/抽象-具体/定语从句，<span class="number">90</span>%答案词就是先行词 N + which...</span><br><span class="line">复数名词: a lot of = many , a lot of ____ = <span class="number">40</span> liter sap</span><br><span class="line">因果: because/due to + 原因 = 原因 + so/therefore/thus/<span class="keyword">as</span> a result of</span><br><span class="line">转折: but = however = although = <span class="keyword">while</span></span><br><span class="line">让步: even though/despite..., ... = ..., although....</span><br><span class="line">否定: <span class="keyword">not</span> = never = hardly = rather than = instead of</span><br><span class="line">并列: A B <span class="keyword">and</span> C = C, A, ____  有乱序；A <span class="keyword">and</span> B = A...，<span class="keyword">as</span> well <span class="keyword">as</span> B...</span><br><span class="line">A of B = BA </span><br></pre></td></tr></table></figure></p>
-<p>听力 - C10+C11 - part4<br />
-做题- 看题 - 有不认识的生词查 - 猜测<br />
-复盘 - 原文对应的句子听写 - 同意替换找到highlight<br />
-看原文 - 阅读 - 积累的是场景词</p>
-<h2 id="参考网站">参考网站</h2>
-<p><span class="exturl" data-url="aHR0cHM6Ly9pZWx0c2NhdC54ZGYuY24vcHJhY3RpY2UvbGlzdGVu">https://ieltscat.xdf.cn/practice/listen<i class="fa fa-external-link-alt"></i></span></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2022/07/16/IELTS/01.%E9%98%85%E8%AF%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2235,6 +1996,251 @@ P2:配对（段落信息/人名/句子配对）+细节题（填空/判断） 通
 P3:标题配对+单选+summary填空 局部精读 25min</p>
 <h2 id="参考网站">参考网站</h2>
 <p><span class="exturl" data-url="aHR0cHM6Ly9pZWx0c2NhdC54ZGYuY24vcHJhY3RpY2UvcmVhZA==">https://ieltscat.xdf.cn/practice/read<i class="fa fa-external-link-alt"></i></span></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2022/07/16/IELTS/02.%E5%90%AC%E5%8A%9B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/07/16/IELTS/02.%E5%90%AC%E5%8A%9B/" class="post-title-link" itemprop="url">听力</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-16 00:00:00" itemprop="dateCreated datePublished" datetime="2022-07-16T00:00:00+08:00">2022-07-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/IELTS/" itemprop="url" rel="index"><span itemprop="name">IELTS</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>8 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="听力题型">听力题型</h2>
+<p>part1：10个题必须全对。<br />
+part2：个人独白，单选、多选、配对、地图，每次最多2种题型，目标对7-8。<br />
+part3：学生、学校的生活对话，单选、多选、配对，很难，目标对5-6。<br />
+part4：填空题，专业场景，很难，目标对6-7。</p>
+<p>长期 - 积累 - 单词 - 表达</p>
+<h2 id="听力p1">听力P1</h2>
+<p>原则：<br />
+<strong>1.出现的题和答案是顺序的</strong>。<br />
+<strong>2.填空题，原文原词，听力能听出来，时态、单复数词</strong>。<br />
+<strong>3.题目要求only one word / one word and or a
+number，比如日期January 1</strong>。</p>
+<p>做题步骤：<br />
+<strong>1.读题：给6s时间读题，读题找到定位词(答案要来了)、预测答案形式(v、adj...)</strong>。<br />
+<strong>2.听题：定位词出现，耳朵灵敏，知道考点就知道要填什么</strong>。<br />
+<strong>3.填写：机考，注意打字别打错</strong>。<br />
+<strong>4.机考2min，42s废话时间可以开始看题</strong>。</p>
+<p>细节：<br />
+<strong>1.大小写不用注意，但平时尊重习惯</strong>。<br />
+<strong>2.单复数，扣分项</strong>。<br />
+<strong>3.拼写，扣分项</strong>。<br />
+<strong>4.不能超过两个单词时候，satefy rules（n+n都保留），
+<del>restricted</del>
+rules（adj+n，只保留n），限定作用词，也保留</strong>。</p>
+<p>考点数字：<br />
+<strong>1.$150.50（整数-单位-分数） One hundred fifty dollars
+fifty</strong>。<br />
+<strong>2.15鼻音 vs 50无鼻音</strong>。<br />
+<strong>3.222 222 222 222，two hundred and twenty two billion，...
+million，... thousand，two hundred and twenty two</strong>。</p>
+<p>考点日期邮编：<br />
+<strong>1.29 March，数字+单词</strong>。<br />
+<strong>2.DH1 4QQ（DH城市名，QQ路名），字母2个+数字（最多2位）
+数字+字母2个</strong>。</p>
+<p>考点字母读法：<br />
+<strong>1.Z，在的</strong>。<br />
+<strong>2.O，zero</strong>。<br />
+<strong>3.W</strong>，<br />
+<strong>4.L</strong>，<br />
+<strong>5.M</strong>，<br />
+<strong>6.N</strong>，</p>
+<p>考点人名地址：<br />
+<strong>1.门牌号+人名，这俩个位置都可能被考</strong>。</p>
+<p>职业：<strong>dentist、journalist、specialist（plumber electrician
+programmer）</strong>。</p>
+<p>考点替换：<br />
+<strong>1.否定替换</strong>。<br />
+doesn't have _________.<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">|-<span class="keyword">not</span>的替换</span><br><span class="line">  |-couldn<span class="string">&#x27;t / haven&#x27;</span>t</span><br><span class="line">  |-hardly 几乎不</span><br><span class="line">  |-barely</span><br><span class="line">  |-rarely</span><br><span class="line">  |-free of 不许</span><br><span class="line">  |-failed 失败/不 </span><br><span class="line">  |-im/un/dis/anti 否定前缀</span><br></pre></td></tr></table></figure></p>
+<p>原题：making sure the beach <span id="inline-purple">does not
+have</span> _____ on it.<br />
+原文：try to make the beach <span id="inline-purple">free of</span>
+litter.</p>
+<p><strong>2.先行词、抽象-具体替换</strong>。<br />
+hot ____rock___.<br />
+空前如果有形容词，原句定语从句，答案大概率就是先行词（引导词前面的那一个）。<br />
+原文：we place pieces of rock which become very hot from the Sun.</p>
+<p>appropriate（合适的） ____n____.<br />
+原文：make sure your boots are waterproof（adj, 防水的）.<br />
+appropriate 合适的 = waterproof adj 防水的， 抽象-具体替换。</p>
+<p>Elephant damaged _____.<br />
+Elephant knock down some fences.<br />
+reach = walk to，抽象-具体替换。</p>
+<p><strong>3.并列替换</strong>。<br />
+_______ and B<br />
+参考阅读。</p>
+<p><strong>4.A of B = BA</strong>。</p>
+<p><strong>5.注意，要no，还是，非no</strong>。</p>
+<p><strong>6.对话间给答案</strong>。<br />
+no _____.<br />
+女：Can I take dogs with me ?<br />
+男：No you cant ｜ yes you can，but you cant take cats</p>
+<p>作业1：<br />
+做题<br />
+复盘学习：打开原文 - 精听练习 - 跟读模仿 - 遇到不认识的生词摘抄到本子上
+-<br />
+重新做题 100%正确率<br />
+每一篇 20个生词，每天一篇 - 天天整</p>
+<p>作业2：<br />
+复盘学习：打开原文 - 精听练习 - 跟读模仿 - 遇到不认识的生词摘抄到本子上
+-<br />
+周日-周三：C16C17P1 课文朗读 - 一天至少发给我2个录音<br />
+周日-周三：10个答案句听写出来，听不出来看原文照抄，整理替换，每天至少提交两片<br />
+周四-周六：C15P1 做题+ 朗读+听写</p>
+<h2 id="听力p2">听力P2</h2>
+<p>part2：单选、多选、配对、地图。</p>
+<h3 id="地图题">地图题</h3>
+<p>地图种类：layout平面结构、area（park/development规划）。</p>
+<p><strong>做题步骤：</strong><br />
+<strong>1.找入口：you are here、entrance、way
+in、gate、door、reception（前台），或<code>｜ ｜</code>靠着地图边表示入口或楼梯</strong>。<br />
+<strong>2.找方向：平面图一般为Left、Right，区域图一般为东east/南south/西west/北north</strong>。<br />
+<strong>3.找路：corridor走廊、road、path、footpath</strong>。<br />
+<strong>4.找参照物：有文字建筑物、key图例</strong>。<br />
+<strong>5.题干的原词，发音，准备和听力材料听到原词定位对上号</strong>。<br />
+<strong>6.听题，原词定位成功，一般会给3-4个信息点，只需听懂关键的1-2key
+information</strong>。</p>
+<p><strong>1.平面地图考点</strong>：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">|-直走: </span><br><span class="line">  |-walk along the corridor until the end</span><br><span class="line">  |-go straight on </span><br><span class="line">|-转弯</span><br><span class="line">  |-turn left</span><br><span class="line">  |-take the second</span><br><span class="line">  |-first trunning on your left</span><br><span class="line">  |-lead to the left 通向</span><br><span class="line">  |-head to the left</span><br><span class="line">  |-running the to left </span><br><span class="line">  <span class="comment"># 特殊right(右边;就在): it is right here next to the reception(就在前台边上)</span></span><br><span class="line">|-面对</span><br><span class="line">  |-face to / opposite to / on the other side of</span><br><span class="line">  <span class="comment"># there is a door facing you </span></span><br><span class="line">|-介词</span><br><span class="line">  |-between A <span class="keyword">and</span> B</span><br><span class="line">  |-<span class="built_in">next</span> to / beside</span><br><span class="line">|-在前面</span><br><span class="line">  |-<span class="keyword">in</span> the front of</span><br><span class="line">|-在后边</span><br><span class="line">  |-at the back of </span><br><span class="line">|-经过</span><br><span class="line">  |-<span class="keyword">pass</span> / go past </span><br><span class="line">|-穿过</span><br><span class="line">  |-cross the XXX</span><br></pre></td></tr></table></figure></p>
+<p><strong>2.区域地图考点</strong><br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 方向不需要脑中翻译中文，直接英文思考找图位置</span></span><br><span class="line"><span class="comment"># 难点：题干中有new时，会有新老交替，必须听到老的地点</span></span><br><span class="line">|-road</span><br><span class="line">  |-boundary边界</span><br><span class="line">|-river</span><br><span class="line">  |-riverbank河岸, walk along the riverbank</span><br><span class="line">  |-bridge桥 - cross the birdge / go across the bridge / over the bridge  过桥</span><br><span class="line">  <span class="comment"># 特殊: pass/past a bridge 经过/路过桥，而不是穿过桥</span></span><br><span class="line">|-名词</span><br><span class="line">  |-bend弯道 / curve曲线 / winding road崎岖的路 </span><br><span class="line">  |-corner角落 - <span class="keyword">in</span> the corner of carpark在停车场的角落, turn right at the second corner(转角=turning)在第二个拐角向右转</span><br><span class="line">|-介词</span><br><span class="line">  |-towards朝向 - go towards the bridge <span class="keyword">and</span> turn right just before it 朝着桥的方向走，但是提前右转</span><br><span class="line">  |-beyond超越 - we purchase another place beyond line of tree 我们购买了树线之外的另一个地方</span><br><span class="line">  |-opposite to 在对面 </span><br><span class="line">  |-leading to 通向</span><br><span class="line">  |-branch off 分叉 - branch off <span class="keyword">from</span> the main road 从主路分支出去</span><br></pre></td></tr></table></figure></p>
+<p>作业3：<br />
+做题<br />
+重听 - 定位成功 - 只要有信息就写下来<br />
+重新自己说一遍 -音频<br />
+地图题 C18T2P2Q15-20; C16T1P2Q15-20; C16T4P2Q15-20; C15T2P2Q15-20;
+C15T4P2Q11-16; C14T2P2Q16-20; C13T1P2Q14-20; C12T8P2Q15-20;
+C11T1P2Q15-20; C11T2P2Q17-20; C11T4P2Q17-20</p>
+<h3 id="选择题">选择题</h3>
+<p>单选题：三选一，ABC所有选项都会出现，算是<strong>带着问题去判断</strong>哪个选项正确。</p>
+<p><strong>做题步骤：</strong><br />
+<strong>1.读题干，找定位词，知道它的考点是什么，对比选项差异点</strong>。<br />
+<strong>2.听题，先定位到当前题，然后筛选/排除所说的选项是否符合题干</strong>。<br />
+<strong>3.答案句一般转折词后是重要内容，if条件句中带重要内容</strong>。</p>
+<p><strong>1.基本信息：数字、人、地点、时间</strong>。<br />
+<strong>2.限定词：</strong><br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 新/旧</span></span><br><span class="line">new = latest = plan = 将来时</span><br><span class="line">past / old / previous / <span class="number">10</span> years before / 过去时态 </span><br><span class="line">now / today / at present / currently / 进行时态doing</span><br><span class="line">future / plan to do / <span class="number">10</span> years later / 将来时态 will do / be going to</span><br><span class="line"><span class="comment"># 立即/长远</span></span><br><span class="line">immediately benefit 立即受益</span><br><span class="line">long term plan 长远计划</span><br></pre></td></tr></table></figure></p>
+<p><strong>3.因果：</strong><br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 因果连接词的附近</span></span><br><span class="line">so+结果 = therefore = thus = <span class="keyword">as</span> a consequence</span><br><span class="line">because+原因 = due to = <span class="keyword">as</span> a result of </span><br><span class="line"><span class="comment"># 目的状语</span></span><br><span class="line">to do sth </span><br><span class="line"><span class="comment"># 特殊词</span></span><br><span class="line">want = aim = order = intension 意图 </span><br></pre></td></tr></table></figure></p>
+<p><strong>4.what do we learn from：考动词替换</strong>。</p>
+<p>一些注意的词：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ex- 向外 export 出口 extrovert 外向 exterior 外部</span><br><span class="line">in -向内 import 进口 introvert 内向 interior 内部</span><br><span class="line"></span><br><span class="line">fish: cod 鳕鱼 / tuna 金枪鱼 / salmon三文鱼</span><br><span class="line">meat: lamb 羊肉 / pork 猪肉 / rib 排骨 / ham 火腿 / sausage 香肠 / </span><br><span class="line">      beef -&gt; steak 牛排  rare - medium - well done  </span><br><span class="line">      chicken -&gt; wings legs breast </span><br><span class="line">cheese roll 芝士卷</span><br></pre></td></tr></table></figure></p>
+<p>作业：<br />
+C17T1P2Q11-14;; C17T2P2Q11-14; ; C17T3P2Q13-15; C17T4P2Q11-14;
+C16T1P2Q11-14; C16T2P2Q11-15; ; C16T4P2Q11-14<br />
+做题+复盘 - 定位成功 - 全文听写 - 分析</p>
+<h3 id="配对题">配对题</h3>
+<p>此题比较快，考察词词替换：<br />
+<strong>1.看题目，从中找到目标范围和背景</strong>。<br />
+<strong>2.看选项，需要提前思考选项可能的替换方向</strong>。<br />
+<strong>3.看题干，原词是顺序出现，熟悉发音</strong>。<br />
+<strong>4.听题，题干定位成功，找选项</strong>。<br />
+一定先选确定的，不确定的先不选，不然选项用了，一错就是两个！</p>
+<p>作业：C15C16C17 Part2 文章 做题+复盘<br />
+单选 - 为啥对 为啥错<br />
+多选 - 同上<br />
+配对 - 定位 写内容<br />
+地图- 同上</p>
+<h2 id="听力p4">听力P4</h2>
+<h3 id="填空题">填空题</h3>
+<p>填空题：一篇长文章，大概8min，10个题只给一次看题时间，题到一半会有3s暂停，会出现很长时间说不到题别着急。</p>
+<p>步骤：<br />
+1.时间不够先看有填空的句子，再看其他句子。<br />
+2.读懂题，思考定位词，预测词性和内容。<br />
+3.听原文，定位句子，替换定位词，正确拼写单词。</p>
+<p>1.替换考点<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 空前 &amp; 空后</span></span><br><span class="line">动词: 词词/抽象-具体/被动语态，如 sth be done by sb = sb do sth</span><br><span class="line">形容词: 词词/抽象-具体/定语从句，<span class="number">90</span>%答案词就是先行词 N + which...</span><br><span class="line">复数名词: a lot of = many , a lot of ____ = <span class="number">40</span> liter sap</span><br><span class="line">因果: because/due to + 原因 = 原因 + so/therefore/thus/<span class="keyword">as</span> a result of</span><br><span class="line">转折: but = however = although = <span class="keyword">while</span></span><br><span class="line">让步: even though/despite..., ... = ..., although....</span><br><span class="line">否定: <span class="keyword">not</span> = never = hardly = rather than = instead of</span><br><span class="line">并列: A B <span class="keyword">and</span> C = C, A, ____  有乱序；A <span class="keyword">and</span> B = A...，<span class="keyword">as</span> well <span class="keyword">as</span> B...</span><br><span class="line">A of B = BA </span><br></pre></td></tr></table></figure></p>
+<p>听力 - C10+C11 - part4<br />
+做题- 看题 - 有不认识的生词查 - 猜测<br />
+复盘 - 原文对应的句子听写 - 同意替换找到highlight<br />
+看原文 - 阅读 - 积累的是场景词</p>
+<h2 id="参考网站">参考网站</h2>
+<p><span class="exturl" data-url="aHR0cHM6Ly9pZWx0c2NhdC54ZGYuY24vcHJhY3RpY2UvbGlzdGVu">https://ieltscat.xdf.cn/practice/listen<i class="fa fa-external-link-alt"></i></span></p>
 
       
     </div>

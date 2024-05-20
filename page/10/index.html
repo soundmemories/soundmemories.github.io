@@ -351,7 +351,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>477</span>
+      <span>483</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -370,16 +370,13 @@
     
     <div class="post-body" itemprop="articleBody">
           <h2 id="比较运算符">比较运算符</h2>
-<ul>
-<li>比较运算符
-<ul>
-<li>大于：&gt;</li>
-<li>小于：&lt;</li>
-<li>大于等于：&gt;=</li>
-<li>小于等于：&lt;=</li>
-<li>等于：==（谨防与赋值的=混淆）<br />
-</li>
-<li>不等于：!=<br />
+<p>比较运算符：<br />
+1.大于：<code>&gt;</code><br />
+2.小于：<code>&lt;</code><br />
+3.大于等于：<code>&gt;=</code><br />
+4.小于等于：<code>&lt;=</code><br />
+5.等于：<code>==</code>（谨防与赋值的=混淆）<br />
+6.不等于：<code>!=</code><br />
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/01/27/Java/08.Java%E6%AF%94%E8%BE%83%E8%BF%90%E7%AE%97%E7%AC%A6/#more" rel="contents">
@@ -461,7 +458,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>254</span>
+      <span>271</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -483,12 +480,12 @@
 <ul>
 <li>赋值运算符<code>=</code>
 <ul>
-<li>永远是把<code>=右边</code>的常量值、变量中值、表达式计算的值赋值给<code>=左边</code>的变量。即<code>=左边</code>只能是一个变量。</li>
+<li>永远是把其<strong>右边</strong>的常量值、变量中值、表达式计算的值赋值给其<strong>左边</strong>的变量，其<strong>左边</strong>只能是<strong>一个</strong>变量。</li>
 <li>运算的顺序：把右边的整个表达式先算完，才会做最后的赋值操作。</li>
 </ul></li>
 <li>扩展的赋值运算符
 <ul>
-<li>+=、-=、*=、/=、%=、...。<br />
+<li><code>+=</code>、<code>-=</code>、<code>*=</code>、<code>/=</code>、<code>%=</code>、...。<br />
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/01/26/Java/07.Java%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6/#more" rel="contents">
@@ -570,14 +567,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>952</span>
+      <span>1k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
+      <span>4 分钟</span>
     </span>
 </div>
 
@@ -589,7 +586,7 @@
     
     <div class="post-body" itemprop="articleBody">
           <h2 id="算术运算符">算术运算符</h2>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">加：+</span><br><span class="line">减：-</span><br><span class="line">乘：*</span><br><span class="line">除：/（整数/整数，结果只保留整数部分）</span><br><span class="line">取模（取余）：%（被模数%模数，只看被模数的正负号）。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">加：+</span><br><span class="line">减：-</span><br><span class="line">乘：*</span><br><span class="line">除：/（整数/整数，结果只保留整数部分）</span><br><span class="line">取模（取余）：%（被模数%模数，只看被模数的正负号）</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/01/25/Java/06.Java%E7%AE%97%E6%9C%AF%E8%BF%90%E7%AE%97%E7%AC%A6/#more" rel="contents">
@@ -671,7 +668,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>783</span>
+      <span>813</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -691,24 +688,22 @@
     <div class="post-body" itemprop="articleBody">
           <h2 id="基本数据类型转换">基本数据类型转换</h2>
 <ul>
-<li>自动类型转换
+<li>自动类型转换：把存储范围小的类型的值赋值给存储范围大的类型的变量，自动可以完成升级。
 <ul>
-<li>把存储范围小的类型的值赋值给存储范围大的类型的变量，自动可以完成升级。
-<ul>
-<li>byte-&gt;short-&gt;int-&gt;long-&gt;float-&gt;double。</li>
-<li>char-&gt;int-&gt;long-&gt;float-&gt;double。</li>
+<li>byte -&gt; short -&gt; int -&gt; long -&gt; float -&gt;
+double。</li>
+<li>char -&gt; int -&gt; long -&gt; float -&gt; double。</li>
 <li><mark class="label success">byte，short，char如果进行算术运算都会自动升级为int。</mark></li>
 <li><mark class="label success">boolean不参与。C语言中会把0和1转成false和true，Java中不行。</mark></li>
 </ul></li>
-</ul></li>
-<li>强制类型转换
+<li>强制类型转换：把存储范围大的类型的值，赋值给存储范围小的类型变量时，需要强制类型转换。
 <ul>
-<li>把存储范围大的类型的值，赋值给存储范围小的类型变量时，需要强制类型转换。
-<ul>
-<li>double-&gt;float-&gt;long-&gt;int-&gt;short-&gt;byte。</li>
-<li>char-&gt;int。</li>
+<li>double -&gt; float -&gt; long -&gt; int -&gt; short -&gt;
+byte。</li>
+<li>char -&gt; int。</li>
 <li><mark class="label success">boolean不参与。C语言中会把0和1转成false和true，Java中不行。</mark></li>
 <li><mark class="label success">强制类型转换是有风险的，可能会溢出或损失精度。</mark></li>
+<li><mark class="label success">String类型不能通过强制类型转换，转为其他类型。</mark></li>
 <li>当需要把某个存储范围小的变量强制提升为存储范围大的类型时，也可以使用强制类型转换。<br />
           <!--noindex-->
             <div class="post-button">
@@ -791,7 +786,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.6k</span>
+      <span>1.7k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -810,11 +805,12 @@
     
     <div class="post-body" itemprop="articleBody">
           <h2 id="数据类型">数据类型</h2>
+<p><img src="/images/Java简介和环境搭建/基本数据类型.png" width="60%"></p>
 <ul>
 <li>Java中的数据类型：
 <ul>
 <li>基本数据类型（8种）</li>
-<li>引用数据类型（下次）<br />
+<li>引用数据类型（后面单独讲解）<br />
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/01/23/Java/04.Java%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E3%80%81%E8%BF%9B%E5%88%B6%E5%92%8C%E8%A1%A5%E7%A0%81/#more" rel="contents">
