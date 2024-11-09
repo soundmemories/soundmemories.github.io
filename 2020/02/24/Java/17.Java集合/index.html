@@ -28,14 +28,14 @@
 <meta property="og:site_name" content="SoundMemories">
 <meta property="og:description" content="数据结构 数据结构本质上都可看作容器，就是用来装对象的。要搞清楚两点：（1）如何存储（2）存储特点。 1.数据结构的分类、特点： 123456789101112131415|-逻辑结构：以物理结构为基础，在其上进行操作。同一种逻辑结构可以有多种物理结构，比如树可以用顺序存储，也可以用链式存储。    |-线性结构：数据元素之间存在着&quot;一对一&quot;的线性关系。        |">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://soundmemories.github.io/images/Java%E7%AE%80%E4%BB%8B%E5%92%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/C%E9%9B%86%E5%90%88.png">
-<meta property="og:image" content="https://soundmemories.github.io/images/Java%E7%AE%80%E4%BB%8B%E5%92%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/M%E9%9B%86%E5%90%88.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Java/C%E9%9B%86%E5%90%88.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Java/M%E9%9B%86%E5%90%88.png">
 <meta property="article:published_time" content="2020-02-23T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-05-29T05:15:13.460Z">
+<meta property="article:modified_time" content="2024-06-26T02:09:40.726Z">
 <meta property="article:author" content="SoundMemories">
 <meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://soundmemories.github.io/images/Java%E7%AE%80%E4%BB%8B%E5%92%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/C%E9%9B%86%E5%90%88.png">
+<meta name="twitter:image" content="https://soundmemories.github.io/images/Java/C%E9%9B%86%E5%90%88.png">
 
 
 <link rel="canonical" href="https://soundmemories.github.io/2020/02/24/Java/17.Java%E9%9B%86%E5%90%88/">
@@ -93,7 +93,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">122</span></a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">126</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -159,7 +159,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">122</span>
+          <span class="site-state-item-count">126</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -297,7 +297,7 @@ Java自带的动态数组ArrayList在【List集合】中讲解。</p>
 <h2 id="集合框架">集合框架</h2>
 <p>Java为了满足用户使用数据更多种的<strong>逻辑关系</strong>，而设计的一系列的<strong>不同于数组的、可变的、聚合的抽象数据类型</strong>。<br />
 这些接口和类在java.util包中，因为类型很丰富，因此我们通常称为集合框架集，主要分为Collection、Map两大类接口。<br />
-<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img src="/images/Java简介和环境搭建/C集合.png"></div><div class="group-picture-column"><img src="/images/Java简介和环境搭建/M集合.png"></div></div></div></p>
+<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img src="/images/Java/C集合.png"></div><div class="group-picture-column"><img src="/images/Java/M集合.png"></div></div></div></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//提示：集合中只能添加对象，不能添加基本数据类型的数据，如果添加基本数据类型的数据，它会自动装箱为对应包装类型的对象。</span></span><br><span class="line"><span class="comment">//注意：集合中元素存入时设置的是Object类型，取出赋值给其他变量时要强转！但很容易忘记集合元素的类型，如何解决？请参考下一章【泛型】</span></span><br><span class="line">|-Collection：规范<span class="string">&quot;单值&quot;</span>集合的接口。</span><br><span class="line">    |-List：列表，有序的，可按index插入、查询。</span><br><span class="line">    |-Queue：队列，通常为FIFO先进先出方式排序，优先级队列、LIFO队列、堆栈例外。</span><br><span class="line">    |-Set：集合，不包含重复元素，最多包含一个<span class="literal">null</span>元素。</span><br><span class="line">        |-SortedSet：进一步提供关于元素的总体排序。</span><br><span class="line">|-Map：规范<span class="string">&quot;对值&quot;</span>集合的接口。-<span class="string">&quot;(key,value)&quot;</span>结构，key不能重复。</span><br><span class="line">    |TreeMap：保证映射顺序。</span><br><span class="line">    |-HashMap：不保证映射顺序。</span><br><span class="line">    |-SortedMap：进一步提供关于键的总体排序。</span><br></pre></td></tr></table></figure>
 <h3 id="collection集合">Collection集合</h3>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">是其他<span class="string">&quot;单值&quot;</span>集合的根接口。</span><br><span class="line">没有直接的实现类，而是由具体的子接口（List、Set、Queue等）中实现。</span><br><span class="line">一些集合允许有重复的元素，而另一些则不允许。一些集合是有序的，而另一些则是无序的。</span><br></pre></td></tr></table></figure>

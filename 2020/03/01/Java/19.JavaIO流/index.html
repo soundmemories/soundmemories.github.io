@@ -28,14 +28,14 @@
 <meta property="og:site_name" content="SoundMemories">
 <meta property="og:description" content="I&#x2F;O I&#x2F;O：Input&#x2F;Output，常用于读、写文件、网络通讯等。 123&#x2F;&#x2F;Java中通过java.io包下的类和接口来支持。I（Input）：输入，从别的地方（文件、键盘、网络、内存等）读取数据到当前程序中。O（Output）：输出，从程序把数据输出到文件、屏幕、控制台、网络、内存等中。 文件&#x2F;目录流 java.io.File类是java.io包下代表与平台无关的文件和目录，">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://soundmemories.github.io/images/Java%E7%AE%80%E4%BB%8B%E5%92%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/IO%E6%B5%81.png">
-<meta property="og:image" content="https://soundmemories.github.io/images/Java%E7%AE%80%E4%BB%8B%E5%92%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/IO%E6%B5%811.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Java/IO%E6%B5%81.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Java/IO%E6%B5%811.png">
 <meta property="article:published_time" content="2020-02-29T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-06-07T06:29:24.123Z">
+<meta property="article:modified_time" content="2024-06-26T02:09:56.502Z">
 <meta property="article:author" content="SoundMemories">
 <meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://soundmemories.github.io/images/Java%E7%AE%80%E4%BB%8B%E5%92%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/IO%E6%B5%81.png">
+<meta name="twitter:image" content="https://soundmemories.github.io/images/Java/IO%E6%B5%81.png">
 
 
 <link rel="canonical" href="https://soundmemories.github.io/2020/03/01/Java/19.JavaIO%E6%B5%81/">
@@ -93,7 +93,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">122</span></a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">126</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -159,7 +159,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">122</span>
+          <span class="site-state-item-count">126</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -297,8 +297,8 @@
 <h2 id="网络流">网络流</h2>
 <h3 id="抽象基类">抽象基类</h3>
 <p>I/O操作不仅仅是针对文件、目录，它可以从网络中输入和输出，其流类型如下：<br />
-<img src="/images/Java简介和环境搭建/IO流.png" width="50%"><br />
-<img src="/images/Java简介和环境搭建/IO流1.png" width="60%"></p>
+<img src="/images/Java/IO流.png" width="50%"><br />
+<img src="/images/Java/IO流1.png" width="60%"></p>
 <p>最基本的网络IO流只有四个，它们是网络IO流的超级父类，抽象基类：<br />
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">字节输入流：InputStream</span><br><span class="line">字节输出流：OutputStream</span><br><span class="line">字符输入流：Reader</span><br><span class="line">字符输出流：Writer</span><br></pre></td></tr></table></figure></p>
 <h3 id="io流选取">IO流选取</h3>

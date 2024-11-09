@@ -87,7 +87,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">122</span></a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">126</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -152,7 +152,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">122</span>
+          <span class="site-state-item-count">126</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -193,6 +193,832 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/11/ML/33.BayesianLR/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/10/11/ML/33.BayesianLR/" class="post-title-link" itemprop="url">BayesianLR</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-11 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-11T00:00:00+08:00">2020-10-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>618</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="贝叶斯线性回归">贝叶斯线性回归</h1>
+<p>我们知道，线性回归当噪声为高斯分布的时候，最小二乘损失导出的结果相当于对概率模型应用
+MLE，引入参数的先验时，先验分布是高斯分布，那么
+MAP的结果相当于岭回归的正则化，如果先验是拉普拉斯分布，那么相当于 Lasso
+的正则化。这两种方案都是点估计方法。我们希望利用贝叶斯方法来求解参数的后验分布。</p>
+<p>线性回归的模型假设为：<br />
+<span class="math display">\[
+\begin{align}f(x)=w^Tx
+\\y=f(x)+\varepsilon\\
+\varepsilon\sim\mathcal{N}(0,\sigma^2)
+\end{align}
+\]</span><br />
+在贝叶斯方法中，需要解决推断和预测两个问题。</p>
+<h2 id="推断">推断</h2>
+<p>引入高斯先验：<br />
+<span class="math display">\[
+p(w)=\mathcal{N}(0,\Sigma_p)
+\]</span><br />
+对参数的后验分布进行推断：<br />
+<span class="math display">\[
+p(w|X,Y)=\frac{p(w,Y|X)}{p(Y|X)}=\frac{p(Y|w,X)p(w|X)}{\int
+p(Y|w,X)p(w|X)dw}
+\]</span><br />
+分母和参数无关，由于 <span
+class="math inline">\(p(w|X)=p(w)\)</span>，代入先验得到：<br />
+<span class="math display">\[
+p(w|X,Y)\propto
+\prod\limits_{i=1}^N\mathcal{N}(y_i|w^Tx_i,\sigma^2)\cdot\mathcal{N}(0,\Sigma_p)
+\]</span><br />
+高斯分布取高斯先验的共轭分布依然是高斯分布，于是可以得到后验分布也是一个高斯分布。第一项：<br />
+<span class="math display">\[
+\begin{align}\prod\limits_{i=1}^N\mathcal{N}(y_i|w^Tx_i,\sigma^2)&amp;=\frac{1}{(2\pi)^{N/2}\sigma^N}\exp(-\frac{1}{2\sigma^2}\sum\limits_{i=1}^N(y_i-w^Tx_i)^2)\nonumber\\
+&amp;=\frac{1}{(2\pi)^{N/2}\sigma^N}\exp(-\frac{1}{2}(Y-Xw)^T(\sigma^{-2}\mathbb{I})(Y-Xw))
+\nonumber\\&amp;=\mathcal{N}(Xw,\sigma^2\mathbb{I})
+\end{align}
+\]</span><br />
+代入上面的式子：<br />
+<span class="math display">\[
+p(w|X,Y)\propto\exp(-\frac{1}{2\sigma^2}(Y-Xw)^T\sigma^{-2}\mathbb{I}(Y-Xw)-\frac{1}{2}w^T\Sigma_p^{-1}w)
+\]</span><br />
+假定最后得到的高斯分布为：<span
+class="math inline">\(\mathcal{N}(\mu_w,\Sigma_w)\)</span>。对于上面的分布，采用配方的方式来得到最终的分布，指数上面的二次项为：<br />
+<span class="math display">\[
+-\frac{1}{2\sigma^2}w^TX^TXw-\frac{1}{2}w^T\Sigma_p^{-1}w
+\]</span><br />
+于是：<br />
+<span class="math display">\[
+\Sigma_w^{-1}=\sigma^{-2}X^TX+\Sigma_p^{-1}=A
+\]</span><br />
+一次项：<br />
+<span class="math display">\[
+\frac{1}{2\sigma^2}2Y^TXw=\sigma^{-2}Y^TXw
+\]</span><br />
+于是：<br />
+<span class="math display">\[
+\mu_w^T\Sigma_w^{-1}=\sigma^{-2}Y^TX\Rightarrow\mu_w=\sigma^{-2}A^{-1}X^TY
+\]</span></p>
+<h2 id="预测">预测</h2>
+<p>给定一个 <span class="math inline">\(x^\ast\)</span>，求解 <span
+class="math inline">\(y^\ast\)</span>，所以 <span
+class="math inline">\(f(x^\ast)=x^{\ast T}w\)</span>，代入参数后验，有
+<span class="math inline">\(x^{\ast T}w\sim \mathcal{N}(x^{\ast
+T}\mu_w,x^{\ast T}\Sigma_wx^\ast)\)</span>，添上噪声项：<br />
+<span class="math display">\[
+p(y^*|X,Y,x^*)=\int_wp(y^*|w,X,Y,x^*)p(w|X,Y,x^*)dw=\int_wp(y^*|w,x^*)p(w|X,Y)dw\\
+=\mathcal{N}(x^{*T}\mu_w,x^{*T}\Sigma_wx^*+\sigma^2)
+\]</span></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/10/ML/32.GaussianNetwork/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/10/10/ML/32.GaussianNetwork/" class="post-title-link" itemprop="url">GaussianNetwork</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-10 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-10T00:00:00+08:00">2020-10-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>753</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="高斯网络">高斯网络</h1>
+<p>高斯图模型（高斯网络）是一种随机变量为连续的有向或者无向图。有向图版本的高斯图是高斯贝叶斯网络，无向版本的叫高斯马尔可夫网络。</p>
+<p>高斯网络的每一个节点都是高斯分布：<span
+class="math inline">\(\mathcal{N}(\mu_i,\Sigma_i)\)</span>，于是所有节点的联合分布就是一个高斯分布，均值为
+<span class="math inline">\(\mu\)</span>，方差为 <span
+class="math inline">\(\Sigma\)</span>。</p>
+<p>对于边缘概率，我们有下面三个结论：</p>
+<ol type="1">
+<li><p>对于方差矩阵，可以得到独立性条件：<span
+class="math inline">\(x_i\perp
+x_j\Leftrightarrow\sigma_{ij}=0\)</span>，这个叫做全局独立性。</p></li>
+<li><p>我们看方差矩阵的逆（精度矩阵或信息矩阵）：<span
+class="math inline">\(\Lambda=\Sigma^{-1}=(\lambda_{ij})_{pp}\)</span>，有定理：</p>
+<blockquote>
+<p><span class="math inline">\(x_i\perp
+x_j|(X-\{x_i,x_j\})\Leftrightarrow\lambda_{ij}=0\)</span></p>
+</blockquote>
+<p>因此，我们使用精度矩阵来表示条件独立性。</p></li>
+<li><p>对于任意一个无向图中的节点 <span
+class="math inline">\(x_i\)</span>，<span
+class="math inline">\(x_i|(X-x_i)\sim \mathcal{N}(\sum\limits_{j\ne
+i}\frac{\lambda_{ij}}{\lambda_{ii}}x_j,\lambda_{ii}^{-1})\)</span></p>
+<p>也就是其他所有分量的线性组合，即所有与它有链接的分量的线性组合。</p></li>
+</ol>
+<h2 id="高斯贝叶斯网络-gbn">高斯贝叶斯网络 GBN</h2>
+<p>高斯贝叶斯网络可以看成是 LDS 的一个推广，LDS
+的假设是相邻时刻的变量之间的依赖关系，因此是一个局域模型，而高斯贝叶斯网络，每一个节点的父亲节点不一定只有一个，因此可以看成是一个全局的模型。根据有向图的因子分解：<br />
+<span class="math display">\[
+p(x)=\prod\limits_{i=1}^pp(x_i|x_{Parents(i)})
+\]</span><br />
+对里面每一项，假设每一个特征是一维的，可以写成线性组合：<br />
+<span class="math display">\[
+p(x_i|x_{Parents(i)})=\mathcal{N}(x_i|\mu_i+W_i^Tx_{Parents(i)},\sigma^2_i)
+\]</span><br />
+将随机变量写成：<br />
+<span class="math display">\[
+x_i=\mu_i+\sum\limits_{j\in
+x_{Parents(i)}}w_{ij}(x_j-\mu_j)+\sigma_i\varepsilon_i,\varepsilon_i\sim
+\mathcal{N}(0,1)
+\]</span><br />
+写成矩阵形式，并且对 <span class="math inline">\(w\)</span>
+进行扩展：<br />
+<span class="math display">\[
+x-\mu=W(x-\mu)+S\varepsilon
+\]</span><br />
+其中，<span
+class="math inline">\(S=diag(\sigma_i)\)</span>。所以有：<span
+class="math inline">\(x-\mu=(\mathbb{I}-W)^{-1}S\varepsilon\)</span></p>
+<p>由于：<br />
+<span class="math display">\[
+Cov(x)=Cov(x-\mu)
+\]</span><br />
+可以得到协方差矩阵。</p>
+<h2 id="高斯马尔可夫网络-gmn">高斯马尔可夫网络 GMN</h2>
+<p>对于无向图版本的高斯网络，可以写成：<br />
+<span class="math display">\[
+p(x)=\frac{1}{Z}\prod\limits_{i=1}^p\phi_i(x_i)\prod\limits_{i,j\in
+X}\phi_{i,j}(x_i,x_j)
+\]</span><br />
+为了将高斯分布和这个式子结合，我们写出高斯分布和变量相关的部分：<br />
+<span class="math display">\[
+\begin{align}p(x)&amp;\propto
+\exp(-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu))\nonumber\\
+&amp;=\exp(-\frac{1}{2}(x^T\Lambda x-2\mu^T\Lambda
+x+\mu^T\Lambda\mu))\nonumber\\
+&amp;=\exp(-\frac{1}{2}x^T\Lambda x+(\Lambda\mu)^Tx)
+\end{align}
+\]</span><br />
+可以看到，这个式子与无向图分解中的两个部分对应，我们记 <span
+class="math inline">\(h=\Lambda\mu\)</span>为 Potential Vector。其中和
+<span class="math inline">\(x_i\)</span> 相关的为：<span
+class="math inline">\(x_i:-\frac{1}{2}\lambda_{ii}x_i^2+h_ix_i\)</span>，与
+<span class="math inline">\(x_i,x_j\)</span> 相关的是：<span
+class="math inline">\(x_i,x_j:-\lambda_{ij}x_ix_j\)</span>，这里利用了精度矩阵为对称矩阵的性质。我们看到，这里也可以看出，<span
+class="math inline">\(x_i,x_j\)</span> 构成的一个势函数，只和 <span
+class="math inline">\(\lambda_{ij}\)</span> 有关，于是
+$x_ix_j|(X-{x_i,x_j})_{ij}=0 $。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/09/ML/31.CRF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/10/09/ML/31.CRF/" class="post-title-link" itemprop="url">CRF</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-09 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-09T00:00:00+08:00">2020-10-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>9 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="条件随机场">条件随机场</h1>
+<p>我们知道，分类问题可以分为<strong>硬分类</strong>和<strong>软分类</strong>两种。其中<strong>硬分类</strong>有
+SVM（支持向量机），PLA（感知机算法），LDA（线性判别分析）
+等。<strong>软分类</strong>问题大体上可以分为<strong>概率生成</strong>和<strong>概率判别</strong>模型，其中较为有名的<strong>判别模型</strong>有
+Logistic 回归，<strong>生成模型</strong>有朴素贝叶斯模型。Logistic
+回归模型的损失函数为交叉熵，这类模型也叫对数线性模型，一般地，又叫做最大熵模型，这类模型和指数族分布的概率假设是一致的。对朴素贝叶斯假设，如果将其中的单元素的条件独立性做推广到一系列的隐变量，那么，由此得到的模型又被称为动态模型，比较有代表性的如
+HMM（隐马尔可夫模型），从概率意义上，当HMM的发射矩阵服从高斯分布时，HMM也可以看成是
+GMM（高斯混合模型） 在时序上面的推广。</p>
+<p>我们看到，一般地，如果将<strong>最大熵模型</strong>（判别模型）和
+<strong>HMM</strong>（生成模型） 相结合，那么这种模型叫做<strong>最大熵
+Markov 模型</strong>（MEMM），严格讲它是概率判别模型：</p>
+<pre class="mermaid">
+graph LR
+	x4((x4))--&gt;y4
+	x2((x2))--&gt;y2
+	x1((x1))--&gt;y1
+	x3((x3))--&gt;y3
+	y1--&gt;y2;
+	y2--&gt;y3;
+y3--&gt;y4;
+</pre>
+<p>这个图就是将 HMM 的<strong>观测变量 <span
+class="math inline">\(x\)</span>
+方向反向</strong>且是有向图，应用在分类中，隐变量就是输出的分类。这样
+HMM 中的两个假设就不成立了，特别是观测之间不是完全独立的了。即与HMM的
+<span class="math inline">\(x_i\)</span> 只依赖 <span
+class="math inline">\(y_i\)</span> 不一样，MEMM当前隐藏状态 <span
+class="math inline">\(y_i\)</span> 应该是依赖当前时刻的观测节点 <span
+class="math inline">\(x_i\)</span> 和上一时刻的隐藏节点 <span
+class="math inline">\(y_{i-1}\)</span>，依次类推<span
+class="math inline">\(y_{i-1}\)</span>也和 <span
+class="math inline">\(x_{i-1}\)</span> 有关，所以 <span
+class="math inline">\(x_i\)</span> 和 <span
+class="math inline">\(x_{i-1}\)</span>
+有关，从而打破了观测独立假设。</p>
+<p>HMM 是一种<strong>生成式模型</strong>，其建模对象为 <span
+class="math inline">\(p(X,Y|\lambda)\)</span>，根据 HMM 的概率图，<span
+class="math inline">\(p(X,Y|\lambda)=\prod\limits_{t=1}^Tp(x_t,y_t|\lambda,y_{t-1})\)</span>。我们看到，观测独立性假设是一个很强的假设，如果我们有一个文本样本，那么观测独立性假设就假定了所有的单词之间没有关联。</p>
+<p>MEMM 是一种<strong>判别式模型</strong>，建模对象是 <span
+class="math inline">\(p(Y|X,\lambda)\)</span>，我们看概率图（有向图），给定
+<span class="math inline">\(y_t\)</span>，<span
+class="math inline">\(x_t,x_{t-1}\)</span>
+是不独立的，这样，观测独立假设就不成立了。根据概率图，<span
+class="math inline">\(p(Y|X,\lambda)=\prod\limits_{t=1}^Tp(y_t|y_{t-1},X,\lambda)\)</span>。</p>
+<p>MEMM 的缺陷是<strong>标注偏差问题</strong>（Label Bias
+Problem），其必须满足<strong>局域的概率归一化</strong>，我们看到，在上面的概率图中，<span
+class="math inline">\(p(y_t|y_{t-1},x_t)\)</span>， 这个概率，如果 <span
+class="math inline">\(p(y_t|y_{t-1})\)</span>
+非常接近1，那么事实上，观测变量 <span class="math inline">\(x\)</span>
+是什么都不会影响这个概率了，这样观测变量就没用了。</p>
+<p>对于这个问题，我们将 <span class="math inline">\(y\)</span>
+之间的箭头转为直线转为无向图（线性链条件随机场），这样就只要满足<strong>全局归一化了</strong>（破坏齐次
+Markov 假设）。</p>
+<pre class="mermaid">
+graph LR
+	x4((x4))--&gt;y4
+		x2((x2))--&gt;y2
+			x1((x1))--&gt;y1
+				x3((x3))--&gt;y3
+	y1---y2;
+	y2---y3;
+y3---y4;
+</pre>
+<h2 id="crf-的-pdf">CRF 的 PDF</h2>
+<p>线性链的 CRF 的 PDF 为 <span
+class="math inline">\(p(Y|X)=\dfrac{1}{Z}\exp\sum\limits_{t=1}^T(F_t(y_{t-1},y_t,x_{1:T}))\)</span>，两两形成了最大团，其中
+<span class="math inline">\(y_0\)</span>
+是随意外加的一个元素作为初始状态。作为第一个简化，我们假设每个团的势函数相同
+<span class="math inline">\(F_t=F\)</span>。</p>
+<p>对于这个 <span
+class="math inline">\(F\)</span>，我们进一步，可以将其写为
+$ F(y_{t-1},y_t,X)=<em>{y</em>{t-1},X}+<em>{y</em>{t},X}+<em>{y_t,y</em>{t-1},X}$这三个部分，前两个部分表示状态函数，最后一个表示转移函数，由于整体的求和，第一部分重复可以省略，可以简化为
+$
+F(y_{t-1},y_t,X)=<em>{y</em>{t},X}+<em>{y_t,y</em>{t-1},X}$，我们可以设计一个表达式将这两部分参数化：<br />
+<span class="math display">\[
+\begin{align}
+\Delta_{y_t,y_{t-1},X}&amp;=\sum\limits_{k=1}^K\lambda_kf_k(y_{t-1},y_t,X)\\
+\Delta_{y_{t},X}&amp;=\sum\limits_{l=1}^L\eta_lg_l(y_t,X)
+\end{align}
+\]</span><br />
+其中 $g,f $ 叫做特征函数，对于 <span class="math inline">\(y\)</span> 有
+<span class="math inline">\(S\)</span> 种元素，<span
+class="math inline">\(K\)</span> 和 <span
+class="math inline">\(y_{t-1}\)</span> 和 <span
+class="math inline">\(y_{t}\)</span> 有关，<span
+class="math inline">\(L\)</span> 和 <span
+class="math inline">\(y_t\)</span>有关，所以 <span
+class="math inline">\(K\le S^2,L\le S\)</span>。</p>
+<p>然后代入概率密度函数中：<br />
+<span class="math display">\[
+\begin{align}
+p(Y|X)=\frac{1}{Z}\exp\sum\limits_{t=1}^T[\sum\limits_{k=1}^K\lambda_kf_k(y_{t-1},y_t,X)+\sum\limits_{l=1}^L\eta_lg_l(y_t,X)]
+\end{align}
+\]</span></p>
+<h3 id="条件随机场的简化">条件随机场的简化</h3>
+<p>将其写成向量的形式：定义 <span
+class="math inline">\(y=(y_1,y_2,\cdots,y_T)^T,x=(x_1,x_2,\cdots,x_T)^T,\lambda=(\lambda_1,\lambda_2,\cdots,\lambda_K)^T,\eta=(\eta_1,\eta_2,\cdots,\eta_L)^T\)</span>，并且有
+<span
+class="math inline">\(f=(f_1,f_2,\cdots,f_K)^T,g=(g_1,g_2,\cdots,g_L)^T\)</span>，于是：<br />
+<span class="math display">\[
+\begin{align}
+p(Y=y|X=x)=\frac{1}{Z}\exp\sum\limits_{t=1}^T[\lambda^Tf(y_{t-1},y_t,x)+\eta^Tg(y_t,x)]
+\end{align}
+\]</span><br />
+不妨记：<span
+class="math inline">\(\theta=(\lambda,\eta)^T,H=(\sum\limits_{t=1}^Tf,\sum\limits_{t=1}^Tg)^T\)</span>，这俩都是
+<span class="math inline">\(K+L\)</span> 维度：<br />
+<span class="math display">\[
+\begin{align}
+p(Y=y|X=x)=\frac{1}{Z(x,\theta)}\exp[\theta^TH(y_t,y_{t-1},x)]
+\end{align}
+\]</span><br />
+上面这个式子是一个指数族分布，于是 <span
+class="math inline">\(Z\)</span> 是配分函数。</p>
+<h3 id="个问题">3个问题</h3>
+<p>CRF 需要解决下面几个问题：<br />
+1. Learning：参数估计问题，CRF是求 <span
+class="math inline">\(\theta\)</span> 参数。对 <span
+class="math inline">\(N\)</span> 个 <span
+class="math inline">\(T\)</span> 维样本，<span
+class="math inline">\(\hat{\theta}=\mathop{argmax}\limits_{\theta}\prod\limits_{i=1}^Np(y^i|x^i)\)</span>，这里用上标表示样本的编号。<br />
+2. Inference：<br />
+1. 边缘概率：<span class="math inline">\(p(y_t|x)\)</span><br />
+2. 条件概率：一般在生成模型中较为关注，CRF中不关注<br />
+3. MAP 推断(Decoding)：<span
+class="math inline">\(\hat{y}=\mathop{argmax}\limits_{y}p(y|x)\)</span>
+的序列 <span class="math inline">\(y\)</span></p>
+<p>总体来说3个基本问题：<strong>概率计算问题</strong>(边缘概率)、<strong>学习问题</strong>(参数估计)、<strong>预测问题</strong>(Decoding)。</p>
+<h2 id="边缘概率">边缘概率</h2>
+<p>边缘概率这个问题描述为，根据学习任务得到的参数，给定了 <span
+class="math inline">\(p(Y=y|X=x)\)</span>，求解 <span
+class="math inline">\(p(y_t=i|x)\)</span>。根据无向图可以给出：<br />
+<span class="math display">\[
+\begin{align}
+p(y_t=i|x)=\sum\limits_{y_{1:t-1},y_{t+1:T}}p(y|x)=\sum\limits_{y_{1:t-1}}\sum\limits_{y_{t+1:T}}\frac{1}{Z}\prod\limits_{t&#39;=1}^T\phi_{t&#39;}(y_{t&#39;-1},y_{t&#39;},x)
+\end{align}
+\]</span><br />
+我们看到上面的式子，直接计算的复杂度很高，这是由于求和的复杂度在 <span
+class="math inline">\(O(S^T)\)</span>，求积的复杂度在 <span
+class="math inline">\(O(T)\)</span>，所以整体复杂度为 <span
+class="math inline">\(O(TS^T)\)</span>。我们需要调整求和符号的顺序，从而降低复杂度。</p>
+<p>首先，将两个求和分为：<br />
+<span class="math display">\[
+\begin{align}&amp;p(y_t=i|x)=\frac{1}{Z}\Delta_l\Delta_r\\
+&amp;\Delta_l=\sum\limits_{y_{1:t-1}}\phi_{1}(y_0,y_1,x)\phi_2(y_1,y_2,x)\cdots\phi_{t-1}(y_{t-2},y_{t-1},x)\phi_t(y_{t-1},y_t=i,x)\\
+&amp;\Delta_r=\sum\limits_{y_{t+1:T}}\phi_{t+1}(y_t=i,y_{t+1},x)\phi_{t+2}(y_{t+1},y_{t+2},x)\cdots\phi_T(y_{T-1},y_T,x)
+\end{align}
+\]</span><br />
+对于 <span class="math inline">\(\Delta_l\)</span>：<span
+class="math inline">\(\phi_{t-1}(y_{t-2},y_{t-1},x)\phi_t(y_{t-1},y_t=i,x)\)</span>
+对 <span class="math inline">\(y_{t-1}\)</span> 积分得到 <span
+class="math inline">\(\sum\limits_{y_{t-1}}\phi_t(y_{t-1},y_t=i,x)\)</span>
+，那么从左向右，一步一步积分将 <span class="math inline">\(y_t\)</span>
+消掉：<br />
+<span class="math display">\[
+\begin{align}
+\Delta_l=\sum\limits_{y_{t-1}}\phi_t(y_{t-1},y_t=i,x)\sum\limits_{y_{t-2}}\phi_{t-1}(y_{t-2},y_{t-1},x)\cdots\sum\limits_{y_0}\phi_1(y_0,y_1,x)
+\end{align}
+\]</span><br />
+引入：<br />
+<span class="math display">\[
+\begin{align}
+\alpha_t(i)=\Delta_l
+\end{align}
+\]</span><br />
+这里 <span
+class="math inline">\(\alpha_t(i)=y_1y_2...y_{t-1}(y_t=i)\)</span>，依此类推
+<span
+class="math inline">\(\alpha_{t-1}(j)=y_1y_2...y_{t-2}(y_{t-1}=j)\)</span>，于是：<br />
+<span class="math display">\[
+\begin{align}
+\alpha_{t}(i)&amp;=\sum\limits_{y_{t-1}}\phi_t(y_{t-1}=j,y_t=i,x)\alpha_{t-1}(j)\\
+&amp;=\sum\limits_{j\in S}\phi_t(y_{t-1}=j,y_t=i,x)\alpha_{t-1}(j)
+\end{align}
+\]</span><br />
+这样我们得到了一个递推式。</p>
+<p>类似地，<span
+class="math inline">\(\Delta_r=\beta_t(i)=\sum\limits_{j\in
+S}\phi_{t+1}(y_t=i,y_{t+1}=j,x)\beta_{t+1}(j)\)</span>。这个方法和 HMM
+中的前向-后向算法类似，就是概率图模型中精确推断的变量消除算法（信念传播）。</p>
+<h2 id="参数估计">参数估计</h2>
+<p>在进行各种类型的推断之前，还需要对参数 <span
+class="math inline">\(\theta=(\lambda,\eta)\)</span> 进行学习：<br />
+<span class="math display">\[
+\begin{align}\hat{\theta}&amp;=\mathop{argmax}_{\theta}\prod\limits_{i=1}^Np(y^i|x^i)\\
+&amp;=\mathop{argmax}_\theta\sum\limits_{i=1}^N\log p(y^i|x^i)\\
+&amp;=\mathop{argmax}_\theta\sum\limits_{i=1}^N\log
+[\frac{1}{Z(x^i,\lambda,\eta)}\exp\sum\limits_{t=1}^T[\lambda^Tf(y_{t-1}^i,y_t^i,x^i)+\eta^Tg(y_t^i,x^i)]]\\
+&amp;=\mathop{argmax}_\theta\sum\limits_{i=1}^N[-\log
+Z(x^i,\lambda,\eta)+\sum\limits_{t=1}^T[\lambda^Tf(y_{t-1}^i,y_t^i,x^i)+\eta^Tg(y_t^i,x^i)]]\\
+&amp;=\mathop{argmax}_\theta L(\lambda,\eta,x^i)
+\end{align}
+\]</span><br />
+最优化 <span class="math inline">\(L\)</span> 函数，使用梯度上升法，求
+<span class="math inline">\(\nabla_\lambda L\)</span> 和 <span
+class="math inline">\(\nabla_\eta L\)</span>，下面以求 <span
+class="math inline">\(\nabla_\lambda L\)</span> 为例：<br />
+<span class="math display">\[
+\begin{align}
+\nabla_\lambda L= \sum\limits_{i=1}^N[-\nabla_\lambda \log
+Z(x^i,\lambda,\eta)+\sum\limits_{t=1}^T f(y_{t-1}^i,y_t^i,x^i)]
+\end{align}
+\]</span><br />
+上面的式子中，第一项是对数配分函数，根据指数族分布(log-partition
+function)的结论：<br />
+<span class="math display">\[
+\begin{align}
+\nabla_\lambda(\log
+Z(x^i,\lambda,\eta))=\mathbb{E}_{p(y^i|x^i)}[\sum\limits_{t=1}^Tf(y_{t-1},y_t,x^i)]
+\end{align}
+\]</span><br />
+其中，和 <span class="math inline">\(\eta\)</span>
+相关的项相当于一个常数。求解这个期望值：<br />
+<span class="math display">\[
+\begin{align}
+\mathbb{E}_{p(y^i|x^i)}[\sum\limits_{t=1}^Tf(y_{t-1},y_t,x^i)]=\sum\limits_{y}p(y|x^i)\sum\limits_{t=1}^Tf(y_{t-1},y_t,x^i)
+\end{align}
+\]</span><br />
+第一个求和号的复杂度为 <span
+class="math inline">\(O(S^T)\)</span>，重新排列求和符号：<br />
+<span class="math display">\[
+\begin{align}
+\mathbb{E}_{p(y^i|x^i)}[\sum\limits_{t=1}^Tf(y_{t-1},y_t,x^i)]&amp;=\sum\limits_{t=1}^T\sum\limits_{y_{1:t-2}}\sum\limits_{y_{t-1}}\sum\limits_{y_t}\sum\limits_{y_{t+1:T}}p(y|x^i)f(y_{t-1},y_t,x^i)\nonumber\\
+&amp;=\sum\limits_{t=1}^T\sum\limits_{y_{t-1}}\sum\limits_{y_t}(\sum\limits_{y_{1:t-2}}\sum\limits_{y_{t+1:T}}p(y|x^i)f(y_{t-1},y_t,x^i))\nonumber\\
+&amp;=\sum\limits_{t=1}^T\sum\limits_{y_{t-1}}\sum\limits_{y_t}p(y_{t-1},y_t|x^i)f(y_{t-1},y_t,x^i)
+\end{align}
+\]</span><br />
+和上面的求边缘概率 <span class="math inline">\(p(y_t|x)\)</span>
+类似，这里 <span class="math inline">\(p(y_{t-1},y_t|x^i)\)</span> 的
+<span class="math inline">\(y\)</span>
+是两个，也可以通过前向后向算法得到上面式子中的边缘概率。</p>
+<p>于是：<br />
+<span class="math display">\[
+\begin{align}
+\nabla_\lambda
+L=\sum\limits_{i=1}^N\sum\limits_{t=1}^T[f(y_{t-1},y_t,x^i)-\sum\limits_{y_{t-1}}\sum\limits_{y_t}p(y_{t-1},y_t|x^i)f(y_{t-1},y_t,x^i)]
+\end{align}
+\]</span><br />
+利用梯度上升算法可以求解。对于 <span class="math inline">\(\eta\)</span>
+也是类似的过程。</p>
+<h2 id="译码">译码</h2>
+<p>译码问题和 HMM 中的 Viterbi
+算法类似，同样采样动态规划的思想一层一层求解最大值。</p>
+<h2 id="参考文献">参考文献</h2>
+<p><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vcGluYXJkL3AvNzA0ODMzMy5odG1s">条件随机场CRF<i class="fa fa-external-link-alt"></i></span></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/08/ML/30.particleFilter/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/10/08/ML/30.particleFilter/" class="post-title-link" itemprop="url">particleFilter</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-08 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-08T00:00:00+08:00">2020-10-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="粒子滤波">粒子滤波</h1>
+<p>Kalman
+滤波根据线性高斯模型可以求得解析解，但是在非线性，非高斯的情况，是无法得到解析解的，对这类一般的情况，我们叫做粒子滤波，我们需要求得概率分布，需要采用采样的方式。</p>
+<p>我们希望应用 Monte Carlo
+方法来进行采样，对于一个概率分布，如果我们希望计算依这个分布的某个函数
+<span class="math inline">\(f(z)\)</span>
+的期望，可以利用某种抽样方法，在这个概率分布中抽取 <span
+class="math inline">\(N\)</span> 个样本，则 <span
+class="math inline">\(\mathbb{E}[f(z)]\simeq\frac{1}{N}\sum\limits_{i=1}^Nf(z_i)\)</span>。但是如果这个概率十分复杂，那么采样比较困难。对于复杂的概率分布，我们可以通过一个简单的概率分布
+<span class="math inline">\(q(z)\)</span> 作为桥梁（重要值采样）:<br />
+<span class="math display">\[
+\mathbb{E}[f(z)]=\int_zf(z)p(z)dz=\int_zf(z)\frac{p(z)}{q(z)}q(z)dz=\sum\limits_{i=1}^Nf(z_i)\frac{p(z_i)}{q(z_i)}
+\]</span><br />
+于是直接通过对 <span class="math inline">\(q(z)\)</span>
+采样，然后对每一个采样的样本应用权重就得到了期望的近似，当然为了概率分布的特性，我们需要对权重进行归一化。</p>
+<p>在滤波问题中，需要求解 <span
+class="math inline">\(p(z_t|x_{1:t})\)</span>，其权重为：<br />
+<span class="math display">\[
+w_t^i=\frac{p(z_t^i|x_{1:t})}{q(z_t^i|x_{1:t})},i=1,2,\cdots,N
+\]</span><br />
+于是在每一个时刻 <span class="math inline">\(t\)</span>，都需要采样
+<span class="math inline">\(N\)</span>
+个点，但是即使采样了这么多点，分子上面的那一项也十分难求，于是希望找到一个关于权重的递推公式。为了解决这个问题，引入序列重要性采样（SIS）。</p>
+<h2 id="sis">SIS</h2>
+<p>在 SIS 中，解决的问题是 <span
+class="math inline">\(p(z_{1:t}|x_{1:t})\)</span>。<br />
+<span class="math display">\[
+w_t^i\propto\frac{p(z_{1:t}|x_{1:t})}{q(z_{1:t}|x_{1:t})}
+\]</span><br />
+根据 LDS 中的推导：<br />
+<span class="math display">\[
+\begin{align}p(z_{1:t}|x_{1:t})\propto
+p(x_{1:t},z_{1:t})&amp;=p(x_t|z_{1:t},x_{1:t-1})p(z_{1:t},x_{1:t-1})\nonumber\\
+&amp;=p(x_t|z_t)p(z_t|x_{1:t-1},z_{1:t-1})p(x_{1:t-1},z_{1:t-1})\nonumber\\
+&amp;=p(x_t|z_t)p(z_t|z_{t-1})p(x_{1:t-1},z_{1:t-1})\nonumber\\
+&amp;\propto p(x_t|z_t)p(z_t|z_{t-1})p(z_{1:t-1}|x_{1:t-1})
+\end{align}
+\]</span><br />
+于是分子的递推式就得到了。对于提议分布的分母，可以取：<br />
+<span class="math display">\[
+q(z_{1:t}|x_{1:t})=q(z_t|z_{1:t-1},x_{1:t})q(z_{1:t-1}|x_{1:t-1})
+\]</span><br />
+所以有：<br />
+<span class="math display">\[
+w_t^i\propto\frac{p(z_{1:t}|x_{1:t})}{q(z_{1:t}|x_{1:t})}\propto
+\frac{p(x_t|z_t)p(z_t|z_{t-1})p(z_{1:t-1}|x_{1:t-1})}{q(z_t|z_{1:t-1},x_{1:t})q(z_{1:t-1}|x_{1:t-1})}=\frac{p(x_t|z_t)p(z_t|z_{t-1})}{q(z_t|z_{1:t-1},x_{1:t})}w_{t-1}^i
+\]</span><br />
+我们得到的对权重的算法为：</p>
+<ol type="1">
+<li><span class="math inline">\(t-1\)</span>
+时刻，采样完成并计算得到权重</li>
+<li>t 时刻，根据 <span
+class="math inline">\(q(z_t|z_{1:t-1},x_{1:t})\)</span> 进行采样得到
+<span class="math inline">\(z_t^i\)</span>。然后计算得到 <span
+class="math inline">\(N\)</span> 个权重。</li>
+<li>最后对权重归一化。</li>
+</ol>
+<p>SIS
+算法会出现权值退化的情况，在一定时间后，可能会出现大部分权重都逼近0的情况，这是由于空间维度越来越高，需要的样本也越来越多。解决这个问题的方法有：</p>
+<ol type="1">
+<li>重采样，以权重作为概率分布，重新在已经采样的样本中采样，然后所有样本的权重相同，这个方法的思路是将权重作为概率分布，然后得到累积密度函数，在累积密度上取点（阶梯函数）。</li>
+<li>选择一个合适的提议分布，<span
+class="math inline">\(q(z_t|z_{1:t-1},x_{1:t})=p(z_t|z_{t-1})\)</span>，于是就消掉了一项，并且采样的概率就是
+<span
+class="math inline">\(p(z_t|z_{t-1})\)</span>，这就叫做生成与测试方法。</li>
+</ol>
+<p>采用重采样的 SIS
+算法就是基本的粒子滤波算法。如果像上面那样选择提议分布，这个算法叫做 SIR
+算法。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1745,1335 +2571,6 @@ EM 框架中，无法求解 <span class="math inline">\(z\)</span>
 <li>基于平均场的变分推断，VBEM/VEM</li>
 <li>基于蒙特卡洛的EM，MCEM</li>
 </ol>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/01/ML/23.PGMIntro/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avstar.png">
-      <meta itemprop="name" content="SoundMemories">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SoundMemories">
-      <meta itemprop="description" content="今日事，今日毕">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | SoundMemories">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/10/01/ML/23.PGMIntro/" class="post-title-link" itemprop="url">PGMIntro</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-10-01 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-01T00:00:00+08:00">2020-10-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>11 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="概率图模型">概率图模型</h1>
-<p>概率图模型使用图的方式表示概率分布。为了在图中添加各种概率，首先总结一下随机变量分布的一些规则：<br />
-<span class="math display">\[
-\begin{align}
-&amp;Sum\ Rule:p(x_1)=\int p(x_1,x_2)dx_2\\
-&amp;Product\ Rule:p(x_1,x_2)=p(x_1|x_2)p(x_2)\\
-&amp;Chain\
-Rule:p(x_1,x_2,\cdots,x_p)=\prod\limits_{i=1}^pp(x_i|x_{i+1,x_{i+2}
-\cdots}x_p)\\
-&amp;Bayesian\ Rule:p(x_1|x_2)=\frac{p(x_2|x_1)p(x_1)}{p(x_2)}
-\end{align}
-\]</span><br />
-可以看到，在链式法则中，如果数据维度特别高，那么的采样和计算非常困难，我们需要在一定程度上作出简化，在朴素贝叶斯中，作出了条件独立性假设。在
-Markov
-假设中，给定数据的维度是以时间顺序出现的，给定当前时间的维度，那么下一个维度与之前的维度独立。在
-HMM 中，采用了齐次 Markov 假设。在 Markov
-假设之上，更一般的，加入条件独立性假设，对维度划分集合 <span
-class="math inline">\(A,B,C\)</span>，使得 <span
-class="math inline">\(X_A\perp X_B|X_C\)</span>。</p>
-<p>概率图模型采用图的特点表示上述的条件独立性假设，节点表示随机变量，边表示条件概率。概率图模型可以分为三大理论部分：</p>
-<ol type="1">
-<li>表示：
-<ol type="1">
-<li>有向图（离散）：贝叶斯网络</li>
-<li>高斯图（连续）：高斯贝叶斯和高斯马尔可夫网路</li>
-<li>无向图（离散）：马尔可夫网络</li>
-</ol></li>
-<li>推断
-<ol type="1">
-<li>精确推断</li>
-<li>近似推断
-<ol type="1">
-<li>确定性近似（如变分推断）</li>
-<li>随机近似（如 MCMC）</li>
-</ol></li>
-</ol></li>
-<li>学习
-<ol type="1">
-<li>参数学习
-<ol type="1">
-<li>完备数据</li>
-<li>隐变量：E-M 算法</li>
-</ol></li>
-<li>结构学习</li>
-</ol></li>
-</ol>
-<h2 id="有向图-贝叶斯网络">有向图-贝叶斯网络</h2>
-<p>已知联合分布中，各个随机变量之间的依赖关系，那么可以通过拓扑排序（根据依赖关系）可以获得一个有向图。而如果已知一个图，也可以直接得到联合概率分布的因子分解：<br />
-<span class="math display">\[
-p(x_1,x_2,\cdots,x_p)=\prod\limits_{i=1}^pp(x_i|x_{parent(i)})
-\]</span><br />
-那么实际的图中条件独立性是如何体现的呢？在局部任何三个节点，可以有三种结构：</p>
-<ol type="1">
-<li><pre class="mermaid">
-graph TB
-A((A))--&gt;B((B));
-B--&gt;C((C));
-</pre>
-<p><span class="math display">\[
-\begin{aligned}
-p(A,B,C)&amp;=p(A)p(B|A)p(C|B)=p(A)p(B|A)p(C|B,A)\\
-&amp;\Longrightarrow p(C|B)=p(C|B,A)\\
-&amp;\Leftrightarrow p(C|B)p(A|B)=p(C|A,B)p(A|B)=p(C,A|B)\\
-&amp;\Longrightarrow C\perp A|B
-\end{aligned}
-\]</span></p></li>
-<li><pre class="mermaid">
-graph TB
-B((B))--&gt;A((A));
-B--&gt;C((C));
-    
-</pre>
-<p><span class="math display">\[
-\begin{aligned}
-p(A,B,C)&amp;=p(A|B)p(B)p(C|B)=p(B)p(A|B)p(C|A,B)\\
-&amp;\Longrightarrow p(C|B)=p(C|B,A)\\
-&amp;\Leftrightarrow p(C|B)p(A|B)=p(C|A,B)p(A|B)=p(C,A|B)\\
-&amp;\Longrightarrow C\perp A|B
-\end{aligned}
-\]</span></p></li>
-<li><pre class="mermaid">
-graph TB
-A((A))--&gt;B((B));
-C((C))--&gt;B
-    
-</pre>
-<p><span class="math display">\[
-\begin{aligned}
-p(A,B,C)&amp;=p(A)p(C)p(B|C,A)=p(A)p(C|A)p(B|C,A)\\
-&amp;\Longrightarrow p(C)=p(C|A)\\
-&amp;\Leftrightarrow C\perp A\\
-\end{aligned}
-\]</span></p>
-<p>对这种结构，<span class="math inline">\(A,C\)</span> 不与 <span
-class="math inline">\(B\)</span> 条件独立。</p></li>
-</ol>
-<p>从整体的图来看，可以引入 D 划分的概念。对于类似上面图 1和图
-2的关系，引入集合A，B，那么满足 <span class="math inline">\(A\perp
-B|C\)</span> 的 <span class="math inline">\(C\)</span> 集合中的点与
-<span class="math inline">\(A,B\)</span> 中的点的关系都满足图
-1，2，满足图3 关系的点都不在 <span class="math inline">\(C\)</span>
-中。D 划分应用在贝叶斯定理中：<br />
-<span class="math display">\[
-p(x_i|x_{-i})=\frac{p(x)}{\int
-p(x)dx_{i}}=\frac{\prod\limits_{j=1}^pp(x_j|x_{parents(j)})}{\int\prod\limits_{j=1}^pp(x_j|x_{parents(j)})dx_i}
-\]</span><br />
-可以发现，上下部分可以分为两部分，一部分是和 <span
-class="math inline">\(x_i\)</span> 相关的，另一部分是和 <span
-class="math inline">\(x_i\)</span>
-无关的，而这个无关的部分可以相互约掉。于是计算只涉及和 <span
-class="math inline">\(x_i\)</span> 相关的部分。</p>
-<p>与 <span class="math inline">\(x_i\)</span>
-相关的部分可以写成：<br />
-<span class="math display">\[
-p(x_i|x_{parents(i)})p(x_{child(i)}|x_i)
-\]</span><br />
-这些相关的部分又叫做 Markov 毯。</p>
-<p>实际应用的模型中，对这些条件独立性作出了假设，从单一到混合，从有限到无限（时间，空间）可以分为：</p>
-<ol type="1">
-<li>朴素贝叶斯，单一的条件独立性假设 <span
-class="math inline">\(p(x|y)=\prod\limits_{i=1}^pp(x_i|y)\)</span>，在 D
-划分后，所有条件依赖的集合就是单个元素。</li>
-<li>高斯混合模型：混合的条件独立。引入多类别的隐变量 <span
-class="math inline">\(z_1, z_2,\cdots,z_k\)</span>， <span
-class="math inline">\(p(x|z)=\mathcal{N}(\mu,\Sigma)\)</span>，条件依赖集合为多个元素。</li>
-<li>与时间相关的条件依赖
-<ol type="1">
-<li>Markov 链</li>
-<li>高斯过程（无限维高斯分布）</li>
-</ol></li>
-<li>连续：高斯贝叶斯网络</li>
-<li>组合上面的分类
-<ul>
-<li>GMM 与时序结合：动态模型
-<ul>
-<li>HMM（离散）</li>
-<li>线性动态系统 LDS（Kalman 滤波）</li>
-<li>粒子滤波（非高斯，非线性）</li>
-</ul></li>
-</ul></li>
-</ol>
-<h2
-id="无向图-马尔可夫网络马尔可夫随机场">无向图-马尔可夫网络（马尔可夫随机场）</h2>
-<p>无向图没有了类似有向图的局部不同结构，在马尔可夫网络中，也存在 D
-划分的概念。直接将条件独立的集合 <span class="math inline">\(x_A\perp
-x_B|x_C\)</span> 划分为三个集合。这个也叫全局
-Markov。对局部的节点，<span class="math inline">\(x\perp
-(X-Neighbour(\mathcal{x}))|Neighbour(x)\)</span>。这也叫局部
-Markov。对于成对的节点：<span class="math inline">\(x_i\perp
-x_j|x_{-i-j}\)</span>，其中 <span class="math inline">\(i,j\)</span>
-不能相邻。这也叫成对
-Markov。事实上上面三个点局部全局成对是相互等价的。</p>
-<p>有了这个条件独立性的划分，还需要因子分解来实际计算。引入团的概念：</p>
-<blockquote>
-<p>团，最大团：图中节点的集合，集合中的节点之间相互都是连接的叫做团，如果不能再添加节点，那么叫最大团。</p>
-</blockquote>
-<p>利用这个定义进行的 <span class="math inline">\(x\)</span>
-所有维度的联合概率分布的因子分解为，假设有 <span
-class="math inline">\(K\)</span> 个团，<span
-class="math inline">\(Z\)</span> 就是对所有可能取值求和：<br />
-<span class="math display">\[
-\begin{align}p(x)=\frac{1}{Z}\prod\limits_{i=1}^{K}\phi(x_{ci})\\
-Z=\sum\limits_{x\in\mathcal{X}}\prod\limits_{i=1}^{K}\phi(x_{ci})
-\end{align}
-\]</span><br />
-其中 <span class="math inline">\(\phi(x_{ci})\)</span>
-叫做势函数，它必须是一个正值，可以记为：<br />
-<span class="math display">\[
-\phi(x_{ci})=\exp(-E(x_{ci}))
-\]</span><br />
-这个分布叫做 Gibbs 分布（玻尔兹曼分布）。于是也可以记为：<span
-class="math inline">\(p(x)=\frac{1}{Z}\exp(-\sum\limits_{i=1}^KE(x_{ci}))\)</span>。这个分解和条件独立性等价（Hammesley-Clifford
-定理），这个分布的形式也和指数族分布形式上相同，于是满足最大熵原理。</p>
-<h2 id="两种图的转换-道德图">两种图的转换-道德图</h2>
-<p>我们常常想将有向图转为无向图，从而应用更一般的表达式。</p>
-<ol type="1">
-<li><p>链式：</p>
-<pre class="mermaid">
-graph TB
-A((A))--&gt;B((B));
-B--&gt;C((C));
-    
-</pre>
-<p>直接去掉箭头，<span
-class="math inline">\(p(a,b,c)=p(a)p(b|a)p(c|b)=\phi(a,b)\phi(b,c)\)</span>：</p>
-<pre class="mermaid">
-graph TB
-A((A))---B((B));
-B---C((C));
-    
-</pre></li>
-<li><p>V 形：</p>
-<pre class="mermaid">
-graph TB
-B((B))--&gt;A((A));
-B--&gt;C((C));
-    
-</pre>
-<p>由于 <span
-class="math inline">\(p(a,b,c)=p(b)p(a|b)p(c|b)=\phi(a,b)\phi(b,c)\)</span>，直接去掉箭头：</p>
-<pre class="mermaid">
-graph TB
-B((B))---A((A));
-B---C((C));
-    
-</pre></li>
-<li><p>倒 V 形：</p>
-<pre class="mermaid">
-graph TB
-A((A))--&gt;B((B));
-C((C))--&gt;B
-    
-</pre>
-<p>由于 <span
-class="math inline">\(p(a,b,c)=p(a)p(c)p(b|a,c)=\phi(a,b,c)\)</span>，于是在
-<span class="math inline">\(a,c\)</span> 之间添加线：</p>
-<pre class="mermaid">
-graph TD
-a((a))---b((b));
-b---c((c));
-a---c;
-    
-</pre>
-<p>观察着三种情况可以概括为：</p>
-<ol type="1">
-<li>将每个节点的父节点两两相连</li>
-<li>将有向边替换为无向边</li>
-</ol></li>
-</ol>
-<h2 id="更精细的分解-因子图">更精细的分解-因子图</h2>
-<p>对于一个有向图，可以通过引入环的方式，可以将其转换为无向图（Tree-like
-graph），这个图就叫做道德图。但是我们上面的 BP
-算法只对无环图有效，通过因子图可以变为无环图。</p>
-<p>考虑一个无向图：</p>
-<pre class="mermaid">
-graph TD
-a((a))---b((b));
-b---c((c));
-a---c;
-</pre>
-<p>可以将其转为：</p>
-<pre class="mermaid">
-graph TD
-a((a))---f;
-f---b((b));
-f---c((c))
-</pre>
-<p>其中 <span
-class="math inline">\(f=f(a,b,c)\)</span>。因子图不是唯一的，这是由于因式分解本身就对应一个特殊的因子图，将因式分解：<span
-class="math inline">\(p(x)=\prod\limits_{s}f_s(x_s)\)</span>
-可以进一步分解得到因子图。</p>
-<h2 id="推断">推断</h2>
-<p>推断的主要目的是求各种概率分布，包括边缘概率，条件概率，以及使用 MAP
-来求得参数。通常推断可以分为：</p>
-<ol type="1">
-<li>精确推断
-<ol type="1">
-<li>Variable Elimination(VE)</li>
-<li>Belief Propagation(BP, Sum-Product Algo)，从 VE 发展而来</li>
-<li>Junction Tree，上面两种在树结构上应用，Junction Tree
-在图结构上应用</li>
-</ol></li>
-<li>近似推断
-<ol type="1">
-<li>Loop Belief Propagation（针对有环图）</li>
-<li>Mente Carlo Interference：例如 Importance Sampling，MCMC</li>
-<li>Variational Inference</li>
-</ol></li>
-</ol>
-<h3 id="推断-变量消除ve">推断-变量消除（VE）</h3>
-<p>变量消除的方法是在求解概率分布的时候，将相关的条件概率先行求和或积分，从而一步步地消除变量，例如在马尔可夫链中：</p>
-<pre class="mermaid">
-graph LR
-a((a))--&gt;b((b));
-b--&gt;c((c));
-c--&gt;d((d))
-</pre>
-<p><span class="math display">\[
-p(d)=\sum\limits_{a,b,c}p(a,b,c,d)=\sum\limits_cp(d|c)\sum\limits_bp(c|b)\sum\limits_ap(b|a)p(a)
-\]</span></p>
-<p>变量消除的缺点很明显：</p>
-<ol type="1">
-<li>计算步骤无法存储</li>
-<li>消除的最优次序是一个 NP-hard 问题</li>
-</ol>
-<h3 id="推断-信念传播bp">推断-信念传播（BP）</h3>
-<p>为了克服 VE
-的第一个缺陷-计算步骤无法存储。我们进一步地对上面的马尔可夫链进行观察：</p>
-<pre class="mermaid">
-graph LR
-a((a))--&gt;b((b));
-b--&gt;c((c));
-c--&gt;d((d));
-d--&gt;e((e));
-</pre>
-<p>要求 <span class="math inline">\(p(e)\)</span>，当然使用 VE，从 <span
-class="math inline">\(a\)</span> 一直消除到 <span
-class="math inline">\(d\)</span>，记 <span
-class="math inline">\(\sum\limits_ap(a)p(b|a)=m_{a\to
-b(b)}\)</span>，表示这是消除 <span class="math inline">\(a\)</span>
-后的关于 <span class="math inline">\(b\)</span> 的概率，类似地，记 <span
-class="math inline">\(\sum\limits_bp(c|b)m_{a\to b}(b)=m_{b\to
-c}(c)\)</span>。于是 <span
-class="math inline">\(p(e)=\sum\limits_dp(e|d)m_{b\to
-c}(c)\)</span>。进一步观察，对 <span
-class="math inline">\(p(c)\)</span>：<br />
-<span class="math display">\[
-p(c)=[\sum\limits_bp(c|b)\sum\limits_ap(b|a)p(a)]\cdot[\sum\limits_dp(d|c)\sum\limits_ep(e)p(e|d)]
-\]</span><br />
-我们发现了和上面计算 <span class="math inline">\(p(e)\)</span>
-类似的结构，这个式子可以分成两个部分，一部分是从 <span
-class="math inline">\(a\)</span> 传播过来的概率，第二部分是从 $ e$
-传播过来的概率。</p>
-<p>一般地，对于图（只对树形状的图）：</p>
-<pre class="mermaid">
-graph TD
-a((a))---b((b));
-b---c((c));
-b---d((d));
-</pre>
-<p>这四个团（对于无向图是团，对于有向图就是概率为除了根的节点为1），有四个节点，三个边：<br />
-<span class="math display">\[
-p(a,b,c,d)=\frac{1}{Z}\phi_a(a)\phi_b(b)\phi_c(c)\phi_d(d)\cdot\phi_{ab}(a,b)\phi_{bc}(c,b)\phi_{bd}(d,b)
-\]</span><br />
-套用上面关于有向图的观察，如果求解边缘概率 <span
-class="math inline">\(p(a)\)</span>，定义 <span
-class="math inline">\(m_{c\to
-b}(b)=\sum\limits_c\phi_c(c)\phi_{bc}(bc)\)</span>，<span
-class="math inline">\(m_{d\to
-b}(b)=\sum\limits_d\phi_d(d)\phi_{bd}(bd)\)</span>，<span
-class="math inline">\(m_{b\to
-a}(a)=\sum\limits_b\phi_{ba}(ba)\phi_b(b)m_{c\to b}(b)_{d\to
-b}m(b)\)</span>，这样概率就一步步地传播到了 <span
-class="math inline">\(a\)</span>：<br />
-<span class="math display">\[
-p(a)=\phi_a(a)m_{b\to a}(a)
-\]</span><br />
-写成一般的形式，对于相邻节点 <span
-class="math inline">\(i,j\)</span>：<br />
-<span class="math display">\[
-m_{j\to i}(i)=\sum\limits_j\phi_j(j)\phi_{ij}(ij)\prod\limits_{k\in
-Neighbour(j)-i}m_{k\to j}(j)
-\]</span><br />
-这个表达式，就可以保存计算过程了，只要对每条边的传播分别计算，对于一个无向树形图可以递归并行实现：</p>
-<ol type="1">
-<li>任取一个节点 <span class="math inline">\(a\)</span> 作为根节点</li>
-<li>对这个根节点的邻居中的每一个节点，收集信息（计算入信息）</li>
-<li>对根节点的邻居，分发信息（计算出信息）</li>
-</ol>
-<h3 id="推断-max-product-算法">推断-Max-Product 算法</h3>
-<p>在推断任务中，MAP 也是常常需要的，MAP 的目的是寻找最佳参数：<br />
-<span class="math display">\[
-(\hat{a},\hat{b},\hat{c},\hat{d})=\mathop{argmax}_{a,b,c,d}p(a,b,c,d|E)
-\]</span><br />
-类似
-BP，我们采用信息传递的方式来求得最优参数，不同的是，我们在所有信息传递中，传递的是最大化参数的概率，而不是将所有可能求和：<br />
-<span class="math display">\[
-m_{j\to i}=\max\limits_{j}\phi_j\phi_{ij}\prod\limits_{k\in
-Neighbour(j)-i}m_{k\to j}
-\]</span><br />
-于是对于上面的图：<br />
-<span class="math display">\[
-\max_a p(a,b,c,d)=\max_a\phi_a\phi_{ab}m_{c\to b}m_{d\to b}
-\]</span><br />
-这个算法是 Sum-Product 算法的改进，也是在 HMM 中应用给的 Viterbi
-算法的推广。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/09/30/ML/22.Exponentialfamily/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avstar.png">
-      <meta itemprop="name" content="SoundMemories">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SoundMemories">
-      <meta itemprop="description" content="今日事，今日毕">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | SoundMemories">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/09/30/ML/22.Exponentialfamily/" class="post-title-link" itemprop="url">Exponentialfamily</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-09-30 00:00:00" itemprop="dateCreated datePublished" datetime="2020-09-30T00:00:00+08:00">2020-09-30</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.2k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>4 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="指数族分布">指数族分布</h1>
-<p>指数族是一类分布，包括高斯分布、伯努利分布、二项分布、泊松分布、Beta
-分布、Dirichlet 分布、Gamma
-分布等一系列分布。指数族分布可以写为统一的形式：<br />
-<span class="math display">\[
-p(x|\eta)=h(x)\exp(\eta^T\phi(x)-A(\eta))=\frac{1}{\exp(A(\eta))}h(x)\exp(\eta^T\phi(x))
-\]</span><br />
-其中，<span class="math inline">\(\eta\)</span> 是参数向量，<span
-class="math inline">\(A(\eta)\)</span>
-是对数配分函数（归一化因子）。</p>
-<p>在这个式子中，$ (x)$
-叫做充分统计量，包含样本集合所有的信息，例如高斯分布中的均值和方差。充分统计量在在线学习中有应用，对于一个数据集，只需要记录样本的充分统计量即可。</p>
-<p>对于一个模型分布假设（似然），那么我们在求解中，常常需要寻找一个共轭先验，使得先验与后验的形式相同，例如选取似然是二项分布，可取先验是
-Beta 分布，那么后验也是 Beta
-分布。指数族分布常常具有共轭的性质，于是我们在模型选择以及推断具有很大的便利。</p>
-<p>共轭先验的性质便于计算，同时，指数族分布满足最大熵的思想（无信息先验），也就是说对于经验分布利用最大熵原理导出的分布就是指数族分布。</p>
-<p>观察到指数族分布的表达式类似线性模型，事实上，指数族分布很自然地导出广义线性模型：<br />
-<span class="math display">\[
-y=f(w^Tx)\\
-y|x\sim Exp Family
-\]</span><br />
-在更复杂的概率图模型中，例如在无向图模型中如受限玻尔兹曼机中，指数族分布也扮演着重要作用。</p>
-<p>在推断的算法中，例如变分推断中，指数族分布也会大大简化计算。</p>
-<h2 id="一维高斯分布">一维高斯分布</h2>
-<p>一维高斯分布可以写成：<br />
-<span class="math display">\[
-p(x|\theta)=\frac{1}{\sqrt{2\pi}\sigma}\exp(-\frac{(x-\mu)^2}{2\sigma^2})
-\]</span><br />
-将这个式子改写：<br />
-<span class="math display">\[
-\frac{1}{\sqrt{2\pi\sigma^2}}\exp(-\frac{1}{2\sigma^2}(x^2-2\mu
-x+\mu^2))\\
-=\exp(\log(2\pi\sigma^2)^{-1/2})\exp(-\frac{1}{2\sigma^2}\begin{pmatrix}-2\mu&amp;1\end{pmatrix}\begin{pmatrix}x\\x^2\end{pmatrix}-\frac{\mu^2}{2\sigma^2})
-\]</span><br />
-所以：<br />
-<span class="math display">\[
-\eta=\begin{pmatrix}\frac{\mu}{\sigma^2}\\-\frac{1}{2\sigma^2}\end{pmatrix}=\begin{pmatrix}\eta_1\\\eta_2\end{pmatrix}
-\]</span><br />
-于是 <span class="math inline">\(A(\eta)\)</span>：<br />
-<span class="math display">\[
-A(\eta)=-\frac{\eta_1^2}{4\eta_2}+\frac{1}{2}\log(-\frac{\pi}{\eta_2})
-\]</span></p>
-<h2
-id="充分统计量和对数配分函数的关系">充分统计量和对数配分函数的关系</h2>
-<p>对概率密度函数求积分：<br />
-<span class="math display">\[
-\begin{align}
-\exp(A(\eta))&amp;=\int h(x)\exp(\eta^T\phi(x))dx\nonumber
-\end{align}
-\]</span><br />
-两边对参数求导：<br />
-<span class="math display">\[
-\exp(A(\eta))A&#39;(\eta)=\int h(x)\exp(\eta^T\phi(x))\phi(x)dx\\
-\Longrightarrow A&#39;(\eta)=\mathbb{E}_{p(x|\eta)}[\phi(x)]
-\]</span><br />
-类似的：<br />
-<span class="math display">\[
-A&#39;&#39;(\eta)=Var_{p(x|\eta)}[\phi(x)]
-\]</span><br />
-由于方差为正，于是 <span class="math inline">\(A(\eta)\)</span>
-一定是凸函数。</p>
-<h2 id="充分统计量和极大似然估计">充分统计量和极大似然估计</h2>
-<p>对于独立全同采样得到的数据集 <span
-class="math inline">\(\mathcal{D}=\{x_1,x_2,\cdots,x_N\}\)</span>。<br />
-$$<br />
-<span
-class="math display">\[\begin{align}\eta_{MLE}&amp;=\mathop{argmax}_\eta\sum\limits_{i=1}^N\log
-p(x_i|\eta)\nonumber\\
-&amp;=\mathop{argmax}_\eta\sum\limits_{i=1}^N(\eta^T\phi(x_i)-A(\eta))\nonumber\\
-&amp;\Longrightarrow
-A&#39;(\eta_{MLE})=\frac{1}{N}\sum\limits_{i=1}^N\phi(x_i)
-
-\end{align}\]</span><br />
-$$<br />
-由此可以看到，为了估算参数，只需要知道充分统计量就可以了。</p>
-<h2 id="最大熵">最大熵</h2>
-<p>信息熵记为：<br />
-<span class="math display">\[
-Entropy=\int-p(x)\log(p(x))dx
-\]</span></p>
-<blockquote>
-<p>一般地，对于完全随机的变量（等可能），信息熵最大。</p>
-<p>我们的假设为最大熵原则，假设数据是离散分布的，<span
-class="math inline">\(k\)</span> 个特征的概率分别为 <span
-class="math inline">\(p_k\)</span>，最大熵原理可以表述为：<br />
-<span class="math display">\[
-  \max\{H(p)\}=\min\{\sum\limits_{k=1}^Kp_k\log p_k\}\ s.t.\
-\sum\limits_{k=1}^Kp_k=1
-  \]</span><br />
-利用 Lagrange 乘子法：<br />
-<span class="math display">\[
-  L(p,\lambda)=\sum\limits_{k=1}^Kp_k\log
-p_k+\lambda(1-\sum\limits_{k=1}^Kp_k)
-  \]</span><br />
-于是可得：<br />
-<span class="math display">\[
-  p_1=p_2=\cdots=p_K=\frac{1}{K}
-  \]</span><br />
-因此等可能的情况熵最大。</p>
-</blockquote>
-<p>一个数据集 <span
-class="math inline">\(\mathcal{D}\)</span>，在这个数据集上的经验分布为
-<span
-class="math inline">\(\hat{p}(x)=\frac{Count(x)}{N}\)</span>，实际不可能满足所有的经验概率相同，于是在上面的最大熵原理中还需要加入这个经验分布的约束。</p>
-<p>对任意一个函数，经验分布的经验期望可以求得为：<br />
-<span class="math display">\[
-\mathbb{E}_\hat{p}[f(x)]=\Delta
-\]</span><br />
-于是：<br />
-<span class="math display">\[
-\max\{H(p)\}=\min\{\sum\limits_{k=1}^Np_k\log p_k\}\ s.t.\
-\sum\limits_{k=1}^Np_k=1,\mathbb{E}_p[f(x)]=\Delta
-\]</span><br />
-Lagrange 函数为：<br />
-<span class="math display">\[
-L(p,\lambda_0,\lambda)=\sum\limits_{k=1}^Np_k\log
-p_k+\lambda_0(1-\sum\limits_{k=1}^Np_k)+\lambda^T(\Delta-\mathbb{E}_p[f(x)])
-\]</span><br />
-求导得到：<br />
-<span class="math display">\[
-\frac{\partial}{\partial p(x)}L=\sum\limits_{k=1}^N(\log
-p(x)+1)-\sum\limits_{k=1}^N\lambda_0-\sum\limits_{k=1}^N\lambda^Tf(x)\\
-\Longrightarrow\sum\limits_{k=1}^N\log p(x)+1-\lambda_0-\lambda^Tf(x)=0
-\]</span><br />
-由于数据集是任意的，对数据集求和也意味着求和项里面的每一项都是0：<br />
-<span class="math display">\[
-p(x)=\exp(\lambda^Tf(x)+\lambda_0-1)
-\]</span><br />
-这就是指数族分布。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/09/29/ML/21.SVM/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avstar.png">
-      <meta itemprop="name" content="SoundMemories">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SoundMemories">
-      <meta itemprop="description" content="今日事，今日毕">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | SoundMemories">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/09/29/ML/21.SVM/" class="post-title-link" itemprop="url">SVM</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-09-29 00:00:00" itemprop="dateCreated datePublished" datetime="2020-09-29T00:00:00+08:00">2020-09-29</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3.1k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>11 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="支撑向量机">支撑向量机</h1>
-<p>支撑向量机（SVM）算法在分类问题中有着重要地位，其主要思想是最大化两类之间的间隔。按照数据集的特点：</p>
-<ol type="1">
-<li>线性可分问题，如之前的感知机算法处理的问题</li>
-<li>线性可分，只有一点点错误点，如感知机算法发展出来的 Pocket
-算法处理的问题</li>
-<li>非线性问题，完全不可分，如在感知机问题发展出来的多层感知机和深度学习</li>
-</ol>
-<p>这三种情况对于 SVM 分别有下面三种处理手段：</p>
-<ol type="1">
-<li>hard-margin SVM</li>
-<li>soft-margin SVM</li>
-<li>kernel Method</li>
-</ol>
-<p>SVM 的求解中，大量用到了 Lagrange
-乘子法，首先对这种方法进行介绍。</p>
-<h2 id="约束优化问题">约束优化问题</h2>
-<p>一般地，约束优化问题（原问题）可以写成：<br />
-$$<br />
-<span class="math display">\[\begin{align}
-
-&amp;\min_{x\in\mathbb{R^p}}f(x)\\
-&amp;s.t.\ m_i(x)\le0,i=1,2,\cdots,M\\
-&amp;\ \ \ \ \ \ \ \ n_j(x)=0,j=1,2,\cdots,N
-
-\end{align}\]</span><br />
-<span class="math display">\[
-定义 Lagrange 函数：
-\]</span><br />
-L(x,,)=f(x)+<em>{i=1}<sup>M<em>im_i(x)+</em>{i=1}</sup>N<em>in_i(x)<br />
-<span class="math display">\[
-那么原问题可以等价于无约束形式：
-\]</span><br />
-</em>{x^p}</em>{,}L(x,,) s.t. _i<br />
-$$<br />
-这是由于，当满足原问题的不等式约束的时候，<span
-class="math inline">\(\lambda_i=0\)</span>
-才能取得最大值，直接等价于原问题，如果不满足原问题的不等式约束，那么最大值就为
-<span
-class="math inline">\(+\infty\)</span>，由于需要取最小值，于是不会取到这个情况。</p>
-<p>这个问题的对偶形式：<br />
-<span class="math display">\[
-\max_{\lambda,\eta}\min_{x\in\mathbb{R}^p}L(x,\lambda,\eta)\ s.t.\
-\lambda_i\ge0
-\]</span><br />
-对偶问题是关于 $ , $ 的最大化问题。</p>
-<p>由于：<br />
-<span class="math display">\[
-\max_{\lambda_i,\eta_j}\min_{x}L(x,\lambda_i,\eta_j)\le\min_{x}\max_{\lambda_i,\eta_j}L(x,\lambda_i,\eta_j)
-\]</span></p>
-<blockquote>
-<p>证明：显然有 <span class="math inline">\(\min\limits_{x}L\le
-L\le\max\limits_{\lambda,\eta}L\)</span>，于是显然有 <span
-class="math inline">\(\max\limits_{\lambda,\eta}\min\limits_{x}L\le
-L\)</span>，且 <span
-class="math inline">\(\min\limits_{x}\max\limits_{\lambda,\eta}L\ge
-L\)</span>。</p>
-</blockquote>
-<p>对偶问题的解小于原问题，有两种情况：</p>
-<ol type="1">
-<li>强对偶：可以取等于号</li>
-<li>弱对偶：不可以取等于号</li>
-</ol>
-<p>其实这一点也可以通过一张图来说明：</p>
-<p><img src="/images/SVM/SVM.png" width="90%" height="90%"></p>
-<p>对于一个凸优化问题，有如下定理：</p>
-<blockquote>
-<p>如果凸优化问题满足某些条件如 Slater
-条件，那么它和其对偶问题满足强对偶关系。记问题的定义域为：<span
-class="math inline">\(\mathcal{D}=domf(x)\cap dom m_i(x)\cap
-domn_j(x)\)</span>。于是 Slater 条件为：<br />
-<span class="math display">\[
-  \exists\hat{x}\in Relint\mathcal{D}\ s.t.\ \forall
-i=1,2,\cdots,M,m_i(x)\lt0
-  \]</span><br />
-其中 Relint 表示相对内部（不包含边界的内部）。</p>
-</blockquote>
-<ol type="1">
-<li>对于大多数凸优化问题，Slater 条件成立。</li>
-<li>松弛 Slater 条件，如果 M 个不等式约束中，有 K
-个函数为仿射函数，那么只要其余的函数满足 Slater 条件即可。</li>
-</ol>
-<p>上面介绍了原问题和对偶问题的对偶关系，但是实际还需要对参数进行求解，求解方法使用
-KKT 条件进行：</p>
-<blockquote>
-<p>KKT 条件和强对偶关系是等价关系。KKT 条件对最优解的条件为：</p>
-<ol type="1">
-<li><p>可行域：<br />
-<span class="math display">\[
-\begin{align}
-m_i(x^*)\le0\\
-n_j(x^*)=0\\
-\lambda^*\ge0
-\end{align}
-\]</span></p></li>
-<li><p>互补松弛 <span class="math inline">\(\lambda^*m_i(x^*)=0,\forall
-m_i\)</span>，对偶问题的最佳值为 <span
-class="math inline">\(d^*\)</span>，原问题为 <span
-class="math inline">\(p^*\)</span><br />
-<span class="math display">\[
-\begin{align}
-d^*&amp;=\max_{\lambda,\eta}g(\lambda,\eta)=g(\lambda^*,\eta^*)\nonumber\\
-&amp;=\min_{x}L(x,\lambda^*,\eta^*)\nonumber\\
-&amp;\le L(x^*,\lambda^*,\eta^*)\nonumber\\
-&amp;=f(x^*)+\sum\limits_{i=1}^M\lambda^*m_i(x^*)\nonumber\\
-&amp;\le f(x^*)=p^*
-\end{align}
-\]</span><br />
-为了满足相等，两个不等式必须成立，于是，对于第一个不等于号，需要有梯度为0条件，对于第二个不等于号需要满足互补松弛条件。</p></li>
-<li><p>梯度为0：<span class="math inline">\(\frac{\partial
-L(x,\lambda^*,\eta^*)}{\partial x}|_{x=x^*}=0\)</span></p></li>
-</ol>
-</blockquote>
-<h2 id="hard-margin-svm">Hard-margin SVM</h2>
-<p>支撑向量机也是一种硬分类模型，在之前的感知机模型中，我们在线性模型的基础上叠加了符号函数，在几何直观上，可以看到，如果两类分的很开的话，那么其实会存在无穷多条线可以将两类分开。在
-SVM
-中，我们引入最大化间隔这个概念，间隔指的是数据和直线的距离的最小值，因此最大化这个值反映了我们的模型倾向。</p>
-<p>分割的超平面可以写为：<br />
-<span class="math display">\[
-0=w^Tx+b
-\]</span><br />
-那么最大化间隔（约束为分类任务的要求）：<br />
-<span class="math display">\[
-\mathop{argmax}_{w,b}[\min_i\frac{|w^Tx_i+b|}{||w||}]\ s.t.\
-y_i(w^Tx_i+b)&gt;0\\
-\Longrightarrow\mathop{argmax}_{w,b}[\min_i\frac{y_i(w^Tx_i+b)}{||w||}]\
-s.t.\ y_i(w^Tx_i+b)&gt;0
-\]</span><br />
-对于这个约束 <span
-class="math inline">\(y_i(w^Tx_i+b)&gt;0\)</span>，不妨固定 <span
-class="math inline">\(\min
-y_i(w^Tx_i+b)=1&gt;0\)</span>，这是由于分开两类的超平面的系数经过比例放缩不会改变这个平面，这也相当于给超平面的系数作出了约束。化简后的式子可以表示为：<br />
-<span class="math display">\[
-\mathop{argmin}_{w,b}\frac{1}{2}w^Tw\ s.t.\ \min_iy_i(w^Tx_i+b)=1\\
-\Rightarrow\mathop{argmin}_{w,b}\frac{1}{2}w^Tw\ s.t.\
-y_i(w^Tx_i+b)\ge1,i=1,2,\cdots,N
-\]</span><br />
-这就是一个包含 <span class="math inline">\(N\)</span>
-个约束的凸优化问题，有很多求解这种问题的软件。</p>
-<p>但是，如果样本数量或维度非常高，直接求解困难甚至不可解，于是需要对这个问题进一步处理。引入
-Lagrange 函数：<br />
-<span class="math display">\[
-L(w,b,\lambda)=\frac{1}{2}w^Tw+\sum\limits_{i=1}^N\lambda_i(1-y_i(w^Tx_i+b))
-\]</span><br />
-我们有原问题就等价于：<br />
-<span class="math display">\[
-\mathop{argmin}_{w,b}\max_{\lambda}L(w,b,\lambda_i)\ s.t.\ \lambda_i\ge0
-\]</span><br />
-我们交换最小和最大值的符号得到对偶问题：<br />
-<span class="math display">\[
-\max_{\lambda_i}\min_{w,b}L(w,b,\lambda_i)\ s.t.\ \lambda_i\ge0
-\]</span><br />
-由于不等式约束是仿射函数，对偶问题和原问题等价：</p>
-<ul>
-<li><p><span class="math inline">\(b\)</span>：<span
-class="math inline">\(\frac{\partial}{\partial
-b}L=0\Rightarrow\sum\limits_{i=1}^N\lambda_iy_i=0\)</span></p></li>
-<li><p><span class="math inline">\(w\)</span>：首先将 <span
-class="math inline">\(b\)</span> 代入：<br />
-<span class="math display">\[
-L(w,b,\lambda_i)=\frac{1}{2}w^Tw+\sum\limits_{i=1}^N\lambda_i(1-y_iw^Tx_i-y_ib)=\frac{1}{2}w^Tw+\sum\limits_{i=1}^N\lambda_i-\sum\limits_{i=1}^N\lambda_iy_iw^Tx_i
-\]</span><br />
-所以：<br />
-<span class="math display">\[
-\frac{\partial}{\partial w}L=0\Rightarrow
-w=\sum\limits_{i=1}^N\lambda_iy_ix_i
-\]</span></p></li>
-<li><p>将上面两个参数代入：<br />
-<span class="math display">\[
-L(w,b,\lambda_i)=-\frac{1}{2}\sum\limits_{i=1}^N\sum\limits_{j=1}^N\lambda_i\lambda_jy_iy_jx_i^Tx_j+\sum\limits_{i=1}^N\lambda_i
-\]</span></p></li>
-</ul>
-<p>因此，对偶问题就是：<br />
-<span class="math display">\[
-\max_{\lambda}-\frac{1}{2}\sum\limits_{i=1}^N\sum\limits_{j=1}^N\lambda_i\lambda_jy_iy_jx_i^Tx_j+\sum\limits_{i=1}^N\lambda_i,\
-s.t.\ \lambda_i\ge0
-\]</span><br />
-从 KKT 条件得到超平面的参数：</p>
-<blockquote>
-<p>原问题和对偶问题满足强对偶关系的充要条件为其满足 KKT 条件：<br />
-<span class="math display">\[
-  \begin{align}
-  &amp;\frac{\partial L}{\partial w}=0,\frac{\partial L}{\partial b}=0
-  \\&amp;\lambda_k(1-y_k(w^Tx_k+b))=0(slackness\ complementary)\\
-  &amp;\lambda_i\ge0\\
-  &amp;1-y_i(w^Tx_i+b)\le0
-  \end{align}
-  \]</span></p>
-</blockquote>
-<p>根据这个条件就得到了对应的最佳参数：<br />
-<span class="math display">\[
-\hat{w}=\sum\limits_{i=1}^N\lambda_iy_ix_i\\
-\hat{b}=y_k-w^Tx_k=y_k-\sum\limits_{i=1}^N\lambda_iy_ix_i^Tx_k,\exists
-k,1-y_k(w^Tx_k+b)=0
-\]</span><br />
-于是这个超平面的参数 <span class="math inline">\(w\)</span>
-就是数据点的线性组合，最终的参数值就是部分满足 <span
-class="math inline">\(y_i(w^Tx_i+b)=1\)</span>向量的线性组合（互补松弛条件给出），这些向量也叫支撑向量。</p>
-<h2 id="soft-margin-svm">Soft-margin SVM</h2>
-<p>Hard-margin 的 SVM
-只对可分数据可解，如果不可分的情况，我们的基本想法是在损失函数中加入错误分类的可能性。错误分类的个数可以写成：<br />
-<span class="math display">\[
-error=\sum\limits_{i=1}^N\mathbb{I}\{y_i(w^Tx_i+b)\lt1\}
-\]</span><br />
-这个函数不连续，可以将其改写为：<br />
-<span class="math display">\[
-error=\sum\limits_{i=1}^N\max\{0,1-y_i(w^Tx_i+b)\}
-\]</span><br />
-求和符号中的式子又叫做 Hinge Function。</p>
-<p>将这个错误加入 Hard-margin SVM 中，于是：<br />
-<span class="math display">\[
-\mathop{argmin}_{w,b}\frac{1}{2}w^Tw+C\sum\limits_{i=1}^N\max\{0,1-y_i(w^Tx_i+b)\}\
-s.t.\ y_i(w^Tx_i+b)\ge1-\xi_i,i=1,2,\cdots,N
-\]</span><br />
-这个式子中，常数 <span class="math inline">\(C\)</span>
-可以看作允许的错误水平，同时上式为了进一步消除 <span
-class="math inline">\(\max\)</span>
-符号，对数据集中的每一个观测，我们可以认为其大部分满足约束，但是其中部分违反约束，因此这部分约束变成
-<span class="math inline">\(y_i(w^Tx+b)\ge1-\xi_i\)</span>，其中 <span
-class="math inline">\(\xi_i=1-y_i(w^Tx_i+b)\)</span>，进一步的化简：<br />
-<span class="math display">\[
-\mathop{argmin}_{w,b}\frac{1}{2}w^Tw+C\sum\limits_{i=1}^N\xi_i\ s.t.\
-y_i(w^Tx_i+b)\ge1-\xi_i,\xi_i\ge0,i=1,2,\cdots,N
-\]</span></p>
-<h2 id="kernel-method">Kernel Method</h2>
-<p>核方法可以应用在很多问题上，在分类问题中，对于严格不可分问题，我们引入一个特征转换函数将原来的不可分的数据集变为可分的数据集，然后再来应用已有的模型。往往将低维空间的数据集变为高维空间的数据集后，数据会变得可分（数据变得更为稀疏）：</p>
-<blockquote>
-<p>Cover TH：高维空间比低维空间更易线性可分。</p>
-</blockquote>
-<p>应用在 SVM 中时，观察上面的 SVM 对偶问题：<br />
-<span class="math display">\[
-\max_{\lambda}-\frac{1}{2}\sum\limits_{i=1}^N\sum\limits_{j=1}^N\lambda_i\lambda_jy_iy_jx_i^Tx_j+\sum\limits_{i=1}^N\lambda_i,\
-s.t.\ \lambda_i\ge0
-\]</span><br />
-在求解的时候需要求得内积，于是不可分数据在通过特征变换后，需要求得变换后的内积。我们常常很难求得变换函数的内积。于是直接引入内积的变换函数：<br />
-<span class="math display">\[
-\forall x,x&#39;\in\mathcal{X},\exists\phi\in\mathcal{H}:x\rightarrow z\
-s.t.\ k(x,x&#39;)=\phi(x)^T\phi(x)
-\]</span><br />
-称 <span class="math inline">\(k(x,x&#39;)\)</span>
-为一个正定核函数，其中<span class="math inline">\(\mathcal{H}\)</span>
-是 Hilbert
-空间（完备的线性内积空间），如果去掉内积这个条件我们简单地称为核函数。</p>
-<blockquote>
-<p><span
-class="math inline">\(k(x,x&#39;)=\exp(-\frac{(x-x&#39;)^2}{2\sigma^2})\)</span>
-是一个核函数。</p>
-<p>证明：<br />
-<span class="math display">\[
-  \begin{align}
-  \exp(-\frac{(x-x&#39;)^2}{2\sigma^2})&amp;=\exp(-\frac{x^2}{2\sigma^2})\exp(\frac{xx&#39;}{\sigma^2})\exp(-\frac{x&#39;^2}{2\sigma^2})\nonumber\\
-  &amp;=\exp(-\frac{x^2}{2\sigma^2})\sum\limits_{n=0}^{+\infty}\frac{x^nx&#39;^n}{\sigma^{2n}n!}\exp(-\frac{x&#39;^2}{2\sigma^2})\nonumber\\
-  &amp;=\exp(-\frac{x^2}{2\sigma^2})\varphi(x)\varphi(x&#39;)\exp(-\frac{x&#39;^2}{2\sigma^2})\nonumber\\
-  &amp;=\phi(x)\phi(x&#39;)
-  \end{align}
-  \]</span></p>
-</blockquote>
-<p>正定核函数有下面的等价定义：</p>
-<blockquote>
-<p>如果核函数满足：</p>
-<ol type="1">
-<li>对称性</li>
-<li>正定性</li>
-</ol>
-<p>那么这个核函数时正定核函数。</p>
-<p>证明：</p>
-<ol type="1">
-<li>对称性 <span class="math inline">\(\Leftrightarrow\)</span> <span
-class="math inline">\(k(x,z)=k(z,x)\)</span>，显然满足内积的定义</li>
-<li>正定性 <span class="math inline">\(\Leftrightarrow\)</span> <span
-class="math inline">\(\forall
-N,x_1,x_2,\cdots,x_N\in\mathcal{X}\)</span>，对应的 Gram Matrix <span
-class="math inline">\(K=[k(x_i,x_j)]\)</span> 是半正定的。</li>
-</ol>
-<p>要证：<span
-class="math inline">\(k(x,z)=\phi(x)^T\phi(z)\Leftrightarrow K\)</span>
-半正定+对称性。</p>
-<ol type="1">
-<li><p><span
-class="math inline">\(\Rightarrow\)</span>：首先，对称性是显然的，对于正定性：<br />
-<span class="math display">\[
-K=\begin{pmatrix}k(x_1,x_2)&amp;\cdots&amp;k(x_1,x_N)\\\vdots&amp;\vdots&amp;\vdots\\k(x_N,x_1)&amp;\cdots&amp;k(x_N,x_N)\end{pmatrix}
-\]</span><br />
-任意取 <span
-class="math inline">\(\alpha\in\mathbb{R}^N\)</span>，即需要证明 <span
-class="math inline">\(\alpha^TK\alpha\ge0\)</span>：<br />
-<span class="math display">\[
-\alpha^TK\alpha=\sum\limits_{i,j}\alpha_i\alpha_jK_{ij}=\sum\limits_{i,j}\alpha_i\phi^T(x_i)\phi(x_j)\alpha_j=\sum\limits_{i}\alpha_i\phi^T(x_i)\sum\limits_{j}\alpha_j\phi(x_j)
-\]</span><br />
-这个式子就是内积的形式，Hilbert
-空间满足线性性，于是正定性的证。</p></li>
-<li><p><span class="math inline">\(\Leftarrow\)</span>：对于 <span
-class="math inline">\(K\)</span> 进行分解，对于对称矩阵 <span
-class="math inline">\(K=V\Lambda V^T\)</span>，那么令 <span
-class="math inline">\(\phi(x_i)=\sqrt{\lambda_i}V_i\)</span>，其中 <span
-class="math inline">\(V_i\)</span>是特征向量，于是就构造了 <span
-class="math inline">\(k(x,z)=\sqrt{\lambda_i\lambda_j}V_i^TV_j\)</span></p></li>
-</ol>
-</blockquote>
-<h2 id="小结">小结</h2>
-<p>分类问题在很长一段时间都依赖 SVM，对于严格可分的数据集，Hard-margin
-SVM
-选定一个超平面，保证所有数据到这个超平面的距离最大，对这个平面施加约束，固定
-<span
-class="math inline">\(y_i(w^Tx_i+b)=1\)</span>，得到了一个凸优化问题并且所有的约束条件都是仿射函数，于是满足
-Slater
-条件，将这个问题变换成为对偶的问题，可以得到等价的解，并求出约束参数：<br />
-<span class="math display">\[
-\max_{\lambda}-\frac{1}{2}\sum\limits_{i=1}^N\sum\limits_{j=1}^N\lambda_i\lambda_jy_iy_jx_i^Tx_j+\sum\limits_{i=1}^N\lambda_i,\
-s.t.\ \lambda_i\ge0
-\]</span><br />
-对需要的超平面参数的求解采用强对偶问题的 KKT 条件进行。<br />
-<span class="math display">\[
-\begin{align}
-&amp;\frac{\partial L}{\partial w}=0,\frac{\partial L}{\partial b}=0
-\\&amp;\lambda_k(1-y_k(w^Tx_k+b))=0(slackness\ complementary)\\
-&amp;\lambda_i\ge0\\
-&amp;1-y_i(w^Tx_i+b)\le0
-\end{align}
-\]</span><br />
-解就是：<br />
-<span class="math display">\[
-\hat{w}=\sum\limits_{i=1}^N\lambda_iy_ix_i\\
-\hat{b}=y_k-w^Tx_k=y_k-\sum\limits_{i=1}^N\lambda_iy_ix_i^Tx_k,\exists
-k,1-y_k(w^Tx_k+b)=0
-\]</span><br />
-当允许一点错误的时候，可以在 Hard-margin SVM 中加入错误项。用 Hinge
-Function 表示错误项的大小，得到：<br />
-<span class="math display">\[
-\mathop{argmin}_{w,b}\frac{1}{2}w^Tw+C\sum\limits_{i=1}^N\xi_i\ s.t.\
-y_i(w^Tx_i+b)\ge1-\xi_i,\xi_i\ge0,i=1,2,\cdots,N
-\]</span><br />
-对于完全不可分的问题，我们采用特征转换的方式，在 SVM
-中，我们引入正定核函数来直接对内积进行变换，只要这个变换满足对称性和正定性，那么就可以用做核函数。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/09/28/ML/20.DimentionReduction/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avstar.png">
-      <meta itemprop="name" content="SoundMemories">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SoundMemories">
-      <meta itemprop="description" content="今日事，今日毕">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | SoundMemories">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/09/28/ML/20.DimentionReduction/" class="post-title-link" itemprop="url">DimentionReduction</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-09-28 00:00:00" itemprop="dateCreated datePublished" datetime="2020-09-28T00:00:00+08:00">2020-09-28</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.5k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="降维">降维</h1>
-<p>我们知道，解决过拟合的问题除了正则化和添加数据之外，降维就是最好的方法。降维的思路来源于维度灾难的问题，我们知道
-<span class="math inline">\(n\)</span> 维球的体积为：<br />
-<span class="math display">\[
-CR^n
-\]</span><br />
-那么在球体积与边长为 <span class="math inline">\(2R\)</span>
-的超立方体比值为：<br />
-<span class="math display">\[
-\lim\limits_{n\rightarrow0}\frac{CR^n}{2^nR^n}=0
-\]</span></p>
-<p>这就是所谓的维度灾难，在高维数据中，主要样本都分布在立方体的边缘，所以数据集更加稀疏。</p>
-<p>降维的算法分为：</p>
-<ol type="1">
-<li>直接降维，特征选择</li>
-<li>线性降维，PCA，MDS等</li>
-<li>分线性，流形包括 Isomap，LLE 等</li>
-</ol>
-<p>为了方便，我们首先将协方差矩阵（数据集）写成中心化的形式：<br />
-<span class="math display">\[
-\begin{align}S&amp;=\frac{1}{N}\sum\limits_{i=1}^N(x_i-\overline{x})(x_i-\overline{x})^T\nonumber\\
-&amp;=\frac{1}{N}(x_1-\overline{x},x_2-\overline{x},\cdots,x_N-\overline{x})(x_1-\overline{x},x_2-\overline{x},\cdots,x_N-\overline{x})^T\nonumber\\
-&amp;=\frac{1}{N}(X^T-\frac{1}{N}X^T\mathbb{I}_{N1}\mathbb{I}_{N1}^T)(X^T-\frac{1}{N}X^T\mathbb{I}_{N1}\mathbb{I}_{N1}^T)^T\nonumber\\
-&amp;=\frac{1}{N}X^T(E_N-\frac{1}{N}\mathbb{I}_{N1}\mathbb{I}_{1N})(E_N-\frac{1}{N}\mathbb{I}_{N1}\mathbb{I}_{1N})^TX\nonumber\\
-&amp;=\frac{1}{N}X^TH_NH_N^TX\nonumber\\
-&amp;=\frac{1}{N}X^TH_NH_NX=\frac{1}{N}X^THX
-\end{align}
-\]</span><br />
-这个式子利用了中心矩阵 $ H$的对称性，这也是一个投影矩阵。</p>
-<h2 id="线性降维-主成分分析-pca">线性降维-主成分分析 PCA</h2>
-<h3 id="损失函数">损失函数</h3>
-<p>主成分分析中，我们的基本想法是将所有数据投影到一个字空间中，从而达到降维的目标，为了寻找这个子空间，我们基本想法是：</p>
-<ol type="1">
-<li>所有数据在子空间中更为分散</li>
-<li>损失的信息最小，即：在补空间的分量少</li>
-</ol>
-<p>原来的数据很有可能各个维度之间是相关的，于是我们希望找到一组 <span
-class="math inline">\(p\)</span> 个新的线性无关的单位基 <span
-class="math inline">\(u_i\)</span>，降维就是取其中的 <span
-class="math inline">\(q\)</span> 个基。于是对于一个样本 <span
-class="math inline">\(x_i\)</span>，经过这个坐标变换后：<br />
-<span class="math display">\[
-\hat{x_i}=\sum\limits_{i=1}^p(u_i^Tx_i)u_i=\sum\limits_{i=1}^q(u_i^Tx_i)u_i+\sum\limits_{i=q+1}^p(u_i^Tx_i)u_i
-\]</span><br />
-对于数据集来说，我们首先将其中心化然后再去上面的式子的第一项，并使用其系数的平方平均作为损失函数并最大化：<br />
-<span class="math display">\[
-\begin{align}J&amp;=\frac{1}{N}\sum\limits_{i=1}^N\sum\limits_{j=1}^q((x_i-\overline{x})^Tu_j)^2\nonumber\\
-&amp;=\sum\limits_{j=1}^qu_j^TSu_j\ ,\ s.t.\ u_j^Tu_j=1
-\end{align}
-\]</span><br />
-由于每个基都是线性无关的，于是每一个 <span
-class="math inline">\(u_j\)</span>
-的求解可以分别进行，使用拉格朗日乘子法：<br />
-<span class="math display">\[
-\mathop{argmax}_{u_j}L(u_j,\lambda)=\mathop{argmax}_{u_j}u_j^TSu_j+\lambda(1-u_j^Tu_j)
-\]</span><br />
-于是：<br />
-<span class="math display">\[
-Su_j=\lambda u_j
-\]</span><br />
-可见，我们需要的基就是协方差矩阵的本征矢。损失函数最大取在本征值前 <span
-class="math inline">\(q\)</span> 个最大值。</p>
-<p>下面看其损失的信息最少这个条件，同样适用系数的平方平均作为损失函数，并最小化：<br />
-<span class="math display">\[
-\begin{align}J&amp;=\frac{1}{N}\sum\limits_{i=1}^N\sum\limits_{j=q+1}^p((x_i-\overline{x})^Tu_j)^2\nonumber\\
-&amp;=\sum\limits_{j=q+1}^pu_j^TSu_j\ ,\ s.t.\ u_j^Tu_j=1
-\end{align}
-\]</span><br />
-同样的：<br />
-<span class="math display">\[
-\mathop{argmin}_{u_j}L(u_j,\lambda)=\mathop{argmin}_{u_j}u_j^TSu_j+\lambda(1-u_j^Tu_j)
-\]</span><br />
-损失函数最小取在本征值剩下的个最小的几个值。数据集的协方差矩阵可以写成
-<span class="math inline">\(S=U\Lambda
-U^T\)</span>，直接对这个表达式当然可以得到本征矢。</p>
-<h3 id="svd-与-pcoa">SVD 与 PCoA</h3>
-<p>下面使用实际训练时常常使用的 SVD 直接求得这个 <span
-class="math inline">\(q\)</span> 个本征矢。</p>
-<p>对中心化后的数据集进行奇异值分解：<br />
-<span class="math display">\[
-HX=U\Sigma V^T,U^TU=E_N,V^TV=E_p,\Sigma:N\times p
-\]</span></p>
-<p>于是：<br />
-<span class="math display">\[
-S=\frac{1}{N}X^THX=\frac{1}{N}X^TH^THX=\frac{1}{N}V\Sigma^T\Sigma V^T
-\]</span><br />
-因此，我们直接对中心化后的数据集进行 SVD，就可以得到特征值和特征向量
-<span class="math inline">\(V\)</span>，在新坐标系中的坐标就是：<br />
-<span class="math display">\[
-HX\cdot V
-\]</span><br />
-由上面的推导，我们也可以得到另一种方法 PCoA
-主坐标分析，定义并进行特征值分解：<br />
-<span class="math display">\[
-T=HXX^TH=U\Sigma\Sigma^TU^T
-\]</span><br />
-由于：<br />
-<span class="math display">\[
-TU\Sigma=U\Sigma(\Sigma^T\Sigma)
-\]</span><br />
-于是可以直接得到坐标。这两种方法都可以得到主成分，但是由于方差矩阵是
-<span class="math inline">\(p\times p\)</span> 的，而 <span
-class="math inline">\(T\)</span> 是 <span class="math inline">\(N\times
-N\)</span> 的，所以对样本量较少的时候可以采用 PCoA的方法。</p>
-<h3 id="p-pca">p-PCA</h3>
-<p>下面从概率的角度对 PCA 进行分析，概率方法也叫
-p-PCA。我们使用线性模型，类似之前 LDA，我们选定一个方向，对原数据 <span
-class="math inline">\(x\in\mathbb{R}^p\)</span> ，降维后的数据为 <span
-class="math inline">\(z\in\mathbb{R}^q,q&lt;p\)</span>。降维通过一个矩阵变换（投影）进行：<br />
-<span class="math display">\[
-\begin{align}
-z&amp;\sim\mathcal{N}(\mathbb{O}_{q1},\mathbb{I}_{qq})\\
-x&amp;=Wz+\mu+\varepsilon\\
-\varepsilon&amp;\sim\mathcal{N}(0,\sigma^2\mathbb{I}_{pp})
-\end{align}
-\]</span><br />
-对于这个模型，我么可以使用期望-最大（EM）的算法进行学习，在进行推断的时候需要求得
-<span
-class="math inline">\(p(z|x)\)</span>，推断的求解过程和线性高斯模型类似。<br />
-<span class="math display">\[
-\begin{align}
-&amp;p(z|x)=\frac{p(x|z)p(z)}{p(x)}\\
-&amp;\mathbb{E}[x]=\mathbb{E}[Wz+\mu+\varepsilon]=\mu\\
-&amp;Var[x]=WW^T+\sigma^2\mathbb{I}_{pp}\\
-\Longrightarrow
-p(z|x)=\mathcal{N}(W^T(WW^T+&amp;\sigma^2\mathbb{I})^{-1}(x-\mu),\mathbb{I}-W^T(WW^T+\sigma^2\mathbb{I})^{-1}W)
-\end{align}
-\]</span></p>
-<h2 id="小结">小结</h2>
-<p>降维是解决维度灾难和过拟合的重要方法，除了直接的特征选择外，我们还可以采用算法的途径对特征进行筛选，线性的降维方法以
-PCA 为代表，在 PCA
-中，我们只要直接对数据矩阵进行中心化然后求奇异值分解或者对数据的协方差矩阵进行分解就可以得到其主要维度。非线性学习的方法如流形学习将投影面从平面改为超曲面。</p>
 
       
     </div>
