@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.1","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概率图模型 概率图模型使用图的方式表示概率分布。为了在图中添加各种概率，首先总结一下随机变量分布的一些规则： \[ \begin{align} &amp;Sum\ Rule:p(x_1)&#x3D;\int p(x_1,x_2)dx_2\\ &amp;Product\ Rule:p(x_1,x_2)&#x3D;p(x_1|x_2)p(x_2)\\ &amp;Chain\ Rule:p(x_1,x_2,\">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PGMIntro">
+<meta property="og:url" content="https://soundmemories.github.io/2020/10/01/ML/23.PGMIntro/index.html">
+<meta property="og:site_name" content="SoundMemories">
+<meta property="og:description" content="概率图模型 概率图模型使用图的方式表示概率分布。为了在图中添加各种概率，首先总结一下随机变量分布的一些规则： \[ \begin{align} &amp;Sum\ Rule:p(x_1)&#x3D;\int p(x_1,x_2)dx_2\\ &amp;Product\ Rule:p(x_1,x_2)&#x3D;p(x_1|x_2)p(x_2)\\ &amp;Chain\ Rule:p(x_1,x_2,\">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-26T11:08:31.981Z">
+<meta property="article:author" content="SoundMemories">
+<meta property="article:tag" content="ML">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://soundmemories.github.io/2020/10/01/ML/23.PGMIntro/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://soundmemories.github.io/2020/10/01/ML/23.PGMIntro/","path":"2020/10/01/ML/23.PGMIntro/","title":"PGMIntro"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>PGMIntro | SoundMemories</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">SoundMemories</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">127</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">概率图模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E5%90%91%E5%9B%BE-%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BD%91%E7%BB%9C"><span class="nav-number">1.1.</span> <span class="nav-text">有向图-贝叶斯网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E5%90%91%E5%9B%BE-%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E7%BD%91%E7%BB%9C%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E9%9A%8F%E6%9C%BA%E5%9C%BA"><span class="nav-number">1.2.</span> <span class="nav-text">无向图-马尔可夫网络（马尔可夫随机场）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%A4%E7%A7%8D%E5%9B%BE%E7%9A%84%E8%BD%AC%E6%8D%A2-%E9%81%93%E5%BE%B7%E5%9B%BE"><span class="nav-number">1.3.</span> <span class="nav-text">两种图的转换-道德图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E7%B2%BE%E7%BB%86%E7%9A%84%E5%88%86%E8%A7%A3-%E5%9B%A0%E5%AD%90%E5%9B%BE"><span class="nav-number">1.4.</span> <span class="nav-text">更精细的分解-因子图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A8%E6%96%AD"><span class="nav-number">1.5.</span> <span class="nav-text">推断</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A8%E6%96%AD-%E5%8F%98%E9%87%8F%E6%B6%88%E9%99%A4ve"><span class="nav-number">1.5.1.</span> <span class="nav-text">推断-变量消除（VE）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A8%E6%96%AD-%E4%BF%A1%E5%BF%B5%E4%BC%A0%E6%92%ADbp"><span class="nav-number">1.5.2.</span> <span class="nav-text">推断-信念传播（BP）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A8%E6%96%AD-max-product-%E7%AE%97%E6%B3%95"><span class="nav-number">1.5.3.</span> <span class="nav-text">推断-Max-Product 算法</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SoundMemories"
+      src="/images/avstar.png">
+  <p class="site-author-name" itemprop="name">SoundMemories</p>
+  <div class="site-description" itemprop="description">今日事，今日毕</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NvdW5kbWVtb3JpZXM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;soundmemories"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNvdW5kbWVtb3JpZXNAMTYzLmNvbQ==" title="E-Mail → mailto:soundmemories@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+        <div class="pjax">
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/01/ML/23.PGMIntro/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="PGMIntro | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PGMIntro
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-01 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-01T00:00:00+08:00">2020-10-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>11 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="概率图模型">概率图模型</h1>
+<p>概率图模型使用图的方式表示概率分布。为了在图中添加各种概率，首先总结一下随机变量分布的一些规则：<br />
+<span class="math display">\[
+\begin{align}
+&amp;Sum\ Rule:p(x_1)=\int p(x_1,x_2)dx_2\\
+&amp;Product\ Rule:p(x_1,x_2)=p(x_1|x_2)p(x_2)\\
+&amp;Chain\
+Rule:p(x_1,x_2,\cdots,x_p)=\prod\limits_{i=1}^pp(x_i|x_{i+1,x_{i+2}
+\cdots}x_p)\\
+&amp;Bayesian\ Rule:p(x_1|x_2)=\frac{p(x_2|x_1)p(x_1)}{p(x_2)}
+\end{align}
+\]</span><br />
+可以看到，在链式法则中，如果数据维度特别高，那么的采样和计算非常困难，我们需要在一定程度上作出简化，在朴素贝叶斯中，作出了条件独立性假设。在
+Markov
+假设中，给定数据的维度是以时间顺序出现的，给定当前时间的维度，那么下一个维度与之前的维度独立。在
+HMM 中，采用了齐次 Markov 假设。在 Markov
+假设之上，更一般的，加入条件独立性假设，对维度划分集合 <span
+class="math inline">\(A,B,C\)</span>，使得 <span
+class="math inline">\(X_A\perp X_B|X_C\)</span>。</p>
+<p>概率图模型采用图的特点表示上述的条件独立性假设，节点表示随机变量，边表示条件概率。概率图模型可以分为三大理论部分：</p>
+<ol type="1">
+<li>表示：
+<ol type="1">
+<li>有向图（离散）：贝叶斯网络</li>
+<li>高斯图（连续）：高斯贝叶斯和高斯马尔可夫网路</li>
+<li>无向图（离散）：马尔可夫网络</li>
+</ol></li>
+<li>推断
+<ol type="1">
+<li>精确推断</li>
+<li>近似推断
+<ol type="1">
+<li>确定性近似（如变分推断）</li>
+<li>随机近似（如 MCMC）</li>
+</ol></li>
+</ol></li>
+<li>学习
+<ol type="1">
+<li>参数学习
+<ol type="1">
+<li>完备数据</li>
+<li>隐变量：E-M 算法</li>
+</ol></li>
+<li>结构学习</li>
+</ol></li>
+</ol>
+<h2 id="有向图-贝叶斯网络">有向图-贝叶斯网络</h2>
+<p>已知联合分布中，各个随机变量之间的依赖关系，那么可以通过拓扑排序（根据依赖关系）可以获得一个有向图。而如果已知一个图，也可以直接得到联合概率分布的因子分解：<br />
+<span class="math display">\[
+p(x_1,x_2,\cdots,x_p)=\prod\limits_{i=1}^pp(x_i|x_{parent(i)})
+\]</span><br />
+那么实际的图中条件独立性是如何体现的呢？在局部任何三个节点，可以有三种结构：</p>
+<ol type="1">
+<li><pre class="mermaid">
+graph TB
+A((A))--&gt;B((B));
+B--&gt;C((C));
+</pre>
+<p><span class="math display">\[
+\begin{aligned}
+p(A,B,C)&amp;=p(A)p(B|A)p(C|B)=p(A)p(B|A)p(C|B,A)\\
+&amp;\Longrightarrow p(C|B)=p(C|B,A)\\
+&amp;\Leftrightarrow p(C|B)p(A|B)=p(C|A,B)p(A|B)=p(C,A|B)\\
+&amp;\Longrightarrow C\perp A|B
+\end{aligned}
+\]</span></p></li>
+<li><pre class="mermaid">
+graph TB
+B((B))--&gt;A((A));
+B--&gt;C((C));
+    
+</pre>
+<p><span class="math display">\[
+\begin{aligned}
+p(A,B,C)&amp;=p(A|B)p(B)p(C|B)=p(B)p(A|B)p(C|A,B)\\
+&amp;\Longrightarrow p(C|B)=p(C|B,A)\\
+&amp;\Leftrightarrow p(C|B)p(A|B)=p(C|A,B)p(A|B)=p(C,A|B)\\
+&amp;\Longrightarrow C\perp A|B
+\end{aligned}
+\]</span></p></li>
+<li><pre class="mermaid">
+graph TB
+A((A))--&gt;B((B));
+C((C))--&gt;B
+    
+</pre>
+<p><span class="math display">\[
+\begin{aligned}
+p(A,B,C)&amp;=p(A)p(C)p(B|C,A)=p(A)p(C|A)p(B|C,A)\\
+&amp;\Longrightarrow p(C)=p(C|A)\\
+&amp;\Leftrightarrow C\perp A\\
+\end{aligned}
+\]</span></p>
+<p>对这种结构，<span class="math inline">\(A,C\)</span> 不与 <span
+class="math inline">\(B\)</span> 条件独立。</p></li>
+</ol>
+<p>从整体的图来看，可以引入 D 划分的概念。对于类似上面图 1和图
+2的关系，引入集合A，B，那么满足 <span class="math inline">\(A\perp
+B|C\)</span> 的 <span class="math inline">\(C\)</span> 集合中的点与
+<span class="math inline">\(A,B\)</span> 中的点的关系都满足图
+1，2，满足图3 关系的点都不在 <span class="math inline">\(C\)</span>
+中。D 划分应用在贝叶斯定理中：<br />
+<span class="math display">\[
+p(x_i|x_{-i})=\frac{p(x)}{\int
+p(x)dx_{i}}=\frac{\prod\limits_{j=1}^pp(x_j|x_{parents(j)})}{\int\prod\limits_{j=1}^pp(x_j|x_{parents(j)})dx_i}
+\]</span><br />
+可以发现，上下部分可以分为两部分，一部分是和 <span
+class="math inline">\(x_i\)</span> 相关的，另一部分是和 <span
+class="math inline">\(x_i\)</span>
+无关的，而这个无关的部分可以相互约掉。于是计算只涉及和 <span
+class="math inline">\(x_i\)</span> 相关的部分。</p>
+<p>与 <span class="math inline">\(x_i\)</span>
+相关的部分可以写成：<br />
+<span class="math display">\[
+p(x_i|x_{parents(i)})p(x_{child(i)}|x_i)
+\]</span><br />
+这些相关的部分又叫做 Markov 毯。</p>
+<p>实际应用的模型中，对这些条件独立性作出了假设，从单一到混合，从有限到无限（时间，空间）可以分为：</p>
+<ol type="1">
+<li>朴素贝叶斯，单一的条件独立性假设 <span
+class="math inline">\(p(x|y)=\prod\limits_{i=1}^pp(x_i|y)\)</span>，在 D
+划分后，所有条件依赖的集合就是单个元素。</li>
+<li>高斯混合模型：混合的条件独立。引入多类别的隐变量 <span
+class="math inline">\(z_1, z_2,\cdots,z_k\)</span>， <span
+class="math inline">\(p(x|z)=\mathcal{N}(\mu,\Sigma)\)</span>，条件依赖集合为多个元素。</li>
+<li>与时间相关的条件依赖
+<ol type="1">
+<li>Markov 链</li>
+<li>高斯过程（无限维高斯分布）</li>
+</ol></li>
+<li>连续：高斯贝叶斯网络</li>
+<li>组合上面的分类
+<ul>
+<li>GMM 与时序结合：动态模型
+<ul>
+<li>HMM（离散）</li>
+<li>线性动态系统 LDS（Kalman 滤波）</li>
+<li>粒子滤波（非高斯，非线性）</li>
+</ul></li>
+</ul></li>
+</ol>
+<h2
+id="无向图-马尔可夫网络马尔可夫随机场">无向图-马尔可夫网络（马尔可夫随机场）</h2>
+<p>无向图没有了类似有向图的局部不同结构，在马尔可夫网络中，也存在 D
+划分的概念。直接将条件独立的集合 <span class="math inline">\(x_A\perp
+x_B|x_C\)</span> 划分为三个集合。这个也叫全局
+Markov。对局部的节点，<span class="math inline">\(x\perp
+(X-Neighbour(\mathcal{x}))|Neighbour(x)\)</span>。这也叫局部
+Markov。对于成对的节点：<span class="math inline">\(x_i\perp
+x_j|x_{-i-j}\)</span>，其中 <span class="math inline">\(i,j\)</span>
+不能相邻。这也叫成对
+Markov。事实上上面三个点局部全局成对是相互等价的。</p>
+<p>有了这个条件独立性的划分，还需要因子分解来实际计算。引入团的概念：</p>
+<blockquote>
+<p>团，最大团：图中节点的集合，集合中的节点之间相互都是连接的叫做团，如果不能再添加节点，那么叫最大团。</p>
+</blockquote>
+<p>利用这个定义进行的 <span class="math inline">\(x\)</span>
+所有维度的联合概率分布的因子分解为，假设有 <span
+class="math inline">\(K\)</span> 个团，<span
+class="math inline">\(Z\)</span> 就是对所有可能取值求和：<br />
+<span class="math display">\[
+\begin{align}p(x)=\frac{1}{Z}\prod\limits_{i=1}^{K}\phi(x_{ci})\\
+Z=\sum\limits_{x\in\mathcal{X}}\prod\limits_{i=1}^{K}\phi(x_{ci})
+\end{align}
+\]</span><br />
+其中 <span class="math inline">\(\phi(x_{ci})\)</span>
+叫做势函数，它必须是一个正值，可以记为：<br />
+<span class="math display">\[
+\phi(x_{ci})=\exp(-E(x_{ci}))
+\]</span><br />
+这个分布叫做 Gibbs 分布（玻尔兹曼分布）。于是也可以记为：<span
+class="math inline">\(p(x)=\frac{1}{Z}\exp(-\sum\limits_{i=1}^KE(x_{ci}))\)</span>。这个分解和条件独立性等价（Hammesley-Clifford
+定理），这个分布的形式也和指数族分布形式上相同，于是满足最大熵原理。</p>
+<h2 id="两种图的转换-道德图">两种图的转换-道德图</h2>
+<p>我们常常想将有向图转为无向图，从而应用更一般的表达式。</p>
+<ol type="1">
+<li><p>链式：</p>
+<pre class="mermaid">
+graph TB
+A((A))--&gt;B((B));
+B--&gt;C((C));
+    
+</pre>
+<p>直接去掉箭头，<span
+class="math inline">\(p(a,b,c)=p(a)p(b|a)p(c|b)=\phi(a,b)\phi(b,c)\)</span>：</p>
+<pre class="mermaid">
+graph TB
+A((A))---B((B));
+B---C((C));
+    
+</pre></li>
+<li><p>V 形：</p>
+<pre class="mermaid">
+graph TB
+B((B))--&gt;A((A));
+B--&gt;C((C));
+    
+</pre>
+<p>由于 <span
+class="math inline">\(p(a,b,c)=p(b)p(a|b)p(c|b)=\phi(a,b)\phi(b,c)\)</span>，直接去掉箭头：</p>
+<pre class="mermaid">
+graph TB
+B((B))---A((A));
+B---C((C));
+    
+</pre></li>
+<li><p>倒 V 形：</p>
+<pre class="mermaid">
+graph TB
+A((A))--&gt;B((B));
+C((C))--&gt;B
+    
+</pre>
+<p>由于 <span
+class="math inline">\(p(a,b,c)=p(a)p(c)p(b|a,c)=\phi(a,b,c)\)</span>，于是在
+<span class="math inline">\(a,c\)</span> 之间添加线：</p>
+<pre class="mermaid">
+graph TD
+a((a))---b((b));
+b---c((c));
+a---c;
+    
+</pre>
+<p>观察着三种情况可以概括为：</p>
+<ol type="1">
+<li>将每个节点的父节点两两相连</li>
+<li>将有向边替换为无向边</li>
+</ol></li>
+</ol>
+<h2 id="更精细的分解-因子图">更精细的分解-因子图</h2>
+<p>对于一个有向图，可以通过引入环的方式，可以将其转换为无向图（Tree-like
+graph），这个图就叫做道德图。但是我们上面的 BP
+算法只对无环图有效，通过因子图可以变为无环图。</p>
+<p>考虑一个无向图：</p>
+<pre class="mermaid">
+graph TD
+a((a))---b((b));
+b---c((c));
+a---c;
+</pre>
+<p>可以将其转为：</p>
+<pre class="mermaid">
+graph TD
+a((a))---f;
+f---b((b));
+f---c((c))
+</pre>
+<p>其中 <span
+class="math inline">\(f=f(a,b,c)\)</span>。因子图不是唯一的，这是由于因式分解本身就对应一个特殊的因子图，将因式分解：<span
+class="math inline">\(p(x)=\prod\limits_{s}f_s(x_s)\)</span>
+可以进一步分解得到因子图。</p>
+<h2 id="推断">推断</h2>
+<p>推断的主要目的是求各种概率分布，包括边缘概率，条件概率，以及使用 MAP
+来求得参数。通常推断可以分为：</p>
+<ol type="1">
+<li>精确推断
+<ol type="1">
+<li>Variable Elimination(VE)</li>
+<li>Belief Propagation(BP, Sum-Product Algo)，从 VE 发展而来</li>
+<li>Junction Tree，上面两种在树结构上应用，Junction Tree
+在图结构上应用</li>
+</ol></li>
+<li>近似推断
+<ol type="1">
+<li>Loop Belief Propagation（针对有环图）</li>
+<li>Mente Carlo Interference：例如 Importance Sampling，MCMC</li>
+<li>Variational Inference</li>
+</ol></li>
+</ol>
+<h3 id="推断-变量消除ve">推断-变量消除（VE）</h3>
+<p>变量消除的方法是在求解概率分布的时候，将相关的条件概率先行求和或积分，从而一步步地消除变量，例如在马尔可夫链中：</p>
+<pre class="mermaid">
+graph LR
+a((a))--&gt;b((b));
+b--&gt;c((c));
+c--&gt;d((d))
+</pre>
+<p><span class="math display">\[
+p(d)=\sum\limits_{a,b,c}p(a,b,c,d)=\sum\limits_cp(d|c)\sum\limits_bp(c|b)\sum\limits_ap(b|a)p(a)
+\]</span></p>
+<p>变量消除的缺点很明显：</p>
+<ol type="1">
+<li>计算步骤无法存储</li>
+<li>消除的最优次序是一个 NP-hard 问题</li>
+</ol>
+<h3 id="推断-信念传播bp">推断-信念传播（BP）</h3>
+<p>为了克服 VE
+的第一个缺陷-计算步骤无法存储。我们进一步地对上面的马尔可夫链进行观察：</p>
+<pre class="mermaid">
+graph LR
+a((a))--&gt;b((b));
+b--&gt;c((c));
+c--&gt;d((d));
+d--&gt;e((e));
+</pre>
+<p>要求 <span class="math inline">\(p(e)\)</span>，当然使用 VE，从 <span
+class="math inline">\(a\)</span> 一直消除到 <span
+class="math inline">\(d\)</span>，记 <span
+class="math inline">\(\sum\limits_ap(a)p(b|a)=m_{a\to
+b(b)}\)</span>，表示这是消除 <span class="math inline">\(a\)</span>
+后的关于 <span class="math inline">\(b\)</span> 的概率，类似地，记 <span
+class="math inline">\(\sum\limits_bp(c|b)m_{a\to b}(b)=m_{b\to
+c}(c)\)</span>。于是 <span
+class="math inline">\(p(e)=\sum\limits_dp(e|d)m_{b\to
+c}(c)\)</span>。进一步观察，对 <span
+class="math inline">\(p(c)\)</span>：<br />
+<span class="math display">\[
+p(c)=[\sum\limits_bp(c|b)\sum\limits_ap(b|a)p(a)]\cdot[\sum\limits_dp(d|c)\sum\limits_ep(e)p(e|d)]
+\]</span><br />
+我们发现了和上面计算 <span class="math inline">\(p(e)\)</span>
+类似的结构，这个式子可以分成两个部分，一部分是从 <span
+class="math inline">\(a\)</span> 传播过来的概率，第二部分是从 $ e$
+传播过来的概率。</p>
+<p>一般地，对于图（只对树形状的图）：</p>
+<pre class="mermaid">
+graph TD
+a((a))---b((b));
+b---c((c));
+b---d((d));
+</pre>
+<p>这四个团（对于无向图是团，对于有向图就是概率为除了根的节点为1），有四个节点，三个边：<br />
+<span class="math display">\[
+p(a,b,c,d)=\frac{1}{Z}\phi_a(a)\phi_b(b)\phi_c(c)\phi_d(d)\cdot\phi_{ab}(a,b)\phi_{bc}(c,b)\phi_{bd}(d,b)
+\]</span><br />
+套用上面关于有向图的观察，如果求解边缘概率 <span
+class="math inline">\(p(a)\)</span>，定义 <span
+class="math inline">\(m_{c\to
+b}(b)=\sum\limits_c\phi_c(c)\phi_{bc}(bc)\)</span>，<span
+class="math inline">\(m_{d\to
+b}(b)=\sum\limits_d\phi_d(d)\phi_{bd}(bd)\)</span>，<span
+class="math inline">\(m_{b\to
+a}(a)=\sum\limits_b\phi_{ba}(ba)\phi_b(b)m_{c\to b}(b)_{d\to
+b}m(b)\)</span>，这样概率就一步步地传播到了 <span
+class="math inline">\(a\)</span>：<br />
+<span class="math display">\[
+p(a)=\phi_a(a)m_{b\to a}(a)
+\]</span><br />
+写成一般的形式，对于相邻节点 <span
+class="math inline">\(i,j\)</span>：<br />
+<span class="math display">\[
+m_{j\to i}(i)=\sum\limits_j\phi_j(j)\phi_{ij}(ij)\prod\limits_{k\in
+Neighbour(j)-i}m_{k\to j}(j)
+\]</span><br />
+这个表达式，就可以保存计算过程了，只要对每条边的传播分别计算，对于一个无向树形图可以递归并行实现：</p>
+<ol type="1">
+<li>任取一个节点 <span class="math inline">\(a\)</span> 作为根节点</li>
+<li>对这个根节点的邻居中的每一个节点，收集信息（计算入信息）</li>
+<li>对根节点的邻居，分发信息（计算出信息）</li>
+</ol>
+<h3 id="推断-max-product-算法">推断-Max-Product 算法</h3>
+<p>在推断任务中，MAP 也是常常需要的，MAP 的目的是寻找最佳参数：<br />
+<span class="math display">\[
+(\hat{a},\hat{b},\hat{c},\hat{d})=\mathop{argmax}_{a,b,c,d}p(a,b,c,d|E)
+\]</span><br />
+类似
+BP，我们采用信息传递的方式来求得最优参数，不同的是，我们在所有信息传递中，传递的是最大化参数的概率，而不是将所有可能求和：<br />
+<span class="math display">\[
+m_{j\to i}=\max\limits_{j}\phi_j\phi_{ij}\prod\limits_{k\in
+Neighbour(j)-i}m_{k\to j}
+\]</span><br />
+于是对于上面的图：<br />
+<span class="math display">\[
+\max_a p(a,b,c,d)=\max_a\phi_a\phi_{ab}m_{c\to b}m_{d\to b}
+\]</span><br />
+这个算法是 Sum-Product 算法的改进，也是在 HMM 中应用给的 Viterbi
+算法的推广。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>SoundMemories
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://soundmemories.github.io/2020/10/01/ML/23.PGMIntro/" title="PGMIntro">https://soundmemories.github.io/2020/10/01/ML/23.PGMIntro/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/ML/" rel="tag"><i class="fa fa-tag"></i> ML</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/09/30/ML/22.Exponentialfamily/" rel="prev" title="Exponentialfamily">
+                  <i class="fa fa-chevron-left"></i> Exponentialfamily
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/10/02/ML/24.EM/" rel="next" title="EM">
+                  EM <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">SoundMemories</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"neutral"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.min.js","integrity":"sha256-JFptYy4KzJ5OQP+Q9fubNf3cxpPPmZKqUOovyEONKrQ="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://soundmemories.github.io/2020/10/01/ML/23.PGMIntro/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

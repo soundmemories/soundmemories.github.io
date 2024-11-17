@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.1","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="模型压缩 1、为什么需要模型压缩？ 理论上来说，深度神经网络模型越深，非线性程度也就越大，相应的对现实问题的表达能力越强，但相应的代价是，训练成本和模型大小的增加。同时，在部署时，大模型预测速度较低且需要更好的硬件支持。但随着深度学习越来越多的参与到产业中，很多情况下，需要将模型在手机端、IoT端部署，这种部署环境受到能耗和设备体积的限制，端侧硬件的计算能力和存储能力相对较弱，突出的诉求主要体">
+<meta property="og:type" content="article">
+<meta property="og:title" content="蒸馏">
+<meta property="og:url" content="https://soundmemories.github.io/2021/07/23/NLP/08.%E8%92%B8%E9%A6%8F/index.html">
+<meta property="og:site_name" content="SoundMemories">
+<meta property="og:description" content="模型压缩 1、为什么需要模型压缩？ 理论上来说，深度神经网络模型越深，非线性程度也就越大，相应的对现实问题的表达能力越强，但相应的代价是，训练成本和模型大小的增加。同时，在部署时，大模型预测速度较低且需要更好的硬件支持。但随着深度学习越来越多的参与到产业中，很多情况下，需要将模型在手机端、IoT端部署，这种部署环境受到能耗和设备体积的限制，端侧硬件的计算能力和存储能力相对较弱，突出的诉求主要体">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/1.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/2.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/3.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/4.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/5.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/6.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/7.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/8.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/9.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/10.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/11.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/12.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/13.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/14.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/15.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/16.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/18.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/19.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/20.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/21.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/22.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/23.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/24.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/25.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/26.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/27.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/28.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/29.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/30.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/31.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/32.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/33.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/34.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/35.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/36.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/37.png">
+<meta property="article:published_time" content="2021-07-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-05-25T15:59:53.624Z">
+<meta property="article:author" content="SoundMemories">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://soundmemories.github.io/images/%E8%92%B8%E9%A6%8F/1.png">
+
+
+<link rel="canonical" href="https://soundmemories.github.io/2021/07/23/NLP/08.%E8%92%B8%E9%A6%8F/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://soundmemories.github.io/2021/07/23/NLP/08.%E8%92%B8%E9%A6%8F/","path":"2021/07/23/NLP/08.蒸馏/","title":"蒸馏"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>蒸馏 | SoundMemories</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">SoundMemories</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">127</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9"><span class="nav-number">1.</span> <span class="nav-text">模型压缩</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E8%92%B8%E9%A6%8F%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">模型蒸馏原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E8%92%B8%E9%A6%8F"><span class="nav-number">3.</span> <span class="nav-text">如何蒸馏</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#bert%E8%92%B8%E9%A6%8F"><span class="nav-number">4.</span> <span class="nav-text">BERT蒸馏</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#distilled-bilstm"><span class="nav-number">4.1.</span> <span class="nav-text">Distilled BiLSTM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bert-pkd-emnlp2019"><span class="nav-number">4.2.</span> <span class="nav-text">BERT-PKD (EMNLP2019)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#distillbert-nips2019"><span class="nav-number">4.3.</span> <span class="nav-text">DistillBERT (NIPS2019)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tinybertemnlp2019"><span class="nav-number">4.4.</span> <span class="nav-text">TinyBERT（EMNLP2019）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mobilebertacl2020"><span class="nav-number">4.5.</span> <span class="nav-text">MobileBERT（ACL2020）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#minilm"><span class="nav-number">4.6.</span> <span class="nav-text">MiniLM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dynabert"><span class="nav-number">4.7.</span> <span class="nav-text">DynaBERT</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#bert%E8%92%B8%E9%A6%8F%E6%8A%80%E5%B7%A7"><span class="nav-number">5.</span> <span class="nav-text">BERT蒸馏技巧</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#textbrewer"><span class="nav-number">6.</span> <span class="nav-text">TextBrewer</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-number">6.1.</span> <span class="nav-text">工作流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B"><span class="nav-number">6.2.</span> <span class="nav-text">快速开始</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="nav-number">6.3.</span> <span class="nav-text">核心概念</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">7.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SoundMemories"
+      src="/images/avstar.png">
+  <p class="site-author-name" itemprop="name">SoundMemories</p>
+  <div class="site-description" itemprop="description">今日事，今日毕</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NvdW5kbWVtb3JpZXM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;soundmemories"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNvdW5kbWVtb3JpZXNAMTYzLmNvbQ==" title="E-Mail → mailto:soundmemories@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+        <div class="pjax">
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2021/07/23/NLP/08.%E8%92%B8%E9%A6%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="蒸馏 | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          蒸馏
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-07-23 00:00:00" itemprop="dateCreated datePublished" datetime="2021-07-23T00:00:00+08:00">2021-07-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/NLP/" itemprop="url" rel="index"><span itemprop="name">NLP</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>9.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>35 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="模型压缩">模型压缩</h1>
+<p><strong>1、为什么需要模型压缩？</strong><br />
+理论上来说，深度神经网络模型越深，非线性程度也就越大，相应的对现实问题的表达能力越强，但相应的代价是，训练成本和模型大小的增加。同时，在部署时，大模型预测速度较低且需要更好的硬件支持。但随着深度学习越来越多的参与到产业中，很多情况下，需要将模型在手机端、IoT端部署，这种部署环境受到能耗和设备体积的限制，端侧硬件的计算能力和存储能力相对较弱，突出的诉求主要体现在以下三点：<br />
+-
+首先是<strong>速度</strong>，比如像人脸闸机、人脸解锁手机等应用，对响应速度比较敏感，需要做到实时响应。<br />
+-
+其次是<strong>存储</strong>，比如电网周边环境监测这个应用场景中，要图像目标检测模型部署在可用内存只有200M的监控设备上，且当监控程序运行后，剩余内存会小于30M。<br />
+-
+最后是<strong>耗能</strong>，离线翻译这种移动设备内置AI模型的能耗直接决定了它的续航能力。</p>
+<p>以上三点诉求都需要我们根据终端环境对现有模型进行小型化处理，在不损失精度的情况下，让模型的体积更小、速度更快，能耗更低。</p>
+<p>但如何能产出小模型呢？常见的方式包括设计更高效的网络结构、将模型的参数量变少、将模型的计算量减少，同时提高模型的精度。
+可能有人会提出疑问，为什么不直接设计一个小模型？
+要知道，实际业务子垂类众多，任务复杂度不同，在这种情况下，人工设计有效小模型难度非常大，需要非常强的领域知识。而模型压缩可以在经典小模型的基础上，稍作处理就可以快速拔高模型的各项性能，达到“多快好省”的目的。</p>
+<p><strong>2、模型压缩的基本方法</strong><br />
+-
+<strong>剪裁</strong>：类似“化学结构式的减肥”，将模型结构中对预测结果不重要的网络结构剪裁掉，使网络结构变得更加
+”瘦身“。比如，在每层网络，有些神经元节点的权重非常小，对模型加载信息的影响微乎其微。如果将这些权重较小的神经元删除，则既能保证模型精度不受大影响，又能减小模型大小。<br />
+-
+<strong>量化</strong>：类似“量子级别的减肥”，神经网络模型的参数一般都用float32的数据表示，但如果我们将float32的数据计算精度变成int8的计算精度，则可以牺牲一点模型精度来换取更快的计算速度。<br />
+-
+<strong>蒸馏</strong>：类似“老师教学生”，使用一个效果好的大模型指导一个小模型训练，因为大模型可以提供更多的软分类信息量，所以会训练出一个效果接近大模型的小模型。<br />
+-
+<strong>神经网络架构搜索</strong>（NAS）：类似“化学结构式的重构”，以模型大小和推理速度为约束进行模型结构搜索，从而获得更高效的网络结构。</p>
+<p>除此以外，还有权重共享、低秩分解等技术也可实现模型压缩。</p>
+<h1 id="模型蒸馏原理">模型蒸馏原理</h1>
+<p>Hinton提出了知识蒸馏（Knowledge
+Distillation）的概念，旨在把一个大模型或者多个模型ensemble学到的知识迁移到另一个轻量级单模型上，方便部署。简单的说就是用小模型去学习大模型的预测结果，而不是直接学习训练集中的label。</p>
+<p>在蒸馏的过程中，我们将原始大模型称为教师模型（teacher），新的小模型称为学生模型（student），训练集中的标签称为hard
+label，教师模型预测的概率输出为soft label，temperature(T)是用来调整soft
+label的超参数。</p>
+<p>蒸馏这个概念之所以work，核心思想是<strong>好模型的目标不是拟合训练数据，而是学习如何泛化到新的数据</strong>。所以蒸馏的目标是让学生模型学习到教师模型的泛化能力，理论上得到的结果会比单纯拟合训练数据的学生模型要好。</p>
+<h1 id="如何蒸馏">如何蒸馏</h1>
+<p>蒸馏发展到今天，有各种各样的花式方法，我们先从最基本的说起。</p>
+<p>之前提到学生模型需要通过教师模型的输出学习泛化能力，那对于简单的二分类任务来说，直接拿教师预测的0/1结果会与训练集差不多，没什么意义，那拿概率值是不是好一些？于是Hinton采用了教师模型的输出概率
+<span class="math inline">\(q\)</span> （又称 soft
+target），同时为了更好地控制输出概率的平滑程度，给教师模型的softmax中加了一个参数T:<br />
+<span class="math display">\[q_i=\dfrac{exp(z_i/T)}{\sum_j
+exp(z_i/T)}\]</span><br />
+同时，拟合真实标签 <span class="math inline">\(y\)</span> （hard
+label），于是我们有了新的loss（又称 hard target）：<br />
+<span class="math display">\[L=(1-\alpha)CE(y,p)+\alpha CE(q,p)\cdot
+T^2\]</span><br />
+新loss包括两部分：学生模型与真实标签之间的交叉熵<span
+class="math inline">\(CE(y,p)\)</span>；教师模型与学生模型的输出之间的交叉熵<span
+class="math inline">\(CE(q,p)\)</span>。其中 <span
+class="math inline">\(CE\)</span> 是交叉熵（Cross-Entropy），<span
+class="math inline">\(y\)</span> 是真实label，<span
+class="math inline">\(p\)</span> 是学生模型的预测结果，<span
+class="math inline">\(\alpha\)</span> 是蒸馏loss的权重。<br />
+这里要注意的是，因为学生模型要拟合教师模型的分布，所以在求 <span
+class="math inline">\(p\)</span> 时的也要使用一样的参数 <span
+class="math inline">\(T\)</span> （在训练结束以后使用正常温度 T=1
+进行预测）。另外，因为在求梯度时新的目标函数会导致梯度是以前的 <span
+class="math inline">\(1/T^2\)</span>，所以要再乘上 <span
+class="math inline">\(T^2\)</span>，不然 <span
+class="math inline">\(T\)</span> 变了的话，但soft label会变小，hard
+label不变（T=1）。</p>
+<h1 id="bert蒸馏">BERT蒸馏</h1>
+<p>在BERT提出后，如何瘦身就成了一个重要分支。主流的方法主要有剪枝、蒸馏和量化。量化的提升有限，因此免不了采用<strong>剪枝+蒸馏</strong>的融合方法来获取更好的效果。<br />
+接下来将介绍BERT蒸馏的主要发展脉络，从各个研究看来，蒸馏的提升一方面来源于从<strong>精调阶段蒸馏-&gt;预训练阶段蒸馏</strong>，另一方面则来源于<strong>蒸馏最后一层知识-&gt;蒸馏隐层知识-&gt;蒸馏注意力矩阵</strong>。</p>
+<h2 id="distilled-bilstm">Distilled BiLSTM</h2>
+<p>Distilled
+BiLSTM于2019年5月提出，作者将BERT-large蒸馏到了单层的BiLSTM中，参数量减少了100倍，速度提升了15倍，效果虽然比BERT差不少，但可以和ELMo打成平手。<br />
+<img src="/images/蒸馏/1.png" width="80%"></p>
+<p>Distilled
+BiLSTM的教师模型采用精调过的BERT-large，学生模型采用BiLSTM+ReLU，蒸馏的目标是<strong>hard
+labe的交叉熵+logits之间的MSE</strong>（作者经过实验发现MSE比上文的 <span
+class="math inline">\(CE(p,q)\)</span> 更好）。<br />
+Distilled BiLSTM 一文采用的目标函数为：<br />
+<img src="/images/蒸馏/2.png" width="40%"></p>
+<p>面对数据集小的问题，作者随机使用以下方式进行数据增强（使用教师模型在无监督语料上进行标记），来获得更多的无监督语料：<br />
+- 随机的mask掩码<br />
+- 将随机词替换为相同POS属性的词<br />
+- 随机截取n-gram作为样本</p>
+<p>实验结果，蒸馏比得上ELMO了：<br />
+<img src="/images/蒸馏/3.png" width="80%"></p>
+<p>参数与运行速度对比：<br />
+<img src="/images/蒸馏/4.png" width="40%"></p>
+<h2 id="bert-pkd-emnlp2019">BERT-PKD (EMNLP2019)</h2>
+<p>将原始大模型压缩为同等有效的轻量级浅层网络。同时，作者对以往的知识蒸馏方法进行了调研，如下图所示，vanilla
+KD在QNLI和MNLI的训练集上可以很快的达到和teacher
+model相媲美的性能，但在测试集上则很快达到饱和。对此，作者提出一种假设，在知识蒸馏的过程中过拟合会导致泛化能力不良。为缓解这个问题，论文中提出一种“耐心”师生机制，即<strong>让Patient-KD中的学生模型从教师网络的多个中间层进行知识提取</strong>，而不是只从教师网络的最后一层输出中学习，避免在蒸馏最后一层时拟合过快的现象（有过拟合的风险）。<br />
+<img src="/images/蒸馏/5.png" width="90%"></p>
+<p><strong>模型实现</strong><br />
+Patient-KD中提出如下两个知识蒸馏策略：<br />
+- <strong>PKD-Skip</strong>:
+从每k层学习，这种策略是假设网络的底层包含重要信息，需要被学习到（如下图(a):PKD-Skip
+学生网络学习教师网络每两层的输出）。<br />
+- <strong>PKD-last</strong>:
+从最后k层学习，假设教师网络越靠后的层包含越丰富的知识信息（如下图(b):PKD-Last
+学生网络从教师网络的最后六层学习）。<br />
+<img src="/images/蒸馏/6.png" width="70%"></p>
+<p>因为在BERT中仅使用最后一层的[CLS]
+token的输出来进行预测，且在其他BERT的变体模型中，如SDNet，是通过对每一层的[CLS]
+embedding的加权平均值进行处理并预测。由此可以推断，如果学生模型可以从任何教师网络中间层中的[CLS]表示中学习，那么它就有可能获得类似教师网络的泛化能力。因此，Patient-KD中提出特殊的一种损失函数的计算方式：</p>
+<p>BERT-PKD 加入了对中间层 [CLS] 位置上隐状态的拟合，使用教师与学生模型
+[CLS] 隐状态之间的 MSE 作为额外的损失。<br />
+<img src="/images/蒸馏/7.png" width="40%"></p>
+<p>其中，对于输入 <span
+class="math inline">\(x_i\)</span>，所有层[CLS]的输出表示为：<br />
+<img src="/images/蒸馏/8.png" width="40%"></p>
+<p><span class="math inline">\(I_{pt}\)</span>
+表示表示要从中提取知识的一组中间层，以从 BERT_12 压缩到 BERT_6
+为例：<br />
+- 对于PKD-Skip策略，<span
+class="math inline">\(I_{pt}=2,4,6,8,10\)</span>；<br />
+- 对于PKD-Last策略，<span
+class="math inline">\(I_{pt}=7,8,9,10,11\)</span>。</p>
+<p>M表示学生网络的层数，N是训练样本的数量，上标 s 和 t
+分别代表学生网络和教师网络。最终实验显示PKD-skip要略好一点点（&lt;0.01）</p>
+<p>同时，Patient-KD中也使用了 <span
+class="math inline">\(L_{DS}\)</span> 和 <span
+class="math inline">\(L_{CE}^S\)</span>
+两种损失函数用来衡量教师和学生网络的预测值的距离和学生网络在特定下游任务上的交叉熵损失。<br />
+<img src="/images/蒸馏/9.png" width="50%"></p>
+<p>最终的目标损失函数可以表示为：<br />
+<img src="/images/蒸馏/10.png" width="40%"></p>
+<p><strong>实验结果</strong><br />
+<img src="/images/蒸馏/11.png" width="80%"><br />
+作者将模型预测提交到GLUE并获得了在测试集上的结果，如上图所示。与fine-tuning和vanilla
+KD这两种方法相比，使用PKD训练的BERT_3和BERT_6在除MRPC外的几乎所有任务上都表现良好。其中，PKD代表Patient-KD-Skip方法。对于MNLI-m和MNLI-mm，六层模型比微调（FT）基线提高了1.1%和1.3%，</p>
+<p>我们将模型预测提交给官方 GLUE 评估服务器以获得测试数据的结果。
+与直接微调和普通 KD 相比，我们使用 BERT3 和 BERT6 学生的 Patient-KD
+模型在除 MRPC 之外的几乎所有任务上都表现最好。
+此外，6层的BERT6−PKD在7个任务中有5个都达到了和BERT-Base相似的性能，其中，SST-2（与
+BERT-Base
+教师相比为-2.3%）、QQP（-0.1%）、MNLI-m（-2.2%）、MNLI-mm（-1.8%）和
+QNLI
+(-1.4%)，这五个任务都有超过6万个训练样本，这表明了PKD在大数据集上的表现往往更好。</p>
+<p>PKD-Last 和 PKD-Skip 在GLUE基准上的对比：<br />
+<img src="/images/蒸馏/12.png" width="80%"><br />
+尽管这两种策略都比vanilla
+KD有所改进，但PKD-Skip的表现略好于PKD-Last。作者推测，这可能是由于每k层的信息提炼捕获了从低级到高级的语义，具备更丰富的内容和更多不同的表示，而只关注最后k层往往会捕获相对同质的语义信息。</p>
+<p>参数量和推理时间对比：<br />
+<img src="/images/蒸馏/13.png" width="80%"><br />
+上表展示了BERT3、BERT6、BERT12的推理时间即参数量,
+实验表明Patient-KD方法实现了几乎线性的加速，BERT6和BERT3分别提速1.94倍和3.73倍。</p>
+<h2 id="distillbert-nips2019">DistillBERT (NIPS2019)</h2>
+<p>之前的工作都是对精调后的BERT进行蒸馏，学生模型学到的都是任务相关的知识。HuggingFace则提出了DistillBERT，<strong>在预训练阶段进行蒸馏</strong>。将尺寸减小了40%，速度提升60%，效果好于BERT-PKD，为教师模型的97%。即，<strong>DistillBERT的教师模型采用了预训练好的BERT-base，学生模型则是6层transformer（层数消减了一半，12层的bert蒸馏成了6层），移除了
+token-type embeddings 和
+pooler，采用了PKD-skip的方式进行初始化（从教师网络中每两层抽取一层来进行初始化）</strong>。</p>
+<p>和之前蒸馏目标不同的是，为了调整教师和学生的隐层向量方向，作者新增了一个cosine
+embedding
+loss，蒸馏最后一层hidden的。最终损失函数由以下三部分组成：<br />
+- <span
+class="math inline">\(L_{ce}\)</span>，这是teacher网络softmax层输出的概率分布和student网络softmax层输出的概率分布的交叉熵（注：MLM任务的输出）。<br />
+- <span
+class="math inline">\(L_{mlm}\)</span>，这是student网络softmax层输出的概率分布和真实的one-hot标签的交叉熵。也就是student模型做预训练的mlm损失。<br />
+- <span
+class="math inline">\(L_{cos}\)</span>，这是student网络最后一隐层输出和teacher网络最后一隐层输出的余弦相似度值。</p>
+<p>其中，<span
+class="math inline">\(L_{ce}\)</span>训练学生模仿教师模型的输出分布：<br />
+<span class="math display">\[L_{ce}=\sum\limits_i t_i *
+log(s_i)\]</span><br />
+<span class="math inline">\(t_i\)</span>和<span
+class="math inline">\(s_i\)</span>分别是教师网络和学生网络的预测概率。</p>
+<p>同时使用了Hinton在2015年提出的softmax-temperature：<br />
+<span class="math display">\[p_i=\dfrac{exp(z_i/T)}{\sum_j
+exp(z_i/T)}\]</span><br />
+其中，<span class="math inline">\(T\)</span>控制输出分布的平滑度，<span
+class="math inline">\(T=1\)</span>时代表传统的softmax，<span
+class="math inline">\(T&lt;1\)</span>时分布逐渐极端化，最终等价于argmax，<span
+class="math inline">\(T&gt;1\)</span>分布逐渐趋于均匀分布。当<span
+class="math inline">\(T\)</span>变大时，类别之间的差距变小(平滑)，从而导致loss变小；当<span
+class="math inline">\(T\)</span>变小时类别间的差距变大(陡峭)，从而导致loss变小。</p>
+<p><span class="math inline">\(z_i\)</span>代表分类<span
+class="math inline">\(i\)</span>的模型分数。在训练时对学生网络和教师网络使用同样的temperature
+<span class="math inline">\(T\)</span>，在推理时，设置<span
+class="math inline">\(T=1\)</span>恢复为标准的softmax最终的loss函数为<span
+class="math inline">\(L_{ce}\)</span>、Mask language model loss <span
+class="math inline">\(L_{mlm}\)</span>（参考BERT）和 cosine embedding
+loss <span
+class="math inline">\(L_{cos}\)</span>（student和teacher隐藏状态向量的cos计算）的线性组合。</p>
+<p>从消融实验可以看出，MLM
+loss对于学生模型的表现影响较小，同时初始化也是影响效果的重要因素：<br />
+<img src="/images/蒸馏/14.png" width="80%"></p>
+<p>预训练蒸馏时使用与BERT预训练相同的语料。在8个V100（16GB）上耗时90小时。</p>
+<p>最终DistilBERT与BERT相比减少了40%的参数，同时保留了BERT
+97%的性能，但提高了60%的速度。<br />
+<img src="/images/蒸馏/15.png" width="80%"></p>
+<h2 id="tinybertemnlp2019">TinyBERT（EMNLP2019）</h2>
+<p>TinyBERT是由华中科技大学和华为诺亚方舟实验室联合提出的一种针对transformer-based模型的知识蒸馏方法，以BERT为例对大型预训练模型进行研究。它的核心思想：<strong>预训练</strong>阶段和<strong>fine-tuning</strong>阶段都分别被蒸馏过了，理论上<strong>两步联合</strong>起来的效果可能会更好。</p>
+<p>TinyBERT就提出了two-stage
+learning框架，分别在<strong>预训练</strong>和<strong>精调</strong>阶段蒸馏教师模型：<br />
+第一个阶段，利用预训练 BERT 蒸馏出一个 General TinyBERT。<br />
+第二个阶段，利用 General TinyBERT
+在任务上fine-tuning(使用了数据增强)，之后蒸馏。</p>
+<p><img src="/images/蒸馏/16.png" width="60%"></p>
+<p><strong>四层结构的 TinyBERT4</strong>
+相比BERT-base参数量减少7.5倍，速度提升9.4倍，效果可以达到教师模型的96.8%；<strong>六层结构的
+TinyBERT6</strong> 甚至接近BERT-base，超过了BERT-PKD和DistillBERT。</p>
+<p>TinyBERT主要做了以下两点创新：<br />
+- 提供一种新的针对 transformer-based
+模型进行蒸馏的方法，使得BERT中具有的语言知识可以迁移到TinyBERT中去。<br />
+-
+提出一个两阶段学习框架，在<strong>预训练</strong>阶段和<strong>fine-tuning</strong>阶段都进行蒸馏，确保TinyBERT可以充分的从BERT中学习到一般领域和特定任务两部分的知识。</p>
+<p><strong>知识蒸馏</strong><br />
+知识蒸馏的目的在于将一个大型的教师网络 <span
+class="math inline">\(T\)</span> 学习到的知识迁移到小型的学生网络 <span
+class="math inline">\(S\)</span>
+中。学生网络通过训练来模仿教师网络的行为。<span
+class="math inline">\(f^S\)</span> 和 <span
+class="math inline">\(f^T\)</span> 代表教师网络和学生网络的behavior
+functions。这个行为函数的目的是将网络的输入转化为信息性表示，并且它可被定义为网络中任何层的输出。在基于transformer的模型的蒸馏中，MHA（multi-head
+attention）层或FFN（fully connected feed-forward
+network）层的输出或一些中间表示，比如注意力矩阵 <span
+class="math inline">\(A\)</span> 都可被作为行为函数使用。<br />
+<span class="math display">\[L_{KD}=\sum\limits_{x\in
+X}L(f^S(x),f^T(x))\]</span><br />
+其中 <span class="math inline">\(L(⋅)\)</span>
+是一个用于评估教师网络和学生网络之间差异的损失函数，<span
+class="math inline">\(x\)</span> 是输入文本，<span
+class="math inline">\(X\)</span>
+代表训练数据集。因此，蒸馏的关键问题在于如何定义行为函数和损失函数。</p>
+<p><strong>Transformer Distillation</strong><br />
+假设TinyBert有 M 层transformer layer，teacher BERT有 N 层transformer
+layer，则需要从teacher BERT的 N 层中抽取 M
+层用于transformer层的蒸馏。<span class="math inline">\(n=g(m)\)</span>
+定义了一个从学生网络到教师网络的映射关系，表示学生网络中第 <span
+class="math inline">\(m\)</span> 层网络信息是从教师网络的第 <span
+class="math inline">\(g(m)\)</span> 层学习到的，也就是教师网络的第 <span
+class="math inline">\(n\)</span>
+层。TinyBERT嵌入层和预测层也是从BERT的相应层学习知识的，其中嵌入层对应的指数为0，预测层对应的指数为
+M+1，对应的层映射定义为 <span class="math inline">\(0=g(0)\)</span> 和
+<span
+class="math inline">\(N+1=g(M+1)\)</span>。在形式上，学生模型可以通过最小化以下的目标函数来获取教师模型的知识：<br />
+<span class="math display">\[L_{model}=\sum\limits_{x\in
+X}\sum\limits_{m=0}^{M+1}\lambda_mL_{layer}(f_m^S(x),f_{g(m)}^T(x))\]</span><br />
+其中 <span class="math inline">\(L_{layer}\)</span>
+是给定的模型层的损失函数（比如transformer层或嵌入层），<span
+class="math inline">\(f_{m}\)</span> 代表第 m 层引起的行为函数，<span
+class="math inline">\(\lambda_m\)</span> 表示第 m 层蒸馏的重要程度。</p>
+<p>TinyBERT的蒸馏分为以下三个部分：<br />
+- transformer-layer distillation (包括attention和hidden
+states损失)<br />
+- embedding-layer distillation<br />
+- prediction-layer distillation</p>
+<p><strong>1、transformer-layer distillation</strong><br />
+Transformer-layer的蒸馏由attention based蒸馏和hidden states
+based蒸馏两部分组成。<br />
+<img src="/images/蒸馏/18.png" width="50%"></p>
+<p><strong>attention based</strong>蒸馏是受到论文 <span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE5MDYuMDQzNDEucGRm">Clack et al., 2019<i class="fa fa-external-link-alt"></i></span>
+的启发，这篇论文中提到，BERT学习的注意力权重可以捕获丰富的语言知识，这些语言知识包括对自然语言理解非常重要的语法和共指信息。因此，TinyBERT提出attention
+based蒸馏，其目的是使学生网络很好地从教师网络处学习到这些语言知识。具体到模型中，就是让TinyBERT网络学习拟合BERT网络中的多头注意力矩阵，目标函数定义如下：<br />
+<span
+class="math display">\[L_{attn}=\frac{1}{h}\sum\limits_{i=1}^hMSE(A_i^S,A_i^T)\]</span><br />
+其中，<span class="math inline">\(h\)</span> 代表注意力头数，<span
+class="math inline">\(A_i\in R^{l\times l}\)</span> 代表学生或教师的第
+<span class="math inline">\(i\)</span> 个注意力头对应的注意力矩阵，<span
+class="math inline">\(l\)</span>
+代表输入文本的长度。论文中提到，使用注意力矩阵 <span
+class="math inline">\(A\)</span> 而不是 <span
+class="math inline">\(softmax(A)\)</span>
+是因为实验结果显示这样可以得到更快的收敛速度和更好的性能表现。</p>
+<p><strong>hidden states
+based</strong>蒸馏是对transformer层输出的知识进行了蒸馏处理，目标函数定义为：<br />
+<span class="math display">\[L_{hidn}=MSE(H^SW_h,H^T)\]</span><br />
+其中，<span class="math inline">\(H^S\in R^{l×d^′}\)</span>,<span
+class="math inline">\(H^T\in R^{l×d}\)</span>
+分别代表学生网络和教师网络的隐状态，是FFN的输出。<span
+class="math inline">\(d\)</span> 和 <span
+class="math inline">\(d^′\)</span>
+代表教师网络和学生网络的隐藏状态大小，且 <span
+class="math inline">\(d^′&lt;d\)</span>，因为学生网络总是小于教师网络。<span
+class="math inline">\(W_h\in R^{d^′×d}\)</span>
+是一个可训练的线性变换矩阵，将学生网络的隐藏状态投影到教师网络隐藏状态所在的空间。</p>
+<p><strong>2、Embedding-layer Distillation</strong><br />
+<span class="math display">\[L_{embd}=MSE(E^SW_e,W^T)\]</span><br />
+Embedding loss和hidden states loss同理，其中 <span
+class="math inline">\(E^S\)</span>,<span
+class="math inline">\(E^T\)</span>
+代表学生网络和教师网络的嵌入（embedding），和隐藏状态矩阵的形状相同，同时
+<span class="math inline">\(W_e\)</span> 和 <span
+class="math inline">\(W_h\)</span> 的作用也相同。</p>
+<p><strong>3、Prediction-layer Distillation</strong><br />
+<span class="math display">\[L_{pred}=CE(z^T/t,z^S/t)\]</span><br />
+其中，<span class="math inline">\(z^S\)</span>,<span
+class="math inline">\(z^T\)</span> 分别是学生网络和教师网络预测的 logits
+向量，<span class="math inline">\(CE\)</span> 代表交叉熵损失，<span
+class="math inline">\(t\)</span> 是temperature value，当 <span
+class="math inline">\(t=1\)</span> 时，表现良好。</p>
+<p>对上述三个部分的loss函数进行整合，则可以得到教师网络和学生网络之间对应层的蒸馏损失如下：<br />
+<img src="/images/蒸馏/19.png" width="30%"></p>
+<p><strong>实验结果</strong><br />
+分析两个阶段的知识蒸馏 TD (Task-specific Distillation)和GD (General
+Distillation)，以及数据增强DA (Data Augmentation)
+对TinyBERT整体效果的作用（最后的实验中，预训练阶段只对中间层进行了蒸馏；精调阶段则先对中间层蒸馏20个epochs，再对最后一层蒸馏3个epochs）：<br />
+<img src="/images/蒸馏/20.png" width="50%"></p>
+<ul>
+<li>去掉TD和DA对整体结果影响较大，<strong>去掉GD对整体的结果作用较小</strong>（GD带来的提升不如TD或者DA），TD和DA对最终结果的影响差不多。</li>
+<li><strong>去掉GD对CoLA的作用大于MNLI和MRPC</strong>(CoLA在没有GD的情况下降了9%)，CoLA是判断一句话是否语法正确的数据集，需要更多语言学知识，而GD的过程正是捕获这种知识的手段。</li>
+</ul>
+<p>分析知识蒸馏过程中，选取的不同的特征表示对整体结果的作用：<br />
+<img src="/images/蒸馏/21.png" width="50%"></p>
+<ul>
+<li>没有Transformer层对模型的影响最大，Transformer层是整个模型的主要构成部分。</li>
+<li>Transformer层中attention矩阵相比隐层输出的作用要大。</li>
+<li>整体来说，Transformer层，embeding层，预测输出层，对于提高模型的整体效果都是有效的。</li>
+</ul>
+<h2 id="mobilebertacl2020">MobileBERT（ACL2020）</h2>
+<p>前文介绍的模型都是层次剪枝+蒸馏的操作，MobileBERT则致力于减少每层的维度，在保留24层的情况下，减少了4.3倍的参数，速度提升5.5倍，在GLUE上平均只比BERT-base低了0.6个点，效果好于TinyBERT和DistillBERT。</p>
+<p>MobileBERT压缩维度的主要思想在于bottleneck机制，如下图所示：<br />
+<img src="/images/蒸馏/22.png" width="80%"></p>
+<p>其中a是标准的BERT，b是加入bottleneck的BERT-large，作为教师模型，c是加入bottleneck的学生模型。Bottleneck的原理是在transformer的输入输出各加入一个线性层，实现维度的缩放。对于教师模型，embedding的维度是512，进入transformer后扩大为1024，而学生模型则是从512缩小至128，使得参数量骤减。</p>
+<p>另外，作者发现在标准BERT中，多头注意力机制MHA和非线性层FFN的参数比为1:2，这个参数比相比其他比例更好。所以为了维持比例，会在学生模型中多加几层FFN。</p>
+<p>MobileBERT还有一点不同于之前的TinyBERT，就是预训练阶段蒸馏之后，作者直接在MobileBERT上用任务数据精调，而不需要再进行精调阶段的蒸馏，方便了很多。</p>
+<p>MobileBERT的蒸馏中，作者先用b的结构预训练一个BERT-large，再蒸馏到24层学生模型中。蒸馏的loss有多个：<br />
+- Feature Map Transfer：每个模块的隐状态输出之间的MSE <span
+class="math inline">\(L_{FMT}^l=\frac{1}{TN}\sum\limits_{t=1}^T\sum\limits_{n=1}^N(H_{t,l,n}^{tr}-H_{t,l,n}^{st})^2\)</span>，作者发现，将这项差异分解成归一化后的差异与统计差异有助于训练的稳定性。<br />
+- Attention Transfer：注意力矩阵的KL散度 <span
+class="math inline">\(L_{AT}^l=\frac{1}{TA}\sum\limits_{a=1}^AD_{KL}(a_{t,l,n}^{tr}||a_{t,l,n}^{st})\)</span>，即每个多头自注意力矩阵的KL散度。<br />
+- Pre-training Distillation：预训练蒸馏 <span
+class="math inline">\(L_{PD}=\alpha
+L_{MLM}+(1-\alpha)L_{KD}+L_{NSP}\)</span>，即MLM任务，NSP任务的损失加上MLM蒸馏的损失。</p>
+<p>同时作者还研究了三种不同的蒸馏策略：直接蒸馏所有层、先蒸馏中间层再蒸馏最后一层、逐层蒸馏。如下图：<br />
+<img src="/images/蒸馏/23.png" width="90%"><br />
+最后的结论是逐层蒸馏效果最好，但差距最大才0.5个点，性价比有些低了。其中OPT表示：使用relu代替gelu，移除layer
+Norm。这不优化比优化了效果还好，但是花的时间也更多了。<br />
+<img src="/images/蒸馏/24.png" width="90%"></p>
+<p>从蒸馏损失消融实验结果可以看出FMT带来的提升最大：<br />
+<img src="/images/蒸馏/25.png" width="50%"></p>
+<p>对于训练方法，果然是逐层蒸馏效果最好：<br />
+<img src="/images/蒸馏/26.png" width="50%"></p>
+<h2 id="minilm">MiniLM</h2>
+<p>之前的各种模型基本上把BERT里面能蒸馏的都蒸了个遍，但MiniLM还是找到了新的蓝海——<strong>蒸馏Value-Value矩阵+助教机制</strong>：<br />
+<img src="/images/蒸馏/27.png" width="80%"></p>
+<p><strong>Value-Relation
+Transfer</strong>可以让学生模型更深入地模仿教师模型，实验表明可以带来1-2个点的提升。同时作者考虑到学生模型的层数、维度都可能和教师模型不同，在实验中只蒸馏最后一层，并且只蒸馏这两个矩阵的KL散度。另外，作者还引入了<strong>助教机制</strong>。当学生模型的层数、维度都小很多时，先用一个维度小但层数和教师模型一致的助教模型蒸馏，之后再把助教的知识传递给学生。</p>
+<p>最终采用BERT-base作为教师，实验下来6层的学生模型比起TinyBERT和DistillBERT好了不少，基本是20年性价比数一数二的蒸馏了。</p>
+<h2 id="dynabert">DynaBERT</h2>
+<p>DynaBERT（dynamic
+BERT）提出一种不同的思路，它可以通过选择自适应宽度和深度来灵活地调整网络大小，从而得到一个尺寸可变的网络。</p>
+<p>DynaBERT的训练阶段包括两部分：<br />
+- 首先通过知识蒸馏的方法将teacher
+BERT的知识迁移到有自适应宽度的子网络student DynaBERTW中。<br />
+- 然后再对 DynaBERTW
+进行知识蒸馏得到同时支持深度自适应和宽度自适应的子网络 DynaBERT。</p>
+<p>训练过程流程图所示：<br />
+<img src="/images/蒸馏/28.png" width="80%"></p>
+<p><strong>宽度自适应 Adaptive Width</strong><br />
+一个标准的transfomer中包含一个多头注意力（MHA）模块和一个前馈网络（FFN）。在论文中，作者通过变换注意力头的个数
+<span class="math inline">\(N_h\)</span> 和前馈网络中中间层的神经元个数
+<span class="math inline">\(d_{ff}\)</span>
+来更改transformer的宽度。同时定义一个缩放系数 <span
+class="math inline">\(m_w\)</span> 来进行剪枝，保留MHA中最左边的 <span
+class="math inline">\([m_wN_H]\)</span> 个注意力头和 FFN中 <span
+class="math inline">\([m_wd_{ff}]\)</span> 个神经元。</p>
+<p>为了充分利用网络的容量，更重要的头部或神经元应该在更多的子网络中共享。因此，在训练宽度自适应网络前，作者在
+fine-tuned
+BERT网络中根据注意力头和神经元的重要性对它们进行了排序，然后在宽度方向上以降序进行排列。这种选取机制被称为
+<strong>Network Rewiring</strong>。<br />
+<img src="/images/蒸馏/29.png" width="50%"></p>
+<p>那么，要如何界定注意力头和神经元的重要性呢？作者参考 <span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE2MTEuMDY0NDAucGRm">P. Molchanov et al.,
+2017<i class="fa fa-external-link-alt"></i></span> 和 <span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE4MDQuMDc0NjEucGRm">E. Voita et
+al., 2019<i class="fa fa-external-link-alt"></i></span>
+两篇论文提出，去掉某个注意力头或神经元前后的loss变化，就是该注意力头或神经元的重要程度，变化越大则越重要。</p>
+<p><strong>训练宽度自适应网络</strong><br />
+首先，将BERT网络作为固定的教师网络，并初始化
+DynaBERTW。然后通过知识蒸馏将知识从教师网络迁移到 DynaBERTW
+中不同宽度的学生子网络。其中，<span
+class="math inline">\(m_w=[1.0,0.75,0.5,0.25]\)</span>。</p>
+<p>模型蒸馏的loss定义为：<br />
+<img src="/images/蒸馏/30.png" width="60%"></p>
+<p>其中， <span class="math inline">\(\lambda_1\)</span>,<span
+class="math inline">\(\lambda_2\)</span> 是控制不同损失函数权重的参数，
+<span class="math inline">\(l_{pred}\)</span>,<span
+class="math inline">\(l_{emb}\)</span>,<span
+class="math inline">\(l_{hidn}\)</span> 分别定义为：<br />
+<img src="/images/蒸馏/31.png" width="60%"></p>
+<p><span class="math inline">\(l_{pred}\)</span> 代表预测层的loss，SCE
+代表交叉熵损失函数。<span class="math inline">\(l_{emb}\)</span>
+代表嵌入层的loss，MSE代表均方差损失函数。<span
+class="math inline">\(l_{hidn}\)</span> 则为隐藏层的loss。</p>
+<p><strong>训练深度自适应网络</strong><br />
+训练好宽度自适应的DynaBERTW后，就可以将其作为教师网络训练同时具备宽度自适应和深度自适应的DynaBERT了。为了避免宽度方向上的灾难性遗忘，在每一轮训练中，仍对不同宽度进行训练。深度调节系数
+<span class="math inline">\(m_d\)</span>
+对网络层数进行调节，在训练中定义 <span
+class="math inline">\(m_d=[1.0,0.75,0.5]\)</span>。深度方向上的剪枝根据
+<span class="math inline">\(mod(d+1,\frac{1}{md})=0\)</span>
+来去掉特定层。</p>
+<p>模型蒸馏的loss定义为：<br />
+<img src="/images/蒸馏/32.png" width="70%"></p>
+<p><strong>实验结果</strong><br />
+根据不同的宽度和深度剪裁系数，作者最终得到12个大小不同的DyneBERT模型，其在GLUE上的效果如下：<br />
+<img src="/images/蒸馏/33.png" width="70%"></p>
+<p>论文中提出的DynaBERT和DynaRoBERTa可以达到和 BERTBASE 及 DynaRoBERTa
+相当的精度，但是通常包含更少的参数，FLOPs或更低的延迟。在相同效率的约束下，从DynaBERT中提取的子网性能优于DistilBERT和TinyBERT。<br />
+<img src="/images/蒸馏/34.png" width="70%"></p>
+<h1 id="bert蒸馏技巧">BERT蒸馏技巧</h1>
+<p><strong>1、选择哪种蒸馏方案？</strong><br />
+-
+预训练蒸馏的数据比较充分，可以参考MiniLM、MobileBERT或者TinyBERT那样进行剪层+维度缩减。<br />
+-
+对于针对某项任务、只想蒸馏精调后BERT的情况，则推荐进行剪层，同时利用教师模型的层对学生模型进行初始化。</p>
+<p><strong>2、用什么蒸馏目标函数？</strong><br />
+<img src="/images/蒸馏/35.png" width="70%"><br />
+对于hard label，使用KL和CE是一样的，因为<span
+class="math inline">\(KL(p||q)=H(p||q)-H(p)\)</span>，训练集不变时label分布是一定的。但对于soft
+label则不同了，不过表中不少模型还是采用了CE，只有Distilled
+BiLSTM发现MSE更好。可以CE/MSE/KL都试一下，但MSE有个好处是可以避免T的调参。中间层输出的蒸馏，大多数模型都采用了MSE，只有DistillBERT加入了cosine
+loss来对齐方向。注意力矩阵的蒸馏loss则比较统一，如果要蒸馏softmax之前的attention
+logits可以采用MSE，之后的attention prob可以用KL散度。</p>
+<ul>
+<li>使用finetune任务自身的loss是有效的，但是效果不大，大概能够提升0.2个百分点。</li>
+<li>使用attention
+output输出logits的mse效果甚微，基本没有太大提升。我推测可能是当前对于序列标注任务来说，attention的学习提升不大。建议使用更多不同的任务来实验。</li>
+<li>使用hidden
+output输出logits的mse是非常有效的，能够提升1个百分点。</li>
+<li>使用概率输出做蒸馏和使用logits输出做蒸馏差距不大，并不能看到显著的区别，建议用更多不同的任务来实验。</li>
+</ul>
+<p><strong>3、超参T和α的设置</strong><br />
+超参 α 用来控制各个蒸馏目标的权重。</p>
+<p>超参 T 越大越能学到teacher模型的泛化信息。一部分文章发现
+T=1时候效果最好，大部分文章与1-20之间调 T。</p>
+<p><strong>4、蒸馏方式</strong><br />
+逐层蒸馏可以提高一些成绩，但是花费还是很大的。</p>
+<p><strong>5、助教机制似乎有效</strong><br />
+miniLM发现的，论文中它的最终目标是将模型裁剪到4层，hidden_size裁剪一半。实际操作时，它并非直接使用蒸馏训练一个最小模型，而是先用原始模型蒸馏一个中介模型，其层数为4层，但是hidden_size不变，然后使用这个中介模型作为teacher模型来蒸馏得到最终的模型。我尝试了这种方式，发现有一定的效果，为了蒸馏得到4层的模型，我先将原始模型蒸馏到6层，然后再蒸馏到4层。这种方式比直接蒸馏小模型能够有3-4个百分点的提升。当然，我这里要说明一点，我比较的是训练相同epoch数下的两个模型的精度，也有可能是一步到位蒸馏小模型需要更多的训练步数才能达到收敛，并不能直接断定一步到位为训练法一定就比较差，但至少在相同的训练成本下，采用中介过渡是更有效的。</p>
+<p><strong>尽量沿用teacher模型的权重，如初始化</strong>。</p>
+<h1 id="textbrewer">TextBrewer</h1>
+<p>TextBrewer
+提供了通用的蒸馏框架，使用者只需要提供一些配置与数据就可以进行简单的蒸馏。详情参考<span class="exturl" data-url="aHR0cHM6Ly90ZXh0YnJld2VyLnJlYWR0aGVkb2NzLmlvL2VuL2xhdGVzdC9UdXRvcmlhbC5odG1s">TextBrewer官方文档<i class="fa fa-external-link-alt"></i></span>。</p>
+<p>TextBrewer的主要功能与模块：<br />
+-
+Distillers：进行蒸馏的核心部件，不同的distiller提供不同的蒸馏模式。目前包含GeneralDistiller,
+MultiTeacherDistiller, MultiTaskDistiller等。<br />
+- Configurations and
+presets：训练与蒸馏方法的配置，并提供预定义的蒸馏策略以及多种知识蒸馏损失函数。<br />
+- Utilities：模型参数分析等辅助工具。</p>
+<h2 id="工作流程">工作流程</h2>
+<p><img src="/images/蒸馏/36.png" width="70%"></p>
+<p><strong>第一步</strong>：蒸馏之前的准备工作：<br />
+- 训练<strong>教师</strong>模型。<br />
+-
+定义与初始化<strong>学生</strong>模型（随机初始化，或载入预训练权重）。<br />
+- 构造蒸馏用数据集的 dataloader，训练<strong>学生</strong>模型用的
+optimizer 和 learning rate scheduler 。</p>
+<p><strong>第二步</strong>：使用TextBrewer蒸馏：<br />
+-
+构造训练配置(TrainingConfig)和蒸馏配置(DistillationConfig),初始化distiller。<br />
+- 定义 adaptor 和 callback
+，分别用于适配模型输入输出和训练过程中的回调。<br />
+- 调用 distiller.train() 方法开始蒸馏。</p>
+<h2 id="快速开始">快速开始</h2>
+<p>以蒸馏BERT-base到3层BERT为例展示TextBrewer用法。</p>
+<p>在开始蒸馏之前准备：<br />
+- 训练好的教师模型teacher_model (BERT-base)，待训练学生模型student_model
+(3-layer BERT)。<br />
+-
+数据集dataloader，优化器optimizer，学习率调节器类或者构造函数scheduler_class
+和构造用的参数字典 scheduler_args。</p>
+<p>使用TextBrewer蒸馏:<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> textbrewer</span><br><span class="line"><span class="keyword">from</span> textbrewer <span class="keyword">import</span> GeneralDistiller</span><br><span class="line"><span class="keyword">from</span> textbrewer <span class="keyword">import</span> TrainingConfig, DistillationConfig</span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">teacher_model为Bert-base，student_model为bert-3-layer。</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="comment"># 展示模型参数量的统计</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;\nteacher_model&#x27;s parametrers:&quot;</span>)</span><br><span class="line">result, _ = textbrewer.utils.display_parameters(teacher_model,max_level=<span class="number">3</span>)</span><br><span class="line"><span class="built_in">print</span> (result)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;student_model&#x27;s parametrers:&quot;</span>)</span><br><span class="line">result, _ = textbrewer.utils.display_parameters(student_model,max_level=<span class="number">3</span>)</span><br><span class="line"><span class="built_in">print</span> (result)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义adaptor用于解释模型的输出</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">simple_adaptor</span>(<span class="params">batch, model_outputs</span>):</span><br><span class="line">    <span class="comment"># model输出的第二、三个元素分别是logits和hidden states</span></span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&#x27;logits&#x27;</span>: model_outputs[<span class="number">1</span>], <span class="string">&#x27;hidden&#x27;</span>: model_outputs[<span class="number">2</span>]&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 蒸馏与训练配置</span></span><br><span class="line"><span class="comment"># 匹配教师和学生层: 教师第0层和学生第0层匹配hidden层(loss计算方式为mse)；教师第8层和学生第2层...</span></span><br><span class="line">distill_config = DistillationConfig(</span><br><span class="line">    intermediate_matches=[    </span><br><span class="line">     &#123;<span class="string">&#x27;layer_T&#x27;</span>:<span class="number">0</span>, <span class="string">&#x27;layer_S&#x27;</span>:<span class="number">0</span>, <span class="string">&#x27;feature&#x27;</span>:<span class="string">&#x27;hidden&#x27;</span>, <span class="string">&#x27;loss&#x27;</span>: <span class="string">&#x27;hidden_mse&#x27;</span>,<span class="string">&#x27;weight&#x27;</span> : <span class="number">1</span>&#125;,</span><br><span class="line">     &#123;<span class="string">&#x27;layer_T&#x27;</span>:<span class="number">8</span>, <span class="string">&#x27;layer_S&#x27;</span>:<span class="number">2</span>, <span class="string">&#x27;feature&#x27;</span>:<span class="string">&#x27;hidden&#x27;</span>, <span class="string">&#x27;loss&#x27;</span>: <span class="string">&#x27;hidden_mse&#x27;</span>,<span class="string">&#x27;weight&#x27;</span> : <span class="number">1</span>&#125;])</span><br><span class="line">train_config = TrainingConfig()</span><br><span class="line"></span><br><span class="line"><span class="comment">#初始化distiller</span></span><br><span class="line">distiller = GeneralDistiller(</span><br><span class="line">    train_config=train_config, distill_config = distill_config,</span><br><span class="line">    model_T = teacher_model, model_S = student_model, </span><br><span class="line">    adaptor_T = simple_adaptor, adaptor_S = simple_adaptor)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开始蒸馏</span></span><br><span class="line"><span class="keyword">with</span> distiller:</span><br><span class="line">    distiller.train(optimizer, </span><br><span class="line">                    dataloader, </span><br><span class="line">                    num_epochs=<span class="number">1</span>, </span><br><span class="line">                    scheduler_class=scheduler_class, </span><br><span class="line">                    scheduler_args=scheduler_args, </span><br><span class="line">                    callback=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure></p>
+<p><strong>蒸馏配置</strong><br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># matches地址：https://github.com/airaria/TextBrewer/blob/master/examples/matches/matches.py</span></span><br><span class="line">distill_config = DistillationConfig(temperature = <span class="number">8</span>, intermediate_matches = matches) <span class="comment"># 其他参数为默认值</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="核心概念">核心概念</h2>
+<p><strong>1、Configurations</strong><br />
+TrainingConfig 和 DistillationConfig：训练和蒸馏相关的配置。</p>
+<p><strong>2、Distillers</strong><br />
+Distiller负责执行实际的蒸馏过程。目前实现了以下的distillers:<br />
+- <code>BasicDistiller</code>:
+提供<strong>单模型单任务</strong>蒸馏方式。可用作测试或简单实验。<br />
+- <code>GeneralDistiller</code> (常用):
+提供<strong>单模型单任务</strong>蒸馏方式，并且支持<strong>中间层特征匹配</strong>，一般情况下<strong>推荐使用</strong>。<br />
+- <code>MultiTeacherDistiller</code>:
+<strong>多教师蒸馏</strong>。将多个（同任务）教师模型蒸馏到一个学生模型上。<strong>暂不支持中间层特征匹配</strong>。<br />
+-
+<code>MultiTaskDistiller</code>：<strong>多任务蒸馏</strong>。将多个（不同任务）单任务教师模型蒸馏到一个多任务学生模型上。<strong>暂不支持中间层特征匹配</strong>。<br />
+-
+<code>BasicTrainer</code>：用于<strong>单个模型</strong>的有监督训练，而非蒸馏。可用于<strong>训练教师模型</strong>。</p>
+<p><strong>3、用户定义函数</strong><br />
+蒸馏实验中，有两个组件需要由用户提供，分别是 callback 和 adaptor :<br />
+-
+<code>callback</code>：回调函数。在每个checkpoint，保存模型后会被distiller调用，并传入当前模型。可以借由回调函数在每个checkpoint评测模型效果。<br />
+-
+<code>adaptor</code>：将模型的输入和输出转换为指定的格式，向distiller解释模型的输入和输出，以便distiller根据不同的策略进行不同的计算。在每个训练步，batch和模型的输出model_outputs会作为参数传递给adaptor，adaptor负责重新组织这些数据，返回一个字典。字典的key参考<span class="exturl" data-url="aHR0cHM6Ly90ZXh0YnJld2VyLnJlYWR0aGVkb2NzLmlvL2VuL2xhdGVzdC9Db25jZXB0cy5odG1sI3VzZXItZGVmaW5lZC1mdW5jdGlvbnM=">官网说明<i class="fa fa-external-link-alt"></i></span>。</p>
+<p>adaptor和callback流程图：<br />
+<img src="/images/蒸馏/37.png" width="40%"></p>
+<p>整体工作流如上图所示，黄色框为上文讨论到的Adaptor，用于将模型前向传导的输出整理为计算蒸馏损失所需要的字典（蓝色部分），最后在checkpoint时调用callback，callback可以评测模型效果。</p>
+<h1 id="参考文献">参考文献</h1>
+<p><span class="exturl" data-url="aHR0cHM6Ly9wYWRkbGVwZWRpYS5yZWFkdGhlZG9jcy5pby9lbi9sYXRlc3QvdHV0b3JpYWxzL21vZGVsX2NvbXByZXNzL2luZGV4Lmh0bWw=">模型压缩+模型蒸馏<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC80MTk2Nzk3MDI=">TextBrewer
+通用蒸馏配置说明与工作流程介绍<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cDovL3d1amlhd2VuLnh5ei8yMDIxLzEwLzA5L2Rpc3RpbGwv">bert蒸馏小综述<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9tcC53ZWl4aW4ucXEuY29tL3MvdEtmSHE0OWhlYWt2ak0wRVZRUGdIdw==">BERT蒸馏完全指南｜原理/技巧/代码<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8xMjQyMTU3NjA=">模型压缩实践收尾篇——模型蒸馏以及其他一些技巧实践小结<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC81MDQzMjM0NjU=">深度学习高温蒸馏：Softmax
+With Temperature<i class="fa fa-external-link-alt"></i></span></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzE1MDMuMDI1MzE=">Distilling the Knowledge
+in a Neural Network<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzE5MDMuMTIxMzY=">Distilling Task-Specific
+Knowledge from BERT into Simple Neural Networks<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzE5MDguMDkzNTU=">Patient Knowledge
+Distillation for BERT Model Compression<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzE5MTAuMDExMDg=">DistilBERT, a distilled
+version of BERT: smaller, faster, cheaper and lighter<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzE5MDkuMTAzNTE=">TinyBERT: Distilling BERT for
+Natural Language Understanding<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzIwMDQuMDI5ODQ=">MobileBERT: a Compact
+Task-Agnostic BERT for Resource-Limited Devices<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzIwMDIuMTA5NTc=">MINILM: Deep Self-Attention
+Distillation for Task-Agnostic Compression of Pre-Trained
+Transformers<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzIwMDQuMDQwMzcucGRm">DynaBERT: Dynamic BERT
+with Adaptive Width and Depth<i class="fa fa-external-link-alt"></i></span></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FpcmFyaWEvVGV4dEJyZXdlcg==">TextBrewer-github<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9naXRlZS5jb20vbWFjcm9oYXJkL1RleHRCcmV3ZXIvdHJlZS9tYXN0ZXI=">TextBrewer-gitee<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly90ZXh0YnJld2VyLnJlYWR0aGVkb2NzLmlvL2VuL2xhdGVzdC9pbmRleC5odG1s">TextBrewer<i class="fa fa-external-link-alt"></i></span></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>SoundMemories
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://soundmemories.github.io/2021/07/23/NLP/08.%E8%92%B8%E9%A6%8F/" title="蒸馏">https://soundmemories.github.io/2021/07/23/NLP/08.蒸馏/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/NLP/" rel="tag"><i class="fa fa-tag"></i> NLP</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/07/22/NLP/07.%E6%A3%80%E7%B4%A2%E7%B3%BB%E7%BB%9F%E5%92%8C%E5%B8%B8%E8%A7%81%E6%8C%87%E6%A0%87/" rel="prev" title="检索系统和常见指标">
+                  <i class="fa fa-chevron-left"></i> 检索系统和常见指标
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/06/16/IELTS/05.%E8%AF%8D%E6%B1%87/" rel="next" title="词汇">
+                  词汇 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">SoundMemories</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"neutral"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.min.js","integrity":"sha256-JFptYy4KzJ5OQP+Q9fubNf3cxpPPmZKqUOovyEONKrQ="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://soundmemories.github.io/2021/07/23/NLP/08.%E8%92%B8%E9%A6%8F/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.1","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="图论 最开始是1707年由 Seven bridges 问题而来的，欧拉把这个问题转成图解决。近代图论1959年 Erdos 和 Renyi 发表的 Random Graph 一系列论文建立起来的全新领域。目前学术界和工业界是基于1999年 brabasi 提出的 Scale-free Network 进行的。 degree-distribution 度分布，即每个节点按边的数量分类">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GCN">
+<meta property="og:url" content="https://soundmemories.github.io/2021/02/05/Graph/01.GCN/index.html">
+<meta property="og:site_name" content="SoundMemories">
+<meta property="og:description" content="图论 最开始是1707年由 Seven bridges 问题而来的，欧拉把这个问题转成图解决。近代图论1959年 Erdos 和 Renyi 发表的 Random Graph 一系列论文建立起来的全新领域。目前学术界和工业界是基于1999年 brabasi 提出的 Scale-free Network 进行的。 degree-distribution 度分布，即每个节点按边的数量分类">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://soundmemories.github.io/images/GCN/%E9%9A%8F%E6%9C%BA%E7%BD%91%E7%BB%9C.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/GCN/%E6%97%A0%E6%A0%87%E5%BA%A6%E7%BD%91%E7%BB%9C.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/GCN/%E9%82%BB%E6%8E%A5%E7%9F%A9%E9%98%B5.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/GCN/%E9%82%BB%E6%8E%A5%E7%9F%A9%E9%98%B52.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/GCN/LM.png">
+<meta property="article:published_time" content="2021-02-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-05-24T15:33:43.688Z">
+<meta property="article:author" content="SoundMemories">
+<meta property="article:tag" content="Graph">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://soundmemories.github.io/images/GCN/%E9%9A%8F%E6%9C%BA%E7%BD%91%E7%BB%9C.png">
+
+
+<link rel="canonical" href="https://soundmemories.github.io/2021/02/05/Graph/01.GCN/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://soundmemories.github.io/2021/02/05/Graph/01.GCN/","path":"2021/02/05/Graph/01.GCN/","title":"GCN"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>GCN | SoundMemories</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">SoundMemories</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">127</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%BE%E8%AE%BA"><span class="nav-number">1.</span> <span class="nav-text">图论</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#degree-distribution"><span class="nav-number">1.1.</span> <span class="nav-text">degree-distribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#distancehilbert-space"><span class="nav-number">1.2.</span> <span class="nav-text">Distance(Hilbert Space)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#adjacency-matrix"><span class="nav-number">1.3.</span> <span class="nav-text">adjacency matrix</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#clustering-coefficient"><span class="nav-number">1.4.</span> <span class="nav-text">Clustering coefficient</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#betweenness"><span class="nav-number">1.5.</span> <span class="nav-text">Betweenness</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#gcn"><span class="nav-number">2.</span> <span class="nav-text">GCN</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#fourier-transform"><span class="nav-number">2.1.</span> <span class="nav-text">Fourier transform</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#laplacian-operater"><span class="nav-number">2.2.</span> <span class="nav-text">Laplacian operater</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#graph-laplacian-operater"><span class="nav-number">2.3.</span> <span class="nav-text">Graph Laplacian operater</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#laplacian-matrix"><span class="nav-number">2.4.</span> <span class="nav-text">Laplacian Matrix</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#graph-fourier-transform"><span class="nav-number">2.5.</span> <span class="nav-text">Graph Fourier transform</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#graph-convolution"><span class="nav-number">2.6.</span> <span class="nav-text">Graph Convolution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#graph-convolution-networks"><span class="nav-number">2.7.</span> <span class="nav-text">Graph Convolution Networks</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#code"><span class="nav-number">3.</span> <span class="nav-text">Code</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">4.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SoundMemories"
+      src="/images/avstar.png">
+  <p class="site-author-name" itemprop="name">SoundMemories</p>
+  <div class="site-description" itemprop="description">今日事，今日毕</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NvdW5kbWVtb3JpZXM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;soundmemories"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNvdW5kbWVtb3JpZXNAMTYzLmNvbQ==" title="E-Mail → mailto:soundmemories@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+        <div class="pjax">
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2021/02/05/Graph/01.GCN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="GCN | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GCN
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-02-05 00:00:00" itemprop="dateCreated datePublished" datetime="2021-02-05T00:00:00+08:00">2021-02-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Graph/" itemprop="url" rel="index"><span itemprop="name">Graph</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>20 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="图论">图论</h1>
+<p>最开始是1707年由 Seven bridges
+问题而来的，欧拉把这个问题转成图解决。近代图论1959年 Erdos 和 Renyi
+发表的 Random Graph
+一系列论文建立起来的全新领域。目前学术界和工业界是基于1999年 brabasi
+提出的 Scale-free Network 进行的。</p>
+<h2 id="degree-distribution">degree-distribution</h2>
+<p><strong>度分布，即每个节点按边的数量分类，每类节点占总结点比例</strong>。一般
+Random Graph 的度分布是
+<strong>泊松分布</strong>（poisson，类似正态分布）。但基于 Scale-free
+Network 的提出，我们发现很多网络结构是
+<strong>幂律分布</strong>（power-law）。</p>
+<p><img src="/images/GCN/随机网络.png" width="80%"><br />
+<img src="/images/GCN/无标度网络.png" width="80%"></p>
+<h2 id="distancehilbert-space">Distance(Hilbert Space)</h2>
+<p>每个节点具有多维features，可以看成多维空间，计算Distance也可看作Similarity。为什么在
+Hilbert Space ，因为要方便后面约束优化。</p>
+<p>GCN要求：<br />
+（1）weights <span class="math inline">\(\geq\)</span> 0<br />
+（2）linear calculation<br />
+（3）Inner product</p>
+<p>Hilbert Space（括号表示内积）：<br />
+（1）对称性：<span class="math inline">\((\vec{y}, \vec{x})\)</span> =
+<span class="math inline">\((\vec{x}, \vec{y})\)</span><br />
+（2）线性：<span class="math inline">\((a\vec{x\_1}+b \vec{x\_2},
+\vec{y})\)</span> = <span class="math inline">\(a(\vec{x_1},
+\vec{y})+b(\vec{x_2}, \vec{y})\)</span><br />
+（3）半正定性：<span class="math inline">\((\vec{x}, \vec{x}) \geq
+0\)</span>，if <span
+class="math inline">\(\vec{x}=\vec{0}\)</span>，<span
+class="math inline">\((\vec{x}, \vec{x}) = 0\)</span></p>
+<p>Distance(Hilbert Space)：<span class="math inline">\(d(\vec{x},
+\vec{y})=||\vec{x}-\vec{y}||=\sqrt{(\vec{x}-\vec{y},
+\vec{x}-\vec{y})}\)</span></p>
+<h2 id="adjacency-matrix">adjacency matrix</h2>
+<p>邻接矩阵。阶为<span class="math inline">\(n\)</span>的图<span
+class="math inline">\(G\)</span>的邻接矩阵<span
+class="math inline">\(A\)</span>是<span class="math inline">\(n\times
+n\)</span>的。将<span class="math inline">\(G\)</span>的顶点标签为<span
+class="math inline">\(v_{1},v_{2},...,v_{n}\)</span>。若<span
+class="math inline">\((v_{i},v_{j})\in E(G)\)</span>，<span
+class="math inline">\(A_{ij}=1\)</span>，否则<span
+class="math inline">\(A_{ij}=0\)</span>。也可以用大于0的值表示边的权值，例如可以用边权值表示一个点到另一个点的距离。</p>
+<p>无向图的邻接矩阵计算方法是每条边为对应的单元加上1，而每个自环加上2。这样让某一节点的度数可以通过邻接矩阵的对应行或者列求和得到。<br />
+<img src="/images/GCN/邻接矩阵.png" width="50%"></p>
+<p>有向图的邻接矩阵可以是不对称的。我们可以定义有向图的邻接矩阵中的某个元素
+<span class="math inline">\(A_{ij}\)</span> 代表：<br />
+（1）从 <span class="math inline">\(i\)</span> 指向 <span
+class="math inline">\(j\)</span> 的边数目。<br />
+（2）从 <span class="math inline">\(j\)</span> 指向 <span
+class="math inline">\(i\)</span> 的边数目。<br />
+在第一种定义下，有向图的某个节点的入度可以通过对应的列（column）求和而得，出度可以通过对应的行（row）求和而得。在第二种定义下，入度可以通过对应的行（row）求和而得，出度可以通过对应的列（column）求和而得。<br />
+<img src="/images/GCN/邻接矩阵2.png" width="50%"></p>
+<h2 id="clustering-coefficient">Clustering coefficient</h2>
+<p>聚类系数，一个图中的顶点之间结集成团的程度的系数。集聚系数分为整体与局部两种。整体集聚系数可以给出一个图中整体的集聚程度的评估，而局部集聚系数则可以测量图中每一个结点附近的集聚程度。</p>
+<p><strong>分子</strong>：闭三点组（邻近三点组成“三角形”）数量。<br />
+<strong>分母</strong>：闭三点组（邻近三点组成“三角形”）数量 +
+开三点组（邻近三点组成“缺一条边的三角形”）数量。</p>
+<p>整体聚类系数：对每个节点的聚类系数求和取均值。<strong>如果该值很大，表示图是很稠密的，节点和节点之间联系紧密</strong>。</p>
+<h2 id="betweenness">Betweenness</h2>
+<p>也叫Betweenness centrality，分node和edge两种计算方法：<br />
+（1）<strong>node
+Betweenness</strong>：计算经过一个点的最短路径的数量占所有最短路径数量比例。两点一组，遍历所有组，计算每组中经过一个点的最短路径的数量占该组最短路径数量比例，最后求和。<br />
+（2）<strong>edge Betweenness</strong>：node Betweenness
+换成边即可。</p>
+<p><strong>这个值很大，表示此node或edge很重要，因为很多最短路径都要经过它，表现流通性</strong>。</p>
+<p>缺点：需要遍历所有点找到所有最短路径，一般的算法有
+迪杰斯特拉算法（Dijkstra） 和 弗洛伊德算法（Floyd），时间复杂度都为
+<span class="math inline">\(O(n^3)\)</span>。</p>
+<h1 id="gcn">GCN</h1>
+<p>GCN（Graph Convolutional
+Networks，图卷积神经网络），实际上跟CNN的作用一样，就是一个特征提取器，只不过它的对象是图数据。<br />
+GCN精妙地设计了一种从图数据中提取特征的方法，从而让我们可以使用这些特征去对图数据进行<strong>节点分类</strong>（node
+classification）、<strong>图分类</strong>（graph
+classification）、<strong>边预测</strong>（link
+prediction），还可以顺便得到<strong>图的嵌入表示</strong>（graph
+embedding）。</p>
+<p>GCN发展历史，那么肯定绕不过下面三篇论文：<br />
+<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzEzMTIuNjIwMy5wZGY=">Spectral Networks and Deep
+Locally Connected Networks on Graphs<i class="fa fa-external-link-alt"></i></span> 2014年<br />
+<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE2MDYuMDkzNzUucGRm">Convolutional Neural
+Networks on Graphs with Fast Localized Spectral Filtering<i class="fa fa-external-link-alt"></i></span>
+2016年<br />
+<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE2MDkuMDI5MDcucGRm">Semi-Supervised
+Classification with Graph Convolutional Networks<i class="fa fa-external-link-alt"></i></span> 2017年</p>
+<p>在计算机科学领域、理论物理复杂网络领域的研究者在图（Graph）的空间域（spatial
+domain）和频谱域（spectral
+domain）分别提出了不同形式的图神经网络，并最终在2017年实现了空间域模型和频谱域模型的融合，即目前我们使用的第三代GCN。</p>
+<p>对于其中理论和公式非常感兴趣的参考<span class="exturl" data-url="aHR0cDovL3h0ZjYxNS5jb20vMjAxOS8wMi8yNC9nY24v">图卷积神经网络理论基础<i class="fa fa-external-link-alt"></i></span>。</p>
+<h2 id="fourier-transform">Fourier transform</h2>
+<p><span class="math display">\[
+F(w)=\frac{1}{2\pi}\int_{-\infty}^{+\infty} f(t)e^{-j\omega t} {\rm d}t
+\]</span></p>
+<p><span class="math inline">\(F(\omega)\)</span>
+就是<strong>傅里叶变换</strong>，得到的就是<strong>频域曲线</strong>。每个频率<span
+class="math inline">\(\omega\)</span>下都有对应的振幅<span
+class="math inline">\(F(\omega)\)</span>。从几何上来看，<span
+class="math inline">\(f(t)\)</span> 以 <span
+class="math inline">\(e^{-j\omega t}\)</span> 为基函数投影，<span
+class="math inline">\(F(w)\)</span> 就是以频率 <span
+class="math inline">\(\omega\)</span> 对应基上的投影的坐标。</p>
+<p>从数学角度来看，<span class="math inline">\(f(x)\)</span> 是函数
+<span class="math inline">\(f\)</span> 在 <span
+class="math inline">\(t\)</span>
+处的取值，所有基都对该处取值有贡献，即把每个<span
+class="math inline">\(F(w)\)</span> 投影到 <span
+class="math inline">\(e^{-j\omega t}\)</span>
+基方向上分量累加起来，得到的就是该点处的函数值。<br />
+<span class="math display">\[
+f(t) = \int_{-\infty}^{+\infty}F(w)e^{-j\omega t}\, {\rm
+d}\omega=\sum_{\omega}F(w)e^{-j\omega t}
+\]</span><br />
+上面简化了一下，用 <span class="math inline">\(w\)</span>
+代表频率。这个公式也叫做<strong>逆傅里叶变换</strong>。</p>
+<h2 id="laplacian-operater">Laplacian operater</h2>
+<p><span class="math display">\[
+\Delta f = \Delta^2 f = \sum_{i=1}^{n}\frac{\partial^2 f}{\partial
+x_i^2}
+\]</span><br />
+<span class="math inline">\(f\)</span>
+是拉普拉斯算子作用的函数，求函数各向二阶导数再求和，定义为 <span
+class="math inline">\(f\)</span> 上的拉普拉斯算子。<br />
+可以理解为：<strong>二阶导数等于其在所有自由度上微扰之后获得的增益</strong>。<br />
+更形象的理解：<strong>拉普拉斯算子就是在所有自由度上进行微小变化后获得的增益</strong>。</p>
+<p>求 <span class="math inline">\(e^{-j\omega t}\)</span> 上的 Laplacian
+operater：<br />
+<span class="math display">\[
+\Delta f = \Delta e^{-j\omega t} = \sum_{i=1}^{n}\frac{\partial^2
+e^{-j\omega t}}{\partial t^2}=-\omega^2 e^{-j\omega t}
+\]</span><br />
+由此可知，<span class="math inline">\(e^{-j\omega t}\)</span> 是
+<strong>Laplacian operater 的特征向量</strong>（满足特征方程 <span
+class="math inline">\(A\vec{x}=\lambda \vec{x}\)</span>）。</p>
+<h2 id="graph-laplacian-operater">Graph Laplacian operater</h2>
+<p>Laplacian operater 推广到
+Graph：假设<strong>图是一个完全图，即任意两个节点之间都有一条边，那么对一个节点进行微扰，它可能变成任意一个节点</strong>。即：<br />
+<span class="math display">\[
+f=(f_1,f_2...f_N)
+\]</span><br />
+是函数 <span class="math inline">\(f\)</span> 在节点 <span
+class="math inline">\(1..N\)</span>
+上的函数值，代表<strong>跟节点相关的信息</strong>，如节点属性等，此时可看作每一个节点是一个向量。</p>
+<p>假设一个节点 <span class="math inline">\(f_i\)</span>
+，其一阶邻域节点集合为 <span class="math inline">\(N_i\)</span> ，<span
+class="math inline">\(f_j\)</span>为 <span
+class="math inline">\(N_i\)</span> 集合的一个节点，对于任意节点 <span
+class="math inline">\(f_i\)</span> ，对 <span
+class="math inline">\(f_i\)</span>
+节点进行微扰，它可能变为任意一个与他相邻的节点 <span
+class="math inline">\(f_j \in
+N_i\)</span>。前面提到，拉普拉斯算子就是在所有自由度上进行微小变化后获得的增益。对于
+Graph 而言，从节点 <span class="math inline">\(i\)</span> 变化到节点
+<span class="math inline">\(j\)</span> 增益是 <span
+class="math inline">\(f_i−f_j\)</span>，即节点 <span
+class="math inline">\(f_i\)</span> 的 <strong>Graph Laplacian
+operater</strong>：<br />
+<span class="math display">\[
+\Delta f_i =\sum_{j \in N_i} (f_i - f_j)
+\]</span><br />
+通俗理解，当前节点的 Graph Laplacian operater 就是
+<strong>当前节点和所有邻接节点的差值</strong>。</p>
+<h2 id="laplacian-matrix">Laplacian Matrix</h2>
+<p>把 Graph Laplacian operater
+公式变换一下，<strong>考虑权重</strong>：<span
+class="math inline">\(w_{ij}=0\)</span> 表示 <span
+class="math inline">\(i,j\)</span> 不相邻，<span
+class="math inline">\(w_{ij}=1\)</span> 表示 <span
+class="math inline">\(i,j\)</span> 相邻，那么上面公式可以转换为：<br />
+<span class="math display">\[
+\begin{aligned}
+\Delta f_i &amp;=\sum_{j \in N} w_{ij}(f_i - f_j)\\
+&amp;=\sum_{j \in N} w_{ij}f_i - \sum_{j \in N} w_{ij}f_j\\
+&amp;=d_if_i-w_if
+\end{aligned}
+\]</span><br />
+其中：令 <span class="math inline">\(d_i=\sum_{j \in N}w_{ij}\)</span>
+，表示节点 <span class="math inline">\(i\)</span> 的度。令 <span
+class="math inline">\(w_i=[w_{i1},...,w_{iN}]\)</span> 行。令 <span
+class="math inline">\(f=[f_1,...f_N]^T\)</span> 列。<br />
+对于所有节点：<br />
+<span class="math display">\[
+\begin{aligned}
+\Delta f&amp;=
+\begin{bmatrix}
+   d_1f_1-w_1f \\
+   d_2f_2-w_2f \\
+   \cdots \\
+   d_Nf_N-w_Nf
+\end{bmatrix}\\
+&amp;=
+\begin{equation*}
+    \begin{bmatrix}
+    d_1 &amp;0&amp;\cdots&amp;0 \\
+    0&amp;d_2&amp;\cdots&amp;0\\
+    \vdots&amp;\vdots&amp; \ddots&amp;\vdots \\
+    0&amp;0&amp;\cdots&amp;d_N
+    \end{bmatrix}
+    \end{equation*}f-\begin{bmatrix}
+   w_1\\
+   w_2\\
+   \cdots \\
+   w_N
+\end{bmatrix}f\\
+&amp;=(D-W)f
+\end{aligned}
+\]</span></p>
+<p><span class="math inline">\(D\)</span>
+就是<strong>度矩阵</strong>（dgree matrix），<span
+class="math inline">\(W\)</span>
+就是<strong>邻接矩阵</strong>（adjacency matrix），<span
+class="math inline">\(L=D-W\)</span>
+就是<strong>拉普拉斯矩阵</strong>（Laplacian Matrix）。</p>
+<p><img src="/images/GCN/LM.png" width="80%"></p>
+<p>根据<span class="math inline">\(\Delta f = Lf\)</span>，那么可以看作
+<strong>Laplacian operater 等于 Laplacian Matrix</strong> ，即<span
+class="math inline">\(\Delta=L\)</span>。这样<strong>求 Graph Laplacian
+operater 等价于求 Laplacian Matrix</strong>。</p>
+<p>Laplacian Matrix
+是<strong>半正定对称矩阵</strong>，因此拥有诸多优秀性质：</p>
+<ul>
+<li>对称矩阵一定n个线性无关的特征向量</li>
+<li>半正定矩阵的特征值一定非负</li>
+<li>对阵矩阵的特征向量相互正交，即所有特征向量构成的矩阵为正交矩阵</li>
+</ul>
+<p>对 Laplacian Matrix 进行特征分解：<br />
+<span class="math display">\[
+\Delta=L=U\Lambda U^T
+\]</span><br />
+其中，<span class="math inline">\(U\)</span>的每一列为<span
+class="math inline">\(L\)</span>的<strong>特征向量</strong>，<span
+class="math inline">\(\Lambda\)</span> 是<span
+class="math inline">\(L\)</span>的<strong>特征值矩阵</strong>，<span
+class="math inline">\(U^T\)</span>的每一行为<span
+class="math inline">\(L\)</span>的<strong>特征向量</strong>。</p>
+<h2 id="graph-fourier-transform">Graph Fourier transform</h2>
+<p>前面提到，<span class="math inline">\(e^{-j\omega t}\)</span> 是
+<span class="math inline">\(\Delta\)</span>
+的<strong>特征向量</strong>，而后推导出：<span
+class="math inline">\(\Delta=L=U\Lambda U^T\)</span> ，<span
+class="math inline">\(U^T\)</span>的每一行为<span
+class="math inline">\(L\)</span>的<strong>特征向量</strong><span
+class="math inline">\(\phi_w\)</span>，因此我们可得到：</p>
+<ul>
+<li>频率<span class="math inline">\(w\)</span> <span
+class="math inline">\(\to\)</span> 特征值<span
+class="math inline">\(\lambda_w\)</span></li>
+<li>正弦函数 <span class="math inline">\(e^{-j\omega t}\)</span> <span
+class="math inline">\(\to\)</span> 特征向量<span
+class="math inline">\(\phi_w\)</span></li>
+<li>振幅<span class="math inline">\(F(w)\)</span> <span
+class="math inline">\(\to\)</span> 振幅<span
+class="math inline">\(F(\lambda_w)\)</span></li>
+</ul>
+<p>这样就把传统傅里叶变换推广到了图傅里叶变换。推广到矩阵形式：<br />
+<span class="math display">\[
+\hat{f} = U^Tf
+\]</span><br />
+逆变换：<br />
+<span class="math display">\[
+f = U\hat{f}
+\]</span></p>
+<h2 id="graph-convolution">Graph Convolution</h2>
+<p><strong>卷积定理：函数卷积的傅里叶变换是函数傅立叶变换的乘积，即对于函数
+<span class="math inline">\(f\)</span> 与 <span
+class="math inline">\(g\)</span>
+两者的卷积是其函数傅立叶变换乘积的逆变换</strong>。时域上的卷积-&gt;频域上的相乘后逆变换。从而方便计算，可以看作一种Mapping方式，把时域信号转成频域信号处理。<br />
+<span class="math display">\[
+f*g = \mathcal{F}^{-1}\{\mathcal{F}\{f\} \cdot \mathcal{F}\{g\}\}
+\]</span><br />
+其中，<span class="math inline">\(f\)</span> 是图信号，<span
+class="math inline">\(g\)</span> 是卷积核。通过 Graph Fourier
+transform：<br />
+<span class="math display">\[
+f*g=U(U^Tg\cdot U^Tf)
+\]</span><br />
+由于对 <span class="math inline">\(g\)</span> 和 <span
+class="math inline">\(f\)</span> 进行傅里叶变换的结果为 <span
+class="math inline">\(U^Tg\)</span> 和 <span
+class="math inline">\(U^Tf\)</span>
+都是一个列向量，所以也可以写成：<br />
+<span class="math display">\[
+f*g=U(U^Tg\odot U^Tf)
+\]</span><br />
+<span
+class="math inline">\(\odot\)</span>表示哈达马积，对于两个向量，就是进行内积运算；对于维度相同的两个矩阵，就是对应元素的乘积运算。</p>
+<p>通常把 <span class="math inline">\(U^Tg\)</span>
+整体看作可学习的卷积核，这里把它写作 <span
+class="math inline">\(g_{\theta}\)</span>（由参数 <span
+class="math inline">\(\theta\)</span> 构成的对角矩阵 <span
+class="math inline">\(diag(\theta)\)</span>）。最终图上的卷积公式：<br />
+<span class="math display">\[
+f*g=Ug_{\theta}U^Tf
+\]</span><br />
+由于参数 <span class="math inline">\(\theta\)</span> 的确定与 <span
+class="math inline">\(L\)</span> 的特征值有关，可把 <span
+class="math inline">\(g_{\theta}\)</span> 看作是特征值 <span
+class="math inline">\(\Lambda\)</span> 的一个函数，那么可把 <span
+class="math inline">\(g_{\theta}\)</span> 看成是拉普拉斯矩阵 <span
+class="math inline">\(L\)</span>
+的一系列特征值组成的对角矩阵的形式，即定义<span
+class="math inline">\(g_{\theta}=diag(U^Tg)=g_{\theta}(\Lambda)\)</span>：<br />
+<span class="math display">\[
+f*g=Ug_{\theta}(\Lambda)U^Tf=U
+\begin{equation*}
+    \begin{bmatrix}
+    \hat{g}(\lambda_1) &amp;   &amp;\\
+    &amp; \ddots &amp; \\
+    &amp; &amp; \hat{g}(\lambda_N)
+    \end{bmatrix}
+    \end{equation*}
+U^Tf
+\]</span></p>
+<h2 id="graph-convolution-networks">Graph Convolution Networks</h2>
+<p><strong>第一代GCN</strong>（Spectral CNN）：简单的把 <span
+class="math inline">\(g_{\theta}\)</span>（由参数 <span
+class="math inline">\(\theta\)</span> 构成的对角矩阵 <span
+class="math inline">\(diag(\theta)\)</span>）看作是一个可学习参数的集合，其中
+<span class="math inline">\(x\)</span> 是节点特征向量：<br />
+<span class="math display">\[
+f*g=x*g_{\theta}=Ug_{\theta}U^Tx
+\]</span><br />
+第一代GCN缺点：<br />
+（1）计算复杂度高<span
+class="math inline">\(O(n^2)\)</span>，每次计算都需要特征分解求U；每一次前向传播，都要计算<span
+class="math inline">\(U,g_{\theta},U^T\)</span> 三者的乘积。<br />
+（2）没有正则化（no normalization）。<br />
+（3）没有考虑自身权重（no self-weight）。</p>
+<hr />
+<p><strong>第二代GCN</strong>（ChebNet）：定义特征向量对角矩阵的切比雪夫多项式为滤波器：<br />
+<span class="math display">\[
+g_{\theta&#39;}(\Lambda) \approx
+\sum_{k=0}^{K}\theta_{k}^{&#39;}\Lambda^k=\sum_{k=0}^{K}\theta_{k}^{&#39;}T_{k}(\tilde{\Lambda})
+\]</span><br />
+其中：</p>
+<ul>
+<li><span
+class="math inline">\(\tilde{\Lambda}=\frac{2}{\lambda_{max}}\Lambda-I_N\)</span>，<span
+class="math inline">\(\lambda_{max}\)</span>是L的最大特征值。</li>
+<li><span class="math inline">\(\theta \in \mathbb{R}^K\)</span>
+是切比雪夫系数的向量。</li>
+<li>切比雪夫多项式（类似泰勒展开）定义为：<span
+class="math inline">\(T_{k}(x)=2xT_{k-1}(x)-T_{k-2}(x)\)</span>，其中
+<span class="math inline">\(T_0(x)=1,T_1(x)=x\)</span>。</li>
+</ul>
+<p>就是利用Chebyshev多项式拟合卷积核的方法，来降低计算复杂度。但首先提出Chebyshev多项式K阶截断展开来拟合，并对
+<span class="math inline">\(\Lambda\)</span>
+进行归一化使其元素位于[-1,1]之间的是<span class="exturl" data-url="aHR0cHM6Ly9oYWwuaW5yaWEuZnIvaW5yaWEtMDA1NDE4NTUvZG9jdW1lbnQ=">Hammond et al.(2011)
+：Wavelets on graphs via spectral graph
+theory<i class="fa fa-external-link-alt"></i></span>，二代GCN借鉴了这一方法。</p>
+<p>回到 <span class="math inline">\(g_{\theta}\)</span> 和输入 <span
+class="math inline">\(x\)</span> 的卷积：<br />
+<span class="math display">\[
+\begin{aligned}
+g_{\theta}*x &amp;= U \sum_{k=0}^{K}\theta_{k}^{&#39;}\Lambda^k U^Tx\\
+&amp;=\sum_{k=0}^{K}\theta_{k}^{&#39;}(U \Lambda^kU^T) x\\
+&amp;=\sum_{k=0}^{K}\theta_{k}^{&#39;}(U \Lambda U^T)^k x\\
+&amp;=\sum_{k=0}^{K}\theta_{k}^{&#39;}L^{k}x
+\end{aligned}
+\]</span><br />
+这里面就用到拉普拉斯矩阵 <span
+class="math inline">\(L\)</span>。计算复杂度为 <span
+class="math inline">\(O(kn^2)\)</span>。使用切比雪夫展开，其中 <span
+class="math inline">\(\tilde{L}=\frac{2}{\lambda_{max}}L-I_N\)</span>：<br />
+<span class="math display">\[
+g_{\theta^{&#39;}}*x=\sum_{k=0}^{K}\theta_{k}^{&#39;}T_{x}(\tilde{L})x
+\]</span></p>
+<hr />
+<p><strong>第三代GCN</strong>（一阶ChebNet）：只对切比雪夫展开到一阶，即
+<span class="math inline">\(K=1,\lambda_{max}=2\)</span>，那么 <span
+class="math inline">\(\tilde{L}=L-I_N\)</span>，且 <span
+class="math inline">\(T_0(\tilde{L})=1,T_1(\tilde{L})=\tilde{L}\)</span>
+，第二代公式可简化为：<br />
+<span class="math display">\[
+\begin{aligned}
+g_{\theta^{&#39;}}*x &amp;=
+\theta_0^{&#39;}T_0(\tilde{L})x+\theta_1^{&#39;}T_1(\tilde{L})x\\
+&amp;=\theta_0^{&#39;}x+\theta_1^{&#39;}(L-I_N)x\\
+\end{aligned}
+\]</span><br />
+对<span class="math inline">\(L\)</span>做归一化处理：<br />
+<span class="math display">\[
+\begin{aligned}
+\hat{L}&amp;=D^{-\frac{1}{2}}(L)D^{-\frac{1}{2}}\\
+&amp;=D^{-\frac{1}{2}}(D-W)D^{-\frac{1}{2}}\\
+&amp;=I_N-D^{-\frac{1}{2}}WD^{-\frac{1}{2}}
+\end{aligned}
+\]</span><br />
+代入到前式中得到：<br />
+<span class="math display">\[
+\theta_0^{\prime}x+\theta_1^{\prime}(L-I_N)x=\theta_0^{&#39;}x+(-\theta_1^{&#39;}(D^{-\frac{1}{2}}WD^{-\frac{1}{2}})x)
+\]</span><br />
+由于不希望 <span class="math inline">\(\theta_0^{\prime}\)</span> 和
+<span class="math inline">\(\theta_1^{\prime}\)</span> 出现，所以假设
+<span
+class="math inline">\(\theta_0^{\prime}=-\theta_1^{\prime}=\theta\)</span>：<br />
+<span class="math display">\[
+g_{\theta^{&#39;}}*x=\theta(I_N+D^{-\frac{1}{2}}WD^{-\frac{1}{2}})x
+\]</span><br />
+注意 <span
+class="math inline">\(I_N+D^{-\frac{1}{2}}WD^{-\frac{1}{2}}\)</span>
+的特征值被限制在了[0,2]中。由于这一步输出可能作为下一层的输入，会再次与
+<span
+class="math inline">\(I_N+D^{-\frac{1}{2}}WD^{-\frac{1}{2}}\)</span>
+相乘重复这样的操作将会导致数值不稳定、梯度消失/爆炸等问题。</p>
+<p>为了解决该问题，引入renormalization（就是加了自环）：令 <span
+class="math inline">\(\tilde{W}=W+I_N, \tilde{D}_i=\sum_j
+\tilde{W}_{ij}\)</span>：<br />
+<span class="math display">\[
+I_N+D^{-\frac{1}{2}}WD^{-\frac{1}{2}} \approx
+\tilde{D}^{-\frac{1}{2}}\tilde{W}\tilde{D}^{-\frac{1}{2}}
+\]</span><br />
+那么，带入之前的公式得到：<br />
+<span class="math display">\[
+\underbrace{\boldsymbol{g}_{\boldsymbol{\theta^{\prime}}} *
+\boldsymbol{x}}_{\mathbb{R}^{n \times n}} =
+\theta(\underbrace{\tilde{\boldsymbol{D}}^{-1/2}\tilde{\boldsymbol{W}}
+\tilde{\boldsymbol{D}}^{-1/2}}_{\mathbb{R}^{n \times n}})
+\underbrace{\boldsymbol{x}}_{\mathbb{R}^{n \times 1}}
+\]</span><br />
+推广到多通道和多卷积，则卷积结果写作矩阵形式如下：<br />
+<span class="math display">\[
+\underbrace{\boldsymbol{Z}}_{\mathbb{R}^{N \times F}} =
+\underbrace{\tilde{\boldsymbol{D}}^{-1/2}\tilde{\boldsymbol{W}}
+\tilde{\boldsymbol{D}}^{-1/2}}_{\mathbb{R}^{N \times N}}
+\underbrace{\boldsymbol{X}}_{\mathbb{R}^{N \times C}} \ \
+\underbrace{\boldsymbol{\Theta}}_{\mathbb{R}^{C \times F}}
+\]</span><br />
+其中，<span class="math inline">\(N\)</span>
+是<strong>节点数量</strong>，<span class="math inline">\(C\)</span>
+是通道数或者称作节点的<strong>特征维度</strong>，<span
+class="math inline">\(F\)</span> 为<strong>卷积核数量</strong>。<span
+class="math inline">\(D\)</span> 就是<strong>度矩阵</strong>，<span
+class="math inline">\(W\)</span> 就是<strong>邻接矩阵</strong>，<span
+class="math inline">\(X\)</span>
+是节点的<strong>特征矩阵</strong>，<span
+class="math inline">\(\Theta\)</span>
+是<strong>卷积核参数矩阵</strong>，最终得到的卷积结果 <span
+class="math inline">\(\boldsymbol{Z} \in \mathbb{R}^{N \times
+F}\)</span>，即每个节点的卷积结果的维数等于卷积核数量。上述操作可以叠加多层，对
+<span class="math inline">\(Z\)</span> 激活一下，然后将激活后的 <span
+class="math inline">\(Z\)</span> 作为下一层的节点的特征矩阵。</p>
+<p>第三代GCN特点总结：</p>
+<ul>
+<li>解决了计算复杂度高的问题：复杂度为<span
+class="math inline">\(O(E)\)</span> (稀疏矩阵优化的话)，<span
+class="math inline">\(E\)</span> 是图中边的几何。</li>
+<li>只考虑1-hop，若要建模多hop，通过叠加层数，获得更大的感受野。（联想NLP中使用卷积操作语句序列时，也是通过叠加多层来达到获取长依赖的目的）。</li>
+</ul>
+<h1 id="code">Code</h1>
+<p>作者给出了源码，分两个版本：</p>
+<ul>
+<li>tensorflow：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RraXBmL2djbg==">gcn<i class="fa fa-external-link-alt"></i></span></li>
+<li>pytorch：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RraXBmL3B5Z2Nu">pygcn<i class="fa fa-external-link-alt"></i></span></li>
+<li>数据集地址：<span class="exturl" data-url="aHR0cHM6Ly9saW5xcy1kYXRhLnNvZS51Y3NjLmVkdS9wdWJsaWMvbGJjL2NvcmEudGd6">cora<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+<p>cora数据集有2708个样本，每个样本由1433维特征表示，每个样本是一篇科学论文，每篇论文可能为7个类别，样本和样本之间包括了5429个连接。</p>
+<p>模型输入：<br />
+<strong>X</strong>：N×D的特征矩阵，N表示节点数量（cora数据集就是2708），D表示输入特征（cora数据集就是1433）。<br />
+<strong>A</strong>：邻接矩阵。<br />
+模型输出：<br />
+<strong>Z</strong>：N×F的特征矩阵，F是每个输出节点的特征维度（这个维度自己设置）。</p>
+<p>使用的公式：<br />
+<span class="math inline">\(H^{(l+1)}=f(H^{(l)},A),\qquad H^{(0)}=X,
+H^{(L)}=Z\)</span><br />
+<span class="math inline">\(f(H^{(l)},A)=\sigma(AH^{(l)}W^{(l)}),\qquad
+f(H^{(l)},A)=\sigma(\hat{D}^{-\frac{1}{2}}\hat{A}\hat{D}^{-\frac{1}{2}}H^{(l)}W^{(l)})\)</span></p>
+<p>其中，<span class="math inline">\(\hat{A}=A+I\)</span>，<span
+class="math inline">\(I\)</span>是对角矩阵(自环)，<span
+class="math inline">\(\hat{A}\)</span>
+是加上自环(节点本身信息)后的邻接矩阵。如果一个节点有非常多的邻居，那么函数<span
+class="math inline">\(f\)</span>就会越来越大，所以加上一个归一化<span
+class="math inline">\(\hat{D}\)</span>是<span
+class="math inline">\(\hat{A}\)</span>的度矩阵，有两种方法<span
+class="math inline">\(\hat{D}^{-1}A\)</span>和<span
+class="math inline">\(\hat{D}^{-\frac{1}{2}}\hat{A}\hat{D}^{-\frac{1}{2}}\)</span>。</p>
+<p>以pytorch版本为例：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">文件结构：</span><br><span class="line">├── data      // 图数据</span><br><span class="line">├── pygcn</span><br><span class="line">    ├── inits    // 初始化的一些公用函数</span><br><span class="line">    ├── layers     // GCN层的定义</span><br><span class="line">        ├── class GraphConvolution</span><br><span class="line">        ├── reset parameters</span><br><span class="line">        ├── forward</span><br><span class="line">    ├── models     // 模型结构定义</span><br><span class="line">        ├── class GCN</span><br><span class="line">        ├── forward</span><br><span class="line">    ├── train    // 训练</span><br><span class="line">        ├── def train</span><br><span class="line">        ├── def test </span><br><span class="line">    └── utils    //  工具函数的定义</span><br><span class="line">        ├── encode_onehot</span><br><span class="line">        ├── load_data</span><br><span class="line">        ├── normazlize</span><br><span class="line">        ├── accuracy</span><br><span class="line">        ├── sparse mx to torch sparse tensor</span><br><span class="line">├── setup.py //启动函数</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight python"><figcaption><span>model.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"><span class="keyword">from</span> pygcn.layers <span class="keyword">import</span> GraphConvolution</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">GCN</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, nfeat, nhid, nclass, dropout</span>):</span><br><span class="line">        <span class="built_in">super</span>(GCN, self).__init__()</span><br><span class="line"></span><br><span class="line">        self.gc1 = GraphConvolution(nfeat, nhid)  <span class="comment"># nfeat：N×D的D</span></span><br><span class="line">        self.gc2 = GraphConvolution(nhid, nclass) <span class="comment"># nclass：类别，这里是7类</span></span><br><span class="line">        self.dropout = dropout</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x, adj</span>):</span><br><span class="line">        x = F.relu(self.gc1(x, adj)) <span class="comment"># 第一层输出+relu</span></span><br><span class="line">        x = F.dropout(x, self.dropout, training=self.training)</span><br><span class="line">        x = self.gc2(x, adj)  <span class="comment"># 第二层输出</span></span><br><span class="line">        <span class="keyword">return</span> F.log_softmax(x, dim=<span class="number">1</span>) <span class="comment"># 第二层输出+log_softmax</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><figcaption><span>layers.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> torch.nn.parameter <span class="keyword">import</span> Parameter</span><br><span class="line"><span class="keyword">from</span> torch.nn.modules.module <span class="keyword">import</span> Module</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">GraphConvolution</span>(<span class="title class_ inherited__">Module</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Simple GCN layer, similar to https://arxiv.org/abs/1609.02907</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_features, out_features, bias=<span class="literal">True</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(GraphConvolution, self).__init__()</span><br><span class="line">        self.in_features = in_features  <span class="comment"># 每层的输入维度</span></span><br><span class="line">        self.out_features = out_features   <span class="comment"># 每层的输出维度</span></span><br><span class="line">        self.weight = Parameter(torch.FloatTensor(in_features, out_features))</span><br><span class="line">        <span class="keyword">if</span> bias:</span><br><span class="line">            self.bias = Parameter(torch.FloatTensor(out_features))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.register_parameter(<span class="string">&#x27;bias&#x27;</span>, <span class="literal">None</span>)</span><br><span class="line">        self.reset_parameters()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">reset_parameters</span>(<span class="params">self</span>): <span class="comment"># 参数初始化方法</span></span><br><span class="line">        stdv = <span class="number">1.</span> / math.sqrt(self.weight.size(<span class="number">1</span>))</span><br><span class="line">        self.weight.data.uniform_(-stdv, stdv)</span><br><span class="line">        <span class="keyword">if</span> self.bias <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            self.bias.data.uniform_(-stdv, stdv)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, <span class="built_in">input</span>, adj</span>): <span class="comment"># 实现AHW，第一次时H是X</span></span><br><span class="line">        support = torch.mm(<span class="built_in">input</span>, self.weight) <span class="comment"># 实现XW</span></span><br><span class="line">        <span class="comment"># Sparse matrix multiplication, https://github.com/tkipf/pygcn/issues/19</span></span><br><span class="line">        <span class="comment"># output = torch.spmm(adj, support) # spmm后续版本被移除了，使用sparse.mm替代</span></span><br><span class="line">        output = torch.sparse.mm(adj, support) <span class="comment"># 实现AXW</span></span><br><span class="line">        <span class="keyword">if</span> self.bias <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> output + self.bias</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> output</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__repr__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> self.__class__.__name__ + <span class="string">&#x27; (&#x27;</span> \</span><br><span class="line">               + <span class="built_in">str</span>(self.in_features) + <span class="string">&#x27; -&gt; &#x27;</span> \</span><br><span class="line">               + <span class="built_in">str</span>(self.out_features) + <span class="string">&#x27;)&#x27;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><figcaption><span>util.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> scipy.sparse <span class="keyword">as</span> sp</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line"><span class="comment"># focus</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">encode_onehot</span>(<span class="params">labels</span>):</span><br><span class="line">    classes = <span class="built_in">set</span>(labels)</span><br><span class="line">    classes_dict = &#123;c: np.identity(<span class="built_in">len</span>(classes))[i, :] <span class="keyword">for</span> i, c <span class="keyword">in</span></span><br><span class="line">                    <span class="built_in">enumerate</span>(classes)&#125;</span><br><span class="line">    labels_onehot = np.array(<span class="built_in">list</span>(<span class="built_in">map</span>(classes_dict.get, labels)),</span><br><span class="line">                             dtype=np.int32)</span><br><span class="line">    <span class="keyword">return</span> labels_onehot</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">load_data</span>(<span class="params">path=<span class="string">&quot;../data/cora/&quot;</span>, dataset=<span class="string">&quot;cora&quot;</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Load citation network dataset (cora only for now)&quot;&quot;&quot;</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;Loading &#123;&#125; dataset...&#x27;</span>.<span class="built_in">format</span>(dataset))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 读进来的数据为：idx，features，labels</span></span><br><span class="line">    idx_features_labels = np.genfromtxt(<span class="string">&quot;&#123;&#125;&#123;&#125;.content&quot;</span>.<span class="built_in">format</span>(path, dataset),</span><br><span class="line">                                        dtype=np.dtype(<span class="built_in">str</span>))</span><br><span class="line">    <span class="comment"># csr_matrix数据存储成稀疏方式，格式为csr</span></span><br><span class="line">    features = sp.csr_matrix(idx_features_labels[:, <span class="number">1</span>:-<span class="number">1</span>], dtype=np.float32)</span><br><span class="line">    labels = encode_onehot(idx_features_labels[:, -<span class="number">1</span>]) <span class="comment"># 使用onehot编码类别 (2708, 7)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># build graph</span></span><br><span class="line">    idx = np.array(idx_features_labels[:, <span class="number">0</span>], dtype=np.int32)</span><br><span class="line">    idx_map = &#123;j: i <span class="keyword">for</span> i, j <span class="keyword">in</span> <span class="built_in">enumerate</span>(idx)&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 读进来的数据为：edges，unordered</span></span><br><span class="line">    <span class="comment"># [[     35,    1033],</span></span><br><span class="line">    <span class="comment">#  [     35,  103482],...]</span></span><br><span class="line">    edges_unordered = np.genfromtxt(<span class="string">&quot;&#123;&#125;&#123;&#125;.cites&quot;</span>.<span class="built_in">format</span>(path, dataset),</span><br><span class="line">                                    dtype=np.int32)</span><br><span class="line">    <span class="comment"># 转成对应map编号</span></span><br><span class="line">    <span class="comment"># [[ 163,  402],</span></span><br><span class="line">    <span class="comment">#  [ 163,  659],...]</span></span><br><span class="line">    edges = np.array(<span class="built_in">list</span>(<span class="built_in">map</span>(idx_map.get, edges_unordered.flatten())),</span><br><span class="line">                     dtype=np.int32).reshape(edges_unordered.shape)</span><br><span class="line">    <span class="comment"># (edges[:, 0], edges[:, 1])坐标点，(np.ones(edges.shape[0])每个坐标位置的值为1</span></span><br><span class="line">    <span class="comment"># 此步得到的是有向图邻接矩阵</span></span><br><span class="line">    adj = sp.coo_matrix((np.ones(edges.shape[<span class="number">0</span>]), (edges[:, <span class="number">0</span>], edges[:, <span class="number">1</span>])),</span><br><span class="line">                        shape=(labels.shape[<span class="number">0</span>], labels.shape[<span class="number">0</span>]),</span><br><span class="line">                        dtype=np.float32)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># build symmetric adjacency matrix !</span></span><br><span class="line">    <span class="comment"># 无向图，邻接矩阵是对称的，https://zhuanlan.zhihu.com/p/78191258</span></span><br><span class="line">    <span class="comment"># see https://github.com/tkipf/pygcn/issues/3</span></span><br><span class="line">    adj = adj + adj.T.multiply(adj.T &gt; adj) - adj.multiply(adj.T &gt; adj)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># see https://github.com/tkipf/pygcn/issues/47</span></span><br><span class="line">    <span class="comment"># 归一化防止梯度消失</span></span><br><span class="line">    features = normalize(features)</span><br><span class="line">    adj = normalize(adj + sp.eye(adj.shape[<span class="number">0</span>])) <span class="comment"># 加对角矩阵I，即A+I=\hat&#123;A&#125;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 切分数据</span></span><br><span class="line">    idx_train = <span class="built_in">range</span>(<span class="number">140</span>)</span><br><span class="line">    idx_val = <span class="built_in">range</span>(<span class="number">200</span>, <span class="number">500</span>)</span><br><span class="line">    idx_test = <span class="built_in">range</span>(<span class="number">500</span>, <span class="number">1500</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 转成Tensor</span></span><br><span class="line">    features = torch.FloatTensor(np.array(features.todense()))</span><br><span class="line">    labels = torch.LongTensor(np.where(labels)[<span class="number">1</span>])</span><br><span class="line">    adj = sparse_mx_to_torch_sparse_tensor(adj)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 转成Tensor</span></span><br><span class="line">    idx_train = torch.LongTensor(idx_train)</span><br><span class="line">    idx_val = torch.LongTensor(idx_val)</span><br><span class="line">    idx_test = torch.LongTensor(idx_test)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> adj, features, labels, idx_train, idx_val, idx_test</span><br><span class="line"></span><br><span class="line"><span class="comment"># focus</span></span><br><span class="line"><span class="comment"># 对特征矩阵features和邻接矩阵adj做标准化，防止梯度消失</span></span><br><span class="line"><span class="comment"># 每个值除以它所在行的和</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">normalize</span>(<span class="params">mx</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Row-normalize sparse matrix&quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># see https://github.com/tkipf/gcn/blob/master/gcn/utils.py#L122</span></span><br><span class="line">    <span class="comment"># 对每行求和得到rowsum</span></span><br><span class="line">    rowsum = np.array(mx.<span class="built_in">sum</span>(<span class="number">1</span>))</span><br><span class="line">    <span class="comment"># 求逆得到r_inv</span></span><br><span class="line">    r_inv = np.power(rowsum, -<span class="number">1</span>).flatten()</span><br><span class="line">    <span class="comment"># 如果某一行全为0，则r_inv算出来会等于无穷大，将这些行的r_inv置为0</span></span><br><span class="line">    r_inv[np.isinf(r_inv)] = <span class="number">0.</span></span><br><span class="line">    r_mat_inv = sp.diags(r_inv)</span><br><span class="line">    mx = r_mat_inv.dot(mx)</span><br><span class="line">    <span class="keyword">return</span> mx</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">accuracy</span>(<span class="params">output, labels</span>):</span><br><span class="line">    preds = output.<span class="built_in">max</span>(<span class="number">1</span>)[<span class="number">1</span>].type_as(labels)</span><br><span class="line">    correct = preds.eq(labels).double()</span><br><span class="line">    correct = correct.<span class="built_in">sum</span>()</span><br><span class="line">    <span class="keyword">return</span> correct / <span class="built_in">len</span>(labels)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">sparse_mx_to_torch_sparse_tensor</span>(<span class="params">sparse_mx</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Convert a scipy sparse matrix to a torch sparse tensor.&quot;&quot;&quot;</span></span><br><span class="line">    sparse_mx = sparse_mx.tocoo().astype(np.float32)</span><br><span class="line">    indices = torch.from_numpy(</span><br><span class="line">        np.vstack((sparse_mx.row, sparse_mx.col)).astype(np.int64))</span><br><span class="line">    values = torch.from_numpy(sparse_mx.data)</span><br><span class="line">    shape = torch.Size(sparse_mx.shape)</span><br><span class="line">    <span class="keyword">return</span> torch.sparse.FloatTensor(indices, values, shape)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><figcaption><span>train.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> division</span><br><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"><span class="keyword">import</span> torch.optim <span class="keyword">as</span> optim</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pygcn.utils <span class="keyword">import</span> load_data, accuracy</span><br><span class="line"><span class="keyword">from</span> pygcn.models <span class="keyword">import</span> GCN</span><br><span class="line"></span><br><span class="line"><span class="comment"># Training settings</span></span><br><span class="line">parser = argparse.ArgumentParser()</span><br><span class="line">parser.add_argument(<span class="string">&#x27;--no-cuda&#x27;</span>, action=<span class="string">&#x27;store_true&#x27;</span>, default=<span class="literal">False</span>,</span><br><span class="line">                    <span class="built_in">help</span>=<span class="string">&#x27;Disables CUDA training.&#x27;</span>)</span><br><span class="line">parser.add_argument(<span class="string">&#x27;--fastmode&#x27;</span>, action=<span class="string">&#x27;store_true&#x27;</span>, default=<span class="literal">False</span>,</span><br><span class="line">                    <span class="built_in">help</span>=<span class="string">&#x27;Validate during training pass.&#x27;</span>)</span><br><span class="line">parser.add_argument(<span class="string">&#x27;--seed&#x27;</span>, <span class="built_in">type</span>=<span class="built_in">int</span>, default=<span class="number">42</span>, <span class="built_in">help</span>=<span class="string">&#x27;Random seed.&#x27;</span>)</span><br><span class="line">parser.add_argument(<span class="string">&#x27;--epochs&#x27;</span>, <span class="built_in">type</span>=<span class="built_in">int</span>, default=<span class="number">200</span>,</span><br><span class="line">                    <span class="built_in">help</span>=<span class="string">&#x27;Number of epochs to train.&#x27;</span>)</span><br><span class="line">parser.add_argument(<span class="string">&#x27;--lr&#x27;</span>, <span class="built_in">type</span>=<span class="built_in">float</span>, default=<span class="number">0.01</span>,</span><br><span class="line">                    <span class="built_in">help</span>=<span class="string">&#x27;Initial learning rate.&#x27;</span>)</span><br><span class="line">parser.add_argument(<span class="string">&#x27;--weight_decay&#x27;</span>, <span class="built_in">type</span>=<span class="built_in">float</span>, default=<span class="number">5e-4</span>,</span><br><span class="line">                    <span class="built_in">help</span>=<span class="string">&#x27;Weight decay (L2 loss on parameters).&#x27;</span>)</span><br><span class="line">parser.add_argument(<span class="string">&#x27;--hidden&#x27;</span>, <span class="built_in">type</span>=<span class="built_in">int</span>, default=<span class="number">16</span>,</span><br><span class="line">                    <span class="built_in">help</span>=<span class="string">&#x27;Number of hidden units.&#x27;</span>)</span><br><span class="line">parser.add_argument(<span class="string">&#x27;--dropout&#x27;</span>, <span class="built_in">type</span>=<span class="built_in">float</span>, default=<span class="number">0.5</span>,</span><br><span class="line">                    <span class="built_in">help</span>=<span class="string">&#x27;Dropout rate (1 - keep probability).&#x27;</span>)</span><br><span class="line"></span><br><span class="line">args = parser.parse_args()</span><br><span class="line">args.cuda = <span class="keyword">not</span> args.no_cuda <span class="keyword">and</span> torch.cuda.is_available()</span><br><span class="line"></span><br><span class="line">np.random.seed(args.seed)</span><br><span class="line">torch.manual_seed(args.seed)</span><br><span class="line"><span class="keyword">if</span> args.cuda:</span><br><span class="line">    torch.cuda.manual_seed(args.seed)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Load data</span></span><br><span class="line">adj, features, labels, idx_train, idx_val, idx_test = load_data()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Model and optimizer</span></span><br><span class="line">model = GCN(nfeat=features.shape[<span class="number">1</span>],</span><br><span class="line">            nhid=args.hidden,</span><br><span class="line">            nclass=labels.<span class="built_in">max</span>().item() + <span class="number">1</span>,</span><br><span class="line">            dropout=args.dropout)</span><br><span class="line">optimizer = optim.Adam(model.parameters(),</span><br><span class="line">                       lr=args.lr, weight_decay=args.weight_decay)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> args.cuda:</span><br><span class="line">    model.cuda()</span><br><span class="line">    features = features.cuda()</span><br><span class="line">    adj = adj.cuda()</span><br><span class="line">    labels = labels.cuda()</span><br><span class="line">    idx_train = idx_train.cuda()</span><br><span class="line">    idx_val = idx_val.cuda()</span><br><span class="line">    idx_test = idx_test.cuda()</span><br><span class="line"></span><br><span class="line"><span class="comment"># focus</span></span><br><span class="line"><span class="comment"># 这里训练时给140个带标签，输入的是全部数据特征，整体是个半监督的任务</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">train</span>(<span class="params">epoch</span>):</span><br><span class="line">    t = time.time()</span><br><span class="line">    model.train()</span><br><span class="line">    optimizer.zero_grad()</span><br><span class="line">    output = model(features, adj)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># classify each node</span></span><br><span class="line">    <span class="comment"># 只考虑 train ids 计算 loss</span></span><br><span class="line">    <span class="comment"># see https://github.com/tkipf/pygcn/issues/50</span></span><br><span class="line">    <span class="comment"># 如果输出用softmax，这里就用交叉熵损失cross_entropy</span></span><br><span class="line">    <span class="comment"># 这里使用负对数似然损失nll_loss，因为前面输出用的是log_softmax</span></span><br><span class="line">    <span class="comment"># torch.nn.CrossEntropyLoss、cross_entropy都是上面两个函数的组合nll_loss(log_softmax(input))</span></span><br><span class="line">    loss_train = F.nll_loss(output[idx_train], labels[idx_train])</span><br><span class="line">    acc_train = accuracy(output[idx_train], labels[idx_train])</span><br><span class="line">    loss_train.backward()</span><br><span class="line">    optimizer.step()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> args.fastmode:</span><br><span class="line">        <span class="comment"># Evaluate validation set performance separately,</span></span><br><span class="line">        <span class="comment"># deactivates dropout during validation run.</span></span><br><span class="line">        model.<span class="built_in">eval</span>()</span><br><span class="line">        output = model(features, adj)</span><br><span class="line"></span><br><span class="line">    loss_val = F.nll_loss(output[idx_val], labels[idx_val])</span><br><span class="line">    acc_val = accuracy(output[idx_val], labels[idx_val])</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;Epoch: &#123;:04d&#125;&#x27;</span>.<span class="built_in">format</span>(epoch+<span class="number">1</span>),</span><br><span class="line">          <span class="string">&#x27;loss_train: &#123;:.4f&#125;&#x27;</span>.<span class="built_in">format</span>(loss_train.item()),</span><br><span class="line">          <span class="string">&#x27;acc_train: &#123;:.4f&#125;&#x27;</span>.<span class="built_in">format</span>(acc_train.item()),</span><br><span class="line">          <span class="string">&#x27;loss_val: &#123;:.4f&#125;&#x27;</span>.<span class="built_in">format</span>(loss_val.item()),</span><br><span class="line">          <span class="string">&#x27;acc_val: &#123;:.4f&#125;&#x27;</span>.<span class="built_in">format</span>(acc_val.item()),</span><br><span class="line">          <span class="string">&#x27;time: &#123;:.4f&#125;s&#x27;</span>.<span class="built_in">format</span>(time.time() - t))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test</span>():</span><br><span class="line">    model.<span class="built_in">eval</span>()</span><br><span class="line">    output = model(features, adj)</span><br><span class="line">    loss_test = F.nll_loss(output[idx_test], labels[idx_test])</span><br><span class="line">    acc_test = accuracy(output[idx_test], labels[idx_test])</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Test set results:&quot;</span>,</span><br><span class="line">          <span class="string">&quot;loss= &#123;:.4f&#125;&quot;</span>.<span class="built_in">format</span>(loss_test.item()),</span><br><span class="line">          <span class="string">&quot;accuracy= &#123;:.4f&#125;&quot;</span>.<span class="built_in">format</span>(acc_test.item()))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Train model</span></span><br><span class="line">t_total = time.time()</span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(args.epochs):</span><br><span class="line">    train(epoch)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Optimization Finished!&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Total time elapsed: &#123;:.4f&#125;s&quot;</span>.<span class="built_in">format</span>(time.time() - t_total))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Testing</span></span><br><span class="line">test()</span><br></pre></td></tr></table></figure>
+<h1 id="参考文献">参考文献</h1>
+<p><span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU5JTlBJThGJUU2JTlDJUJBJUU1JTlCJUJF">随机图<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU2JTk3JUEwJUU1JUIwJUJBJUU1JUJBJUE2JUU3JUJEJTkxJUU3JUJCJTlD">无尺度网络<i class="fa fa-external-link-alt"></i></span>，<span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vbGVlengvcC85NDM2ODIwLmh0bWw=">Scale Free
+Network<i class="fa fa-external-link-alt"></i></span></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU1JUJBJUE2JUU1JTg4JTg2JUU1JUI4JTgz">度分布<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU5JTgyJUJCJUU2JThFJUE1JUU3JTlGJUE5JUU5JTk4JUI1">邻接矩阵<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvQ2x1c3RlcmluZ19jb2VmZmljaWVudA==">Clustering
+coefficient<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvQmV0d2Vlbm5lc3M=">Betweenness<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3F1ZXN0aW9uLzE5OTY3Nzc4">如何理解希尔伯特空间？<i class="fa fa-external-link-alt"></i></span>，<span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU1JUI4JThDJUU1JUIwJTk0JUU0JUJDJUFGJUU3JTg5JUI5JUU3JUE5JUJBJUU5JTk3JUI0">希尔伯特空间<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvRm91cmllcl90cmFuc2Zvcm0=">Fourier
+transform<i class="fa fa-external-link-alt"></i></span>，<span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU1JTgyJTg1JUU5JTg3JThDJUU1JThGJUI2JUU1JThGJTk4JUU2JThEJUEy">傅里叶变换<i class="fa fa-external-link-alt"></i></span></p>
+<p><span class="exturl" data-url="aHR0cDovL3RraXBmLmdpdGh1Yi5pby9ncmFwaC1jb252b2x1dGlvbmFsLW5ldHdvcmtzLw==">GRAPH
+CONVOLUTIONAL NETWORKS<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly93d3cuc29odS5jb20vYS8zNDI2MzQyOTFfNjUxODkz">跳出公式，看清全局，图神经网络（GCN）原理详解<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l5bDQyNDUyNS9hcnRpY2xlL2RldGFpbHMvMTAwMDU4MjY0I0dDTl84Mjg=">图卷积网络
+GCN Graph Convolutional Network（谱域GCN）的理解和详细推导<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cDovL3h0ZjYxNS5jb20vMjAxOS8wMi8yNC9nY24v">图卷积神经网络理论基础<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC83NjAwMTA4MA==">GNN综述——从入门到入门<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vbnhmLXJhYmJpdDc1L3AvMTEzMDYxOTguaHRtbA==">GCN总结<i class="fa fa-external-link-alt"></i></span></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>SoundMemories
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://soundmemories.github.io/2021/02/05/Graph/01.GCN/" title="GCN">https://soundmemories.github.io/2021/02/05/Graph/01.GCN/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Graph/" rel="tag"><i class="fa fa-tag"></i> Graph</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/02/03/Graph/00.%E5%9B%BE%E6%B7%B1%E5%BA%A6%E8%A1%A8%E7%A4%BA/" rel="prev" title="图深度表示">
+                  <i class="fa fa-chevron-left"></i> 图深度表示
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/02/10/Graph/02.GAT/" rel="next" title="GAT">
+                  GAT <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">SoundMemories</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"neutral"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.min.js","integrity":"sha256-JFptYy4KzJ5OQP+Q9fubNf3cxpPPmZKqUOovyEONKrQ="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://soundmemories.github.io/2021/02/05/Graph/01.GCN/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

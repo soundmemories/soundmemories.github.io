@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.1","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="摘要 背景：深度学习的模型训练通常依赖大量的标签数据（如Bert、XLNet），在只有少量数据上通常表现不好。由此产生了数据增强，但以前的研究都是基于监督学习的，并且效果不是特别理想。 贡献：本文提出了一种对无监督（无标签）数据增强方式（半监督学习中无标签数据的增强），简称UDA。UDA方法生成的无监督数据与原始无监督数据具备分布的一致性，而以前的方法通常只是应用高斯噪声和dropout噪声（">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unsupervised Data Augmentation for Consistency Training">
+<meta property="og:url" content="https://soundmemories.github.io/2021/06/20/Paper/01.Unsupervised%20Data%20Augmentation%20for%20Consistency%20Training/index.html">
+<meta property="og:site_name" content="SoundMemories">
+<meta property="og:description" content="摘要 背景：深度学习的模型训练通常依赖大量的标签数据（如Bert、XLNet），在只有少量数据上通常表现不好。由此产生了数据增强，但以前的研究都是基于监督学习的，并且效果不是特别理想。 贡献：本文提出了一种对无监督（无标签）数据增强方式（半监督学习中无标签数据的增强），简称UDA。UDA方法生成的无监督数据与原始无监督数据具备分布的一致性，而以前的方法通常只是应用高斯噪声和dropout噪声（">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://soundmemories.github.io/images/UDA/UDA.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/UDA/UDA_loss1.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/UDA/UDA_loss2.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/UDA/trans.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/UDA/trans2.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/UDA/TSA.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/UDA/TSA2.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/UDA/TSA3.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/UDA/TSA4.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/UDA/01.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/UDA/02.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/UDA/03.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/UDA/04.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/UDA/05.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/UDA/06.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/UDA/07.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/UDA/08.png">
+<meta property="article:published_time" content="2021-06-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-05-07T08:31:30.266Z">
+<meta property="article:author" content="SoundMemories">
+<meta property="article:tag" content="Paper">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://soundmemories.github.io/images/UDA/UDA.png">
+
+
+<link rel="canonical" href="https://soundmemories.github.io/2021/06/20/Paper/01.Unsupervised%20Data%20Augmentation%20for%20Consistency%20Training/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://soundmemories.github.io/2021/06/20/Paper/01.Unsupervised%20Data%20Augmentation%20for%20Consistency%20Training/","path":"2021/06/20/Paper/01.Unsupervised Data Augmentation for Consistency Training/","title":"Unsupervised Data Augmentation for Consistency Training"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Unsupervised Data Augmentation for Consistency Training | SoundMemories</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">SoundMemories</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">127</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AF%BC%E8%AF%BB"><span class="nav-number">2.</span> <span class="nav-text">导读</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E5%AE%B9"><span class="nav-number">3.</span> <span class="nav-text">内容</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E7%9B%91%E7%9D%A3%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA"><span class="nav-number">3.1.</span> <span class="nav-text">有监督数据增强</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E7%9B%91%E7%9D%A3%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA"><span class="nav-number">3.2.</span> <span class="nav-text">无监督数据增强</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA%E5%9C%A8%E5%A4%9A%E6%A0%B7%E6%80%A7%E5%92%8C%E6%9C%89%E6%95%88%E6%80%A7%E4%B8%8A%E7%9A%84%E5%B9%B3%E8%A1%A1"><span class="nav-number">3.3.</span> <span class="nav-text">数据增强在多样性和有效性上的平衡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E6%8A%80%E5%B7%A7"><span class="nav-number">3.4.</span> <span class="nav-text">训练技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C"><span class="nav-number">3.5.</span> <span class="nav-text">实验结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE%E5%83%8F%E4%BB%BB%E5%8A%A1"><span class="nav-number">3.5.1.</span> <span class="nav-text">图像任务</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">5.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SoundMemories"
+      src="/images/avstar.png">
+  <p class="site-author-name" itemprop="name">SoundMemories</p>
+  <div class="site-description" itemprop="description">今日事，今日毕</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NvdW5kbWVtb3JpZXM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;soundmemories"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNvdW5kbWVtb3JpZXNAMTYzLmNvbQ==" title="E-Mail → mailto:soundmemories@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+        <div class="pjax">
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2021/06/20/Paper/01.Unsupervised%20Data%20Augmentation%20for%20Consistency%20Training/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Unsupervised Data Augmentation for Consistency Training | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Unsupervised Data Augmentation for Consistency Training
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-06-20 00:00:00" itemprop="dateCreated datePublished" datetime="2021-06-20T00:00:00+08:00">2021-06-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Paper/" itemprop="url" rel="index"><span itemprop="name">Paper</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>15 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="摘要">摘要</h1>
+<p>背景：深度学习的模型训练通常依赖大量的标签数据（如Bert、XLNet），在只有少量数据上通常表现不好。由此产生了数据增强，但以前的研究都是基于监督学习的，并且效果不是特别理想。</p>
+<p>贡献：本文提出了一种对无监督（无标签）数据增强方式（半监督学习中无标签数据的增强），简称UDA。UDA方法生成的无监督数据与原始无监督数据具备<strong>分布的一致性</strong>，而以前的方法通常只是应用高斯噪声和dropout噪声（无法保证一致性）。</p>
+<p>效果：使用这种数据增强方法，在极少量数据集上，六种语言任务和三种视觉任务都得到了明显的提升。IMDb数据分类任务上，仅仅使用20个带标签数据加UDA方法，就超过了25000个带标签数据的训练模型，错误率达到了4.2%。在CIFAR-10上仅用4000张标签图片就达到了2.7%的错误率。在SVHN任务上，仅仅用250个标签数据就达到了2.85%的错误率，这相当于用全数据集才能达到的正确率，而它们的数量级差别达到了1或2（差10倍或100倍）。在大量标签数据集上，UDA同样表现优秀，在ImageNet任务上，使用10%带标签数据，UDA方法就将Top1和Top5的准确率分别由55.1%提高到77.3%，68.7提高到88.5%。在全数据集上，则分别由78.3%提高到94.4%，79%提高到94.5%。</p>
+<h1 id="导读">导读</h1>
+<p>深度学习需要大量带标签数据，但是实际工程中很难满足，这就需要数据标注，但数据标注是一项耗时耗力的工作。所以，充分利用未标注数据是一个很有意义的研究方向。而半监督方法，是最有前景的方法之一，当前半监督方法可归结为三类：<br />
+（1）基于图卷积和图嵌入的图标签传播方法。<br />
+（2）将目标数据作为潜变量进行预测。<br />
+（3）强制一致/平滑。这种方法在许多任务中被证明具有较好的效果。</p>
+<p>强制平滑方法只是使得模型对应较小的噪声不那么敏感。常用方法就是：对于一个样本，添加一些噪声（例如高斯噪声）然后强制让模型对于加噪和不加噪的数据的输出尽量的相似。直观而言就是一个好的模型，应该能够适应各种小的、不改变样本性质的扰动。通常由于扰动函数的不同会有各种不同的方案。</p>
+<p>本文在Sajjadi、
+Laine等人的研究的基础上，从有监督数据中学习扰动函数，从而得到最优的数据增强方法。良好的数据增强方法能够大大提高模型的结果，并且数据增强方法能应用于各领域。<strong>本文使用的优化方法是最小化增强数据与真实数据之间的KL散度</strong>。虽然有监督数据的数据增强取得了很多成功，但是大量的无监督数据使得UDA这种无监督数据增强方法拥有更广阔前景。</p>
+<p>主要贡献：<br />
+（1）提出一种TSA方法，该方法能够在无标签数据大于标签数据的时候防止过拟合。<br />
+（2）证明<strong>针对性的数据增强</strong>（如AutoAugment）效果明显优于无针对性的数据增强。<br />
+（3）验证了本文方法在NLP任务上（如Bert）上的有效性。<br />
+（4）在CV和NLP任务中，本文方法都表现优异。<br />
+（5）研究一种能应用于分类数据中有标签数据和无标签数据不匹配情况的方法（数据不平衡处理方法）。</p>
+<h1 id="内容">内容</h1>
+<h2 id="有监督数据增强">有监督数据增强</h2>
+<p>在保持标签相同（同一类别）的情况下，通过某种转换方法扩充出类似于真实数据的训练数据。简单而言就是，有一个样本<span
+class="math inline">\(x\)</span>，通过转换函数<span
+class="math inline">\(q(x)\)</span>生成新数据<span
+class="math inline">\(\hat{x}\)</span>，新旧数据有相同的数据标签<span
+class="math inline">\(y(\hat{x})=y(x)\)</span>。通常为了得到的增强数据与原始数据相似，使用的是最大似然估计方法。</p>
+<p>数据增强方法可以看成是从有标签数据中扩充出更多的有标签数据，然后用扩充数据进行模型训练。因此，扩充数据相对于原始数据必须是有效的变换（例如图片缩放对图片识别可能有效，图片旋转可能无效）。也因此，如何设计转换函数至关重要。</p>
+<p>目前，针对NLP任务的有监督数据增强方法已经取得了很大进展。虽然有成果，但是它通常被比喻成“蛋糕上的樱桃”，只是提高有限的性能，这是由于监督数据通常都是少量的。因此，本文研究了一种基于大量数据的无监督数据增强方法。</p>
+<h2 id="无监督数据增强">无监督数据增强</h2>
+<p>本文研究了一种利用无监督数据的强制平滑方法（类似VAT）。工作流程如下：<br />
+<img src="/images/UDA/UDA.png" width="90%"></p>
+<p>（1）监督学习部分，使用交叉熵损失函数，模型是<span
+class="math inline">\(p_\theta(y|x)\)</span>。<br />
+（2）无监督学习部分，使用强制平滑损失函数，对无标签数据进行数据增强，使增强前和增强后的数据分布越相近越好。增强前模型<span
+class="math inline">\(p_{\tilde{\theta}}(y|x)\)</span>，增强后模型<span
+class="math inline">\(p_\theta(y|\hat{x})\)</span>。<br />
+（3）最后，同时使用有标签和无标签数据，把二者模型结合起来，得到Final
+Loss。</p>
+<p>本文使用最小化<strong>增强后的无标签数据</strong>和<strong>增强前无标签数据</strong>的KL散度。公式如下：<br />
+<img src="/images/UDA/UDA_loss1.png" width="60%"></p>
+<p>为了同时使用带标签数据和无标签数据，作者在计算带标签数据时上加上交叉熵损失和权重<span
+class="math inline">\(\lambda\)</span>。<br />
+<img src="/images/UDA/UDA_loss2.png" width="40%"></p>
+<p>其中<span class="math inline">\(\it
+q(\hat{x}|x)\)</span>是数据增强变换，<span
+class="math inline">\(\tilde{\theta}\)</span>是当前参数<span
+class="math inline">\(\theta\)</span>的固定副本，表明梯度像Miyato等人所建议的那样，不是通过<span
+class="math inline">\(\tilde{\theta}\)</span>传播的。这里使用的数据增强与监督数据增强中使用的增强方法相同。由于数据增强耗时比较大，所以数据增强是离线生成的，单个原始样本会生成多个增强样本。</p>
+<p>在无监督学习时，使用了针对性的数据增强：<br />
+（1）<strong>Back-translation</strong>：回译能够在保证语义不变的情况下，生成多样的句式。实验证明，在QANet上，这种策略取得了良好的效果。因此作者在情感分类问题等数据集，如IMDb，Yelp-2，Yelp-5，Amazon-2，Amazon-5上采用了这种策略，同时，他们发现，句式的多样性比较有效性更重要。所以使用了<strong>RandAugument</strong>。<br />
+（2）<strong>RandAugument</strong>：随机抽样增强，加入噪声。采用随机抽样代替集束搜索策略（一种贪心策略）。具体而言，作者使用WMT14语料库来训练英语到法语和法语到英语的翻译模型，并对每个句子执行回译，而不是整个段落，因为WMT14中的并行数据是用于句子级翻译，而情感分类语料库中的输入类型是段落。<br />
+（3）<strong>TF-IDF word
+replacement</strong>：虽然回译能够很好的进行数据扩充，但是它并不能保证扩充的句子包含关键词。而对于某些任务，如DBPedia任务，它的目标是预测某些句子属于维基百科的哪个词条。因此关键字非常重要，本文研究了一种在保留TF-IDF高的关键字，用其他非关键字替代TF-IDF分数低的非关键字扩充方案，详细见论文附录B。<br />
+增强结果如图所示：<br />
+<img src="/images/UDA/trans.png" width="80%"></p>
+<p>当然，对CV任务用了<strong>AutoAugument</strong>：用强化学习来搜索图像增强的“最优”组合，其性能明显优于任何人工设计的优化方法。作者使用已发现的增强策略，在CIFAR-10，
+SVHN和ImageNet上进行了实验，并在CIFAR-10，SVHN上组合应用了Cutout技术。<br />
+增强结果如图所示：<br />
+<img src="/images/UDA/trans2.png" width="80%"></p>
+<h2
+id="数据增强在多样性和有效性上的平衡">数据增强在多样性和有效性上的平衡</h2>
+<p>虽然在一些非常优秀的数据增强方法中，能够得到很好的多样性和有效性。但是，由于多样性是通过改变原始数据得到的，所以，它存在改变数据类别的风险，所以，多样性和有效性是存在一定矛盾的。</p>
+<p>对于图像分类，AutoAugment算法在有监督的环境下，根据验证集的性能进行优化，从而自动找到多样性和有效性之间的最佳点。</p>
+<p>对于文本分类，作者调整随机抽样的强度。一方面，当强度为0时，随机抽样解码退化为贪婪方法，产生完全有效但完全相同的样本。另一方面，当作者使用1的强度时，随机抽样会产生非常不同但几乎不可读的样本。作者发现，设置Softmax强度为0.7、0.8或0.9的表现最好。</p>
+<h2 id="训练技巧">训练技巧</h2>
+<p>要介绍一些针对不同问题，不同场景下的训练技巧。</p>
+<p><strong>Training Signal
+Annealing（TSA）</strong>：针对标签数据与未标签数据不平衡时的场景。由于有大量的未标签数据需要UDA处理，所以需要一个较大模型，但是由于较大模型很容易在少量标签数据下过拟合，所以，提出了本方法用于解决该问题。<br />
+TSA原理就是在训练过程中，随着未标签数据的增加，逐步去除带标签数据，从而避免模型过拟合到带标签的训练数据。具体而言，就是在训练的<span
+class="math inline">\(t\)</span>时刻，设置一个阈值<span
+class="math inline">\(\eta_t\)</span>，当<span
+class="math inline">\(\frac{1}{k}\leqslant\eta_t\leqslant
+1\)</span>，其中<span
+class="math inline">\(k\)</span>是类别数。当某个标签计算的<span
+class="math inline">\(p_\theta(y^*|x)\)</span>大于阈值<span
+class="math inline">\(\eta_t\)</span>，就将该标签数据移除出计算损失的过程，而只计算miniBatch里面的其余数据。假定miniBatch样本记作B，那么该策略计算损失如下：<br />
+<img src="/images/UDA/TSA.png" width="40%"><br />
+过滤后的样本集合：<br />
+<img src="/images/UDA/TSA2.png" width="40%"></p>
+<p>阈值<span
+class="math inline">\(\eta_t\)</span>用于防止模型过拟合到标签数据。随着<span
+class="math inline">\(\eta_t\)</span>向1靠近，模型只能缓慢地从标注的实例中得到监督，大大缓解了过拟合问题。假设T是总训练步数，t是当前的训练步数。为了考虑未标记数据和标记数据的不同比率，有以下三种<span
+class="math inline">\(\eta_t\)</span>更新计算方式：<br />
+<img src="/images/UDA/TSA3.png" width="90%"></p>
+<p>对于数据量少，容易过拟合的情况，使用指数形式比较好。对于标签数据不容易过拟合的情况，比如标签数据比较多或者使用了有效的正则化手段时，使用对数形式会比较好。使用不同更新方式的效果：<br />
+<img src="/images/UDA/TSA4.png" width="50%"></p>
+<p><strong>Sharpening Predictions</strong><br />
+当标签数据很少时，未标签数据和预测的未标签数据分布会很平坦。因此，在计算KL散度时，主要贡献的部分来自于标签数据。例如在Imagenet任务中，使用10%标签数据下，未标签数据的分布明显比标签数据的分布更加平坦。而比较丰富的数据分布是比较有利于模型训练的，因此，提出以下三种锐化方案：<br />
+（1）基于置信度的mask：对模型预测效果不好的，预测的概率小于一定阈值的标签，不计算一致性损失。<br />
+（2）最小化熵：最小化熵就是使得预测的增广数据能够拥有一个较低的熵，因此，需要在计算损失时，加上熵的计算。<br />
+（3）Softmax控制：通过调整Softmax控制输出， <span
+class="math inline">\(p_{\tilde{\theta}}(y|x)\)</span>通过<span
+class="math inline">\(Softmax(l(x)/\tau)\)</span>计算，其中<span
+class="math inline">\(l(x)\)</span>表示结果逻辑分布概率，<span
+class="math inline">\(\tau\)</span>表示强度。<span
+class="math inline">\(\tau\)</span>越小，分布越锐化。</p>
+<p><strong>Domain-relevance Data Filtering</strong><br />
+通常，作者希望能够运用领域外的数据，因为它比较容易获取。但是，一般领域外的数据和领域内的数据不匹配。由于数据分布的不匹配，使用领域外的数据往往对模型是有负面影响的。为了获取与当前任务相关的域数据，本文采用一种通用的检测领域外数据的技术。作者用领域内的数据训练了一个模型，让后用它去评估领域外的数据，然后过滤掉置信度低的数据。具体说就是，对于分类任务，对所有领域外数据进行概率计算，只使用其中分类正确且概率高的数据。</p>
+<h2 id="实验结果">实验结果</h2>
+<p>本文对文本分类和视觉相关任务，运用UDA进行了实验。包括六项文本分类任务和三项图片分类任务。<br />
+### 文本分类<br />
+实验是基于Bert进行的，因为它在许多NLP任务中表现都很好。具体实验设置请看原始论文，实验结果如下：<br />
+<img src="/images/UDA/01.png" width="80%"></p>
+<p>实验结果表明，运用UDA后，基本都取得了较大的提高。同时，作者还实验了<strong>不同数量的标签</strong>对结果的影响，结果如下：<br />
+<img src="/images/UDA/02.png" width="80%"></p>
+<p>作者实验对比了UDA与半监督方法，结果显示，UDA结果明显更优。<br />
+<img src="/images/UDA/03.png" width="90%"></p>
+<p>同时，作者还对比实验了不同模型的情况：<br />
+<img src="/images/UDA/04.png" width="80%"></p>
+<h3 id="图像任务">图像任务</h3>
+<p>ImageNet之所以要单独拿出来，是因为它是一个很有挑战性的任务，而且数据量很大。作者使用10%标签数据和全数据分别做了对比（图片尺寸224）。<strong>10%标签数据</strong>，ImageNet对比实验结果：<br />
+<img src="/images/UDA/05.png" width="50%"></p>
+<p><strong>全数据</strong>，ImageNet对比实验结果：<br />
+<img src="/images/UDA/06.png" width="50%"></p>
+<p>作者做了<strong>使用不同训练策略</strong>下的情况，TSA对比实验结果：<br />
+<img src="/images/UDA/07.png" width="50%"></p>
+<p>最后，作者做了<strong>消融实验，对比不同策略的重要性</strong>。不同模块的消融实验结果：<br />
+<img src="/images/UDA/08.png" width="50%"></p>
+<h1 id="总结">总结</h1>
+<p>本文提供了一种无监督数据（无标签）数据增强方式，通过<strong>Back-translation</strong>、<strong>RandAugument</strong>、<strong>TF-IDF
+word
+replacement</strong>方法对无监督文本数据增强，使用<strong>AutoAugument</strong>对图像数据进行增强，最后使用KL散度使新生成的样本数据和原样本数据分布一致，最后结合有监督数据（有标签）形成最终的损失函数，通过<strong>TSA</strong>处理了无标签数据大于有标签数据的过拟合问题。</p>
+<p>本文重要的是使用了针对性的数据增强，并且效果很好，不同于传统的高斯噪声、dropout噪声、或者简单的仿射变换，这种针对性的增强能生成更有效的噪声。并且对扰动的有效性和多样性进行了平衡。</p>
+<p>这种针对性的思想值得学习，并且考虑分布影响，结合可以利用的增强方式，比如EDA中提到的同义词替换（synonym
+replacement）和随机插入（random Insertion，RI）。</p>
+<h1 id="参考文献">参考文献</h1>
+<p><span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE5MDQuMTI4NDh2Mi5wZGY=">Unsupervised Data
+Augmentation for Consistency Training<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE5MDQuMTI4NDgucGRmP3JlZj1oYWNrZXJub29uLmNvbQ==">Unsupervised
+Data Augmentation for Consistency Training<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE5MDEuMTExOTYucGRm">EDA: Easy Data
+Augmentation Techniques for Boosting Performance on Text Classification
+Tasks<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9zZXZlbm9sZC5naXRodWIuaW8vMjAyMC8wNi90ZXh0X0VEQS8=">自然语言处理之文本数据增强<i class="fa fa-external-link-alt"></i></span><br />
+Github：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dvb2dsZS1yZXNlYXJjaC91ZGE=">uda<i class="fa fa-external-link-alt"></i></span><br />
+Github：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3poYW5sYW9iYW4vRURBX05MUF9mb3JfQ2hpbmVzZQ==">EDA_NLP_for_Chinese<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly93d3cuamlhbnNodS5jb20vcC81ZDRlMThiOGRlMDQ=">谷歌惊艳的无监督数据增强方法--Unsupervised
+Data Augmentation for Consistency Training<i class="fa fa-external-link-alt"></i></span></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>SoundMemories
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://soundmemories.github.io/2021/06/20/Paper/01.Unsupervised%20Data%20Augmentation%20for%20Consistency%20Training/" title="Unsupervised Data Augmentation for Consistency Training">https://soundmemories.github.io/2021/06/20/Paper/01.Unsupervised Data Augmentation for Consistency Training/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Paper/" rel="tag"><i class="fa fa-tag"></i> Paper</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/06/19/NLP/00.NLP%E7%AE%80%E4%BB%8B/" rel="prev" title="NLP简介">
+                  <i class="fa fa-chevron-left"></i> NLP简介
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/06/20/NLP/01.%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E5%92%8C%E8%AF%8D%E5%90%91%E9%87%8F/" rel="next" title="语言模型和词向量">
+                  语言模型和词向量 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">SoundMemories</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"neutral"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.min.js","integrity":"sha256-JFptYy4KzJ5OQP+Q9fubNf3cxpPPmZKqUOovyEONKrQ="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://soundmemories.github.io/2021/06/20/Paper/01.Unsupervised%20Data%20Augmentation%20for%20Consistency%20Training/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.1","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="高阶函数 高阶函数定义 First Class Object： 函数在Python中是一等公民； 函数是对象，可调用的对象； 函数可以作为普通变量、参数、返回值等； 高阶函数： 数学概念：y &#x3D; g(f(x)) 高阶函数应当是至少满足下面一个条件：  接收一个或者多个函数作为参数；  输出一个函数；">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python-高阶函数、装饰器、functools源码">
+<meta property="og:url" content="https://soundmemories.github.io/2019/01/21/Python/10.Python-%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0%E3%80%81%E8%A3%85%E9%A5%B0%E5%99%A8%E3%80%81functools%E6%BA%90%E7%A0%81/index.html">
+<meta property="og:site_name" content="SoundMemories">
+<meta property="og:description" content="高阶函数 高阶函数定义 First Class Object： 函数在Python中是一等公民； 函数是对象，可调用的对象； 函数可以作为普通变量、参数、返回值等； 高阶函数： 数学概念：y &#x3D; g(f(x)) 高阶函数应当是至少满足下面一个条件：  接收一个或者多个函数作为参数；  输出一个函数；">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-01-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-05-29T15:49:26.023Z">
+<meta property="article:author" content="SoundMemories">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://soundmemories.github.io/2019/01/21/Python/10.Python-%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0%E3%80%81%E8%A3%85%E9%A5%B0%E5%99%A8%E3%80%81functools%E6%BA%90%E7%A0%81/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://soundmemories.github.io/2019/01/21/Python/10.Python-%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0%E3%80%81%E8%A3%85%E9%A5%B0%E5%99%A8%E3%80%81functools%E6%BA%90%E7%A0%81/","path":"2019/01/21/Python/10.Python-高阶函数、装饰器、functools源码/","title":"Python-高阶函数、装饰器、functools源码"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Python-高阶函数、装饰器、functools源码 | SoundMemories</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">SoundMemories</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">127</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">高阶函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text">高阶函数定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.</span> <span class="nav-text">自定义高阶函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%BB%BA%E5%87%BD%E6%95%B0-%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.</span> <span class="nav-text">内建函数-高阶函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%AF%E9%87%8C%E5%8C%96currying"><span class="nav-number">1.4.</span> <span class="nav-text">柯里化Currying</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">装饰器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A3%85%E9%A5%B0%E5%99%A8%E6%97%A0%E5%8F%82"><span class="nav-number">2.1.</span> <span class="nav-text">装饰器（无参）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A3%85%E9%A5%B0%E5%99%A8%E6%9C%89%E5%8F%82"><span class="nav-number">2.2.</span> <span class="nav-text">装饰器（有参）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%81%8F%E5%87%BD%E6%95%B0"><span class="nav-number">2.3.</span> <span class="nav-text">偏函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#functools%E6%BA%90%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text">functools源码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#functools.wraps"><span class="nav-number">3.1.</span> <span class="nav-text">functools.wraps()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#functools.reduce"><span class="nav-number">3.2.</span> <span class="nav-text">functools.reduce()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#functools.partial"><span class="nav-number">3.3.</span> <span class="nav-text">functools.partial()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#functools.lru_cache"><span class="nav-number">3.4.</span> <span class="nav-text">functools.lru_cache()</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SoundMemories"
+      src="/images/avstar.png">
+  <p class="site-author-name" itemprop="name">SoundMemories</p>
+  <div class="site-description" itemprop="description">今日事，今日毕</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NvdW5kbWVtb3JpZXM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;soundmemories"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNvdW5kbWVtb3JpZXNAMTYzLmNvbQ==" title="E-Mail → mailto:soundmemories@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+        <div class="pjax">
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2019/01/21/Python/10.Python-%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0%E3%80%81%E8%A3%85%E9%A5%B0%E5%99%A8%E3%80%81functools%E6%BA%90%E7%A0%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Python-高阶函数、装饰器、functools源码 | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python-高阶函数、装饰器、functools源码
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-01-21 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-21T00:00:00+08:00">2019-01-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>22 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="高阶函数">高阶函数</h2>
+<h3 id="高阶函数定义">高阶函数定义</h3>
+<p>First Class Object：<br />
+函数在Python中是一等公民；<br />
+函数是对象，可调用的对象；<br />
+函数可以作为普通变量、参数、返回值等；</p>
+<p>高阶函数：<br />
+数学概念：<code>y = g(f(x))</code><br />
+高阶函数应当是至少满足下面一个条件：</p>
+<ol type="1">
+<li>接收一个或者多个函数作为参数；<br />
+</li>
+<li>输出一个函数；<br />
+<span id="more"></span><br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">counter</span>(<span class="params">base</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">inc</span>(<span class="params">step=<span class="number">1</span></span>):</span><br><span class="line">        <span class="keyword">nonlocal</span> base</span><br><span class="line">        base += step</span><br><span class="line">        <span class="keyword">return</span> base</span><br><span class="line">    <span class="keyword">return</span> inc<span class="comment">#返回的是inc函数名</span></span><br><span class="line"><span class="comment">#counter就是高阶函数，它满足了返回一个函数的条件。</span></span><br></pre></td></tr></table></figure><br />
+问：<code>f1 = counter(5)</code> 和
+<code>f2 = counter(5)</code>，请问f1和f2相等吗？<br />
+答：不相等，f1和f2返回的都是inc函数，而函数给不同变量赋值都是重新生成的，没有关联，所以不相等，使用<code>==</code>和<code>is</code>判断都是False。<br />
+提示： <code>==</code> 先比较地址，不同再比较内容；<code>is</code>
+只比较地址；</li>
+</ol>
+<p>问：<code>f1 = counter(1)</code>然后多次执行<code>f1(1)</code>，那么多次执行时f1调用的函数还是重新生成的吗？<br />
+答：不是，因为f1记住了赋值时生成的counter函数，而f1并没有改变索引或者被清除，所以每次调用时都是上次的counter函数。</p>
+<h3 id="自定义高阶函数">自定义高阶函数</h3>
+<p>以前使用过内置的<code>sorted</code>函数，现使用高阶函数实现内置函数<code>sorted()</code>的功能：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">sort</span>(<span class="params">iterable,*,key=<span class="literal">None</span>,reverse=<span class="literal">False</span></span>):</span><br><span class="line">    newlist = []</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> iterable:</span><br><span class="line">        kx = key(x) <span class="keyword">if</span> key <span class="keyword">else</span> x<span class="comment">#实现key</span></span><br><span class="line">        <span class="keyword">for</span> i,y <span class="keyword">in</span> <span class="built_in">enumerate</span>(newlist):</span><br><span class="line">            ky = key(y) <span class="keyword">if</span> key <span class="keyword">else</span> y<span class="comment">#实现key</span></span><br><span class="line">            flag = kx &gt; ky <span class="keyword">if</span> reverse <span class="keyword">else</span> kx &lt; ky<span class="comment">#实现reverse</span></span><br><span class="line">            <span class="keyword">if</span> flag:<span class="comment">#大的插入最前面，就地插入(降序)；如果换成x &lt; y就是(升序)排列</span></span><br><span class="line">                newlist.insert(i,x)<span class="comment">#在i位置插入</span></span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">else</span>:<span class="comment">#不大于，说明是最小的，尾部追加</span></span><br><span class="line">                newlist.append(x)</span><br><span class="line">    <span class="keyword">return</span> newlist<span class="comment">#返回新的列表</span></span><br><span class="line"><span class="comment">#调用：</span></span><br><span class="line"><span class="built_in">print</span>(sort([<span class="number">1</span>,<span class="number">2</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;1&#x27;</span>],reverse=<span class="literal">False</span>,key=<span class="built_in">str</span>))</span><br></pre></td></tr></table></figure></p>
+<h3 id="内建函数-高阶函数">内建函数-高阶函数</h3>
+<p><code>sorted()</code>：排序函数，对所有可迭代的对象进行排序操作。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sorted</span>(iterable, *, key=<span class="literal">None</span>, reverse=<span class="literal">False</span>)-&gt;<span class="built_in">list</span><span class="comment">#定义</span></span><br><span class="line"><span class="comment">#立即返回一个新的列表，对一个可迭代对象的所有元素排序，排序规则为key定义的函数，reverse表示是否排序翻转；</span></span><br><span class="line"><span class="comment">#list.sort(*, key=None, reverse=False)#是就地修改，不返回一个新的列表；</span></span><br></pre></td></tr></table></figure><br />
+filter(
+)过滤数据函数：函数用于过滤序列，过滤掉不符合条件的元素，返回由符合条件元素组成的<code>迭代器</code>。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">filter</span>(function <span class="keyword">or</span> <span class="literal">None</span>, iterable)<span class="comment">#定义</span></span><br><span class="line"><span class="comment">#过滤可迭代对象的的元素，返回一个迭代器；</span></span><br><span class="line"><span class="comment">#function是有一个参数的函数，function(item)应返回bool值，True输出，False过滤掉；</span></span><br><span class="line"><span class="comment">#如果是None，则将元素等效bool值，此时只有0是False，0被过滤掉；</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">list</span>(<span class="built_in">filter</span>(<span class="keyword">lambda</span> x:x%<span class="number">3</span>==<span class="number">0</span>,<span class="built_in">range</span>(<span class="number">5</span>)))<span class="comment">#通过函数返回False的元素过滤掉；</span></span><br><span class="line"><span class="comment">#[0, 3]</span></span><br><span class="line"><span class="built_in">list</span>(<span class="built_in">filter</span>(<span class="literal">None</span>,<span class="built_in">range</span>(<span class="number">3</span>)))<span class="comment">#0被过滤掉</span></span><br><span class="line"><span class="comment">#[1, 2, 3, 4]</span></span><br></pre></td></tr></table></figure><br />
+<code>map( )</code>：映射函数，根据提供的函数对指定可迭代对象做映射。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">map</span>(function, *iterable)-&gt;<span class="built_in">map</span> <span class="built_in">object</span><span class="comment">#定义</span></span><br><span class="line"><span class="comment">#对多个可迭代对象的元素按照指定的函数进行映射，返回一个迭代器</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">dict</span>(<span class="built_in">map</span>(<span class="keyword">lambda</span> x: [x,x+<span class="number">1</span>],<span class="built_in">range</span>(<span class="number">3</span>)))</span><br><span class="line"><span class="comment">#&#123;0: 1, 1: 2, 2: 3&#125;</span></span><br><span class="line"><span class="built_in">dict</span>(<span class="built_in">map</span>(<span class="keyword">lambda</span> x: (x%<span class="number">5</span>,x),<span class="built_in">range</span>(<span class="number">500</span>)))</span><br><span class="line"><span class="comment">#&#123;0: 495, 1: 496, 2: 497, 3: 498, 4: 499&#125;</span></span><br><span class="line"><span class="built_in">dict</span>(<span class="built_in">map</span>(<span class="keyword">lambda</span> x,y: (x,y),<span class="string">&#x27;abcde&#x27;</span>,<span class="built_in">range</span>(<span class="number">10</span>)))</span><br><span class="line"><span class="comment">#&#123;&#x27;a&#x27;: 0, &#x27;b&#x27;: 1, &#x27;c&#x27;: 2, &#x27;d&#x27;: 3, &#x27;e&#x27;: 4&#125;</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="柯里化currying">柯里化Currying</h3>
+<p>柯里化：<br />
+1.
+指得是将原来接受的两个参数的函数变成新的接受一个参数的函数的过程。新的函数返回一个以原有第二个参数为参数的函数。<br />
+2.
+数学公式：将<code>z = f(x,y)</code>转化成<code>z = f(x)(y)</code>的形式。</p>
+<p>举个简单的例子，将加法函数add柯里化：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#未柯里化</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">x,y</span>): <span class="comment">#z = add(x,y)</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"><span class="comment">#柯里化</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">x</span>): <span class="comment">#add(x)返回_add</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_add</span>(<span class="params">y</span>):</span><br><span class="line">        <span class="keyword">return</span> x + y <span class="comment">#_add函数使用x形成闭包</span></span><br><span class="line">    <span class="keyword">return</span> _add <span class="comment">#add(x)-&gt;_add</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#柯里化转化过程：add(x,y)-&gt;add(x)(y)</span></span><br><span class="line"><span class="comment">#柯里化后函数执行过程：add(x)(y)-&gt;_add(y)-&gt;return x + y</span></span><br></pre></td></tr></table></figure><br />
+&gt;柯里化就是把1个函数转化成2个函数执行，这在后面装饰器中会用到！</p>
+<h2 id="装饰器">装饰器</h2>
+<p>顾名思义，从字面意思就可以理解，它是用来"装饰"Python的工具，使得代码更具有Python简洁的风格。换句话说，它是一种函数的函数，因为装饰器传入的参数就是一个函数，然后通过实现各种功能来对这个函数的功能进行增强。</p>
+<p>装饰器最大的优势是用于解决重复性的操作，其主要使用的场景有如下几个：<br />
+（1）计算函数运行时间。<br />
+（2）给函数打日志。<br />
+（3）类型检查。<br />
+当然，如果遇到其他重复操作的场景也可以类比使用装饰器。</p>
+<h3 id="装饰器无参">装饰器（无参）</h3>
+<p>装饰器（无参）<br />
+需求：一个加法函数，想增强它的功能，使其能够输出被调用过以及调用的参数信息？<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">x, y</span>): <span class="comment">#未增强</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">x, y</span>): <span class="comment">#增强</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;call add, x + y&quot;</span>) <span class="comment">#日志输出到控制台</span></span><br><span class="line"><span class="keyword">return</span> x + y</span><br></pre></td></tr></table></figure><br />
+上面的加法函数是完成了需求，但是有以下的缺点：<br />
+1. 打印是一个功能，这条语句和add函数耦合太高；<br />
+2.
+加法函数属于业务功能，而输出信息的功能，属于非业务功能代码，不该放在业务函数加法中；</p>
+<p>如何分离呢？想一想使用自定义函数进行分离：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">x, y</span>): <span class="comment">#未增强</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">logger</span>(<span class="params">fn,*args,**kwargs</span>):<span class="comment">#fn接收函数名</span></span><br><span class="line">    <span class="comment">#此处省略前增强信息</span></span><br><span class="line">    x = fn(*args,**kwargs)</span><br><span class="line">    <span class="comment">#此处省略后增强信息</span></span><br><span class="line">    <span class="keyword">return</span> x</span><br><span class="line"><span class="built_in">print</span>(logger(add,<span class="number">5</span>,y=<span class="number">50</span>))<span class="comment">#调用</span></span><br></pre></td></tr></table></figure><br />
+上面logger函数解决了增强和传参的问题，那能不能进一步优化呢？可以使用柯里化解决：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">x, y</span>): <span class="comment">#未增强</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">logger</span>(<span class="params">fn</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args,**kwargs</span>):</span><br><span class="line">        <span class="comment">#此处省略前增强信息</span></span><br><span class="line">        x = fn(*args,**kwargs)</span><br><span class="line">        <span class="comment">#此处省略后增强信息</span></span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"><span class="built_in">print</span>(logger(add)(<span class="number">5</span>,y=<span class="number">50</span>))<span class="comment">#调用</span></span><br></pre></td></tr></table></figure><br />
+对于上面的调用，可不可以换一种写法呢？<br />
+先去掉print函数，对<code>logger(add)(5,y=50)</code>这一部分进行变形：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">logger(add)(<span class="number">5</span>,y=<span class="number">50</span>)<span class="comment">#将此句转换成下面两句</span></span><br><span class="line"></span><br><span class="line">add = logger(add)<span class="comment">#等价于 add = wrapper</span></span><br><span class="line">add(<span class="number">5</span>,y=<span class="number">50</span>)<span class="comment">#等价于 wrapper(5,y=50)</span></span><br></pre></td></tr></table></figure><br />
+&gt;注意fn记住了原先的add函数，wrapper记住了fn，所以原add成了wrapper的属性保存了下来，直到wrapper的引用计数清零才消失！而只要使用新的add函数就会一直记得wrapper函数。</p>
+<p>在Python中提供了装饰器方法，这是一个语法糖，它简化了上面变形后的2句话使用。具体使用是：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">logger</span>(<span class="params">fn</span>):<span class="comment">#logger函数放在@logger前面</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args,**kwargs</span>):</span><br><span class="line">        <span class="comment">#此处省略前增强信息</span></span><br><span class="line">        x = fn(*args,**kwargs)</span><br><span class="line">        <span class="comment">#此处省略后增强信息</span></span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="meta">@logger </span><span class="comment">#等价add = logger(add)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">x, y</span>):</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br></pre></td></tr></table></figure><br />
+&gt;上面示例中的<code>@logger</code>就是装饰器语法，它简化了代码，把旧的add函数装饰后形成新的add函数。</p>
+<p>上面的过程演示了装饰器（无参）的演化过程，这里使用的是无参语法，暂时总结下它的特点：<br />
+1. 它是一个函数；<br />
+2. 函数作为它的形参。无参装饰器实际上就是一个单形参函数；<br />
+3. 返回值也是一个函数；<br />
+3. 可以使用@functionname方式，简化调用；<br />
+注：此处装饰器的定义只是就目前所学的总结，并不准确，只是方便理解</p>
+<p>装饰器和高阶函数：装饰器可以是高阶函数，但装饰器是对传入函数的功能的装饰（功能"增强"）。</p>
+<p>如何理解装饰器？<br />
+把原函数比作一个手机，前置功能增强相当于贴膜，后置功能增强相当于手机壳，装饰器函数就相当于装手机的盒子。</p>
+<h3 id="装饰器有参">装饰器（有参）</h3>
+<p>在此之前先来了解下Python文档字符串：<br />
+1. 是在函数开头，用来解释其函数的字符串，相当于函数的帮助文档；<br />
+2. Python文档字符串叫Documentation Strings；<br />
+3. 在函数语句块的第一行，且习惯是多行的文本，所以多使用三引号；<br />
+4. 惯例是首字母大写，第一行写概述，空一行，第三行写详细描述；<br />
+5. 可以使用特殊属性__doc__访问这个文档；</p>
+<p>举一个示例：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">x,y</span>):</span><br><span class="line"><span class="string">&quot;&quot;&quot;This is a function of addition&quot;&quot;&quot;</span><span class="comment">#此句就是文档字符串doc</span></span><br><span class="line">a = x+y</span><br><span class="line"><span class="keyword">return</span> x + y</span><br><span class="line"><span class="comment">#查看doc：</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">help</span>(add))<span class="comment">#help查看</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;name=&#123;&#125;\ndoc=&#123;&#125;&quot;</span>.<span class="built_in">format</span>(add.__name__, add.__doc__))<span class="comment">#直接查看add函数名和doc</span></span><br></pre></td></tr></table></figure><br />
+接下来我们看看上次使用的装饰器函数，这里会出现一个副作用：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">logger</span>(<span class="params">fn</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args,**kwargs</span>):</span><br><span class="line">        <span class="string">&#x27;I am wrapper&#x27;</span></span><br><span class="line">        <span class="comment">#此处省略前增强信息</span></span><br><span class="line">        x = fn(*args,**kwargs)</span><br><span class="line">        <span class="comment">#此处省略后增强信息</span></span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="meta">@logger </span><span class="comment">#等价add = logger(add)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">x, y</span>):</span><br><span class="line">    <span class="string">&#x27;I am add&#x27;</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"><span class="comment">#查看add的doc和name属性：</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;name=&#123;&#125;,doc=&#123;&#125;&#x27;</span>.<span class="built_in">format</span>(add.__name__,add.__doc__))</span><br><span class="line"><span class="comment">#输出：name=wrapper,doc=I am wrapper</span></span><br></pre></td></tr></table></figure><br />
+现在能看出一个问题：在装饰add后，add本质调用的是wrapper函数，所以查看add的属性返回的是wrapper的属性。现在原函数对象的属性都被替换了，要使用装饰器且被封装前的属性也追加过去，如何解决？</p>
+<p>先写一个自定义函数把旧函数属性赋值给新函数的属性上：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">copy_properties</span>(<span class="params">src, dst</span>): <span class="comment">#f(x,y)的形式</span></span><br><span class="line">    dst.__name__ = src.__name__</span><br><span class="line">    dst.__doc__ = src.__doc__</span><br><span class="line"></span><br><span class="line"><span class="comment">#把上面函数柯里化下：</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">copy_properties</span>(<span class="params">src</span>): <span class="comment">#f(x)(y)的形式</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_copy</span>(<span class="params">dst</span>):</span><br><span class="line">        dst.__name__ = src.__name__</span><br><span class="line">        dst.__doc__ = src.__doc__</span><br><span class="line">        <span class="keyword">return</span> dst</span><br><span class="line">    <span class="keyword">return</span> _copy</span><br></pre></td></tr></table></figure><br />
+1. 通过copy_properties函数将被包装函数的属性覆盖掉包装函数；<br />
+2. 凡是被装饰的函数都需要复制这些属性，这个函数很通用；<br />
+3. 可以将复制属性的函数构建成装饰器函数，带参装饰器；</p>
+<p>现在可以使用装饰器语法把copy_properties装饰在旧函数上：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">copy_properties</span>(<span class="params">src</span>): <span class="comment">#f(x)(y)的形式</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_copy</span>(<span class="params">dst</span>):</span><br><span class="line">        dst.__name__ = src.__name__</span><br><span class="line">        dst.__doc__ = src.__doc__</span><br><span class="line">        <span class="keyword">return</span> dst</span><br><span class="line">    <span class="keyword">return</span> _copy</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">logger</span>(<span class="params">fn</span>):</span><br><span class="line"><span class="meta">    @copy_properties(<span class="params">fn</span>)</span><span class="comment">#等价于 wrapper = copy_properties(fn)(wrapper)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args,**kwargs</span>):</span><br><span class="line">        <span class="string">&#x27;I am wrapper&#x27;</span></span><br><span class="line">        <span class="comment">#此处省略前增强信息</span></span><br><span class="line">        x = fn(*args,**kwargs)</span><br><span class="line">        <span class="comment">#此处省略后增强信息</span></span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="meta">@logger </span><span class="comment">#等价add = logger(add)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">x, y</span>):</span><br><span class="line">    <span class="string">&#x27;I am add&#x27;</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"><span class="comment">#查看add的doc和name属性：</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;name=&#123;&#125;,doc=&#123;&#125;&#x27;</span>.<span class="built_in">format</span>(add.__name__,add.__doc__))</span><br><span class="line"><span class="comment">#输出：name=add,doc=I am add   </span></span><br></pre></td></tr></table></figure><br />
+上面例子中使用的装饰器（带参）类型，传入的是一个函数，返回的也是一个函数，只是在copy_properties中装饰了一下新函数wrapper，使用了旧函数fn的一些属性。<br />
+我们在logger函数下面加上copy_properties装饰器，把传入的fn函数属性装饰到wrapper上面了，这样使用新fn函数感觉和旧fn函数一样的啦！</p>
+<p>现在把add函数功能再加强些：<br />
+需求：获取函数的执行时长，对时长超过阈值的函数记录一下！<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">copy_properties</span>(<span class="params">src</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_copy</span>(<span class="params">dst</span>):</span><br><span class="line">        dst.__name__ = src.__name__</span><br><span class="line">        dst.__doc__ = src.__doc__</span><br><span class="line">        <span class="keyword">return</span> dst</span><br><span class="line">    <span class="keyword">return</span> _copy</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">logger</span>(<span class="params">duration</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_logger</span>(<span class="params">fn</span>):</span><br><span class="line"><span class="meta">        @copy_properties(<span class="params">fn</span>)</span><span class="comment">#等价于 wrapper = copy_properties(fn)(wrapper)</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args,**kwargs</span>):</span><br><span class="line">            <span class="string">&#x27;I am wrapper&#x27;</span></span><br><span class="line">            start = datetime.datetime.now()<span class="comment">#记录起始时间</span></span><br><span class="line">            x = fn(*args,**kwargs)</span><br><span class="line">            delta = (datetime.datetime.now() - start).total_seconds()<span class="comment">#计算时间差</span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;so slow&#x27;</span>) <span class="keyword">if</span> delta &gt; duration <span class="keyword">else</span> <span class="built_in">print</span>(<span class="string">&#x27;so fast&#x27;</span>)<span class="comment">#阈值处理</span></span><br><span class="line">            <span class="keyword">return</span> x</span><br><span class="line">        <span class="keyword">return</span> wrapper</span><br><span class="line">    <span class="keyword">return</span> _logger</span><br><span class="line"></span><br><span class="line"><span class="meta">@logger(<span class="params"><span class="number">5</span></span>) </span><span class="comment">#等价add = logger(5)(add)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">x, y</span>):</span><br><span class="line">    <span class="string">&#x27;I am add&#x27;</span></span><br><span class="line">    time.sleep(<span class="number">3</span>)<span class="comment">#人为增加函数执行时间，便于测试</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"><span class="built_in">print</span>(add(<span class="number">5</span>,<span class="number">6</span>))<span class="comment">#计算，调time函数测试阈值处理</span></span><br></pre></td></tr></table></figure><br />
+接下来再优化下阈值处理，将记录的功能提取出来，这样就可以通过外部提供的函数来灵活的控制输出：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#提取记录功能，使用匿名函数作为func的默认值：</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">logger</span>(<span class="params">duration,func = <span class="keyword">lambda</span> name,delta:<span class="built_in">print</span>(<span class="params"><span class="string">&quot;&#123;&#125;took&#123;&#125;s&quot;</span>.<span class="built_in">format</span>(<span class="params">name,delta</span>)</span>)</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_logger</span>(<span class="params">fn</span>):</span><br><span class="line"><span class="meta">        @copy_properties(<span class="params">fn</span>)</span><span class="comment">#等价于 wrapper = copy_properties(fn)(wrapper)</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args,**kwargs</span>):</span><br><span class="line">            <span class="string">&#x27;I am wrapper&#x27;</span></span><br><span class="line">            start = datetime.datetime.now()<span class="comment">#记录起始时间</span></span><br><span class="line">            x = fn(*args,**kwargs)</span><br><span class="line">            delta = (datetime.datetime.now() - start).total_seconds()<span class="comment">#计算时间差</span></span><br><span class="line">            <span class="keyword">if</span> delta &gt; duration:<span class="comment">#如果超出阈值，使用记录函数输出信息</span></span><br><span class="line">                func(fn.__name__,delta)</span><br><span class="line">            <span class="keyword">return</span> x</span><br><span class="line">        <span class="keyword">return</span> wrapper</span><br><span class="line">    <span class="keyword">return</span> _logger</span><br><span class="line"><span class="meta">@logger(<span class="params"><span class="number">5</span></span>)</span><span class="comment">#在5后面对func传参，传一个lambda函数来改变记录功能，灵活使用记录功能</span></span><br></pre></td></tr></table></figure><br />
+总结下带参装饰器：<br />
+1. 它是一个函数；<br />
+2. 函数作为它的形参；<br />
+3. 返回值是一个不带参的装饰器函数；<br />
+4. 使用<code>@functionname(参数列表)</code>方式调用；<br />
+5. 可以看做在装饰器外层又加了一层函数；</p>
+<h3 id="偏函数">偏函数</h3>
+<p>通过设定参数的默认值，降低函数调用的难度。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> partial</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">student_info</span>(<span class="params">name, age, city</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;我的名字叫<span class="subst">&#123;name&#125;</span>, 今年<span class="subst">&#123;age&#125;</span>岁，来自<span class="subst">&#123;city&#125;</span>&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过偏函数设定了city默认值为”北京“</span></span><br><span class="line">student_info_beijing = partial(student_info, city=<span class="string">&#x27;北京&#x27;</span>)</span><br><span class="line"></span><br><span class="line">student_info_beijing(<span class="string">&#x27;Molly&#x27;</span>,<span class="number">18</span>)</span><br><span class="line">student_info_beijing(<span class="string">&#x27;Molly&#x27;</span>,<span class="number">18</span>, city=<span class="string">&#x27;上海&#x27;</span>)</span><br></pre></td></tr></table></figure></p>
+<h2 id="functools源码">functools源码</h2>
+<h3 id="functools.wraps">functools.wraps()</h3>
+<p>还记得前面对add函数做的属性包装吗？Python中functools模块有这样的函数满足我们：<br />
+<code>functools.update_wrapper(wrapper, wrapped, assigned=WRAPPER_ASSIGNMENTS,updated=WRAPPER_UPDATES)</code>
+我们来看一下.update_wrapper()的部分原码：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">WRAPPER_ASSIGNMENTS = (<span class="string">&#x27;__module__&#x27;</span>, <span class="string">&#x27;__name__&#x27;</span>, <span class="string">&#x27;__qualname__&#x27;</span>, <span class="string">&#x27;__doc__&#x27;</span>,</span><br><span class="line">                       <span class="string">&#x27;__annotations__&#x27;</span>)</span><br><span class="line">WRAPPER_UPDATES = (<span class="string">&#x27;__dict__&#x27;</span>,)</span><br></pre></td></tr></table></figure><br />
+1. 类似copy_properties功能；<br />
+2. wrapper：包装函数、被更新者； wrapped：被包装函数、数据源；<br />
+3.
+元组WRAPPER_ASSIGNMENTS中是要被覆盖的属性，包括：<code>__module__</code>模块名，
+<code>__name__</code>名称， <code>__qualname__</code>限定名，
+<code>__doc__</code>文档， <code>__annotations__</code>参数注解；<br />
+4. 元组WRAPPER_UPDATES中是要被更新的属性，
+<code>__dict__</code>属性字典；<br />
+5.
+wrapper增加一个<code>__wrapped__</code>属性，保留着wrapped函数，不让wrapped函数引用计数为零；</p>
+<p>使用functools模块再进行优化：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> functools<span class="comment">#引用functools模块</span></span><br><span class="line"><span class="comment">#对核心部分的改变：</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">logger</span>(<span class="params">duration,func = <span class="keyword">lambda</span> name,delta:<span class="built_in">print</span>(<span class="params"><span class="string">&quot;&#123;&#125;took&#123;&#125;s&quot;</span>.<span class="built_in">format</span>(<span class="params">name,delta</span>)</span>)</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_logger</span>(<span class="params">fn</span>):</span><br><span class="line">        <span class="comment">#@copy_properties(fn)</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args,**kwargs</span>):</span><br><span class="line">            <span class="string">&#x27;I am wrapper&#x27;</span></span><br><span class="line">            start = datetime.datetime.now()</span><br><span class="line">            x = fn(*args,**kwargs)</span><br><span class="line">            delta = (datetime.datetime.now() - start).total_seconds()</span><br><span class="line">            <span class="keyword">if</span> delta &gt; duration:</span><br><span class="line">                func(fn.__name__,delta)</span><br><span class="line">            <span class="keyword">return</span> x</span><br><span class="line">        <span class="keyword">return</span> functools.update_wrapper(wrapper,fn)<span class="comment">#使用functools模块中的函数替代@copy_properties(fn)</span></span><br><span class="line">    <span class="keyword">return</span> _logger</span><br><span class="line"><span class="built_in">print</span>(add(<span class="number">5</span>, <span class="number">6</span>), add.__name__, add.__doc__, sep=<span class="string">&#x27;\n&#x27;</span>)<span class="comment">#查看add属性</span></span><br></pre></td></tr></table></figure><br />
+<code>functools.update_wrapper()</code>函数实现了我们的属性转换，甚至比自己写的更加全面，但函数使用并不简洁，Python中为此提供了装饰器用法：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> functools<span class="comment">#引用functools模块</span></span><br><span class="line"><span class="comment">#对核心部分的改变：</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">logger</span>(<span class="params">duration,func = <span class="keyword">lambda</span> name,delta:<span class="built_in">print</span>(<span class="params"><span class="string">&quot;&#123;&#125;took&#123;&#125;s&quot;</span>.<span class="built_in">format</span>(<span class="params">name,delta</span>)</span>)</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_logger</span>(<span class="params">fn</span>):</span><br><span class="line"><span class="meta">        @functools.wraps(<span class="params">fn</span>)</span><span class="comment">#等价于 wrapper = functools.wraps(fn)(wrapper)</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args,**kwargs</span>):</span><br><span class="line">            <span class="string">&#x27;I am wrapper&#x27;</span></span><br><span class="line">            start = datetime.datetime.now()</span><br><span class="line">            x = fn(*args,**kwargs)</span><br><span class="line">            delta = (datetime.datetime.now() - start).total_seconds()</span><br><span class="line">            <span class="keyword">if</span> delta &gt; duration:</span><br><span class="line">                func(fn.__name__,delta)</span><br><span class="line">            <span class="keyword">return</span> x</span><br><span class="line">        <span class="keyword">return</span> wrapper</span><br><span class="line">    <span class="keyword">return</span> _logger</span><br><span class="line"><span class="built_in">print</span>(add(<span class="number">5</span>, <span class="number">6</span>), add.__name__, add.__doc__, sep=<span class="string">&#x27;\n&#x27;</span>)<span class="comment">#查看add属性</span></span><br></pre></td></tr></table></figure><br />
+上面的<code>@functools.wraps()</code>是我们经常使用的，如果前面的不太理解，只需要记住这个即可。<br />
+看一下wraps()的部分原码：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">wraps</span>(<span class="params">wrapped,</span></span><br><span class="line"><span class="params">          assigned = WRAPPER_ASSIGNMENTS,</span></span><br><span class="line"><span class="params">          updated = WRAPPER_UPDATES</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Decorator factory to apply update_wrapper() to a wrapper function</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">       Returns a decorator that invokes update_wrapper() with the decorated</span></span><br><span class="line"><span class="string">       function as the wrapper argument and the arguments to wraps() as the</span></span><br><span class="line"><span class="string">       remaining arguments. Default arguments are as for update_wrapper().</span></span><br><span class="line"><span class="string">       This is a convenience function to simplify applying partial() to</span></span><br><span class="line"><span class="string">       update_wrapper().</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment">#这里并不是柯里化，而是偏函数实现的，后面再细讲</span></span><br><span class="line">    <span class="keyword">return</span> partial(update_wrapper, wrapped=wrapped,</span><br><span class="line">                   assigned=assigned, updated=updated)</span><br></pre></td></tr></table></figure><br />
+请看下面的示例：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime, functools</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">logger</span>(<span class="params">fn</span>):</span><br><span class="line"><span class="meta">    @functools.wraps(<span class="params">fn</span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">        start = datetime.datetime.now()</span><br><span class="line">        ret = fn(*args, **kwargs)</span><br><span class="line">        delta = (datetime.datetime.now() - start).total_seconds()</span><br><span class="line">        <span class="keyword">if</span> delta &gt; <span class="number">3</span>: <span class="built_in">print</span>(<span class="string">&#x27;too slow&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> ret</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"><span class="meta">@logger</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">x, y</span>): <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@logger</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">sub</span>(<span class="params">x, y</span>): <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(add.__name__, sub.__name__)<span class="comment">#查看add和sub的属性名</span></span><br></pre></td></tr></table></figure><br />
+分析下面问题：<br />
+1. logger什么时候执行？<br />
+答：在碰到@logger时就立即执行。<br />
+2. logger执行过几次？<br />
+答：上面一共碰到2次@logger，一次是add上面，一次是sub上面，所以logger执行了2次。<br />
+3. wraps装饰器执行过几次？<br />
+答：在执行logger时碰到了wraps，所以会立即执行，一共碰到2次，所以wraps装饰器执行了2次。<br />
+4. wrapper的<code>__name__</code>等属性被覆盖过几次？<br />
+答：add和sub的wrapper是不同的，所以各自覆盖各自的属性给各自的wrapper；一共被覆盖了2次，add一次，sub一次。<br />
+5. <code>add.__name__</code>打印什么名称？<br />
+答：add<br />
+6. <code>sub.__name__</code>打印什么名称？<br />
+答：sub</p>
+<h3 id="functools.reduce">functools.reduce()</h3>
+<ol type="1">
+<li><code>functools.reduce(function, iterable[, initializer]) -&gt; value</code>：
+<ul>
+<li>使用函数方法累计，上一次的累计值作为下一次的参数，直到只剩一个值；<br />
+</li>
+<li>有初始值时，第一个值为初始值，然后再从iterable中取值；<br />
+</li>
+<li>无初始值时，iterable不能为空，第一个值从iterable中取；<br />
+下面是Python 3.6.6 Manuals给出的解释：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;Apply function of two arguments cumulatively to the items of sequence, from left to right, so as to reduce the sequence to a single value. For example, reduce(lambda x, y: x+y, [1, 2, 3, 4, 5]) calculates ((((1+2)+3)+4)+5). The left argument, x, is the accumulated value and the right argument, y, is the update value from the sequence. If the optional initializer is present, it is placed before the items of the sequence in the calculation, and serves as a default when the sequence is empty. If initializer is not given and sequence contains only one item, the first item is returned.&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="string">&quot;序列传给函数2个参数进行计算，计算方向是从左到右，直到序列只剩下一个值。例如：reduce(lambda x, y: x+y, [1, 2, 3, 4, 5]) 等价于计算： ((((1+2)+3)+4)+5)。左边参数x可以是累计值和从序列从取出的值，右边参数y是从序列中取出的值。如果可选项初始值存在，则将它位于从序列取值之前，并在序列为空时用作默认值。&quot;</span></span><br></pre></td></tr></table></figure><br />
+这方便了一些功能的实现，比如累加求和、求阶乘：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#累加求和：</span></span><br><span class="line">functools.reduce(<span class="keyword">lambda</span> x,y:x + y,<span class="built_in">range</span>(<span class="number">1</span>,<span class="number">5</span>))<span class="comment">#10</span></span><br><span class="line"><span class="comment">#阶乘：</span></span><br><span class="line">functools.reduce(<span class="keyword">lambda</span> x,y:x * y,<span class="built_in">range</span>(<span class="number">1</span>,<span class="number">5</span>))<span class="comment">#24</span></span><br></pre></td></tr></table></figure></li>
+</ul></li>
+</ol>
+<h3 id="functools.partial">functools.partial()</h3>
+<ol start="2" type="1">
+<li><code>functools.partial(func, *args, **keywords)</code>：
+<ul>
+<li>偏函数，把函数<code>部分的参数固定</code>下来，相当于为部分的参数添加了一个固定的缺省值，形成一个<code>新的函数</code>并返回；<br />
+</li>
+<li>partial生成的新函数，是对原函数的封装；<br />
+</li>
+<li>相当于<code>f(x0,x1,x2...)-&gt;f'(x2..)</code>这里<code>x0，x1</code>变成有参数的被固定下来，注意<code>f'</code>是对<code>f</code>的包装，<code>f'</code>是内部包括了<code>f</code>而生成的新的函数；</li>
+</ul></li>
+</ol>
+<p>有兴趣的可以观看Manuals文档，这里不再介绍，接下来看下partial的原理函数：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">partial</span>(<span class="params">func, *args, **keywords</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">newfunc</span>(<span class="params">*fargs, **fkeywords</span>):</span><br><span class="line">        newkeywords = keywords.copy()<span class="comment">#newkeywords是对旧函数的keywords拷贝</span></span><br><span class="line">        newkeywords.update(fkeywords)</span><br><span class="line">        <span class="comment">#keywords是partial传的，是更新旧函数的&quot;缺省值&quot;</span></span><br><span class="line">        <span class="comment">#fkeywords是新函数调用时传的关键字参数</span></span><br><span class="line">        <span class="comment">#newkeywords和fkeywords都是字典，使用update更新，也就是有相同的key会被覆盖掉，新的覆盖旧的</span></span><br><span class="line">        <span class="keyword">return</span> func(*args, *fargs, **newkeywords)</span><br><span class="line">        <span class="comment">#func的*args和newfunc的*fargs都存下来（所以位置传参一次就固定了）</span></span><br><span class="line">        <span class="comment">#**keywords和**fkeywords组成没有重复key的**newkeywords（keyword-only就可以多次赋值）</span></span><br><span class="line">    newfunc.func = func<span class="comment">#保留旧函数名</span></span><br><span class="line">    newfunc.args = args<span class="comment">#保留旧函数args参数</span></span><br><span class="line">    newfunc.keywords = keywords<span class="comment">#保留旧函数旧函数kwwords参数</span></span><br><span class="line">    <span class="keyword">return</span> newfunc<span class="comment">#newfunc记住了func函数的所有属性，是其复制品，以后的操作都对这个复制品进行</span></span><br></pre></td></tr></table></figure><br />
+使用add函数：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">x,y=<span class="number">4</span></span>):</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line">newadd = functools.partial(add,y=<span class="number">5</span>)<span class="comment">#返回的新函数本质是newfunc </span></span><br><span class="line">newadd(<span class="number">1</span>,y=<span class="number">6</span>)<span class="comment">#相当于newfunc(1,6)</span></span><br><span class="line"><span class="comment">#执行过程中相当于y=5被y=6覆盖掉了</span></span><br></pre></td></tr></table></figure><br />
+总结下partial：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"><span class="keyword">import</span> inspect</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">x,y=<span class="number">4</span>,*args</span>):</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line">newadd = functools.partial(add,x=<span class="number">3</span>,y=<span class="number">5</span>)<span class="comment">#关键字传参不是固定，而是缺省值，可以重新赋值但只能是keyword-only</span></span><br><span class="line"><span class="comment">#signature：(*, x=3, y=5)</span></span><br><span class="line">newadd = functools.partial(add,<span class="number">1</span>,<span class="number">6</span>)<span class="comment">#位置传参是固定，不能再给x、y赋值了，只有*args才能接收新值；</span></span><br><span class="line"><span class="comment">#同理**kwargs也能接收新keyword-only传参，这里没有添加</span></span><br><span class="line"><span class="comment">#signature：(*args)</span></span><br><span class="line"><span class="built_in">print</span>(inspect.signature(newadd))<span class="comment">#上面newadd单个执行后看签名</span></span><br></pre></td></tr></table></figure><br />
+分析functools.warps()的实现：<br />
+在前面装饰器讲解中我们使用过，它是用来拷贝函数签名信息的装饰器，但它内部是使用了偏函数实现的，把需要的函数都放在一起解读：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#partial</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">partial</span>(<span class="params">func, *args, **keywords</span>):<span class="comment">#3.(func=update_wrapper)-&gt;newfunc</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">newfunc</span>(<span class="params">*fargs, **fkeywords</span>):</span><br><span class="line">        newkeywords = keywords.copy()</span><br><span class="line">        newkeywords.update(fkeywords)</span><br><span class="line">        <span class="keyword">return</span> func(*args, *fargs, **newkeywords)</span><br><span class="line">    newfunc.func = func</span><br><span class="line">    newfunc.args = args</span><br><span class="line">    newfunc.keywords = keywords</span><br><span class="line">    <span class="keyword">return</span> newfunc</span><br><span class="line"></span><br><span class="line"><span class="comment">#wraps</span></span><br><span class="line">        <span class="comment">#1.wraps(fn)(wrapper)-&gt; 5.newfunc(wrapper)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">wraps</span>(<span class="params">wrapped,</span></span><br><span class="line"><span class="params">          assigned = WRAPPER_ASSIGNMENTS,</span></span><br><span class="line"><span class="params">          updated = WRAPPER_UPDATES</span>):</span><br><span class="line">                    <span class="comment">#4.update_wrapper-&gt;newfunc，newfunc相当于固定参数后的update_wrapper</span></span><br><span class="line">    <span class="keyword">return</span> partial(update_wrapper, wrapped=wrapped,</span><br><span class="line">                   assigned=assigned, updated=updated)</span><br><span class="line">            <span class="comment">#2.把update_wrapper的4参固定3个，只剩下wrapper</span></span><br><span class="line">            <span class="comment">#2.update_wrapper是做属性包装的函数</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#update_wrapper</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">update_wrapper</span>(<span class="params">wrapper,</span></span><br><span class="line"><span class="params">                   wrapped,</span></span><br><span class="line"><span class="params">                   assigned = WRAPPER_ASSIGNMENTS,</span></span><br><span class="line"><span class="params">                   updated = WRAPPER_UPDATES</span>):</span><br><span class="line">                    <span class="comment">#属性包装，略    </span></span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="comment">#外部调用</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">logger</span>(<span class="params">fn</span>):</span><br><span class="line">    <span class="comment">#6.functools.wraps(fn)==functools.wraps(fn)(wrapper)-&gt;newfunc(wrapper)</span></span><br><span class="line">    <span class="comment">#7.newfunc相当于固定了一个wrapped参数的update_wrapper</span></span><br><span class="line"><span class="meta">    @functools.wraps(<span class="params">fn</span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>():</span><br><span class="line">        ...</span><br></pre></td></tr></table></figure></p>
+<h3 id="functools.lru_cache">functools.lru_cache()</h3>
+<ol start="3" type="1">
+<li><code>@functools.lru_cache(maxsize=128, typed=False)</code>：
+<ul>
+<li>Least-recently-used装饰器。lru：最近最少使用，cache：缓存；<br />
+</li>
+<li>如果<code>maxsize设置为None，则禁用LRU功能</code>，并且缓存可以“无限制”增长。当maxsize是2的幂时，LRU功能执行得最好；<br />
+</li>
+<li>如果<code>typed设置为True，则不同类型的函数参数将单独缓存</code>。例如：f(3)和f(3.0)将被视为具有不同结果的不同调用；<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="meta">@functools.lru_cache()</span><span class="comment">#对add函数缓存 add = functools.lru_cache()(add)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">x,y</span>):</span><br><span class="line">    time.sleep(<span class="number">2</span>)<span class="comment">#增加时间测试用</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"><span class="comment">#试试执行2次的效果，哪些是从缓存中取？    </span></span><br><span class="line"><span class="built_in">print</span>(add(<span class="number">4</span>,<span class="number">5</span>))</span><br><span class="line"><span class="built_in">print</span>(add(<span class="number">4.0</span>,<span class="number">5.0</span>))<span class="comment">#如果typed为True呢？</span></span><br><span class="line"><span class="built_in">print</span>(add(<span class="number">4</span>,y=<span class="number">5</span>))</span><br><span class="line"><span class="built_in">print</span>(add(x=<span class="number">4</span>,y=<span class="number">5</span>))</span><br><span class="line"><span class="built_in">print</span>(add(y=<span class="number">4</span>,x=<span class="number">5</span>))</span><br></pre></td></tr></table></figure><br />
+通过上面示例，大致了解了这个函数功能是把计算过的情况缓存，等下次遇到相同情况就可以直接从缓存中取出使用。<br />
+上面示例中print函数都应该属于同一种情况，但只有前两个被判断是相同的，也就是说它判断几乎一模一样才从缓存取值。<br />
+当<code>typed设置为True时</code>，唯一被认为是相同的<code>add(4.0,5.0)</code>也被判断为不同了，真正的是一模一样才从缓存中取值。</li>
+</ul></li>
+</ol>
+<p>它判断哪些情况是属于同一种呢？这里我们只关心key是如何判断的，阅读下部分原码：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">lru_cache</span>(<span class="params">maxsize=<span class="number">128</span>, typed=<span class="literal">False</span></span>):  </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">decorating_function</span>(<span class="params">user_function</span>):<span class="comment">#2.调用_lru_cache_wrapper函数</span></span><br><span class="line">        wrapper = _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo)</span><br><span class="line">        <span class="keyword">return</span> update_wrapper(wrapper, user_function)</span><br><span class="line">    <span class="keyword">return</span> decorating_function<span class="comment">#1.返回的是内部函数名</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">_lru_cache_wrapper</span>(<span class="params">user_function, maxsize, typed, _CacheInfo</span>):</span><br><span class="line">    </span><br><span class="line">    sentinel = <span class="built_in">object</span>()          </span><br><span class="line">    make_key = _make_key         <span class="comment"># 3.用_make_key函数做key判断</span></span><br><span class="line">    PREV, NEXT, KEY, RESULT = <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>  </span><br><span class="line"></span><br><span class="line">    cache = &#123;&#125;<span class="comment">#4.用字典缓存</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">_make_key</span>(<span class="params">args, kwds, typed,</span></span><br><span class="line"><span class="params">             kwd_mark = (<span class="params"><span class="built_in">object</span>(<span class="params"></span>),</span>),</span></span><br><span class="line"><span class="params">             fasttypes = &#123;<span class="built_in">int</span>, <span class="built_in">str</span>, <span class="built_in">frozenset</span>, <span class="built_in">type</span>(<span class="params"><span class="literal">None</span></span>)&#125;,</span></span><br><span class="line"><span class="params">             <span class="built_in">tuple</span>=<span class="built_in">tuple</span>, <span class="built_in">type</span>=<span class="built_in">type</span>, <span class="built_in">len</span>=<span class="built_in">len</span></span>):<span class="comment">#5.假设args:(4,),kwds:&#123;&#x27;y&#x27;:5&#125;</span></span><br><span class="line"></span><br><span class="line">    key = args<span class="comment">#6.位置传参给key，key==(4,)</span></span><br><span class="line">    <span class="keyword">if</span> kwds:<span class="comment">#7.关键字传参不为空进入</span></span><br><span class="line">        key += kwd_mark<span class="comment">#8.在位置传参后加上一个分界符，key==(4,object())</span></span><br><span class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> kwds.items(): </span><br><span class="line">            key += item  <span class="comment">#9.key==(4,object(),&#x27;y&#x27;,5) 这里有个小问题，如果value是不可hash的，那么最终放到cache中将失效，因为cache是字典</span></span><br><span class="line">    <span class="keyword">if</span> typed:</span><br><span class="line">        key += <span class="built_in">tuple</span>(<span class="built_in">type</span>(v) <span class="keyword">for</span> v <span class="keyword">in</span> args)<span class="comment">#10.尾部追加args参数类型，key==(4,object(),&#x27;y&#x27;,5,int)</span></span><br><span class="line">        <span class="keyword">if</span> kwds:</span><br><span class="line">            key += <span class="built_in">tuple</span>(<span class="built_in">type</span>(v) <span class="keyword">for</span> v <span class="keyword">in</span> kwds.values())<span class="comment">#11.尾部追加kwds参数类型，key==(4,object(),&#x27;y&#x27;,5,int,int)</span></span><br><span class="line">    <span class="keyword">elif</span> <span class="built_in">len</span>(key) == <span class="number">1</span> <span class="keyword">and</span> <span class="built_in">type</span>(key[<span class="number">0</span>]) <span class="keyword">in</span> fasttypes:</span><br><span class="line">        <span class="keyword">return</span> key[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">return</span> _HashedSeq(key)<span class="comment">#12.返回的key用可hash列表包裹，变成[4,object(),&#x27;y&#x27;,5,int,int]</span></span><br></pre></td></tr></table></figure><br />
+理解了上面代码执行过程，测试一下具体key会形成什么：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">functools._make_key((<span class="number">4</span>,<span class="number">5</span>),&#123;&#125;,<span class="literal">True</span>)</span><br><span class="line"><span class="comment">#[4, 5, int, int]</span></span><br><span class="line">functools._make_key((<span class="number">4</span>,),&#123;<span class="string">&#x27;y&#x27;</span>:<span class="number">5</span>&#125;,<span class="literal">True</span>)</span><br><span class="line"><span class="comment">#[4, &lt;object at 0x202c3feb0b0&gt;, &#x27;y&#x27;, 5, int, int]</span></span><br><span class="line">functools._make_key((),&#123;<span class="string">&#x27;x&#x27;</span>:<span class="number">4</span>,<span class="string">&#x27;y&#x27;</span>:<span class="number">5</span>&#125;,<span class="literal">True</span>)</span><br><span class="line"><span class="comment">#[&lt;object at 0x202c3feb0b0&gt;, &#x27;x&#x27;, 4, &#x27;y&#x27;, 5, int, int]</span></span><br></pre></td></tr></table></figure><br />
+通过上面示例，发现生成的key都不一样，所以当然就不能当成一种情况从缓存取值了。<br />
+还记得递归写的菲波那切数列数列吗？每次计算都是很耗时的，因为它并不缓存上次的结果，所以每次执行都是重新计算，这次使用<code>lru_cache</code>来解决这个问题：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"></span><br><span class="line"><span class="meta">@functools.lru_cache()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fib</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> <span class="keyword">if</span> n &lt; <span class="number">3</span> <span class="keyword">else</span> fib(n-<span class="number">1</span>) + fib(n-<span class="number">2</span>)</span><br></pre></td></tr></table></figure><br />
+这次计算大的值就会很快了，因为缓存了上次执行结果。</p>
+<p>使用前提：</p>
+<ol type="1">
+<li>同样的函数参数一定得到同样的结果；<br />
+</li>
+<li>函数执行时间很长，且要多次执行；<br />
+其本质是函数调用的参数=&gt;返回值</li>
+</ol>
+<p>缺点：</p>
+<ol type="1">
+<li>不支持缓存过期，key无法过期、失效；<br />
+</li>
+<li>不支持清除操作；<br />
+</li>
+<li>不支持分布式，是一个单机的缓存；<br />
+适用场景：单机上需要空间换时间的地方，可以用缓存来将计算变成快速的查询</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>SoundMemories
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://soundmemories.github.io/2019/01/21/Python/10.Python-%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0%E3%80%81%E8%A3%85%E9%A5%B0%E5%99%A8%E3%80%81functools%E6%BA%90%E7%A0%81/" title="Python-高阶函数、装饰器、functools源码">https://soundmemories.github.io/2019/01/21/Python/10.Python-高阶函数、装饰器、functools源码/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/01/20/Python/09.Python-%E5%87%BD%E6%95%B0%E3%80%81map_reduce%E3%80%81lambda%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0/" rel="prev" title="Python-函数、map/reduce、lambda匿名函数">
+                  <i class="fa fa-chevron-left"></i> Python-函数、map/reduce、lambda匿名函数
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/01/22/Python/11.Python-%E7%B1%BB%E5%9E%8B%E6%B3%A8%E9%87%8A/" rel="next" title="Python-类型注解">
+                  Python-类型注解 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">SoundMemories</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"neutral"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.min.js","integrity":"sha256-JFptYy4KzJ5OQP+Q9fubNf3cxpPPmZKqUOovyEONKrQ="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://soundmemories.github.io/2019/01/21/Python/10.Python-%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0%E3%80%81%E8%A3%85%E9%A5%B0%E5%99%A8%E3%80%81functools%E6%BA%90%E7%A0%81/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

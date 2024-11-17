@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.1","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="utils.py1234567891011121314151617181920212223242526272829303132333435import reimport spacyfrom torchtext.data import Field, BucketIteratorfrom torchtext.datasets import Multi30k# manual create date (">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于LSTM的机器翻译">
+<meta property="og:url" content="https://soundmemories.github.io/2021/07/16/NLP/03.%E5%9F%BA%E4%BA%8ELSTM%E7%9A%84%E6%9C%BA%E5%99%A8%E7%BF%BB%E8%AF%91/index.html">
+<meta property="og:site_name" content="SoundMemories">
+<meta property="og:description" content="utils.py1234567891011121314151617181920212223242526272829303132333435import reimport spacyfrom torchtext.data import Field, BucketIteratorfrom torchtext.datasets import Multi30k# manual create date (">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-07-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-05-25T15:56:29.190Z">
+<meta property="article:author" content="SoundMemories">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://soundmemories.github.io/2021/07/16/NLP/03.%E5%9F%BA%E4%BA%8ELSTM%E7%9A%84%E6%9C%BA%E5%99%A8%E7%BF%BB%E8%AF%91/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://soundmemories.github.io/2021/07/16/NLP/03.%E5%9F%BA%E4%BA%8ELSTM%E7%9A%84%E6%9C%BA%E5%99%A8%E7%BF%BB%E8%AF%91/","path":"2021/07/16/NLP/03.基于LSTM的机器翻译/","title":"基于LSTM的机器翻译"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>基于LSTM的机器翻译 | SoundMemories</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">SoundMemories</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">127</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">1.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SoundMemories"
+      src="/images/avstar.png">
+  <p class="site-author-name" itemprop="name">SoundMemories</p>
+  <div class="site-description" itemprop="description">今日事，今日毕</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NvdW5kbWVtb3JpZXM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;soundmemories"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNvdW5kbWVtb3JpZXNAMTYzLmNvbQ==" title="E-Mail → mailto:soundmemories@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+        <div class="pjax">
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2021/07/16/NLP/03.%E5%9F%BA%E4%BA%8ELSTM%E7%9A%84%E6%9C%BA%E5%99%A8%E7%BF%BB%E8%AF%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="基于LSTM的机器翻译 | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基于LSTM的机器翻译
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-07-16 00:00:00" itemprop="dateCreated datePublished" datetime="2021-07-16T00:00:00+08:00">2021-07-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/NLP/" itemprop="url" rel="index"><span itemprop="name">NLP</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><figure class="highlight python"><figcaption><span>utils.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> spacy</span><br><span class="line"><span class="keyword">from</span> torchtext.data <span class="keyword">import</span> Field, BucketIterator</span><br><span class="line"><span class="keyword">from</span> torchtext.datasets <span class="keyword">import</span> Multi30k</span><br><span class="line"></span><br><span class="line"><span class="comment"># manual create date ( token 2 index , index to token)</span></span><br><span class="line"><span class="comment"># dataset dataloader   PADDING BATCH SHUFFLE</span></span><br><span class="line"><span class="comment"># torchtext</span></span><br><span class="line"><span class="comment"># ALLENNLP (Field)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># [&quot;&lt;sos&gt;&quot; 3 ,&quot;word&quot;1 ,&quot;peace&quot; 2,&quot;&lt;eos&gt;&quot; 4 ]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">load_dataset</span>(<span class="params">batch_size</span>):</span><br><span class="line">    spacy_de = spacy.load(<span class="string">&#x27;de&#x27;</span>)</span><br><span class="line">    spacy_en = spacy.load(<span class="string">&#x27;en&#x27;</span>)</span><br><span class="line">    url = re.<span class="built_in">compile</span>(<span class="string">&#x27;(&lt;url&gt;.*&lt;/url&gt;)&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">tokenize_de</span>(<span class="params">text</span>):</span><br><span class="line">        <span class="keyword">return</span> [tok.text <span class="keyword">for</span> tok <span class="keyword">in</span> spacy_de.tokenizer(url.sub(<span class="string">&#x27;@URL@&#x27;</span>, text))]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">tokenize_en</span>(<span class="params">text</span>):</span><br><span class="line">        <span class="keyword">return</span> [tok.text <span class="keyword">for</span> tok <span class="keyword">in</span> spacy_en.tokenizer(url.sub(<span class="string">&#x27;@URL@&#x27;</span>, text))]</span><br><span class="line"></span><br><span class="line">    DE = Field(tokenize=tokenize_de, include_lengths=<span class="literal">True</span>,</span><br><span class="line">               init_token=<span class="string">&#x27;&lt;sos&gt;&#x27;</span>, eos_token=<span class="string">&#x27;&lt;eos&gt;&#x27;</span>)</span><br><span class="line">    EN = Field(tokenize=tokenize_en, include_lengths=<span class="literal">True</span>,</span><br><span class="line">               init_token=<span class="string">&#x27;&lt;sos&gt;&#x27;</span>, eos_token=<span class="string">&#x27;&lt;eos&gt;&#x27;</span>)</span><br><span class="line">    train, val, test = Multi30k.splits(exts=(<span class="string">&#x27;.de&#x27;</span>, <span class="string">&#x27;.en&#x27;</span>), fields=(DE, EN))</span><br><span class="line">    DE.build_vocab(train.src, min_freq=<span class="number">2</span>)</span><br><span class="line">    EN.build_vocab(train.trg, max_size=<span class="number">10000</span>)</span><br><span class="line">    train_iter, val_iter, test_iter = BucketIterator.splits(</span><br><span class="line">            (train, val, test), batch_size=batch_size, repeat=<span class="literal">False</span>)</span><br><span class="line">    <span class="keyword">return</span> train_iter, val_iter, test_iter, DE, EN</span><br><span class="line"></span><br><span class="line">load_dataset(<span class="number">8</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><figcaption><span>model.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn</span><br><span class="line"><span class="keyword">from</span> torch.autograd <span class="keyword">import</span> Variable</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Encoder</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, input_size, embed_size, hidden_size,</span></span><br><span class="line"><span class="params">                 n_layers=<span class="number">1</span>, dropout=<span class="number">0.5</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(Encoder, self).__init__()</span><br><span class="line">        self.input_size = input_size</span><br><span class="line">        self.hidden_size = hidden_size</span><br><span class="line">        self.embed_size = embed_size</span><br><span class="line">        self.embed = nn.Embedding(input_size, embed_size)</span><br><span class="line">        self.gru = nn.GRU(embed_size, hidden_size, n_layers,</span><br><span class="line">                          dropout=dropout, bidirectional=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, src, hidden=<span class="literal">None</span></span>):   <span class="comment">#A  ---&gt; B</span></span><br><span class="line">        embedded = self.embed(src)</span><br><span class="line">        outputs, hidden = self.gru(embedded, hidden)</span><br><span class="line">        <span class="comment"># sum bidirectional outputs</span></span><br><span class="line">        outputs = (outputs[:, :, :self.hidden_size] +</span><br><span class="line">                   outputs[:, :, self.hidden_size:])</span><br><span class="line">        <span class="keyword">return</span> outputs, hidden</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Attention</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, hidden_size</span>):</span><br><span class="line">        <span class="built_in">super</span>(Attention, self).__init__()</span><br><span class="line">        self.hidden_size = hidden_size</span><br><span class="line">        self.attn = nn.Linear(self.hidden_size * <span class="number">2</span>, hidden_size)</span><br><span class="line">        self.v = nn.Parameter(torch.rand(hidden_size))</span><br><span class="line">        stdv = <span class="number">1.</span> / math.sqrt(self.v.size(<span class="number">0</span>))</span><br><span class="line">        self.v.data.uniform_(-stdv, stdv)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, hidden, encoder_outputs</span>):</span><br><span class="line">        timestep = encoder_outputs.size(<span class="number">0</span>)</span><br><span class="line">        h = hidden.repeat(timestep, <span class="number">1</span>, <span class="number">1</span>).transpose(<span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line">        encoder_outputs = encoder_outputs.transpose(<span class="number">0</span>, <span class="number">1</span>)  <span class="comment"># [B*T*H]</span></span><br><span class="line">        attn_energies = self.score(h, encoder_outputs)</span><br><span class="line">        <span class="keyword">return</span> F.softmax(attn_energies, dim=<span class="number">1</span>).unsqueeze(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">score</span>(<span class="params">self, hidden, encoder_outputs</span>):</span><br><span class="line">        <span class="comment"># [B*T*2H]-&gt;[B*T*H]</span></span><br><span class="line">        energy = F.relu(self.attn(torch.cat([hidden, encoder_outputs], <span class="number">2</span>)))</span><br><span class="line">        energy = energy.transpose(<span class="number">1</span>, <span class="number">2</span>)  <span class="comment"># [B*H*T]</span></span><br><span class="line">        v = self.v.repeat(encoder_outputs.size(<span class="number">0</span>), <span class="number">1</span>).unsqueeze(<span class="number">1</span>)  <span class="comment"># [B*1*H]</span></span><br><span class="line">        energy = torch.bmm(v, energy)  <span class="comment"># [B*1*T]</span></span><br><span class="line">        <span class="keyword">return</span> energy.squeeze(<span class="number">1</span>)  <span class="comment"># [B*T]</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Decoder</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, embed_size, hidden_size, output_size,</span></span><br><span class="line"><span class="params">                 n_layers=<span class="number">1</span>, dropout=<span class="number">0.2</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(Decoder, self).__init__()</span><br><span class="line">        self.embed_size = embed_size</span><br><span class="line">        self.hidden_size = hidden_size</span><br><span class="line">        self.output_size = output_size</span><br><span class="line">        self.n_layers = n_layers</span><br><span class="line"></span><br><span class="line">        self.embed = nn.Embedding(output_size, embed_size)</span><br><span class="line">        self.dropout = nn.Dropout(dropout, inplace=<span class="literal">True</span>)</span><br><span class="line">        self.attention = Attention(hidden_size)</span><br><span class="line">        self.gru = nn.GRU(hidden_size + embed_size, hidden_size,</span><br><span class="line">                          n_layers, dropout=dropout)</span><br><span class="line">        self.out = nn.Linear(hidden_size * <span class="number">2</span>, output_size)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, <span class="built_in">input</span>, last_hidden, encoder_outputs</span>):</span><br><span class="line">        <span class="comment"># Get the embedding of the current input word (last output word)</span></span><br><span class="line">        embedded = self.embed(<span class="built_in">input</span>).unsqueeze(<span class="number">0</span>)  <span class="comment"># (1,B,N)</span></span><br><span class="line">        embedded = self.dropout(embedded)</span><br><span class="line">        <span class="comment"># Calculate attention weights and apply to encoder outputs</span></span><br><span class="line">        attn_weights = self.attention(last_hidden[-<span class="number">1</span>], encoder_outputs)</span><br><span class="line">        context = attn_weights.bmm(encoder_outputs.transpose(<span class="number">0</span>, <span class="number">1</span>))  <span class="comment"># (B,1,N)</span></span><br><span class="line">        context = context.transpose(<span class="number">0</span>, <span class="number">1</span>)  <span class="comment"># (1,B,N)</span></span><br><span class="line">        <span class="comment"># Combine embedded input word and attended context, run through RNN</span></span><br><span class="line">        rnn_input = torch.cat([embedded, context], <span class="number">2</span>)</span><br><span class="line">        output, hidden = self.gru(rnn_input, last_hidden)</span><br><span class="line">        output = output.squeeze(<span class="number">0</span>)  <span class="comment"># (1,B,N) -&gt; (B,N)</span></span><br><span class="line">        context = context.squeeze(<span class="number">0</span>)</span><br><span class="line">        output = self.out(torch.cat([output, context], <span class="number">1</span>))</span><br><span class="line">        output = F.log_softmax(output, dim=<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> output, hidden, attn_weights</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Seq2Seq</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, encoder, decoder</span>):</span><br><span class="line">        <span class="built_in">super</span>(Seq2Seq, self).__init__()</span><br><span class="line">        self.encoder = encoder</span><br><span class="line">        self.decoder = decoder</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, src, trg, teacher_forcing_ratio=<span class="number">0.5</span></span>):</span><br><span class="line">        batch_size = src.size(<span class="number">1</span>)</span><br><span class="line">        max_len = trg.size(<span class="number">0</span>)</span><br><span class="line">        vocab_size = self.decoder.output_size</span><br><span class="line">        outputs = Variable(torch.zeros(max_len, batch_size, vocab_size))</span><br><span class="line"></span><br><span class="line">        encoder_output, hidden = self.encoder(src)</span><br><span class="line">        hidden = hidden[:self.decoder.n_layers]</span><br><span class="line">        output = Variable(trg.data[<span class="number">0</span>, :])  <span class="comment"># sos   EOS</span></span><br><span class="line">        <span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, max_len):</span><br><span class="line">            output, hidden, attn_weights = self.decoder(</span><br><span class="line">                    output, hidden, encoder_output)</span><br><span class="line">            outputs[t] = output</span><br><span class="line">            is_teacher = random.random() &lt; teacher_forcing_ratio</span><br><span class="line">            top1 = output.data.<span class="built_in">max</span>(<span class="number">1</span>)[<span class="number">1</span>]</span><br><span class="line">            output = Variable(trg.data[t] <span class="keyword">if</span> is_teacher <span class="keyword">else</span> top1)</span><br><span class="line">        <span class="keyword">return</span> outputs</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><figcaption><span>train.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> optim</span><br><span class="line"><span class="keyword">from</span> torch.autograd <span class="keyword">import</span> Variable</span><br><span class="line"><span class="keyword">from</span> torch.nn.utils <span class="keyword">import</span> clip_grad_norm</span><br><span class="line"><span class="keyword">from</span> torch.nn <span class="keyword">import</span> functional <span class="keyword">as</span> F</span><br><span class="line"><span class="keyword">from</span> model <span class="keyword">import</span> Encoder, Decoder, Seq2Seq</span><br><span class="line"><span class="keyword">from</span> utils <span class="keyword">import</span> load_dataset</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">parse_arguments</span>():</span><br><span class="line">    p = argparse.ArgumentParser(description=<span class="string">&#x27;Hyperparams&#x27;</span>)</span><br><span class="line">    p.add_argument(<span class="string">&#x27;-epochs&#x27;</span>, <span class="built_in">type</span>=<span class="built_in">int</span>, default=<span class="number">100</span>,</span><br><span class="line">                   <span class="built_in">help</span>=<span class="string">&#x27;number of epochs for train&#x27;</span>)</span><br><span class="line">    p.add_argument(<span class="string">&#x27;-batch_size&#x27;</span>, <span class="built_in">type</span>=<span class="built_in">int</span>, default=<span class="number">32</span>,</span><br><span class="line">                   <span class="built_in">help</span>=<span class="string">&#x27;number of epochs for train&#x27;</span>)</span><br><span class="line">    p.add_argument(<span class="string">&#x27;-lr&#x27;</span>, <span class="built_in">type</span>=<span class="built_in">float</span>, default=<span class="number">0.0001</span>,</span><br><span class="line">                   <span class="built_in">help</span>=<span class="string">&#x27;initial learning rate&#x27;</span>)</span><br><span class="line">    p.add_argument(<span class="string">&#x27;-grad_clip&#x27;</span>, <span class="built_in">type</span>=<span class="built_in">float</span>, default=<span class="number">10.0</span>,</span><br><span class="line">                   <span class="built_in">help</span>=<span class="string">&#x27;in case of gradient explosion&#x27;</span>)</span><br><span class="line">    <span class="comment"># p.add_argument(&#x27;-hidden_size&#x27;,type=int,default=10,help=&quot; the size of hidden tensor&quot;)</span></span><br><span class="line">    <span class="keyword">return</span> p.parse_args()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">evaluate</span>(<span class="params">model, val_iter, vocab_size, DE, EN</span>):</span><br><span class="line">    model.<span class="built_in">eval</span>()</span><br><span class="line">    pad = EN.vocab.stoi[<span class="string">&#x27;&lt;pad&gt;&#x27;</span>]</span><br><span class="line">    total_loss = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> b, batch <span class="keyword">in</span> <span class="built_in">enumerate</span>(val_iter):</span><br><span class="line">        src, len_src = batch.src</span><br><span class="line">        trg, len_trg = batch.trg</span><br><span class="line">        src = Variable(src.data, volatile=<span class="literal">True</span>)</span><br><span class="line">        trg = Variable(trg.data, volatile=<span class="literal">True</span>)</span><br><span class="line">        output = model(src, trg, teacher_forcing_ratio=<span class="number">0.0</span>)</span><br><span class="line">        loss = F.nll_loss(output[<span class="number">1</span>:].view(-<span class="number">1</span>, vocab_size),</span><br><span class="line">                               trg[<span class="number">1</span>:].contiguous().view(-<span class="number">1</span>),</span><br><span class="line">                               ignore_index=pad)</span><br><span class="line">        total_loss += loss.data.item()</span><br><span class="line">    <span class="keyword">return</span> total_loss / <span class="built_in">len</span>(val_iter)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">train</span>(<span class="params">e, model, optimizer, train_iter, vocab_size, grad_clip, DE, EN</span>):</span><br><span class="line">    model.train()</span><br><span class="line">    total_loss = <span class="number">0</span></span><br><span class="line">    pad = EN.vocab.stoi[<span class="string">&#x27;&lt;pad&gt;&#x27;</span>]</span><br><span class="line">    <span class="keyword">for</span> b, batch <span class="keyword">in</span> <span class="built_in">enumerate</span>(train_iter):</span><br><span class="line">        src, len_src = batch.src</span><br><span class="line">        trg, len_trg = batch.trg</span><br><span class="line">        src, trg = src, trg</span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line">        output = model(src, trg)</span><br><span class="line">        loss = F.nll_loss(output[<span class="number">1</span>:].view(-<span class="number">1</span>, vocab_size),</span><br><span class="line">                               trg[<span class="number">1</span>:].contiguous().view(-<span class="number">1</span>),</span><br><span class="line">                               ignore_index=pad)</span><br><span class="line"></span><br><span class="line">        loss.backward()</span><br><span class="line">        clip_grad_norm(model.parameters(), grad_clip)</span><br><span class="line">        optimizer.step()</span><br><span class="line">        total_loss += loss.data.item()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> b % <span class="number">100</span> == <span class="number">0</span> <span class="keyword">and</span> b != <span class="number">0</span>:</span><br><span class="line">            total_loss = total_loss / <span class="number">100</span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;[%d][loss:%5.2f][pp:%5.2f]&quot;</span> %</span><br><span class="line">                  (b, total_loss, math.exp(total_loss)))</span><br><span class="line">            total_loss = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    args = parse_arguments()</span><br><span class="line">    hidden_size = <span class="number">512</span></span><br><span class="line">    embed_size = <span class="number">256</span></span><br><span class="line">    <span class="comment"># assert torch.cuda.is_available()</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;[!] preparing dataset...&quot;</span>)</span><br><span class="line">    train_iter, val_iter, test_iter, DE, EN = load_dataset(args.batch_size)</span><br><span class="line">    de_size, en_size = <span class="built_in">len</span>(DE.vocab), <span class="built_in">len</span>(EN.vocab)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;[TRAIN]:%d (dataset:%d)\t[TEST]:%d (dataset:%d)&quot;</span></span><br><span class="line">          % (<span class="built_in">len</span>(train_iter), <span class="built_in">len</span>(train_iter.dataset),</span><br><span class="line">             <span class="built_in">len</span>(test_iter), <span class="built_in">len</span>(test_iter.dataset)))</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;[DE_vocab]:%d [en_vocab]:%d&quot;</span> % (de_size, en_size))</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;[!] Instantiating models...&quot;</span>)</span><br><span class="line">    encoder = Encoder(de_size, embed_size, hidden_size,</span><br><span class="line">                      n_layers=<span class="number">2</span>, dropout=<span class="number">0.5</span>)</span><br><span class="line">    decoder = Decoder(embed_size, hidden_size, en_size,</span><br><span class="line">                      n_layers=<span class="number">1</span>, dropout=<span class="number">0.5</span>)</span><br><span class="line">    seq2seq = Seq2Seq(encoder, decoder)</span><br><span class="line">    optimizer = optim.Adam(seq2seq.parameters(), lr=args.lr)</span><br><span class="line">    <span class="built_in">print</span>(seq2seq)</span><br><span class="line"></span><br><span class="line">    best_val_loss = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">for</span> e <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, args.epochs+<span class="number">1</span>):</span><br><span class="line">        train(e, seq2seq, optimizer, train_iter,</span><br><span class="line">              en_size, args.grad_clip, DE, EN)</span><br><span class="line">        val_loss = evaluate(seq2seq, val_iter, en_size, DE, EN)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;[Epoch:%d] val_loss:%5.3f | val_pp:%5.2fS&quot;</span></span><br><span class="line">              % (e, val_loss, math.exp(val_loss)))</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Save the model if the validation loss is the best we&#x27;ve seen so far.</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> best_val_loss <span class="keyword">or</span> val_loss &lt; best_val_loss:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;[!] saving model...&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> os.path.isdir(<span class="string">&quot;.save&quot;</span>):</span><br><span class="line">                os.makedirs(<span class="string">&quot;.save&quot;</span>)</span><br><span class="line">            torch.save(seq2seq.state_dict(), <span class="string">&#x27;./.save/seq2seq_%d.pt&#x27;</span> % (e))</span><br><span class="line">            best_val_loss = val_loss</span><br><span class="line">    test_loss = evaluate(seq2seq, test_iter, en_size, DE, EN)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;[TEST] loss:%5.2f&quot;</span> % test_loss)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        main()</span><br><span class="line">    <span class="keyword">except</span> KeyboardInterrupt <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;[STOP]&quot;</span>, e)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><figcaption><span>bleu.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> codecs</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> operator</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">from</span> nltk <span class="keyword">import</span> bleu</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fetch_data</span>(<span class="params">cand, ref</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot; Store each reference and candidate sentences as a list &quot;&quot;&quot;</span></span><br><span class="line">    references = []</span><br><span class="line">    <span class="keyword">if</span> <span class="string">&#x27;.txt&#x27;</span> <span class="keyword">in</span> ref:</span><br><span class="line">        reference_file = codecs.<span class="built_in">open</span>(ref, <span class="string">&#x27;r&#x27;</span>, <span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">        references.append(reference_file.readlines())</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">for</span> root, dirs, files <span class="keyword">in</span> os.walk(ref):</span><br><span class="line">            <span class="keyword">for</span> f <span class="keyword">in</span> files:</span><br><span class="line">                reference_file = codecs.<span class="built_in">open</span>(os.path.join(root, f), <span class="string">&#x27;r&#x27;</span>, <span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">                references.append(reference_file.readlines())</span><br><span class="line">    candidate_file = codecs.<span class="built_in">open</span>(cand, <span class="string">&#x27;r&#x27;</span>, <span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    candidate = candidate_file.readlines()</span><br><span class="line">    <span class="keyword">return</span> candidate, references</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># candidate = [[&quot;word peace],[&#x27;make china great again !&#x27;]]</span></span><br><span class="line"><span class="comment"># reference [[&quot;world war&quot;],[&#x27;make USA great again&#x27;]]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">count_ngram</span>(<span class="params">candidate, references, n</span>):</span><br><span class="line">    clipped_count = <span class="number">0</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    r = <span class="number">0</span>   <span class="comment">#用来记录reference</span></span><br><span class="line">    c = <span class="number">0</span>  <span class="comment">#用来记录 candidates的长度</span></span><br><span class="line">    <span class="keyword">for</span> si <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(candidate)):  <span class="comment"># 遍历每一个CANDIDATES</span></span><br><span class="line">        <span class="comment"># Calculate precision for each sentence</span></span><br><span class="line">        <span class="comment"># print si</span></span><br><span class="line">        ref_counts = []   <span class="comment">#统计ref 中的，每个n-gram 的数字</span></span><br><span class="line">        ref_lengths = []  <span class="comment">#统计 REF 的长度，length</span></span><br><span class="line">        <span class="comment"># print references</span></span><br><span class="line">        <span class="comment"># Build dictionary of ngram counts</span></span><br><span class="line">        <span class="keyword">for</span> reference <span class="keyword">in</span> references:  <span class="comment"># 遍历每一个REFERENCE</span></span><br><span class="line">            <span class="comment"># print &#x27;reference&#x27; + reference</span></span><br><span class="line">            ref_sentence = reference[si]</span><br><span class="line">            ngram_d = &#123;&#125;</span><br><span class="line">            words = ref_sentence.strip().split()</span><br><span class="line">            ref_lengths.append(<span class="built_in">len</span>(words))</span><br><span class="line">            limits = <span class="built_in">len</span>(words) - n + <span class="number">1</span>      <span class="comment"># [1,2,3,4,5,6,7]</span></span><br><span class="line">            <span class="comment"># loop through the sentance consider the ngram length</span></span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(limits):</span><br><span class="line">                ngram = <span class="string">&#x27; &#x27;</span>.join(words[i:i + n]).lower()</span><br><span class="line">                <span class="keyword">if</span> ngram <span class="keyword">in</span> ngram_d.keys():</span><br><span class="line">                    ngram_d[ngram] += <span class="number">1</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    ngram_d[ngram] = <span class="number">1</span></span><br><span class="line">            ref_counts.append(ngram_d)</span><br><span class="line">        <span class="comment"># candidate</span></span><br><span class="line">        cand_sentence = candidate[si]  <span class="comment"># 遍历 CANDIDATE</span></span><br><span class="line">        cand_dict = &#123;&#125;</span><br><span class="line">        words = cand_sentence.strip().split()</span><br><span class="line">        limits = <span class="built_in">len</span>(words) - n + <span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, limits):</span><br><span class="line">            ngram = <span class="string">&#x27; &#x27;</span>.join(words[i:i + n]).lower()</span><br><span class="line">            <span class="keyword">if</span> ngram <span class="keyword">in</span> cand_dict:</span><br><span class="line">                cand_dict[ngram] += <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                cand_dict[ngram] = <span class="number">1</span></span><br><span class="line">        clipped_count += clip_count(cand_dict, ref_counts)</span><br><span class="line">        count += limits</span><br><span class="line">        r += best_length_match(ref_lengths, <span class="built_in">len</span>(words))</span><br><span class="line">        c += <span class="built_in">len</span>(words)</span><br><span class="line">    <span class="keyword">if</span> clipped_count == <span class="number">0</span>:</span><br><span class="line">        pr = <span class="number">0</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        pr = <span class="built_in">float</span>(clipped_count) / count</span><br><span class="line">    bp = brevity_penalty(c, r)</span><br><span class="line">    <span class="keyword">return</span> pr, bp</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">clip_count</span>(<span class="params">cand_d, ref_ds</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Count the clip count for each ngram considering all references&quot;&quot;&quot;</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> m <span class="keyword">in</span> cand_d.keys():</span><br><span class="line">        m_w = cand_d[m]</span><br><span class="line">        m_max = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> ref <span class="keyword">in</span> ref_ds:</span><br><span class="line">            <span class="keyword">if</span> m <span class="keyword">in</span> ref:</span><br><span class="line">                m_max = <span class="built_in">max</span>(m_max, ref[m])</span><br><span class="line">        m_w = <span class="built_in">min</span>(m_w, m_max)</span><br><span class="line">        count += m_w</span><br><span class="line">    <span class="keyword">return</span> count</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">best_length_match</span>(<span class="params">ref_l, cand_l</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Find the closest length of reference to that of candidate&quot;&quot;&quot;</span></span><br><span class="line">    least_diff = <span class="built_in">abs</span>(cand_l - ref_l[<span class="number">0</span>])</span><br><span class="line">    best = ref_l[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">for</span> ref <span class="keyword">in</span> ref_l:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">abs</span>(cand_l - ref) &lt; least_diff:</span><br><span class="line">            least_diff = <span class="built_in">abs</span>(cand_l - ref)</span><br><span class="line">            best = ref</span><br><span class="line">    <span class="keyword">return</span> best</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">brevity_penalty</span>(<span class="params">c, r</span>):</span><br><span class="line">    <span class="keyword">if</span> c &gt; r:</span><br><span class="line">        bp = <span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        bp = math.exp(<span class="number">1</span> - (<span class="built_in">float</span>(r) / c))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> bp</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">geometric_mean</span>(<span class="params">precisions</span>):</span><br><span class="line">    <span class="keyword">return</span> (reduce(operator.mul, precisions)) ** (<span class="number">1.0</span> / <span class="built_in">len</span>(precisions))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">BLEU</span>(<span class="params">candidate, references</span>):</span><br><span class="line">    precisions = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">4</span>):</span><br><span class="line">        pr, bp = count_ngram(candidate, references, i + <span class="number">1</span>)</span><br><span class="line">        precisions.append(pr)</span><br><span class="line">        <span class="built_in">print</span></span><br><span class="line">        <span class="string">&#x27;P&#x27;</span> + <span class="built_in">str</span>(i + <span class="number">1</span>), <span class="string">&#x27; = &#x27;</span>, <span class="built_in">round</span>(pr, <span class="number">2</span>)</span><br><span class="line">    <span class="built_in">print</span></span><br><span class="line">    <span class="string">&#x27;BP = &#x27;</span>, <span class="built_in">round</span>(bp, <span class="number">2</span>)</span><br><span class="line">    bleu = geometric_mean(precisions) * bp</span><br><span class="line">    <span class="keyword">return</span> bleu</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    candidate, references = fetch_data(sys.argv[<span class="number">1</span>], sys.argv[<span class="number">2</span>])</span><br><span class="line">    bleu = BLEU(candidate, references)</span><br><span class="line">    <span class="built_in">print</span></span><br><span class="line">    <span class="string">&#x27;BLEU = &#x27;</span>, <span class="built_in">round</span>(bleu, <span class="number">4</span>)</span><br><span class="line">    out = <span class="built_in">open</span>(<span class="string">&#x27;bleu_out.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line">    out.write(<span class="built_in">str</span>(bleu))</span><br><span class="line">    out.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> nltk.translate.bleu_score <span class="keyword">import</span> sentence_bleu</span><br><span class="line">reference = [[<span class="string">&#x27;this&#x27;</span>, <span class="string">&#x27;is&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;test&#x27;</span>], [<span class="string">&#x27;this&#x27;</span>, <span class="string">&#x27;is&#x27;</span> <span class="string">&#x27;test&#x27;</span>]]</span><br><span class="line">candidate = [<span class="string">&#x27;this&#x27;</span>, <span class="string">&#x27;is&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;test&#x27;</span>]</span><br><span class="line">score = sentence_bleu(reference, candidate)</span><br><span class="line"><span class="built_in">print</span>(score)</span><br></pre></td></tr></table></figure>
+<h1 id="参考文献">参考文献</h1>
+<p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2tlb24vc2VxMnNlcQ==">mini seq2seq<i class="fa fa-external-link-alt"></i></span></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>SoundMemories
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://soundmemories.github.io/2021/07/16/NLP/03.%E5%9F%BA%E4%BA%8ELSTM%E7%9A%84%E6%9C%BA%E5%99%A8%E7%BF%BB%E8%AF%91/" title="基于LSTM的机器翻译">https://soundmemories.github.io/2021/07/16/NLP/03.基于LSTM的机器翻译/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/NLP/" rel="tag"><i class="fa fa-tag"></i> NLP</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/07/15/NLP/02.%E5%9F%BA%E4%BA%8ELSTM%E7%9A%84%E6%83%85%E6%84%9F%E5%88%86%E7%B1%BB/" rel="prev" title="基于LSTM的情感分类">
+                  <i class="fa fa-chevron-left"></i> 基于LSTM的情感分类
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/07/18/Paper/03.Get%20To%20The%20Point.%20Summarization%20with%20Pointer-Generator%20Networks/" rel="next" title="Get To The Point. Summarization with Pointer-Generator Networks">
+                  Get To The Point. Summarization with Pointer-Generator Networks <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">SoundMemories</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"neutral"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.min.js","integrity":"sha256-JFptYy4KzJ5OQP+Q9fubNf3cxpPPmZKqUOovyEONKrQ="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://soundmemories.github.io/2021/07/16/NLP/03.%E5%9F%BA%E4%BA%8ELSTM%E7%9A%84%E6%9C%BA%E5%99%A8%E7%BF%BB%E8%AF%91/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>
