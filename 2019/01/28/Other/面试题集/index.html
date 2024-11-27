@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.1","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="机器学习 过拟合和欠拟合？ 过拟合：模型在训练集上表现好，在测试集和新数据上表现差。 欠拟合：模型在训练集和测试集上表现都差。 降低过拟合风险： 增加数据。 降低模型复杂度，如减少神经元数量、网络层数，降低树深度，剪枝。 增加正则化。 使用集成学习方法，降低单一模型过拟合风险。 降低欠拟合风险： 增加新特征。 增加模型复杂度。 减小正则化系数。 多分类用什么评估指标，AU">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面试题集">
+<meta property="og:url" content="https://soundmemories.github.io/2019/01/28/Other/%E9%9D%A2%E8%AF%95%E9%A2%98%E9%9B%86/index.html">
+<meta property="og:site_name" content="SoundMemories">
+<meta property="og:description" content="机器学习 过拟合和欠拟合？ 过拟合：模型在训练集上表现好，在测试集和新数据上表现差。 欠拟合：模型在训练集和测试集上表现都差。 降低过拟合风险： 增加数据。 降低模型复杂度，如减少神经元数量、网络层数，降低树深度，剪枝。 增加正则化。 使用集成学习方法，降低单一模型过拟合风险。 降低欠拟合风险： 增加新特征。 增加模型复杂度。 减小正则化系数。 多分类用什么评估指标，AU">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E9%9D%A2%E8%AF%95/L1%E5%9B%BE.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E9%9D%A2%E8%AF%95/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E9%9D%A2%E8%AF%95/Bagging%E5%92%8CBoosting.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E9%9D%A2%E8%AF%95/GBDT%E5%92%8CXgboost.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E9%9D%A2%E8%AF%95/GBDT%E5%92%8CXgboost2.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E9%9D%A2%E8%AF%95/%E8%B6%85%E5%8F%82%E6%95%B0%E8%B0%83%E4%BC%98.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E9%9D%A2%E8%AF%95/%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E9%9D%A2%E8%AF%95/bleu.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E9%9D%A2%E8%AF%95/resnet.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E9%9D%A2%E8%AF%95/resnet1.png">
+<meta property="article:published_time" content="2019-01-27T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-11-02T01:34:15.455Z">
+<meta property="article:author" content="SoundMemories">
+<meta property="article:tag" content="Other">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://soundmemories.github.io/images/%E9%9D%A2%E8%AF%95/L1%E5%9B%BE.jpg">
+
+
+<link rel="canonical" href="https://soundmemories.github.io/2019/01/28/Other/%E9%9D%A2%E8%AF%95%E9%A2%98%E9%9B%86/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://soundmemories.github.io/2019/01/28/Other/%E9%9D%A2%E8%AF%95%E9%A2%98%E9%9B%86/","path":"2019/01/28/Other/面试题集/","title":"面试题集"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>面试题集 | SoundMemories</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">SoundMemories</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">128</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0"><span class="nav-number">1.</span> <span class="nav-text">机器学习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%87%E6%8B%9F%E5%90%88%E5%92%8C%E6%AC%A0%E6%8B%9F%E5%90%88"><span class="nav-number">1.1.</span> <span class="nav-text">过拟合和欠拟合？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E5%88%86%E7%B1%BB%E7%94%A8%E4%BB%80%E4%B9%88%E8%AF%84%E4%BC%B0%E6%8C%87%E6%A0%87auc%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">1.2.</span> <span class="nav-text">多分类用什么评估指标，AUC是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B7%E6%9C%AC%E4%B8%8D%E5%B9%B3%E8%A1%A1%E5%A4%84%E7%90%86"><span class="nav-number">1.3.</span> <span class="nav-text">样本不平衡处理？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%BA%E5%A4%B1%E5%80%BC%E5%A4%84%E7%90%86"><span class="nav-number">1.4.</span> <span class="nav-text">缺失值处理？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#l1%E6%AD%A3%E5%88%99%E5%92%8Cl2%E6%AD%A3%E5%88%99%E7%9A%84%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">1.5.</span> <span class="nav-text">L1正则和L2正则的区别是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#l1%E6%AD%A3%E5%88%99%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8F%AF%E4%BB%A5%E5%BE%97%E5%88%B0%E7%A8%80%E7%96%8F%E8%A7%A3"><span class="nav-number">1.6.</span> <span class="nav-text">L1正则为什么可以得到稀疏解？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sgd%E5%92%8Cgd%E7%9A%84%E5%8C%BA%E5%88%AB%E4%BB%80%E4%B9%88%E5%9C%BA%E6%99%AF%E4%B8%8B%E7%94%A8"><span class="nav-number">1.7.</span> <span class="nav-text">SGD和GD的区别，什么场景下用？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91%E5%90%AF%E5%8F%91%E5%87%BD%E6%95%B0"><span class="nav-number">1.8.</span> <span class="nav-text">决策树启发函数？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bagging%E5%92%8Cboosting"><span class="nav-number">1.9.</span> <span class="nav-text">bagging和boosting？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AF%94%E8%BE%83lr%E5%92%8Cgbdt-%E8%AF%B4%E8%AF%B4%E4%BB%80%E4%B9%88%E6%83%85%E5%A2%83%E4%B8%8Bgbdt%E4%B8%8D%E5%A6%82lr"><span class="nav-number">1.10.</span> <span class="nav-text">比较LR和GBDT,
+说说什么情境下GBDT不如LR？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rf%E5%92%8Cgbdt%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">1.11.</span> <span class="nav-text">RF和GBDT的区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gbdt%E5%92%8Cxgboost%E5%8C%BA%E5%88%AB"><span class="nav-number">1.12.</span> <span class="nav-text">GBDT和xgboost区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D%E4%B8%8Bxgboost"><span class="nav-number">1.13.</span> <span class="nav-text">简单介绍下xgboost？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xgboost%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8%E6%B3%B0%E5%8B%92%E4%BA%8C%E9%98%B6%E5%B1%95%E5%BC%80"><span class="nav-number">1.14.</span> <span class="nav-text">xgboost为什么使用泰勒二阶展开？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xgboost%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8F%AF%E4%BB%A5%E5%B9%B6%E8%A1%8C%E8%AE%AD%E7%BB%83%E5%A6%82%E4%BD%95%E5%AF%BB%E6%89%BE%E6%9C%80%E4%BD%B3%E5%88%86%E8%A3%82%E7%82%B9"><span class="nav-number">1.15.</span> <span class="nav-text">XGBoost为什么可以并行训练？&#x2F;如何寻找最佳分裂点？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xgboost%E4%B8%BA%E4%BB%80%E4%B9%88%E5%BF%AB"><span class="nav-number">1.16.</span> <span class="nav-text">XGBOOST为什么快？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xgboost%E9%98%B2%E6%AD%A2%E8%BF%87%E6%8B%9F%E5%90%88%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">1.17.</span> <span class="nav-text">XGBOOST防止过拟合的方法？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xgboost%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%E7%BC%BA%E5%A4%B1%E5%80%BC"><span class="nav-number">1.18.</span> <span class="nav-text">XGBOOST如何处理缺失值？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xbgoost%E4%B8%AD%E5%8F%B6%E5%AD%90%E8%8A%82%E7%82%B9%E7%9A%84%E6%9D%83%E9%87%8D%E5%A6%82%E4%BD%95%E8%AE%A1%E7%AE%97%E5%87%BA%E6%9D%A5%E7%9A%84"><span class="nav-number">1.19.</span> <span class="nav-text">XBGOOST中叶子节点的权重如何计算出来的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xgboost%E4%B8%AD%E7%9A%84%E4%B8%80%E6%A3%B5%E6%A0%91%E7%9A%84%E5%81%9C%E6%AD%A2%E7%94%9F%E9%95%BF%E6%9D%A1%E4%BB%B6"><span class="nav-number">1.20.</span> <span class="nav-text">XGBOOST中的一棵树的停止生长条件？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xgboost%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%E4%B8%8D%E5%B9%B3%E8%A1%A1%E6%95%B0%E6%8D%AE"><span class="nav-number">1.21.</span> <span class="nav-text">xgboost如何处理不平衡数据？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xgboos%E4%B8%AD%E5%A6%82%E4%BD%95%E5%AF%B9%E6%A0%91%E8%BF%9B%E8%A1%8C%E5%89%AA%E6%9E%9D"><span class="nav-number">1.22.</span> <span class="nav-text">XGBOOS中如何对树进行剪枝？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xgboost%E7%9A%84scalable%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7%E6%80%A7%E5%A6%82%E4%BD%95%E4%BD%93%E7%8E%B0"><span class="nav-number">1.23.</span> <span class="nav-text">XGBoost的Scalable(可扩展性)性如何体现？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xgboost%E5%A6%82%E4%BD%95%E8%AF%84%E4%BB%B7%E7%89%B9%E5%BE%81%E7%9A%84%E9%87%8D%E8%A6%81%E6%80%A7"><span class="nav-number">1.24.</span> <span class="nav-text">XGBOOST如何评价特征的重要性？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xgboost%E5%8F%82%E6%95%B0%E8%B0%83%E4%BC%98%E7%9A%84%E4%B8%80%E8%88%AC%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.25.</span> <span class="nav-text">XGBOOST参数调优的一般步骤？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xgboost%E6%A8%A1%E5%9E%8B%E5%A6%82%E6%9E%9C%E8%BF%87%E6%8B%9F%E5%90%88%E4%BA%86%E6%80%8E%E4%B9%88%E8%A7%A3%E5%86%B3"><span class="nav-number">1.26.</span> <span class="nav-text">XGBOOST模型如果过拟合了怎么解决？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xgboost%E5%92%8Clightgbm%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">1.27.</span> <span class="nav-text">XGBOOST和lightGBM的区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B6%85%E5%8F%82%E6%95%B0%E8%B0%83%E4%BC%98"><span class="nav-number">1.28.</span> <span class="nav-text">超参数调优？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E5%B8%B8%E7%94%A8%E8%B6%85%E5%8F%82%E6%95%B0"><span class="nav-number">1.29.</span> <span class="nav-text">模型常用超参数？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%86%B5%E7%9A%84%E6%A6%82%E5%BF%B5%E4%BA%A4%E5%8F%89%E7%86%B5"><span class="nav-number">1.30.</span> <span class="nav-text">熵的概念，交叉熵？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%86%B5%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E5%9C%A8%E4%BB%80%E4%B9%88%E5%9C%B0%E6%96%B9%E4%BD%BF%E7%94%A8%E8%BF%87"><span class="nav-number">1.31.</span> <span class="nav-text">交叉熵损失函数？在什么地方使用过？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%86%B5%E5%87%BD%E6%95%B0%E4%B8%8E%E6%9C%80%E5%A4%A7%E5%AF%B9%E6%95%B0%E4%BC%BC%E7%84%B6%E5%87%BD%E6%95%B0%E7%9A%84%E5%85%B3%E7%B3%BB%E5%92%8C%E5%8C%BA%E5%88%AB"><span class="nav-number">1.32.</span> <span class="nav-text">交叉熵函数与最大(对数)似然函数的关系和区别？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0"><span class="nav-number">2.</span> <span class="nav-text">深度学习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%9C%89%E5%93%AA%E4%BA%9B%E5%8A%9E%E6%B3%95%E9%98%B2%E6%AD%A2%E8%BF%87%E6%8B%9F%E5%90%88"><span class="nav-number">2.1.</span> <span class="nav-text">神经网络中，有哪些办法防止过拟合？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bn%E5%92%8Cln%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">2.2.</span> <span class="nav-text">BN和LN的区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1%E7%88%86%E7%82%B8%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3"><span class="nav-number">2.3.</span> <span class="nav-text">梯度消失、爆炸？如何解决？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#batchsize%E5%A4%A7%E6%88%96%E5%B0%8F%E6%9C%89%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98"><span class="nav-number">2.4.</span> <span class="nav-text">batchsize大或小有什么问题？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E8%AE%AD%E7%BB%83%E5%87%BA%E7%8E%B0nan%E5%BA%94%E8%AF%A5%E4%BB%8E%E5%93%AA%E4%BA%9B%E6%96%B9%E9%9D%A2%E5%8E%BB%E6%9F%A5"><span class="nav-number">2.5.</span> <span class="nav-text">神经网络训练出现nan，应该从哪些方面去查？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#loss%E4%B8%8D%E4%B8%8B%E9%99%8D%E5%8F%AF%E8%83%BD%E6%98%AF%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E6%A8%A1%E5%9E%8B%E4%B8%8D%E6%94%B6%E6%95%9B%E9%97%AE%E9%A2%98"><span class="nav-number">2.6.</span> <span class="nav-text">loss不下降可能是什么情况？如何解决模型不收敛问题？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%E5%B8%B8%E7%94%A8%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">2.7.</span> <span class="nav-text">为什么用激活函数？常用激活函数？优缺点？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%84%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95%E6%9C%89%E5%93%AA%E4%BA%9B%E5%90%84%E8%87%AA%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">2.8.</span> <span class="nav-text">常用的优化算法有哪些？各自的优缺点？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cnnrnnlstmtransformer%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">2.9.</span> <span class="nav-text">CNN、RNN(LSTM)、Transformer的区别？？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lstm%E5%92%8Crnn%E5%8C%BA%E5%88%AB%E6%9C%89%E4%BB%80%E4%B9%88%E4%BC%98%E5%8C%96rnn%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E6%9C%89%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1lstm%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1"><span class="nav-number">2.10.</span> <span class="nav-text">LSTM和RNN区别，有什么优化？RNN为什么会有梯度消失，LSTM如何解决梯度消失？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lstm%E4%B8%8Egru%E5%8C%BA%E5%88%AB"><span class="nav-number">2.11.</span> <span class="nav-text">LSTM与GRU区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#seq2seq%E6%98%AF%E4%BB%80%E4%B9%88%E7%BB%93%E6%9E%84transformer%E5%91%A2"><span class="nav-number">2.12.</span> <span class="nav-text">seq2seq是什么结构，transformer呢？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#attention%E4%BB%8B%E7%BB%8D%E6%9C%89%E5%93%AA%E4%BA%9Battention%E6%96%B9%E6%B3%95"><span class="nav-number">2.13.</span> <span class="nav-text">Attention介绍，有哪些Attention方法？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#self-attention%E6%AF%94seq2seq%E7%9A%84attention%E4%BC%98%E8%B6%8A%E5%9C%A8%E5%93%AA%E9%87%8C%E6%9C%80%E5%A5%BD%E7%BB%93%E5%90%88%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E8%AF%B4%E4%B8%80%E8%AF%B4"><span class="nav-number">2.14.</span> <span class="nav-text">self-attention比seq2seq的attention优越在哪里（最好结合业务场景说一说）？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#transformer%E6%98%AF%E8%87%AA%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B%E8%BF%98%E6%98%AF%E8%87%AA%E7%BC%96%E7%A0%81%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.15.</span> <span class="nav-text">Transformer是自回归模型还是自编码模型？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#transformer%E7%9A%84position-embedding%E4%BD%9C%E7%94%A8%E6%9C%89%E4%BB%80%E4%B9%88%E6%84%8F%E4%B9%89%E5%92%8C%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">2.16.</span> <span class="nav-text">transformer的position
+embedding作用？有什么意义和优缺点？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%A0%E8%BF%98%E4%BA%86%E8%A7%A3%E5%93%AA%E4%BA%9B%E5%85%B3%E4%BA%8E%E4%BD%8D%E7%BD%AE%E7%BC%96%E7%A0%81%E7%9A%84%E6%8A%80%E6%9C%AF%E5%90%84%E8%87%AA%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">2.17.</span> <span class="nav-text">你还了解哪些关于位置编码的技术，各自的优缺点是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#transformer%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E5%A4%9A%E4%B8%AA%E5%A4%B4%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E4%BD%BF%E7%94%A8%E4%B8%80%E4%B8%AA%E5%A4%B4%E4%B8%BA%E4%BB%80%E4%B9%88%E5%9C%A8%E8%BF%9B%E8%A1%8C%E5%A4%9A%E5%A4%B4%E6%B3%A8%E6%84%8F%E5%8A%9B%E7%9A%84%E6%97%B6%E5%80%99%E9%9C%80%E8%A6%81%E5%AF%B9%E6%AF%8F%E4%B8%AAhead%E8%BF%9B%E8%A1%8C%E9%99%8D%E7%BB%B4"><span class="nav-number">2.18.</span> <span class="nav-text">Transformer为何使用多个头？为什么不使用一个头？为什么在进行多头注意力的时候需要对每个head进行降维？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#transformer%E4%B8%BA%E4%BB%80%E4%B9%88q%E5%92%8Ck%E4%BD%BF%E7%94%A8%E4%B8%8D%E5%90%8C%E7%9A%84%E6%9D%83%E9%87%8D%E7%9F%A9%E9%98%B5%E7%94%9F%E6%88%90%E4%B8%BA%E4%BD%95%E4%B8%8D%E8%83%BD%E4%BD%BF%E7%94%A8%E5%90%8C%E4%B8%80%E4%B8%AA%E5%80%BC%E8%BF%9B%E8%A1%8C%E8%87%AA%E8%BA%AB%E7%9A%84%E7%82%B9%E4%B9%98"><span class="nav-number">2.19.</span> <span class="nav-text">Transformer为什么Q和K使用不同的权重矩阵生成，为何不能使用同一个值进行自身的点乘？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#transformer%E4%B8%AD%E4%B8%BA%E4%BB%80%E4%B9%88%E5%9C%A8%E8%BF%9B%E8%A1%8Csoftmax%E4%B9%8B%E5%89%8D%E9%9C%80%E8%A6%81%E5%AF%B9attention%E8%BF%9B%E8%A1%8Cscaled%E4%B8%BA%E4%BB%80%E4%B9%88%E9%99%A4%E4%BB%A5dk%E7%9A%84%E5%B9%B3%E6%96%B9%E6%A0%B9%E5%B9%B6%E4%BD%BF%E7%94%A8%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC%E8%BF%9B%E8%A1%8C%E8%AE%B2%E8%A7%A3"><span class="nav-number">2.20.</span> <span class="nav-text">Transformer中，为什么在进行softmax之前需要对attention进行scaled（为什么除以dk的平方根）？并使用公式推导进行讲解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#transformer%E4%B8%AD%E7%9A%84mask%E6%9C%BA%E5%88%B6%E6%9C%89%E4%BB%80%E4%B9%88%E4%BD%9C%E7%94%A8%E8%AE%A1%E7%AE%97attention-score%E7%9A%84%E6%97%B6%E5%80%99%E5%A6%82%E4%BD%95%E5%AF%B9padding%E5%81%9Amask%E6%93%8D%E4%BD%9C"><span class="nav-number">2.21.</span> <span class="nav-text">Transformer中的mask机制有什么作用？计算attention
+score的时候如何对padding做mask操作？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%A7%E6%A6%82%E8%AE%B2%E4%B8%80%E4%B8%8Btransformer%E7%9A%84encoder%E6%A8%A1%E5%9D%97"><span class="nav-number">2.22.</span> <span class="nav-text">大概讲一下Transformer的Encoder模块？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BD%95%E5%9C%A8%E8%8E%B7%E5%8F%96%E8%BE%93%E5%85%A5%E8%AF%8D%E5%90%91%E9%87%8F%E4%B9%8B%E5%90%8E%E9%9C%80%E8%A6%81%E5%AF%B9%E7%9F%A9%E9%98%B5%E4%B9%98%E4%BB%A5embedding-size%E7%9A%84%E5%BC%80%E6%96%B9"><span class="nav-number">2.23.</span> <span class="nav-text">为何在获取输入词向量之后需要对矩阵乘以embedding
+size的开方？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%83%E9%87%8D%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">2.24.</span> <span class="nav-text">权重初始化？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#transformer%E4%B8%AD%E7%9A%84%E6%AE%8B%E5%B7%AE%E7%BB%93%E6%9E%84%E4%BB%A5%E5%8F%8A%E6%84%8F%E4%B9%89"><span class="nav-number">2.25.</span> <span class="nav-text">Transformer中的残差结构以及意义？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#transformer%E5%9C%A8%E8%AE%AD%E7%BB%83%E4%B8%8E%E9%AA%8C%E8%AF%81%E7%9A%84%E6%97%B6%E5%80%99%E6%9C%89%E4%BB%80%E4%B9%88%E4%B8%8D%E5%90%8C"><span class="nav-number">2.26.</span> <span class="nav-text">Transformer在训练与验证的时候有什么不同？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#transformer%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%AE%A1%E7%AE%97%E5%A4%8D%E6%9D%82%E5%BA%A6%E6%98%AF%E5%A4%9A%E5%B0%91"><span class="nav-number">2.27.</span> <span class="nav-text">Transformer模型的计算复杂度是多少？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#transformer%E4%B8%AD%E4%B8%89%E4%B8%AA%E5%A4%9A%E5%A4%B4%E8%87%AA%E6%B3%A8%E6%84%8F%E5%8A%9B%E5%B1%82%E5%88%86%E5%88%AB%E6%9C%89%E4%BB%80%E4%B9%88%E6%84%8F%E4%B9%89%E4%B8%8E%E4%BD%9C%E7%94%A8"><span class="nav-number">2.28.</span> <span class="nav-text">Transformer中三个多头自注意力层分别有什么意义与作用？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88transformer%E5%9D%97%E4%BD%BF%E7%94%A8layernorm%E8%80%8C%E4%B8%8D%E6%98%AFbatchnormlayernorm-%E5%9C%A8transformer%E7%9A%84%E4%BD%8D%E7%BD%AE%E6%98%AF%E5%93%AA%E9%87%8C"><span class="nav-number">2.29.</span> <span class="nav-text">为什么transformer块使用LayerNorm而不是BatchNorm？LayerNorm
+在Transformer的位置是哪里？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#transformer%E4%B8%AD%E7%9A%84%E5%89%8D%E9%A6%88%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%BD%BF%E7%94%A8%E4%BA%86%E4%BB%80%E4%B9%88%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%E7%9B%B8%E5%85%B3%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">2.30.</span> <span class="nav-text">Transformer中的前馈神经网络？使用了什么激活函数？相关优缺点？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#encoder%E7%AB%AF%E5%92%8Cdecoder%E7%AB%AF%E6%98%AF%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E4%BA%A4%E4%BA%92%E7%9A%84"><span class="nav-number">2.31.</span> <span class="nav-text">Encoder端和Decoder端是如何进行交互的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#decoder%E9%98%B6%E6%AE%B5%E7%9A%84%E5%A4%9A%E5%A4%B4%E8%87%AA%E6%B3%A8%E6%84%8F%E5%8A%9B%E5%92%8Cencoder%E7%9A%84%E5%A4%9A%E5%A4%B4%E8%87%AA%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB"><span class="nav-number">2.32.</span> <span class="nav-text">Decoder阶段的多头自注意力和encoder的多头自注意力有什么区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#transformer%E7%9A%84%E5%B9%B6%E8%A1%8C%E5%8C%96%E6%8F%90%E7%8E%B0%E5%9C%A8%E5%93%AA%E4%B8%AA%E5%9C%B0%E6%96%B9decoder%E7%AB%AF%E5%8F%AF%E4%BB%A5%E5%81%9A%E5%B9%B6%E8%A1%8C%E5%8C%96%E5%90%97"><span class="nav-number">2.33.</span> <span class="nav-text">Transformer的并行化提现在哪个地方？Decoder端可以做并行化吗？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#transformer%E8%AE%AD%E7%BB%83%E7%9A%84%E6%97%B6%E5%80%99%E5%AD%A6%E4%B9%A0%E7%8E%87%E6%98%AF%E5%A6%82%E4%BD%95%E8%AE%BE%E5%AE%9A%E7%9A%84dropout%E4%BD%8D%E7%BD%AE%E5%9C%A8%E5%93%AA%E9%87%8Cdropout-%E5%9C%A8%E6%B5%8B%E8%AF%95%E7%9A%84%E9%9C%80%E8%A6%81%E6%9C%89%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E5%90%97"><span class="nav-number">2.34.</span> <span class="nav-text">Transformer训练的时候学习率是如何设定的？Dropout位置在哪里？Dropout
+在测试的需要有什么需要注意的吗？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bert%E7%9A%84mask%E4%B8%BA%E4%BD%95%E4%B8%8D%E5%AD%A6%E4%B9%A0transformer%E5%9C%A8attention%E5%A4%84%E8%BF%9B%E8%A1%8Cmask-score%E7%9A%84%E6%8A%80%E5%B7%A7"><span class="nav-number">2.35.</span> <span class="nav-text">bert的mask为何不学习transformer在attention处进行mask
+score的技巧？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bert%E7%9A%84mask%E6%BA%90%E7%A0%81%E7%9C%8B%E8%BF%87%E5%90%97%E5%9C%A8%E8%AE%A1%E7%AE%97attention_scores%E6%97%B6%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8A%A0%E4%B8%8Aattention_mask%E8%80%8C%E4%B8%8D%E6%98%AF%E4%B9%98%E4%BB%A5"><span class="nav-number">2.36.</span> <span class="nav-text">bert的mask源码看过吗，在计算attention_scores时为什么加上attention_mask而不是乘以？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#transformer%E5%9C%A8%E5%93%AA%E9%87%8C%E5%81%9A%E4%BA%86%E6%9D%83%E9%87%8D%E5%85%B1%E4%BA%AB%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8F%AF%E4%BB%A5%E5%81%9A%E6%9D%83%E9%87%8D%E5%85%B1%E4%BA%AB"><span class="nav-number">2.37.</span> <span class="nav-text">Transformer在哪里做了权重共享，为什么可以做权重共享？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pre-norm%E5%92%8Cpost-norm%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">2.38.</span> <span class="nav-text">pre-norm和post-norm的区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%9D%E5%AF%B9%E4%BD%8D%E7%BD%AE%E5%92%8C%E7%9B%B8%E5%AF%B9%E4%BD%8D%E7%BD%AE%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">2.39.</span> <span class="nav-text">绝对位置和相对位置的区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#position-embedding%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%E6%9C%89%E5%93%AA%E4%B8%A4%E7%A7%8D"><span class="nav-number">2.40.</span> <span class="nav-text">position
+embedding的实现方式有哪两种？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%B2%E4%B8%80%E4%B8%8Bbert%E5%8E%9F%E7%90%86mlm%E9%A2%84%E8%AE%AD%E7%BB%83%E4%BB%BB%E5%8A%A1mask%E7%9A%84%E7%9B%AE%E7%9A%84%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">2.41.</span> <span class="nav-text">讲一下Bert原理？MLM预训练任务mask的目的是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bert%E5%8F%8A%E5%85%B6%E5%8F%98%E4%BD%93%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84mask%E6%96%B9%E5%BC%8F%E5%8F%8A%E7%89%B9%E7%82%B9"><span class="nav-number">2.42.</span> <span class="nav-text">bert及其变体中常用的mask方式及特点？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bert%E9%87%87%E7%94%A8%E5%93%AA%E7%A7%8Dnormalization%E7%BB%93%E6%9E%84layernorm%E7%BB%93%E6%9E%84%E6%9C%89%E5%8F%82%E6%95%B0%E5%90%97%E5%8F%82%E6%95%B0%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">2.43.</span> <span class="nav-text">Bert采用哪种Normalization结构，LayerNorm结构有参数吗，参数的作用？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bert%E7%9A%84-fine-tune-%E6%96%B9%E6%B3%95"><span class="nav-number">2.44.</span> <span class="nav-text">BERT的 fine tune 方法？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bert%E5%92%8Calbert%E5%8C%BA%E5%88%AB"><span class="nav-number">2.45.</span> <span class="nav-text">Bert和Albert区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bert%E5%92%8Cfinbert%E5%8C%BA%E5%88%AB"><span class="nav-number">2.46.</span> <span class="nav-text">Bert和FinBert区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bert%E5%92%8Cnezha%E5%8C%BA%E5%88%AB"><span class="nav-number">2.47.</span> <span class="nav-text">Bert和Nezha区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#elmogptbert%E4%B8%89%E8%80%85%E4%B9%8B%E9%97%B4%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB"><span class="nav-number">2.48.</span> <span class="nav-text">elmo、GPT、bert三者之间有什么区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#siamese%E7%BB%93%E6%9E%84%E4%BB%80%E4%B9%88%E6%A0%B7"><span class="nav-number">2.49.</span> <span class="nav-text">Siamese结构什么样？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%92%B8%E9%A6%8F%E7%9A%84%E6%80%9D%E6%83%B3%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E8%92%B8%E9%A6%8F"><span class="nav-number">2.50.</span> <span class="nav-text">蒸馏的思想，为什么要蒸馏？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E5%93%AA%E4%BA%9B%E8%92%B8%E9%A6%8F%E6%96%B9%E5%BC%8F"><span class="nav-number">2.51.</span> <span class="nav-text">有哪些蒸馏方式?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#softmax-temperature%E8%92%B8%E9%A6%8F%E4%B8%AD%E4%BD%9C%E7%94%A8"><span class="nav-number">2.52.</span> <span class="nav-text">softmax-temperature蒸馏中作用？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#beam-search%E7%BC%BA%E7%82%B9%E4%BC%98%E5%8C%96"><span class="nav-number">2.53.</span> <span class="nav-text">Beam Search？缺点？优化？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E7%B1%BB%E4%BB%BB%E5%8A%A1%E4%B8%AD%E4%BC%9A%E7%94%A8%E5%88%B0%E5%93%AA%E4%BA%9Bloss-function"><span class="nav-number">2.54.</span> <span class="nav-text">分类任务中会用到哪些loss
+function？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#unilm%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.55.</span> <span class="nav-text">UniLM介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B2%BE%E6%8E%92learning-to-rank-%E6%96%B9%E6%B3%95%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="nav-number">2.56.</span> <span class="nav-text">精排learning to rank
+方法有哪些？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cnntextcnn%E4%B8%BA%E4%BB%80%E4%B9%88%E8%83%BD%E5%81%9A%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%E8%B6%85%E5%8F%82%E6%95%B0%E6%80%8E%E4%B9%88%E7%A1%AE%E5%AE%9A"><span class="nav-number">2.57.</span> <span class="nav-text">CNN(textcnn)为什么能做文本分类，超参数怎么确定？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%81%9A%E5%8F%A5%E5%AD%90%E8%AF%AD%E4%B9%89%E7%9B%B8%E4%BC%BC%E5%BA%A6%E7%9A%84"><span class="nav-number">2.58.</span> <span class="nav-text">如何做(句子)语义相似度的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87"><span class="nav-number">2.59.</span> <span class="nav-text">文本生成评价指标？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B7%E5%90%88%E7%B2%BE%E5%BA%A6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3"><span class="nav-number">2.60.</span> <span class="nav-text">混合精度遇到的问题？如何解决？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B7%E5%90%88%E7%B2%BE%E5%BA%A6%E8%AE%AD%E7%BB%83%E4%B8%ADweightactivation%E4%BB%A5%E5%8F%8Agradient%E9%83%BD%E6%98%AF%E4%BB%8Efp32%E6%94%B9%E6%88%90%E4%BA%86fp16%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8F%AA%E6%9C%89weight%E4%BF%9D%E7%95%99%E4%BA%86%E5%89%AF%E6%9C%AC"><span class="nav-number">2.61.</span> <span class="nav-text">混合精度训练中weight、activation以及gradient都是从FP32改成了FP16，为什么只有weight保留了副本？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%9D%E7%95%99%E4%B8%80%E4%BB%BDfp32%E7%9A%84%E5%89%AF%E6%9C%AC%E4%BC%9A%E5%8D%A0%E7%94%A8%E6%9B%B4%E5%A4%9A%E7%9A%84%E5%89%AF%E6%9C%AC%E4%BD%86%E6%98%AF%E4%B8%BA%E4%BB%80%E4%B9%88%E6%9C%80%E7%BB%88%E4%BC%9A%E5%87%8F%E5%B0%91%E6%98%BE%E5%AD%98%E6%B6%88%E8%80%97%E5%91%A2"><span class="nav-number">2.62.</span> <span class="nav-text">保留一份FP32的副本会占用更多的副本，但是为什么最终会减少显存消耗呢？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pytorch%E6%A8%A1%E5%9E%8B%E4%BF%9D%E5%AD%98%E5%90%8E%E6%96%87%E4%BB%B6"><span class="nav-number">2.63.</span> <span class="nav-text">pytorch模型保存后文件？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E6%8A%97%E8%AE%AD%E7%BB%83fgm%E5%92%8Cpgd"><span class="nav-number">2.64.</span> <span class="nav-text">对抗训练FGM和PGD？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">自然语言处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%A6%E7%BB%86%E8%AE%B2%E4%B8%80%E4%B8%8B%E4%B8%8D%E5%90%8C%E7%9A%84%E6%96%87%E6%9C%AC%E8%A1%A8%E5%BE%81%E5%90%91%E9%87%8F%E5%8C%96%E6%96%B9%E6%B3%95%E5%AF%B9%E6%AF%94%E5%8C%BA%E5%88%AB"><span class="nav-number">3.1.</span> <span class="nav-text">详细讲一下不同的文本表征向量化方法，对比区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nlp%E7%9A%84%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86%E9%80%9A%E5%B8%B8%E5%81%9A%E4%BB%80%E4%B9%88"><span class="nav-number">3.2.</span> <span class="nav-text">NLP的数据预处理通常做什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nlp%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA%E6%96%B9%E6%B3%95"><span class="nav-number">3.3.</span> <span class="nav-text">NLP数据增强方法？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%B2%E4%B8%80%E4%B8%8B-word2vec-cbow-%E4%B8%8E-skip-gram-%E7%9A%84%E5%8C%BA%E5%88%AB%E5%92%8C%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">3.4.</span> <span class="nav-text">讲一下
+word2vec？ cbow 与 skip-gram 的区别和优缺点？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fasttext%E5%92%8Cglovec%E5%8E%9F%E7%90%86%E4%BB%8B%E7%BB%8D"><span class="nav-number">3.5.</span> <span class="nav-text">FastText和Glovec原理介绍？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fasttext%E5%92%8Cword2vec%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">3.6.</span> <span class="nav-text">fastText和word2vec的区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#crf%E5%8E%9F%E7%90%86"><span class="nav-number">3.7.</span> <span class="nav-text">CRF原理？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hmmmemm-vs-crf-%E5%AF%B9%E6%AF%94"><span class="nav-number">3.8.</span> <span class="nav-text">HMM、MEMM vs CRF 对比？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E5%8D%B3%E8%A7%86%E8%A7%89"><span class="nav-number">4.</span> <span class="nav-text">计算即视觉</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#resnet"><span class="nav-number">4.1.</span> <span class="nav-text">resnet？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#triple-loss"><span class="nav-number">4.2.</span> <span class="nav-text">Triple loss？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%AD%89"><span class="nav-number">5.</span> <span class="nav-text">大数据等</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#mysqlhadoopspark%E5%8C%BA%E5%88%AB"><span class="nav-number">5.1.</span> <span class="nav-text">mysql、hadoop、spark区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reducebykey%E5%A6%82%E4%BD%95%E8%BF%90%E8%A1%8C%E5%92%8Cgroupbykey%E7%9B%B8%E6%AF%94%E9%AB%98%E6%95%88%E5%9C%A8%E5%93%AA"><span class="nav-number">5.2.</span> <span class="nav-text">reducebykey如何运行，和groupbykey相比高效在哪？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%BD%E4%BE%9D%E8%B5%96%E7%AA%84%E4%BE%9D%E8%B5%96"><span class="nav-number">5.3.</span> <span class="nav-text">宽依赖&#x2F;窄依赖？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mysql%E7%B4%A2%E5%BC%95"><span class="nav-number">5.4.</span> <span class="nav-text">mysql索引？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#python%E5%9F%BA%E7%A1%80"><span class="nav-number">6.</span> <span class="nav-text">python基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AD%E5%8C%85"><span class="nav-number">6.1.</span> <span class="nav-text">闭包？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B5%85%E6%8B%B7%E8%B4%9D"><span class="nav-number">6.2.</span> <span class="nav-text">深拷贝和浅拷贝？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E4%B8%8D%E5%8F%AF%E5%8F%98%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%BE%E4%BE%8B%E5%AD%90"><span class="nav-number">6.3.</span> <span class="nav-text">可变不可变数据类型，举例子？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gil%E9%94%81"><span class="nav-number">6.4.</span> <span class="nav-text">GIL锁？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%A4%9A%E8%BF%9B%E7%A8%8B"><span class="nav-number">6.5.</span> <span class="nav-text">多线程，多进程？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE"><span class="nav-number">7.</span> <span class="nav-text">项目</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%90%A5%E9%94%80%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90"><span class="nav-number">7.1.</span> <span class="nav-text">营销文本生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A3%80%E7%B4%A2%E9%97%AE%E7%AD%94"><span class="nav-number">7.2.</span> <span class="nav-text">检索问答</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%BA%E5%99%A8%E7%BF%BB%E8%AF%91"><span class="nav-number">7.3.</span> <span class="nav-text">机器翻译</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6%E9%A2%98"><span class="nav-number">8.</span> <span class="nav-text">数学题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">9.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SoundMemories"
+      src="/images/avstar.png">
+  <p class="site-author-name" itemprop="name">SoundMemories</p>
+  <div class="site-description" itemprop="description">今日事，今日毕</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">128</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NvdW5kbWVtb3JpZXM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;soundmemories"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNvdW5kbWVtb3JpZXNAMTYzLmNvbQ==" title="E-Mail → mailto:soundmemories@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+        <div class="pjax">
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2019/01/28/Other/%E9%9D%A2%E8%AF%95%E9%A2%98%E9%9B%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="面试题集 | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          面试题集
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-01-28 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-28T00:00:00+08:00">2019-01-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Other/" itemprop="url" rel="index"><span itemprop="name">Other</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>29k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1:47</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="机器学习">机器学习</h1>
+<h2 id="过拟合和欠拟合">过拟合和欠拟合？</h2>
+<p><strong>过拟合</strong>：模型在训练集上表现好，在测试集和新数据上表现差。<br />
+<strong>欠拟合</strong>：模型在训练集和测试集上表现都差。</p>
+<p><strong>降低过拟合风险</strong>：<br />
+增加数据。<br />
+降低模型复杂度，如减少神经元数量、网络层数，降低树深度，剪枝。<br />
+增加正则化。<br />
+使用集成学习方法，降低单一模型过拟合风险。</p>
+<p><strong>降低欠拟合风险</strong>：<br />
+增加新特征。<br />
+增加模型复杂度。<br />
+减小正则化系数。</p>
+<h2
+id="多分类用什么评估指标auc是什么">多分类用什么评估指标，AUC是什么？</h2>
+<p>多个二分类混淆矩阵，两两类别的组合都能对应一个混淆矩阵。<br />
+<strong>宏混淆矩阵</strong>：先计算每个混淆矩阵的指标(P、R、F1)，再求和取均值。<br />
+<strong>微混淆矩阵</strong>：先对混淆矩阵求和(TP,FP,FN,TN)，再计算指标(P、R、F1)。</p>
+<p><strong>AUC是ROC曲线下部分的面积。ROC曲线横坐标FPR，纵坐标TPR。AUC越大说明模型把真正例排在前面，分类效果越好。</strong></p>
+<h2 id="样本不平衡处理">样本不平衡处理？</h2>
+<p><strong>欠采样</strong>：对样本多的类别，进行欠采样。比如原型生成(利用K-means聚类选择多数样本，保证样本分布不变)，原型选择(多数样本中选取代表性样本，每个少数类样本选择K个最近的多数类样本)。<br />
+<strong>过采样</strong>：对样本少的类别，进行过采样。比如SMOTE(一个少数样本与k近邻少数样本连线，取中点作为新少数样本)，NLP中数据增强，同义词替换。<br />
+<strong>损失函数</strong>：对不同类别样本赋予不同权重，比如Focal
+loss。<br />
+<strong>模型算法</strong>：通过引入有权重的模型算法，针对少量样本着重拟合，以提升对少量样本特征的学习。比如xgb的scale_pos_weight。<br />
+<strong>评价指标</strong>：选择对样本不平衡不敏感的指标，比如roc，auc，f1。</p>
+<h2 id="缺失值处理">缺失值处理？</h2>
+<p>离散型变量：用出现次数最多的特征值填充。<br />
+连续型变量：用中位数或者均值填充。</p>
+<h2 id="l1正则和l2正则的区别是什么">L1正则和L2正则的区别是什么？</h2>
+<p>L1正则化是指在损失函数中加入权值向量w的绝对值之和，即各个元素的绝对值之和，L2正则化指在损失函数中加入权值向量w的平方和。<br />
+L1的功能是使权重稀疏，而L2的功能是使权重平滑。<br />
+从贝叶斯角度来看，L1正则化相当于对模型参数w引入了拉普拉斯先验，L2正则化相当于引入了高斯先验。</p>
+<h2 id="l1正则为什么可以得到稀疏解">L1正则为什么可以得到稀疏解？</h2>
+<p>解空间形状，这是我们最常使用的一种答案，就是给面试官画下面的图：</p>
+<p><img src="/images/面试/L1图.jpg" width="80%"></p>
+<p>L2正则化相当于为参数定义了一个圆形的解空间，L1正则化相当于为参数定义了一个菱形的解空间。L1"棱角分明”的解空间显然更容易与凸优化问题中目标函数等高线在轴上碰撞，从而产生稀疏解。<br />
+事实上，“带正则项”和“带约束条件”是等价的。加了正则化的损失函数 <span
+class="math inline">\(L = Loss(y, \hat{y}) +\lambda
+||w||_2^2\)</span>。带约束条件的 损失函数 <span class="math inline">\(L
+= Loss(y, \hat{y}), st.||w||_2^2&lt;=m\)</span> 等价于求 <span
+class="math inline">\(L = Loss(y, \hat{y}) +\lambda (||w||_2^2 -
+m)\)</span> 其中 L 对 w 求导为0，就跟上面一致了。</p>
+<h2 id="sgd和gd的区别什么场景下用">SGD和GD的区别，什么场景下用？</h2>
+<p><img src="/images/面试/梯度下降.png" width="60%"><br />
+梯度下降：每次迭代，计算所有样本的梯度均值，然后更新参数。<br />
+随机梯度下降：选一个样本计算一个梯度，然后马上更新参数。</p>
+<h2 id="决策树启发函数">决策树启发函数？</h2>
+<p><strong>ID3</strong>：最大信息增益。<br />
+<strong>c4.5</strong>：最大信息增益比。校正信息增益趋向于取值多的特征问题。<br />
+<strong>cart</strong>：基尼系数。与信息熵含义类似，每次选择基尼系数最小的特征。</p>
+<p>ID3对缺失值敏感。<br />
+ID3只能离散变量，c4.5和cart还适用于连续变量(划分区间变为离散)。<br />
+ID3和c4.5是多叉树(特征不复用)，cart是二叉树(特征可复用)。<br />
+ID3和c4.5只能分类任务，cart还适用于回归任务。</p>
+<h2 id="bagging和boosting">bagging和boosting？</h2>
+<p><strong>bagging</strong>：对训练集多次采样，产生若干不同的子集，每个子集训练一个基学习器，预测分类任务投票法，回归任务均值法。<br />
+<strong>boosting</strong>：初始训练集训练一个基分类器，再根据基分类器表现对训练样本分布调整(通过学习残差改变样本权重)，基于调整后的分布来训练下一个基学习器，重复直到达到设定阈值，最终结果为所有分类器的加权求和。<br />
+<strong>bagging降低方差，boosting降低偏差。</strong></p>
+<p><img src="/images/面试/Bagging和Boosting.png" width="100%"></p>
+<h2 id="比较lr和gbdt-说说什么情境下gbdt不如lr">比较LR和GBDT,
+说说什么情境下GBDT不如LR？</h2>
+<p>先说说LR和GBDT的区别：<br />
+（1）LR是线性模型，可解释性强，很容易并行化，但是学习能力有限，需要大量的人工特征工程。<br />
+（2）GBDT是非线性模型，有天然的特征组合优势，特征表达能力强，但是树与树之前无法并行训练，而且树模型很容易过拟合。</p>
+<p>当在高维稀疏特征的场景下，LR的效果一般会比GBDT好。原因如下：<br />
+（1）假设一个二分类问题，label为0和1， 特征为100维，
+如果有1w个样本，但其中只有10个正样本1，而这些样本的特征f1的值全为1，
+而其余9990条样本的f1特征都为0（在高维稀疏的情况下这种情况很常见）。
+我们都知道在这种情况下，树模型很容易优化出一个使用f1特征作为重要分裂节点的树，因为这个节点直接能够将训练数据划分的很好，但是当测的时候，却会发现效果很差，因为这个特征f1只是刚好偶然间跟y拟合到了这个规律，这也就是我们常说的过拟合。<br />
+（2）那么这种情况下，
+如果采用lr的话，应该也会出现类似过拟合的情况呀。<code>y=w1*f1 + w2*f2+ w3*f3 +.....</code>
+其中，w1特别大足够拟合这10个样本，为什么此时树模型就过拟合的更严重呢？因为现在的模型普遍都会带着正则项，而LR等线性模型的正则项是对<strong>权重</strong>的惩罚，也就是W1一旦变大，惩罚就会很大，进一步压缩w1的值，使他不至于过大，但是，树模型则不一样，树模型的惩罚通常为<strong>叶子节点数</strong>和<strong>深度</strong>等。而我们知道，对于上面的case,树只需要一个节点就可以完美分割9990和10个样本，一个节点，最终产生的惩罚项及其之小。<br />
+<strong>这也就是为什么在高维稀疏特征的时候，线性模型会比非线性模型好的原因了：带正则化项的线性模型比较不容易对稀疏特征过拟合。</strong></p>
+<h2 id="rf和gbdt的区别">RF和GBDT的区别？</h2>
+<p><strong>随机森林</strong>：基于bagging思想，cart决策树作为基学习器。可并行化。随机选择样本（放回抽样）；随机选择特征(计算增益)；构建决策树；随机森林投票/平均。<br />
+优点：易于并行化，在大数据集上有很大的优势；能够处理高维度数据，不用做特征选择。</p>
+<p><strong>GBDT</strong>：基于boosting思想，cart决策树作为基学习器，使用。串行。GBDT中的树都是回归树，每次学习上一个基分类器的残差，每一步残差计算其实变相地增大了被分错样本的权重，而对于分对样本的权重趋于0，这样后面的树就能专注于那些被分错的样本。<br />
+优点：可以自动进行特征组合，拟合非线性数据；可以灵活处理各种类型的数据。<br />
+缺点：对异常点敏感。回归类的损失函数会用<strong>绝对损失</strong>或者<strong>Huber损失</strong>函数来代替平方损失函数。</p>
+<p>相同点：都是由多棵树组成，最终的结果都是由多棵树一起决定。<br />
+不同点：<br />
+集成学习： RF属于bagging 思想，而GBDT属于boosting思想。<br />
+偏差-方差衡量：RF不断的降低模型的方差，而GBDT不断的降低模型的偏差。<br />
+训练样本：RF每次迭代的样本是从全部训练集中有放回抽样形成的，而GBDT每次使用全部样本。<br />
+并行性：RF的树可以并行生成，而GBDT只能顺序生成（需要等上一棵树完全生成）。<br />
+最终结果： RF最终是多棵树进行多数表决（回归问题是取平均），
+而GBDT是加权融合。<br />
+数据敏感度：RF对异常值不敏感，而GBDT对异常值比较敏感。<br />
+泛化能力： RF不易过拟合，而GBDT容易过拟合。</p>
+<h2 id="gbdt和xgboost区别">GBDT和xgboost区别？</h2>
+<p><img src="/images/面试/GBDT和Xgboost.jpg" width="80%"><br />
+<img src="/images/面试/GBDT和Xgboost2.jpg" width="60%"></p>
+<h2 id="简单介绍下xgboost">简单介绍下xgboost？</h2>
+<p>（1）首先需要说一下GBDT，它是一种基于boosting的增强策略的加法模型，训练的时候才用前向分布算法进行贪婪的学习，每次迭代都学习一颗cart树来拟合前t-1颗树的预测结果与训练样本真实值的差值。<br />
+（2）xbgoost对gbdt进行了一系列的优化，比如损失函数进行了二阶泰勒展开，目标函数加入正则项，支持并行和默认缺失值处理等等，在可扩展性和训练速度上有了巨大的提升，但其核心思想多大的变化。</p>
+<h2
+id="xgboost为什么使用泰勒二阶展开">xgboost为什么使用泰勒二阶展开？</h2>
+<p>精准性：相对于GBDT的一阶展开，XGBOOST采用二阶泰勒展开，可以更为精准的逼近真实的损失函数。<br />
+扩展性：损失函数支持自定义，只需要新的损失函数二阶可导即可。</p>
+<h2
+id="xgboost为什么可以并行训练如何寻找最佳分裂点">XGBoost为什么可以并行训练？/如何寻找最佳分裂点？</h2>
+<p>（1）xgboost的并行，并不是说每棵树可以并行训练，XGB本质上仍然采用boosting的思想，每棵树训练前需要等前面的树训练完成以后才能开始训练。<br />
+（2）xgboost的并行，指的是特征维度的并行。在训练之前，每个特征按特征值对样本进行预排序，并存储为block结构，在后面查找特征分割点时可以重复使用，在寻找每个特征的最佳分割点的时候，可以利用多线程对每个block并行计算。</p>
+<h2 id="xgboost为什么快">XGBOOST为什么快？</h2>
+<p>（1）分块并行：训练前每个特征按值进行排序并存储为block结构，后面查找特征分割点时重复使用，并且支持并行查找每个特征的分割点。<br />
+（2）候选分位点：每个特征采用常数个分位点作为候选分割点。<br />
+（3）CPU
+cache命中优化：使用缓存预取的方法，对每个线程分配一个连续的buffer,读取每个block中样本的梯度信息并存入连续的buffer中。https://blog.csdn.net/dpengwang/article/details/95913417<br />
+（4）block 处理优化：
+block预先存入内存，block按列进行解压缩，将block划分到不同硬盘来提高吞吐。</p>
+<h2 id="xgboost防止过拟合的方法">XGBOOST防止过拟合的方法？</h2>
+<p>（1）正则项：叶子节点个数+叶子节点权重的L2正则化。<br />
+（2）列抽样：训练的时候只用一部分特征（不考虑剩余的block块即可）。<br />
+（3）子采样：每轮计算可以不使用全部样本，使算法更加保守。<br />
+（4）shrinkage:
+可以叫做学习率或者步长，为了给后面的训练留出更多的学习空间。</p>
+<h2 id="xgboost如何处理缺失值">XGBOOST如何处理缺失值？</h2>
+<p>（1）在特征k上寻找最佳split
+point的时候，不会对该列特征missing的样本进行遍历，而只对该列特征值为non-missing的样本上对应的特征值进行遍历，通过这个技巧来减少为系数离散特征寻找split
+point的时间开销。<br />
+（2）在逻辑实现上，为了保证完备性，会将该特征值missing的样本分别分配到左叶子节点和右叶子节点，两种情况都计算一遍后，选择分裂后增益最大的那个方向（左分支或者右分支），<strong>作为预测时特征值却是样本的默认分支方向</strong>。<br />
+（3）如果在训练中没有缺失值而在预测中出现缺失，那么会自动将缺失值的划分方向放到右子节点。</p>
+<h2
+id="xbgoost中叶子节点的权重如何计算出来的">XBGOOST中叶子节点的权重如何计算出来的？</h2>
+<p>目标函数：<a
+href="https://soundmemories.github.io/2021/06/25/Paper/02.XGBoost%20A%20Scalable%20Tree%20Boosting%20System/">XGBoost</a></p>
+<h2
+id="xgboost中的一棵树的停止生长条件">XGBOOST中的一棵树的停止生长条件？</h2>
+<p>（1）当新引入的一次分类所带来的增益Gain &lt; 0
+时，放弃当前的分裂。这是训练损失和模型结构复杂度的博弈过程。<br />
+（2）当树达到最大深度时，停止建树，因为树深度太深容易出现过拟合，这里需要设置一个超参数max_depth。<br />
+（3）当引入一次分裂后，重新计算新生产的左右两个叶子节点的样本权重和。如果任一个叶子节点的样本权重低于某一个阈值，也会放弃此次分裂。这涉及到一个超参数：
+最小样本权重和，是指如果一个叶子节点包含的样本数量太少也会放弃分裂，防止树分的太细。</p>
+<h2 id="xgboost如何处理不平衡数据">xgboost如何处理不平衡数据？</h2>
+<p>（1）如果你在意AUC，采用AUC来评估模型的性能，那你可以通过设置
+scale_pos_weight来平衡正样本和负样本的权重。例如，当正负样本比例为1：10的，scale_pos_weigth可以设置为10；<br />
+（2）如果你在意概率（预测得分的合理性），你不能重新平衡数据集（会破坏数据的真实分布），应该设置max_delta_step为一个有限数字来帮助收敛（基模型为LR时有效）。<br />
+那么源码到底是怎么利用scale_pos_weight来平衡样本的呢，
+是调节权重还是过采样呢？ 源码
+<code>if (info.labels[i] == 1.0f)  w *= param_.scale_pos_weight</code>
+可以看出，应该是增大了少数样本的权重。<br />
+除此之外，还可以通过上采样，下采样，SMOTE算法或者自定义代价函数的方式解决正负样本不平衡的问题。</p>
+<h2 id="xgboos中如何对树进行剪枝">XGBOOS中如何对树进行剪枝？</h2>
+<p>https://blog.csdn.net/anshuai_aw1/article/details/85093106<br />
+（1）在目标函数中增加了正则项。适用叶子节点的数目和叶子节点权重的L2模的平方，控制树的复杂度。<br />
+（2）在结点分裂时，定义了一个阈值，如何分裂后目标函数的增益小于该阈值，则不分裂。<br />
+（3）当引入一次分裂后，重新计算新生成的左右两个叶子节点的样本权重和。如果任一个叶子节点的样本权重低于
+某一个阈值（最小样本权重值min_child_weight），也会放弃该次分裂。<br />
+（4）XGBOOST先从顶到底建立树直到最大深度，再从低到顶反向检查是否有不满足分裂条件的结点，进行剪枝。比起GBM，这样不容易陷入局部最优解。</p>
+<h2
+id="xgboost的scalable可扩展性性如何体现">XGBoost的Scalable(可扩展性)性如何体现？</h2>
+<p>基分类器: 弱分类器可以支持cart决策树，也可以支持LR和Linear.<br />
+目标函数: 支持自定义loss function.
+只需要其一阶，二阶可导。有这个特性是因为泰勒二阶展开，得到通用的目标函数形式。<br />
+学习方法: block结构支持并行化，支持out-of-core计算。</p>
+<h2 id="xgboost如何评价特征的重要性">XGBOOST如何评价特征的重要性？</h2>
+<p>（1）权重：该特征在所有树中被用作分割样本的特征的总次数。<br />
+（2）增益：该特征在其出现过的所有树中产生的平均增益。<br />
+（3）覆盖程度：该特征在其出现过的所有树中的平均覆盖范围。
+注意：覆盖范围这里指的是 一个特征用作分割点后，其影响的样本数量，
+即有多少样本经过该特征分割为两个子节点。这个是通过被分到该节点的样本的二阶导数之和。举个例子来说，某个特征作为结点的对应分割样本的数目为10，
+那么此特征在这棵树上的覆盖度就是这10个样本的二阶导数之和。</p>
+<p>很多时候，特征重要度只是给我们一些关于业务场景的信息，同时告诉我们下一步特征工程的方向。只关心哪些更重要，哪些更弱，不是绝对序。不同方式top部分的feature应该基本一致，哪有那么大差异。</p>
+<h2 id="xgboost参数调优的一般步骤">XGBOOST参数调优的一般步骤？</h2>
+<ol type="1">
+<li><p>learning rate，estimator<br />
+learning rate可以先用0.1，
+用cv来寻找最优的estimator（树）的数量</p></li>
+<li><p>max_depth 和 min_child_weght<br />
+这两个参数对输出结果的影响很大，我们首先将这两个参数设置为较大的数，然后通过迭代的方式不断修正，缩小范围。<br />
+max_depth 每棵子树的最大深度， check from range(3,10, 2)<br />
+min_child_weight, 子节点的权重阈值， check from range(1, 6, 2)<br />
+如果一个结点分裂后，他的所有子节点的权重之和都大于该阈值，该叶子节点才可以划分。</p></li>
+<li><p>gamma<br />
+也称做最小划分损失 min_split_loss， check from 0.1 to
+0.5,指的是，对于一个叶子节点，当对它采取划分之后，损失函数的降低值的阈值。<br />
+如果大于该阈值，则该叶子节点值得继续划分<br />
+如果小于该阈值，则该叶子节点不值得继续划分</p></li>
+</ol>
+<p>(4)subsample, colsamle_bytree<br />
+subsample是对训练的样本的采样比例<br />
+colsample_bytree是对特征的采样比例<br />
+both check from 0.6 to 0.9</p>
+<p>(5)正则化系数<br />
+alpha 是 L1正则化系数， try 1e~5 1e~2 0.1 1 100<br />
+lambda是L2正则化系数</p>
+<p>(6)降低学习率<br />
+降低学习率的同时增加树的数量， 通常最后设置学习率为0.01-0.1</p>
+<h2
+id="xgboost模型如果过拟合了怎么解决">XGBOOST模型如果过拟合了怎么解决？</h2>
+<p>当出现过拟合时，有两类参数可以缓解：<br />
+（1）第一类参数：用于直接控制模型的复杂度。包括 max_depth,
+min_child_weight, gamma 等参数。<br />
+（2）第二类参数：
+用于增加随机性，从而使得模型在训练时对于噪音不敏感，包括 subsample,
+colsample_bytree。<br />
+（3）还有就是直接减小 learning_rate, 但需要同时增加estimator参数。</p>
+<h2 id="xgboost和lightgbm的区别">XGBOOST和lightGBM的区别？</h2>
+<p>（1）树生长策略：
+XGB采用<strong>level-wise</strong>的分裂策略，LGB采用<strong>leaf-wise</strong>的分类策略。<br />
+XGB的level-wise，对每一层的所有节点做无差别分类，但是可能有些节点的增益非常小，对结果影响不大，带来不必要的开销。leaf-wise是在所有叶子节点中选取分裂收益最大的节点进行的，但是很容易出现过拟合问题，所以需要对最大深度做限制。<br />
+&gt;level-wise过一次数据可以同时分裂同一层的叶子，容易进行多线程优化，也好控制模型复杂度，不容易过拟合。但实际上level-wise是一种低效的算法，因为他不加区分的对待同一层的叶子，带来了很多不必要的开销，因为实际上很多叶子的分裂增益较低，没必要进行搜索和分裂。<br />
+leaf-wise
+则是一种更为高效的策略，每次从当前所有叶子中，找到分割增益最大的一个叶子分裂。因此同level-wise相比，leaf-wise可以降低更多的误差，得到更多的精度。leaf-wise的缺点是可能会长出比较深的决策树，产生过拟合。因此LightGBM在leaf-wise之上增加了一个最大深度的限制，以保证高效率的同时防止过拟合。</p>
+<p>（2）分割点查找算法：XGB使用<strong>特征预排序</strong>算法，LGB使用<strong>直方图</strong>算法。<br />
+&gt;直方图算法：先把连续的浮点特征值离散化成为k个整数，同时构造一个宽度为k的直方图。遍历数据时，根据离散后的值作为索引在直方图中累计统计量，当遍历一次数据后，直方图累积了需要的统计量，然后根据直方图的离散值，遍历寻找最后的分割点。</p>
+<blockquote>
+<p>直方图算法优势：<br />
+（1）<strong>减少内存占用</strong>：比如离散为256个bin时，只需要用8位整形就可以保存一个样本被映射为哪个bin(这个bin可以说就是转换后的特征)，对比预排序的exect
+greedy 算法来说（用int_32来存储索引+用float_32保存特征值），
+可以节省7/8的空间。<br />
+（2）<strong>缓存命中率提高</strong>：直方图中梯度存放是连续的。<br />
+（3）<strong>计算效率提高</strong>：预排序的Exact greedy
+对<strong>每个特征都需要遍历一遍数据</strong>，并计算增益，复杂度为𝑂(#𝑓𝑒𝑎𝑡𝑢𝑟𝑒×#𝑑𝑎𝑡𝑎)。而直方图算法在建立完直方图后，只需要对<strong>每个特征遍历直方图即可</strong>，复杂度为𝑂(#𝑓𝑒𝑎𝑡𝑢𝑟𝑒×#𝑏𝑖𝑛𝑠)。<br />
+（4）<strong>直方图做差加速</strong>：一个叶子的直方图可以由它的父亲结点的直方图与它兄弟的直方图做差得到。</p>
+</blockquote>
+<blockquote>
+<p>当然，Histogram算法不是完美的，由于特征离散化后，找到的并不是很精确的分割点，所以会对结果产生影响。但是在不同的数据集上的结果表明，离散化的分割点对最终的精度影响并不是很大，甚至有时候会更好一点。原因就是决策树本来就是弱模型，分割点是不是精确并不是太重要，较粗的分割点也有正则化的效果，可以有效地防止过拟合；即使单颗树的训练误差比精确分割的算法稍大，但在梯度提升的框架下没有太大的影响。</p>
+</blockquote>
+<blockquote>
+<p>XGBOOST的近似直方图算法也类似于lightGBM这里的直方图算法，为什么xgboost近似算法比lightGBM还是慢很多呢？<br />
+&gt;XGBOOST在每一层都动态构建直方图，因为xgboost的直方图算法不是针对某个特定的feature，而是所有feature共享一个直方图（每个样本的权重是二阶导），所以每一层都要重新构建直方图，而lightgbm中对每个特征都有一个直方图，所以构建一次直方图就够了。</p>
+</blockquote>
+<p>（3）对直方图算法改进：降低样本数量(GOSS算法)/降低特征维度(EFB算法)。<br />
+GOSS算法：保留梯度大的样本，随机采样小梯度样本。<br />
+EFB算法：高维数据通常稀疏的，只需找到互斥特征并合并，就能降维。</p>
+<p>（4）支持离散变量：xgb无法直接输入类别型变量，需要对类别型变量进行编码(例如独热编码)，而lightGBM可以直接处理类别型变量。</p>
+<p>（5）缓存命中率：xgb使用block结构的一个缺点就是取梯度的时候，是通过索引来获取的，而这些梯度的获取顺序是按照特征的大小排序的，这将导致非连续的内存访问，会使缓存命中率低，从而影响算法效率。而LGB是基于直方图分裂特征的，梯度信息都存储在一个个bin中，所以访问梯度是连续的，缓存命中率高。</p>
+<p>（6）lightGBM和XGBOOST的并行策略不同：<br />
+<strong>特征并行</strong>：指并行化决策树寻找最佳切分点的过程中，每个worker先寻找局部最佳切分点，之后点对点通信找到全局最佳切分点。<br />
+<strong>XBG特征并行</strong>：XGB每个worker节点中存储<strong>部分特征集</strong>，每个worker先寻找局部最佳切分点，之后worker之间相互通信寻找全局最佳切分点，然后在具有最佳切分点的worker上进行节点分裂，然后广播切分后的左右子树数据结果，其他worker收到结果后也进行划分。<br />
+<strong>LGB特征并行</strong>：每个worker保存了<strong>所有特征集</strong>，找到全局最佳划分点后每个worker可自行划分，<strong>不需要广播划分结果，减小了网络通信量</strong>，但存储代价变高。</p>
+<p><strong>数据并行</strong>：指并行化整个决策学习的过程，每个worker中拥有<strong>部分数据</strong>，独立的构建局部直方图，合并后得到全局直方图，在全局直方图中寻找最优切分点进行分裂。<br />
+XGB：每个worker上先建立起局部的直方图，然后合并成全局的直方图。不同在于根据全局直方图，<strong>各个worker进行节点分裂时会单独计算子节点的样本索引</strong>，因此效率贼低，每个worker间的通信量也就变的很大。<br />
+LGB：每个worker上先建立起局部的直方图，然后合并成全局的直方图。采用<strong>直方图做差加速</strong>的方式，这个直方图算法使得worker间的通信成本降低一倍，因为只通信一个节点的直方图就能得到兄弟节点的直方图，通信开销降为O(0.5∗#feature∗#bin)。</p>
+<blockquote>
+<p>投票并行（LGB）：当数据量和维度都很大时，选用投票并行，该方法是数据并行的一个改进。数据并行中的合并直方图的代价相对较大，尤其是当特征维度很大时，大致思想是
+每个worker拥有<strong>部分数据集</strong>，独自构建直方图找到局部最优特征，然后进行全局投票，得到全局最优特征进行直方图的合并，再寻求全局的最优分割点。</p>
+</blockquote>
+<h2 id="超参数调优">超参数调优？</h2>
+<p>网格搜索，随机搜索，贝叶斯优化。</p>
+<h2 id="模型常用超参数">模型常用超参数？</h2>
+<p><img src="/images/面试/超参数调优.jpg" width="80%"></p>
+<h2 id="熵的概念交叉熵">熵的概念，交叉熵？</h2>
+<p>熵：衡量随机变量的不确定性。<br />
+KL散度：衡量两个概率分布相对差距。等价于交叉熵。<br />
+交叉熵：估计模型与真实概率分布之间差异。交叉熵越小，假设分布离真实分布越近，模型越好。</p>
+<h2
+id="交叉熵损失函数在什么地方使用过">交叉熵损失函数？在什么地方使用过？</h2>
+<p>逻辑回归：<span
+class="math inline">\(p(y=1|x)=\hat{y}\)</span>，<span
+class="math inline">\(p(y=0|x)=1-\hat{y}\)</span><br />
+极大似然：<span class="math inline">\(p(y|x)=\hat{y}^y \cdot
+(1-\hat{y})^{1-y}\)</span><br />
+对数极大似然加负号：<span class="math inline">\(p(y|x)= -[ylog(\hat{y})
+\cdot (1-y)log(1-\hat{y})]\)</span><br />
+最小化估计模型与真实概率分布。</p>
+<h2
+id="交叉熵函数与最大对数似然函数的关系和区别">交叉熵函数与最大(对数)似然函数的关系和区别？</h2>
+<p>交叉熵损失函数：估计模型与真实概率分布之间差异。<br />
+对数似然函数：衡量在某个参数下，整体的估计和真实情况一样的概率，越大代表越相近。<br />
+<strong>最小化交叉熵的本质就是对数似然函数的最大化</strong>。</p>
+<h1 id="深度学习">深度学习</h1>
+<h2
+id="神经网络中有哪些办法防止过拟合">神经网络中，有哪些办法防止过拟合？</h2>
+<p>Dropout：在训练时，以一定概率随机丢弃一部分神经元，也就是用部分神经元参与训练，类似Bagging思想。<br />
+加L1/L2正则化(权重衰退)。</p>
+<h2 id="bn和ln的区别">BN和LN的区别？</h2>
+<p>如果是(batch_size, seq_len, embedding_size):<br />
+BN：batch的每一列做normalization，对batch中同一时间步的字或词embedding做归一化。保留了同一时间步，不同样本之间的差异。<br />
+LN：batch的每一行做normalization，对batch中每句话的embedding做归一化。保留了同一样本，不同时间步的差异。</p>
+<p>BN是对Batch中所有样本的每个特征的标准化。<br />
+LN是对单个样本所有特征维度进行标准化。</p>
+<p>形象点来说，假设有一个二维矩阵。行为batch-size，列为样本特征。那么BN是每列归一化，LN就是每行归一化。<br />
+一般来说，如果你的特征依赖于不同样本间的统计参数，那BN更有效，因为它<strong>抹杀了不同特征之间的大小关系</strong>，但是<strong>保留了不同样本间的大小关系</strong>。（CV领域）<br />
+而在NLP领域，LN就更加合适。因为它<strong>抹杀了不同样本间的大小关系</strong>，但是<strong>保留了一个样本内不同特征之间的大小关系</strong>。对于NLP或者序列任务来说，一条样本的不同特征就是时序上字符取值的变化，样本内的特征关系是非常紧密的。</p>
+<p><strong>第一个作用</strong>：<strong>它使得优化问题的解空间更加平滑了，这确保梯度更具有预测性，从而允许使用更大范围的学习率，实现更快的网络收敛，加速训练。</strong><br />
+<strong>第二个作用</strong>：防止梯度消失，增加网络对数据的敏感度。有一定的<strong>抗过拟合</strong>作用，使训练过程更加平稳。</p>
+<p>BN作者解释了其原理：通过减少内部协变量偏移（internal covariate
+shift）。即<strong>变量值的分布在训练过程中会发生变</strong>化。<br />
+论文《How Does Batch Normalization Help Optimization》 2018 Shibani
+Santurkar etc. 说明 BN 对训练带来的增益与 ICS
+的减少没有任何联系，或者说这种联系非常脆弱。研究发现 BN 甚至不会减少
+ICS。论文说明 BN
+的成功的真正原因是：<strong>它使得优化问题的解空间更加平滑了</strong>。<strong>这确保梯度更具有预测性，从而允许使用更大范围的学习率，实现更快的网络收敛</strong>。</p>
+<h2 id="梯度消失爆炸如何解决">梯度消失、爆炸？如何解决？</h2>
+<p>在深层神经网络中：<br />
+<strong>梯度消失</strong>：将误差从末层往前传递的过程需要链式法则的帮助。而链式法则是一个连乘的形式，所以当层数越深的时候，梯度将以指数形式传播。梯度消失问题一般随着网络层数的增加会变得越来越明显。在<strong>根据损失函数计算的误差通过梯度反向传播的方式对深度网络权值进行更新时，得到的梯度值接近0(反向传播时梯度小于1)，也就是梯度消失</strong>。<br />
+<strong>梯度爆炸</strong>：一是使用了深层网络，二是采用了不合适的损失函数。反向传播时梯度值大于1，链式法则以指数级别增加，使得到梯度值接近nan。解决方法：<strong>梯度截断</strong>、权重正则化(参数是权重衰退)。</p>
+<p>对于激活函数求导大于1，那么随着层数增多，最终求出的梯度更新将以指数形式增加，发生梯度爆炸。如果激活函数求导小于1，那么随着层数增多，最终求出的梯度更新将以指数形式衰减，发生梯度消失。</p>
+<p>梯度消失解决方法：<br />
+（1）<strong>选择relu等梯度大部分落在常数上的激活函数</strong>。<br />
+（2）<strong>使用BN</strong>，BN就是通过对每一层的输出规范为均值和方差一致的方法，消除了权重参数放大缩小带来的影响，或者可以理解为BN将输出从饱和区拉到了非饱和区。<br />
+（3）<strong>使用残差结构</strong>，相比较于之前的网络结构，残差网络中有很多跨层连接结构（shortcut），这样的结构在反向传播时多了反向传播的路径，可以一定程度上解决梯度消失的问题。<br />
+（4）<strong>LSTM的“门”结构</strong>，LSTM的结构设计可以改善RNN中的梯度消失的问题。主要原因在于LSTM内部复杂的“门”，LSTM通过它内部的“门”可以在更新的时候“记住”前几次训练的”残留记忆“。</p>
+<h2 id="batchsize大或小有什么问题">batchsize大或小有什么问题？</h2>
+<p>batchsize大：会使得训练更快(迭代步数少了，有效利用大规模并行)，但是可能过拟合，导致泛化能力下降。解决方案：提高学习率，从而放大梯度噪声的贡献。<br />
+batchsize小：对于多核架构来讲，太小的batch并不会得训练更快。训练数据就会非常难收敛，从而导致欠拟合。</p>
+<p>一般在Batchsize增加的同时，对所有样本的训练次数(epoch)增加。</p>
+<h2
+id="神经网络训练出现nan应该从哪些方面去查">神经网络训练出现nan，应该从哪些方面去查？</h2>
+<p>nan的错误多源于<strong>学习率太大</strong>或者<strong>batch
+size太大</strong>，可以不断的10倍减小学习率直到nan错误不出现。</p>
+<p><strong>梯度爆炸</strong>：这个错误是因为logits输出太大变成INF，对这个取log就会在求梯度就会变成nan。<strong>梯度截断</strong>来解决。<br />
+<strong>损失函数</strong>：有时候损失层中loss的计算可能导致NaN的出现。比如，给信息熵损失的输入没有归一化的值，使用带有bug的自定义损失层，<strong>0作为除数</strong>。观测训练产生的log时一开始并不能看到异常，loss也在逐步的降低，但突然之间NaN就出现了。</p>
+<p><strong>输入中有nan</strong>：输入中就含有NaN，每当学习的过程中碰到这个错误的输入，就会变成NaN。观察log的时候也许不能察觉任何异常，loss逐步的降低，但突然间就变成NaN了。</p>
+<h2
+id="loss不下降可能是什么情况如何解决模型不收敛问题">loss不下降可能是什么情况？如何解决模型不收敛问题？</h2>
+<p>（1）可能数据里有错误，数据本身就含有了nan的数据，错误的数据导致网络无法收敛。<br />
+（2）学习率设置不好，可从0.1-&gt;0.01..尝试，学习率设置太低会走不出低谷，可提高冲量、提高mini-batch值。<br />
+（3）网络层数太低，无法收敛，可适当加深网络。<br />
+（4）标签设置错误，比如把<code>[0,1,2]</code>设置成<code>[1,2,3]</code>。<br />
+（5）数据未进行归一化，需要归一化处理。</p>
+<h2
+id="为什么用激活函数常用激活函数优缺点">为什么用激活函数？常用激活函数？优缺点？</h2>
+<p>不用激活函数，输出都是输入的线性组合，激活函数通常都是非线性函数，目的是引入非线性性，深度网络可以逼近任意函数。</p>
+<p>常用激活函数：<br />
+<strong>sigmiod</strong>：输出范围<code>(0,1)</code>，导数范围<code>(0,0.25)</code>。<br />
+优点：平滑、易于求导。<br />
+缺点：反向传播链反应，会出现梯度消失情况；输出不是0均值，这会导致后一层的神经元将得到上一层输出的非0均值的信号作为输入，随着网络的加深，会改变数据的原始分布；幂运算计算量大。<br />
+<strong>tanh</strong>：输出范围<code>(-1,1)</code>，导数范围<code>(0,1)</code>。<br />
+优点：一定程度解决了Sigmoid函数梯度消失、输出不是0均值问题。<br />
+缺点：幂运算计算量大。<br />
+<strong>ReLU</strong>：输出范围<code>[0,+inf]</code>，导数为<code>1</code>(正数)/<code>0</code>(负数)。<br />
+优点：解决了梯度消失问题，提高了运算速度(非幂运算)。<br />
+缺点：梯度下降强度完全取决于权值的乘积，这样就可能会出现梯度爆炸问题(控制权值范围在<code>[0,1]</code>，或梯度裁剪)。强制将<code>x&lt;0</code>部分的输出置为0(置为0就是屏蔽该特征)，如果学习率设置的太大，就可能会导致网络的大部分神经元处于死亡状态，所以使用ReLU的网络，<strong>学习率不能设置太大</strong>。</p>
+<p>为了防止模型的死亡情况，后人将<code>x&lt;0</code>部分并没有直接置为0，而是给了一个很小的负数梯度值<span
+class="math inline">\(\alpha\)</span>。<br />
+<strong>Leaky ReLU</strong>：<span
+class="math inline">\(\alpha\)</span>为常数，一般设置为0.01/0.02。这个函数通常比
+Relu 激活函数效果要好，但是效果不是很稳定，所以在实际中 Leaky ReLu
+使用的并不多。<br />
+<strong>PReLU(Parametric Relu)</strong>：<span
+class="math inline">\(\alpha\)</span>为可学习的参数，会在训练的过程中进行更新。<br />
+<strong>RReLU(Random ReLU)</strong>：<code>x&lt;0</code>部分的斜率<span
+class="math inline">\(\alpha\)</span>在训练中是随机的，在之后的测试中就变成了固定的了。RReLU的亮点在于，在训练环节中，<span
+class="math inline">\(\alpha\)</span>是从一个均匀的分布<code>U(I,u)</code>中随机抽取的数值。</p>
+<p>Sigmoid和tanh的特点是将输出限制在<code>(0,1)</code>和<code>(-1,1)</code>之间，说明Sigmoid和tanh适合做概率值的处理，例如LSTM中的各种门。</p>
+<h2
+id="常用的优化算法有哪些各自的优缺点">常用的优化算法有哪些？各自的优缺点？</h2>
+<p><strong>SGD</strong>：每次利用mini-batch样本计算梯度。<br />
+优点：计算速度快。<br />
+缺点：更新方向依赖当前mini-batch，不稳定。<br />
+<strong>动量(Momentum)方法</strong>：模拟物体运动惯性，梯度更新时保留一部分之前的更新方向，一定程度上增加稳定性，相当于对梯度做平滑。<br />
+<span class="math inline">\(v_t=\beta v_{t-1}+g_t\)</span>，<span
+class="math inline">\(w_t=w_{t-1}-\eta v_t\)</span>，梯度平滑：<span
+class="math inline">\(v_t=g_t+\beta g_{t-1}+\beta^2 g_{t-2}+\beta^3
+g_{t-3}+...\)</span><br />
+<span
+class="math inline">\(\beta\)</span>越大则早期的梯度对当前的更新方向的影响越大。<span
+class="math inline">\(\beta\)</span>取值一般为[0.5、0.9、0.99]。<br />
+<strong>Adagrad</strong>：自适应为各个参数分配不同学习率。如果代价函数在某个方向上具有较大的偏导数，学习率会相应降低；反之提高。<br />
+Adagrad思想：参数空间每个方向的学习率反比于某个值的平方根。这个值就是该方向上梯度分量的所有历史平方值之和。<br />
+<span class="math inline">\(r_t = r_{t-1}+g_t^2\)</span>，<span
+class="math inline">\(w_t =
+w_{t-1}-\dfrac{\eta}{\sqrt{r_t}+\epsilon}g_t\)</span>，梯度越大，对学习率的惩罚越大。<br />
+缺点：训练中后期，分母上梯度平方的累加将会越来越大，会使使梯度趋于0，使得训练提前结束。<br />
+<strong>Adadelta</strong>：Adadelta是AdaGrad的一个修改：加权梯度平方和主要由窗口内的梯度决定。动态确定学习率，不需要提前设置全局学习率这一超参数。<br />
+<span class="math inline">\(r_t = \beta r_{t-1}+
+(1-\beta)g_t^2\)</span>，<span class="math inline">\(s_t=\alpha
+s_{t-1}+(1-\alpha)\hat{g_t}^2\)</span>，<span
+class="math inline">\(\hat{g_t}=\dfrac{\sqrt{s_{t-1}+\epsilon}}{\sqrt{r_t}+\epsilon}g_t\)</span>，<span
+class="math inline">\(w_t=w_{t-1}-\hat{g_t}\)</span>，初始<span
+class="math inline">\(s_t\)</span>为0。<br />
+<strong>RMSProp</strong>：RMSProp是AdaGrad的一个修改：将梯度累计策略修改为指数加权的移动平均。<br />
+<span class="math inline">\(r_t = \beta r_{t-1}+
+(1-\beta)g_t^2\)</span>，<span class="math inline">\(w_t =
+w_{t-1}-\dfrac{\eta}{\sqrt{r_t}+\epsilon}g_t\)</span><br />
+实践证明RMSProp是一种有效、实用的深度神经网络优化算法，目前它是深度学习业界经常采用的优化方法之一。<br />
+<strong>动量RMSProp</strong>：结合动量算法对梯度平滑，RMSProp对学习率的平滑。<br />
+<span class="math inline">\(r_t = \beta_1 r_{t-1}+
+(1-\beta_1)g_t^2\)</span>，<span class="math inline">\(v_t=\beta_2
+v_{t-1}+\dfrac{\eta}{\sqrt{r_t}+\epsilon}g_t\)</span>，<span
+class="math inline">\(w_t = w_{t-1}-v_t\)</span><br />
+<strong>Adam</strong>：另一种动量RMSProp。<br />
+<span class="math inline">\(r_t = \beta_1 r_{t-1}+
+(1-\beta_1)g_t^2\)</span>，<span class="math inline">\(v_t=\beta_2
+v_{t-1}+(1-\beta_2)g_t\)</span>，<br />
+<span
+class="math inline">\(\hat{r_t}=\dfrac{r_t}{1-\beta_1^t}\)</span>，<span
+class="math inline">\(\hat{v_t}=\dfrac{v_t}{1-\beta_2^t}\)</span>，t为时间步，此过程修正使权重和为1。<br />
+<span class="math inline">\(w_t = w_{t-1}-\eta
+\dfrac{\hat{v_t}}{\sqrt{\hat{r_t}}+\epsilon}\)</span></p>
+<h2
+id="cnnrnnlstmtransformer的区别">CNN、RNN(LSTM)、Transformer的区别？？</h2>
+<p>CNN主要用于CV；RNN主要用于NLP。<br />
+区别就在循环层上：<br />
+（1）卷积神经网络没有时序性的概念，输入直接和输出挂钩，对于图像的特征提取效果很好。<br />
+（2）循环神经网络具有时序性，当前决策还跟上一次决策有关，对有时序性的文本处理效果更好，并且可以双向、缺点是无法并行；LSTM引入三个控制门，拥有了长期记忆，更好的解决了RNN的梯度消失和梯度爆炸的问题；而Transformers依然存在顶层梯度消失的问题。<br />
+LSTM针对长序列依然计算有效。<br />
+（3）Transformer整个网络结构完全是由Attention机制组成，前后没有“时序”(利用positional
+encoding加入词序信息)，可以实现并行计算，缺点是对长序列低效，计算量太大，self.attention的复杂度是n的2次方。</p>
+<h2
+id="lstm和rnn区别有什么优化rnn为什么会有梯度消失lstm如何解决梯度消失">LSTM和RNN区别，有什么优化？RNN为什么会有梯度消失，LSTM如何解决梯度消失？</h2>
+<p>RNN层数过深会出现梯度消失，无法处理长期依赖问题。<br />
+RNN本时刻的隐藏层信息只来源于当前输入和上一时刻的隐藏层信息，没有记忆功能。</p>
+<p>LSTM通过引入包含了候选记忆单元、输入门(控制采用多少当前候选cell数据)、遗忘门(控制保留多少之前cell数据)、记忆单元(输入门+遗忘门)、输出门(控制隐状态采用多少cell数据)。结构改善了RNN不能长期依赖问题。LSTM就是在RNN的基础上，增加了对过去状态的过滤，从而可以选择哪些状态对当前更有影响，而不是简单的选择最近的状态。<br />
+RNN激活函数只有tanh；LSTM通过输入门、遗忘门、输出门引入sigmoid函数并结合tanh函数，添加求和操作，减少梯度消失和梯度爆炸的可能性。</p>
+<h2 id="lstm与gru区别">LSTM与GRU区别？</h2>
+<p>GRU算是简化版的LSTM，GRU只有两个门（重置、更新），LSTM有三个门(遗忘、输入、输出)，GRU直接将隐状态传给下一个单元，而LSTM则用记忆单元把隐状态包装起来。</p>
+<h2
+id="seq2seq是什么结构transformer呢">seq2seq是什么结构，transformer呢？</h2>
+<p>enncoder-decoder结构，transformer也是这个结构。</p>
+<h2
+id="attention介绍有哪些attention方法">Attention介绍，有哪些Attention方法？</h2>
+<p>注意力机制模拟了人的行为，比如在欣赏一幅画时看的全貌，关注细节时看的是局部，这说明大脑在处理信号时是有一定权重划分的，注意力机制参考了这点。<br />
+<strong>Bahdanau attention</strong>：也就是additive
+attention(加注意力)，seq2seq使用这种方式。计算方式是decoder<strong>上一时刻</strong>的隐状态作为query，encoder所有隐状态作为key，计算socre
+<span class="math inline">\(s(q,k)=w_v^T tanh(w_q q+ w_k k)\)</span>
+后归一化得到权重，应用在encoder所有隐状态得到上下文向量，最后decoder输入为：上一时刻的隐状态+输入+上下文向量，计算得到当前时刻最终输出。<br />
+<strong>Luong
+attention</strong>：计算方式是decoder<strong>当前时刻</strong>的隐状态(第一层网络)作为query，应用在encoder所有隐状态得到上下文向量，把上下文向量和decoder当前时刻的隐状态(第一层网络)作为输入，放入一层额外的网络结构(第二层网络)，得到当前时刻最终输出和隐状态(第二层网络)，下次使用隐状态(第二层网络)+当前时刻输入作为decoder输入(第一层网络)。此外还做了全局、局部与concat、dot等方式对齐对比。</p>
+<p><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8xMjkzMTY0MTUv">一文看懂 Bahdanau
+和 Luong 两种 Attention 机制的区别<i class="fa fa-external-link-alt"></i></span></p>
+<h2
+id="self-attention比seq2seq的attention优越在哪里最好结合业务场景说一说">self-attention比seq2seq的attention优越在哪里（最好结合业务场景说一说）？</h2>
+<p>self-attention可以并行计算，更高效。seq2seq的attention只能串行计算。<br />
+score计算可以是内积(<span
+class="math inline">\(qk\)</span>)、带单个参数(<span
+class="math inline">\(qWk\)</span>)、两个参数拼接(<span
+class="math inline">\(w_q q+ w_k k\)</span>)，感知机(<span
+class="math inline">\(w_v^T tanh(w_q q+ w_k k)\)</span>)</p>
+<h2
+id="transformer是自回归模型还是自编码模型">Transformer是自回归模型还是自编码模型？</h2>
+<p>自回归模型。所谓自回归，即使用当前自己预测的字符再去预测接下来的信息。<br />
+Transformer在预测阶段（机器翻译任务）会先预测第一个字，然后在第一个预测的字的基础上接下来再去预测后面的字，是典型的自回归模型。<br />
+Bert中的Mask任务是典型的自编码模型，即根据上下文字符来预测当前信息。</p>
+<h2
+id="transformer的position-embedding作用有什么意义和优缺点">transformer的position
+embedding作用？有什么意义和优缺点？</h2>
+<p>因为self-attention是位置无关的，无论句子的顺序是什么样的，通过self-attention计算的token的embedding都是一样的。模型需要表达出一个token的位置信息，transformer使用了固定的位置编码来表示token在句子中的位置信息。</p>
+<p>行为token，列为token维度，从一行(pos)看，开始每列使用了周期短的sin和cos作为编码，随着行（pos）的增加，其列的周期变长，即每一个token都有独一无二的位置编码。<br />
+而用sin和cos是因为具有周期性，这样可以让模型关注token的相对位置信息。位置i+detle
+可以用i的线性变换（参数w）得到，在测试集遇到过长句子也能通过训练集pos计算，增强了泛化能力。</p>
+<p>位置编码特点：<br />
+它能为每个时间步输出一个独一无二的编码。<br />
+不同长度的句子之间，任何两个时间步之间的距离应该保持一致。<br />
+模型应该能毫不费力地泛化到更长的句子。它的值应该是有界的。<br />
+它必须是确定性的。</p>
+<h2
+id="你还了解哪些关于位置编码的技术各自的优缺点是什么">你还了解哪些关于位置编码的技术，各自的优缺点是什么？</h2>
+<p>相对位置信息是在self-attention计算时候丢失的（计算attention
+score的wq和wk增加了非线性导致相对位置信息丢失），那么最直接的想法就是在计算self-attention的时候再加回来。</p>
+<p>1.相对位置编码(RPE)：比如nezha，在计算attention score和weighted
+value时各加入一个表示相对位置的值。<br />
+2.在生成多头注意力时，把对key来说将绝对位置转换为相对query的位置。<br />
+3.复数域函数，已知一个词在某个位置的词向量表示，可以计算出它在任何位置的词向量表示。前两个方法是词向量+位置编码，属于亡羊补牢，复数域是生成词向量的时候即生成对应的位置信息。</p>
+<h2
+id="transformer为何使用多个头为什么不使用一个头为什么在进行多头注意力的时候需要对每个head进行降维">Transformer为何使用多个头？为什么不使用一个头？为什么在进行多头注意力的时候需要对每个head进行降维？</h2>
+<p>多头目的是对<strong>同一 qkv
+希望抽取不同模式的信息，有助于捉到更丰富的特征</strong>，比如我希望一个头抽取长信息，一个头抽取短信息。类似卷积的多输出通道。<br />
+多头可以使参数矩阵形成多个子空间，矩阵整体的size不变，只是改变了每个head对应的维度大小，但是计算量和单个head差不多。</p>
+<h2
+id="transformer为什么q和k使用不同的权重矩阵生成为何不能使用同一个值进行自身的点乘">Transformer为什么Q和K使用不同的权重矩阵生成，为何不能使用同一个值进行自身的点乘？</h2>
+<p>（1）如果输入句长与输出句长不一致，QK的权重矩阵就不能相同，可解决输入长度不一致问题。<br />
+（2）使用Q/K/V不相同可以保证在不同空间进行投影，增强了表达能力，提高了泛化能力。如果都用同样一个权重矩阵，都投影到了同样一个空间，所以泛化能力很差。<br />
+（3）并且假如QK维度一致，如果不用Q，直接拿K和K点乘的话，你会发现attention
+score 矩阵是一个对称矩阵，降低了表达能力。</p>
+<h2
+id="transformer中为什么在进行softmax之前需要对attention进行scaled为什么除以dk的平方根并使用公式推导进行讲解">Transformer中，为什么在进行softmax之前需要对attention进行scaled（为什么除以dk的平方根）？并使用公式推导进行讲解</h2>
+<p>当dk很大时，Q和K的点积结果会变得很大，容易落入到 softmax
+函数的饱和区间导致反向传播时梯度很小，容易发生梯度消失。<br />
+至于为什么需要用维度开根号，假设向量q，k满足各分量独立同分布，均值为0，方差为1，那么qk点积均值为0，方差为dk，从统计学计算，若果让qk点积的方差控制在1，需要将其除以dk的平方根，使得softmax更加平滑。</p>
+<h2
+id="transformer中的mask机制有什么作用计算attention-score的时候如何对padding做mask操作">Transformer中的mask机制有什么作用？计算attention
+score的时候如何对padding做mask操作？</h2>
+<p>作用：对不等长的序列做padding补齐。掩码防止信息泄露。<br />
+使用位置：mask机制的作用1在三个多头自注意力层中都用了，作用2只用在了解码器的第一个多头自注意力层。<br />
+方法：一般mask位置值设为1和0表示保留和padding，实际计算时可以mask变为0和-1000，在计算attention
+score时，和mask矩阵进行相加(如设为1和0就是相乘)。</p>
+<h2
+id="大概讲一下transformer的encoder模块">大概讲一下Transformer的Encoder模块？</h2>
+<p>输入嵌入-加上位置编码-多个编码器层（每个编码器层包含全连接层，多头注意力层和点式前馈网络层（包含激活函数层））</p>
+<h2
+id="为何在获取输入词向量之后需要对矩阵乘以embedding-size的开方">为何在获取输入词向量之后需要对矩阵乘以embedding
+size的开方？</h2>
+<p>embedding matrix的初始化方式是xavier init，这种方式的方差是<span
+class="math inline">\(\dfrac{1}{embedding\\_size}\)</span>，因此embedding
+matrix乘以<span
+class="math inline">\(\sqrt{embedding\\_size}\)</span>使得embedding
+matrix的方差是1，在这个scale下可能更有利于embedding matrix的收敛。</p>
+<h2 id="权重初始化">权重初始化？</h2>
+<p>正态分布（Normal）、均匀分布（Uniform）和截断正态分布（Truncated
+Normal）。<br />
+BERT默认的初始化方法是标准差为0.02的截断正态分布。相比Xavier初始化这个标准差偏小，这会使输出整体偏小，不易梯度消失。但太小的标准差会使模型丧失多样性。</p>
+<p><strong>Xavier</strong>：尽可能的让输入和输出服从相同的分布<span
+class="math inline">\(N(0,
+\dfrac{1}{embedding\\_size})\)</span>，这样就能够避免后面层的激活函数的输出值趋向于0。在sigmoid和tanh激活函数上有很好的表现，但是在Relu激活函数上表现很差(relu层会将负数映射到0，影响整体方差)。<br />
+<strong>Kaiming</strong>：因为relu会抛弃掉小于0的值，对于一个均值为0的data来说，这就相当于砍掉了一半的值，均值就会变大。将每个随机选择的数字乘<span
+class="math inline">\(\sqrt{2/embedding\\_size}\)</span>。对于其他层权重初始化，<span
+class="math inline">\(embedding\\_size\)</span>就是每层输入维度<span
+class="math inline">\(d_{model}\)</span>。<br />
+<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC82Mjg1MDI1OA==">神经网络中的权重初始化一览：从基础到Kaiming<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC80NDI1MDk2MDI=">word embedding
+输入为什么要乘以 embedding size的开方<i class="fa fa-external-link-alt"></i></span></p>
+<h2
+id="transformer中的残差结构以及意义">Transformer中的残差结构以及意义？</h2>
+<p>encoder和decoder的self-attention层和ffn层都有残差连接。<br />
+<strong>引入残差结构目的是减缓梯度消失</strong>。</p>
+<h2
+id="transformer在训练与验证的时候有什么不同">Transformer在训练与验证的时候有什么不同？</h2>
+<p>Transformer在训练的时候是并行的，在验证的时候是串行的。这个问题与Transformer是否是自回归模型考察的是同一个知识点。</p>
+<h2
+id="transformer模型的计算复杂度是多少">Transformer模型的计算复杂度是多少？</h2>
+<p>n是序列长度，d是embedding的长度。Transformer中最大的计算量就是多头自注意力层，这里的计算量主要就是QK相乘再乘上V，即两次矩阵相乘。QK相乘是矩阵(n,d)乘以(d,n)，这个复杂度就是O(n^2
+d)。</p>
+<h2
+id="transformer中三个多头自注意力层分别有什么意义与作用">Transformer中三个多头自注意力层分别有什么意义与作用？</h2>
+<p>Transformer中有三个多头自注意力层，编码器中有一个，解码器中有两个。<br />
+编码器中的多头自注意力层的作用是将原始文本序列信息做整合，转换后的文本序列中每个字符都与整个文本序列的信息相关.<br />
+解码器的第一个多头自注意力层比较特殊，原论文给其起名叫Masked
+Multi-Head-Attention。即对输入文本做整合（对与翻译任务来说，编码器的输入是翻译前的文本，解码器的输入是翻译后的文本）。另一个任务是做掩码，防止信息泄露。拓展解释一下就是在做信息整合的时候，第一个字符其实不应该看到后面的字符，第二个字符也只能看到第一个、第二个字符的信息，以此类推。<br />
+解码器的第二个多头自注意力层与编码器的第一个多头自注意力层功能是完全一样的。不过输入需要额外强调下，我们都知道多头自注意力层是通过计算QKV三个矩阵最后完成信息整合的。在这里，Q是解码器整合后的信息，KV两个矩阵是编码器整合后的信息，是两个完全相同的矩阵。QKV矩阵相乘后，翻译前与翻译后的文本也做了充分的交互整合。至此最终得到的向量矩阵用来做后续下游工作。</p>
+<h2
+id="为什么transformer块使用layernorm而不是batchnormlayernorm-在transformer的位置是哪里">为什么transformer块使用LayerNorm而不是BatchNorm？LayerNorm
+在Transformer的位置是哪里？</h2>
+<p>BN是对特征维度所有样本做标准化，体现不同样本之间的差异。<br />
+LN是对单个样本所有特征做标准化，体现单个样本不同时间步的差异。<br />
+Transformer使用LayerNorm，在多头注意力层和激活函数层之间。</p>
+<h2
+id="transformer中的前馈神经网络使用了什么激活函数相关优缺点">Transformer中的前馈神经网络？使用了什么激活函数？相关优缺点？</h2>
+<p>输入嵌入-加上位置编码-多个编码器层（每个编码器层包含全连接层，多头注意力层和点式前馈网络层（包含激活函数层））-多个解码器层（每个编码器层包含全连接层，多头注意力层和点式前馈网络层）-全连接层，使用了relu激活函数。</p>
+<h2
+id="encoder端和decoder端是如何进行交互的">Encoder端和Decoder端是如何进行交互的？</h2>
+<p>通过encoder-decoder
+attention交互，encoder输出作为key和value，decoder的masked muti-head
+attention输出作为query。</p>
+<h2
+id="decoder阶段的多头自注意力和encoder的多头自注意力有什么区别">Decoder阶段的多头自注意力和encoder的多头自注意力有什么区别？</h2>
+<p>Decoder是masked，Encoder是非masked。Encoder考虑双向信息，decoder考虑单向信息。</p>
+<h2
+id="transformer的并行化提现在哪个地方decoder端可以做并行化吗">Transformer的并行化提现在哪个地方？Decoder端可以做并行化吗？</h2>
+<p>Transformer的并行化主要体现在self-attention模块，在Encoder端Transformer可以并行处理整个序列，并得到整个输入序列经过Encoder端的输出，但是rnn只能从前到后的执行。<br />
+Decoder端训练时可以并行(使用teacher
+forcing方式)，预测时不行，需要上一时刻输出。</p>
+<h2
+id="transformer训练的时候学习率是如何设定的dropout位置在哪里dropout-在测试的需要有什么需要注意的吗">Transformer训练的时候学习率是如何设定的？Dropout位置在哪里？Dropout
+在测试的需要有什么需要注意的吗？</h2>
+<p>Transformer学习率是warmup的(先从小到原本学习率，再减少学习率)，原因是模型的权重(weights)是随机初始化的，此时若选择一个较大的学习率,可能带来模型的不稳定(振荡)，选择Warmup预热学习率的方式，可以使得开始训练的几个epoches内学习率较小,在预热的小学习率下，模型可以慢慢趋于稳定,等模型相对稳定后再选择预先设置的学习率进行训练,使得模型收敛速度变得更快，模型效果更佳。</p>
+<p>dropout是为了解决过拟合的问题，<strong>加在LN之后</strong>，推理时dropout去掉。</p>
+<h2
+id="bert的mask为何不学习transformer在attention处进行mask-score的技巧">bert的mask为何不学习transformer在attention处进行mask
+score的技巧？</h2>
+<p>BERT和transformer的目标不一致，bert是语言的预训练模型，需要充分考虑上下文的关系，而transformer主要考虑句子中第i个元素与前i-1个元素的关系。</p>
+<h2
+id="bert的mask源码看过吗在计算attention_scores时为什么加上attention_mask而不是乘以">bert的mask源码看过吗，在计算attention_scores时为什么加上attention_mask而不是乘以？</h2>
+<p>因为后续要经过softmax，乘以的话是[1,
+0]，对于0值softmax还会有输出；而加则是[0,
+-1e4]，mask部分经过softmax值为接近0的数，更有利于后续的计算。</p>
+<h2
+id="transformer在哪里做了权重共享为什么可以做权重共享">Transformer在哪里做了权重共享，为什么可以做权重共享？</h2>
+<p>Transformer在两个地方进行了权重共享：<br />
+（1）Encoder和Decoder间的Embedding层权重共享；<br />
+（2）Decoder中Embedding层和FC层权重共享。</p>
+<p>对于（1），《Attention is all you
+need》中Transformer被应用在机器翻译任务中，源语言和目标语言是不一样的，但它们可以共用一张大词表，对于两种语言中共同出现的词（比如：数字，标点等等）可以得到更好的表示，而且对于Encoder和Decoder，嵌入时都只有对应语言的embedding会被激活，因此是可以共用一张词表做权重共享的。论文中，Transformer词表用了bpe来处理，所以最小的单元是subword。英语和德语同属日耳曼语族，有很多相同的subword，可以共享类似的语义。而像中英这样相差较大的语系，语义共享作用可能不会很大。但是，共用词表会使得词表数量增大，增加softmax的计算时间，因此实际使用中是否共享可能要根据情况权衡。</p>
+<p>对于（2），Embedding层可以说是通过onehot去取到对应的embedding向量，FC层可以说是相反的，通过向量（定义为
+x）去得到它可能是某个词的softmax概率，取概率最大（贪婪情况下）的作为预测值。那哪一个会是概率最大的呢？在FC层的每一行量级相同的前提下，理论上和
+x
+相同的那一行对应的点积和softmax概率会是最大的（可类比本文问题1）。因此，Embedding层和FC层权重共享，Embedding层中和向量
+x
+最接近的那一行对应的词，会获得更大的预测概率。实际上，Decoder中的Embedding层和FC层有点像互为逆过程。通过这样的权重共享可以减少参数的数量，加快收敛。</p>
+<h2 id="pre-norm和post-norm的区别">pre-norm和post-norm的区别？</h2>
+<p>Add之后做layer
+normalization的方式叫做post-norm(transformer这么做的)。反之叫pre-norm。<br />
+目前比较明确的结论是：同一设置之下，Pre
+Norm结构往往更容易训练，但最终效果通常不如Post Norm。</p>
+<p><strong>引入残差结构目的是防止梯度消失</strong>。<br />
+post-norm在add之后norm，每Norm一次就削弱一次bottom
+layers的权重，严重削弱了残差本身，反而失去了残差“易于训练”的优点。缺点是通常要warmup并设置足够小的学习率才能使它收敛。<br />
+pre-norm在add之前norm，残差效果更强，所以更容易训练。缺点是输出时方差将会很大，接预测层之前也要加个Norm。</p>
+<p>post-norm随着层数加深，削弱bottom
+layers更强，从而更关注当前层，从而学习模型深度有效。<br />
+pre-norm随着层数加深，对bottom layers依赖更强，对于第<span
+class="math inline">\(t\)</span>层输入<span
+class="math inline">\(x_t\)</span>和第<span
+class="math inline">\(t+1\)</span>层输入<span
+class="math inline">\(x_{t+1}\)</span>相差不大，相当于增加了模型的宽度而降低了模型的深度，所以最终训练结果不如post-norm。</p>
+<p><span class="exturl" data-url="aHR0cHM6Ly93d3cua2V4dWUuZm0vYXJjaGl2ZXMvOTAwOQ==">为什么Pre
+Norm的效果不如Post Norm？<i class="fa fa-external-link-alt"></i></span></p>
+<h2 id="绝对位置和相对位置的区别">绝对位置和相对位置的区别？</h2>
+<p>绝对位置：不一样位置positional embedding不一样。<br />
+相对位置：位置1和位置2的距离，位置3和位置4的距离应该相等。<br />
+一般self-attention模型要引这两个位置信息，transformer用的的是三角函数式编码。</p>
+<h2 id="position-embedding的实现方式有哪两种">position
+embedding的实现方式有哪两种？</h2>
+<p>functional position embedding，如transformer。<br />
+parametric position embedding，如bert。<br />
+<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpeGlhb3lhb3d3L2FydGljbGUvZGV0YWlscy8xMDU0NTkzNzY/b3BzX3JlcXVlc3RfbWlzYz0lMjU3QiUyNTIycmVxdWVzdCUyNTVGaWQlMjUyMiUyNTNBJTI1MjIxNjU0MjI1OTA1MTY3ODI0MjUxNzU4ODMlMjUyMiUyNTJDJTI1MjJzY20lMjUyMiUyNTNBJTI1MjIyMDE0MDcxMy4xMzAxMDIzMzQucGMlMjU1RmJsb2cuJTI1MjIlMjU3RCZyZXF1ZXN0X2lkPTE2NTQyMjU5MDUxNjc4MjQyNTE3NTg4MyZiaXpfaWQ9MCZ1dG1fbWVkaXVtPWRpc3RyaWJ1dGUucGNfc2VhcmNoX3Jlc3VsdC5ub25lLXRhc2stYmxvZy0yfmJsb2d+Zmlyc3RfcmFua19lY3BtX3YxfnJhbmtfdjMxX2VjcG0tMS0xMDU0NTkzNzYtbnVsbC1udWxsLm5vbmVjYXNlJnV0bV90ZXJtPXBvc2l0aW9uYWwrZW5jb2RpbmclRTQlQkQlOEQlRTclQkQlQUUlRTclQkMlOTYlRTclQTAlODElRTglQUYlQTYlRTglQTclQTMmc3BtPTEwMTguMjIyNi4zMDAxLjQ0NTA=">positional
+encoding位置编码详解：绝对位置与相对位置编码对比<i class="fa fa-external-link-alt"></i></span></p>
+<h2
+id="讲一下bert原理mlm预训练任务mask的目的是什么">讲一下Bert原理？MLM预训练任务mask的目的是什么？</h2>
+<p>BERT(Bidirectional Encoder Representation from
+Transformers)即双向Transformer的Encoder，因为decoder是不能获得要预测的信息的。模型的主要创新点都在pre-train方法上，BERT的预训练阶段包括两个任务，一个是<strong>Masked
+Language Model(MLM)</strong>，还有一个是<strong>Next Sentence
+Prediction(NSP)</strong>，两种方法分别捕捉词语和句子级别的特征表示。</p>
+<p><strong>MLM</strong>：可以理解为完形填空，作者会随机mask每一个句子中15%的词，用其上下文来做预测。<strong>目的是让模型学习一个句子中词与词之间的关系</strong>。<br />
+<strong>NSP</strong>：选择一些句子对A与B，其中50%的数据B是A的下一条句子，剩余50%的数据B是语料库中随机选择的，学习其中的相关性，添加这样的预训练的目的是目前很多NLP的任务比如QA和NLI都需要理解两个句子之间的关系，从而能让预训练的模型更好的适应这样的任务。</p>
+<h2
+id="bert及其变体中常用的mask方式及特点">bert及其变体中常用的mask方式及特点？</h2>
+<p>dynamic mask：如RoBerta，每个epoch中同一个样本mask结果不一样)。<br />
+whole word mask：如bert-wwm、nezha。<br />
+phrase mask、entity mask比如ERNIE。</p>
+<h2
+id="bert采用哪种normalization结构layernorm结构有参数吗参数的作用">Bert采用哪种Normalization结构，LayerNorm结构有参数吗，参数的作用？</h2>
+<p>采用LayerNorm结构，和BatchNorm的区别主要是做规范化的维度不同。<br />
+LayerNorm有参数，引入了b再平移参数和w再放缩参数。目的是为了恢复原始数据分布。</p>
+<h2 id="bert的-fine-tune-方法">BERT的 fine tune 方法？</h2>
+<p><strong>数据层面</strong>：<br />
+（1）截断三种方法，简单取头512个tokens，尾512个tokens，头128+尾382个tokens三种策略，不同长度的截断处理。<br />
+（2）用 同领域/当前训练集 语料fine-tune一下。<br />
+（3）数据增强，推荐nlpaug和textattack
+这两个library，还可通过graph来增强。<br />
+<strong>layers 层面</strong>：<br />
+（1）使用不同层的输出、单独使用或组合使用。<br />
+（2）冻结不同层，fine-tune。<br />
+（3）加一些attention。<br />
+<strong>输出层面</strong>：<br />
+（1）对输出层mean/max等，比如bert取cls、取最后4层cls拼接，取最后一层所有token向量取mean再和cls拼接。<br />
+（2）再接其他神经网络。</p>
+<p><strong>超参数设置</strong>：<br />
+（1）learning rate：2e-5，weight decay 不对layer
+norm和bias做仅对其它weights做（hugging
+face的trainer的默认策略）克服迁移过程中的灾难性遗忘问题；<br />
+（2）分层学习率，类似于CNN，浅层transformer
+block学习泛化represent，高层学习特定represent，所以越浅则学习率越低，第一个transformer
+block用2e-5,按照1/0.95的速率增长，越深层学习率越大；<br />
+（3）batch
+size，可承受范围内尽量大，主要为了快，至于效果，说不准。<br />
+（4）warm up steps，lr schedule，epochs数量，dropout
+rate等，太trick，不同paper用的都有一些不太一样，没啥好总结的，建议一开始按照hugging
+face上官方默认的超参数设置就好，然后根据需要自己微调。<br />
+<strong>混合精度</strong>：fp16加速训练。</p>
+<h2 id="bert和albert区别">Bert和Albert区别？</h2>
+<p>1.embedding的向量大小不再与hidden
+size相同，token先映射到一个低维空间E（E远小于H），然后再由E映射到H。计算复杂度由O(VxH)变为O(VxE+ExH)。<br />
+2.层参数共享：三种方式，只共享前馈网络参数、只共享attention的参数、共享全部参数。<br />
+3.鉴于NSP的任务过于简单，Albert中提出了SOP任务（sentence order
+prediction）用于学习句子之间的相关性。</p>
+<h2 id="bert和finbert区别">Bert和FinBert区别？</h2>
+<p>项目中使用FinBERT
+1.0，和Bert结构相同，FinBERT在预训练上使用的是金融类新闻、公告、财报、百科词条等数据。<br />
+任务和Bert相同，MLM和NSP，但MLM使用了wwm。<br />
+采用Whole Word Masking (wwm)，一般翻译为全词 Mask 或整词
+Mask。在谷歌原生的中文 BERT
+中，输入是以字为粒度进行切分，没有考虑到领域内共现单词或词组之间的关系，从而无法学习到领域内隐含的先验知识，降低了模型的学习效果。我们将全词Mask的方法应用在金融领域语料预训练中，即对组成的同一个词的汉字全部进行Mask。<br />
+引入词组和语义级别任务，并提取领域内的专有名词或词组，采用全词
+Mask的掩盖方式以及两类有监督任务进行预训练<br />
+为了更充分的利用预训练语料，采用类似Roberta模型的动态掩盖mask机制，将dupe-factor参数设置为10。<br />
+Tensorflow XLA 和 Automatic Mixed Precision
+这两类技术进行预训练加速。</p>
+<h2 id="bert和nezha区别">Bert和Nezha区别？</h2>
+<p>总结：增加相对位置编码函数、采用全词掩码WWM、使用混合精度训练、优化器改进为LAMB。<br />
+<strong>模型改进</strong>：BERT的网络架构是一个多层的Transformer网络，由于Transformer并没有直接考虑输入的token的位置信息，原始的Transformer模型和BERT分别采用了函数式和参数式的绝对位置编码方式，即每一个位置上的输入的token会叠加一个与位置信息相关的一个embedding（这个embedding称为绝对位置编码：absolute
+position
+embedding，APE），前者的位置编码是一个与位置相关的函数，后者则是模型参数的一部分，在预训练过程中学到的。此后，又有工作提出了相对位置编码方式，即<strong>在每一层计算隐状态的相互依赖的时候考虑他们之间的相对位置关系</strong>，这个相对位置信息表示为一个相对位置编码（relative
+position
+embedding，RPE），已有工作均在相对位置编码中加入了可学习的参数。本工作在BERT模型中使用了完全函数式的相对位置编码（相对位置编码没有任何需要学习的参数），实验结果表明该位置编码方式使得模型在各个下游任务上的效果均得到明显提升。</p>
+<p><strong>预训练任务</strong>：本工作引入了全词Mask技术，即不同于原始的BERT模型Mask单个中文字，该技术在MLM预训练任务中Mask整个词而不是单个字（全词Mask方法Mask了一整个词“华为”而不是单个字“华”），进而提升了任务难度使得BERT学到更多语义信息。</p>
+<p><strong>训练优化</strong>：在训练过程中，我们采用混合精度训练（Mixed
+Precision
+Training）方式，在传统的深度学习训练过程中，所有的变量包括weight，activation和gradient都是用FP32（单精度浮点数）来表示。而在混合精度训练过程中，每一个step会为模型的所有weight维护一个FP32的copy，称为Master
+Weights，在做前向和后向传播过程中，Master
+Weights会转换成FP16（半精度浮点数）格式，权重，激活函数和梯度都是用FP16进行表示，最后梯度会转换成FP32格式去更新Master
+Weights。</p>
+<p><strong>优化器</strong>：使用了LAMB优化器，通常在深度神经网络训练的Batch
+Size很大的情况下（超过一定阈值）会给模型的泛化能力带来负面影响，而LAMB优化器通过一个自适应式的方式为每个参数调整learning
+rate，能够在Batch
+Size很大的情况下不损失模型的效果，使得模型训练能够采用很大的Batch
+Size，进而极大提高训练速度。在训练BERT的研究中，使用LAMB优化器在不损失模型效果的前提下，Batch
+Size达到了超过30k，使得BERT的训练时间从3天降到了76分钟。</p>
+<p><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8xMDAwNDQ5MTk=">NEZHA（哪吒）论文阅读笔记<i class="fa fa-external-link-alt"></i></span></p>
+<h2
+id="elmogptbert三者之间有什么区别">elmo、GPT、bert三者之间有什么区别？</h2>
+<p>word2vec、Glove词向量均是静态的词向量，无法解决一次多义等问题。elmo、GPT、bert词向量，它们都是基于语言模型的<strong>动态词向量</strong>(在ELMo中每个单词的词向量不再是固定的，而是单词所在的句子的函数，由单词所在的上下文决定。因此ELMo
+词向量可以解决多义词问题)。</p>
+<p>特征提取器：<br />
+elmo采用LSTM进行提取，GPT和bert则采用Transformer结构进行提取。Transformer特征提取能力强于LSTM。</p>
+<p>单/双向语言模型：<br />
+GPT采用单向语言模型(Transformer-decoder)，elmo和bert(Transformer-encoder)采用双向语言模型。但是elmo实际上是两个单向语言模型（方向相反）的拼接，这种融合特征的能力比bert一体化融合特征方式弱。</p>
+<p>BERT 比 ELMo 效果好的原因：<br />
+<strong>特征抽取能力</strong>Transformer强于LSTM。<br />
+拼接方式 双向融合的特征融合能力偏弱。<br />
+BERT的训练数据以及模型参数均多于ELMo。</p>
+<h2 id="siamese结构什么样">Siamese结构什么样？</h2>
+<p>Siamese
+LSTM孪生神经网络，第一层由两个平行的双向LSTM构成的特征提取部分，第二部分由单层或单层全连接层构成的分类/拟合层，最后使用距离公式来对比Gw(X1)与Gw(X2)两个向量的距离（可以使用欧式距离，余弦距离）。<br />
+总之，用来对比两个input的相似程度，(0,1]代表完全不相似到非常相似。<br />
+改进：<br />
+1.单选可以选择GRU，训练速度会更快（其实也快不了多少）。<br />
+2.语料大的时候选bilstm，小的时候选GRU。<br />
+3.可以在全连接层输出做降维。<br />
+note:
+训练时两个单元权重不共享（权重共享需要统一两个句子的长度），则全连接层需要使用加和取平均的方式，若只是采用全连接，则Q1Q2交换位置后，与输入Q1Q2结果不一致。</p>
+<h2 id="蒸馏的思想为什么要蒸馏">蒸馏的思想，为什么要蒸馏？</h2>
+<p>蒸馏目的是让模型的体积更小、速度更快，能耗更低。<br />
+模型压缩方法：剪裁(不重要的网络层、节点删掉)，量化(float32精度变成int8)，蒸馏(老师教学生，大模型是老师，小模型是学生)，神经网络架构搜索(网络结构优化)。</p>
+<h2 id="有哪些蒸馏方式">有哪些蒸馏方式?</h2>
+<p>DistillBERT：<br />
+（1）结构和BERT类似，只是layer的数量减半。<br />
+（2）采用了RoBERTa的优化策略，动态mask，增大batch size<br />
+（3）训练时损失：学生模型与真实标签之间的交叉熵；学生模型与教师模型的输出之间的交叉熵；学生模型和教师模型最后一层隐状态余弦相似度。</p>
+<p>TinyBERT：<br />
+（1）结构和transformer类似，但layer的数量减少。<br />
+（2）分预训练、fine-tuning两个阶段蒸馏。<br />
+（3）训练时损失：transformer(包括attention和hidden
+states损失)、embedding、prediction。</p>
+<h2
+id="softmax-temperature蒸馏中作用">softmax-temperature蒸馏中作用？</h2>
+<p><span class="math display">\[p_i=\dfrac{exp(z_i/T)}{\sum_j
+exp(z_i/T)}\]</span><br />
+其中，<span class="math inline">\(T\)</span>控制输出分布的平滑度，<span
+class="math inline">\(T=1\)</span>时代表传统的softmax，<span
+class="math inline">\(T&lt;1\)</span>时分布逐渐极端化，最终等价于argmax，<span
+class="math inline">\(T&gt;1\)</span>分布逐渐趋于均匀分布。当<span
+class="math inline">\(T\)</span>变大时，类别之间的差距变小(平滑)，从而导致loss变小；当<span
+class="math inline">\(T\)</span>变小时类别间的差距变大(陡峭)，从而导致loss变小。</p>
+<p>由于训练好的模型本身会出现<strong>过度自信</strong>的问题，所以除以一个大于1的T，让分布变得平滑，降低过度自信。</p>
+<h2 id="beam-search缺点优化">Beam Search？缺点？优化？</h2>
+<p>相比greedy search更合理，每次维护k个最佳候选。<br />
+缺点：<br />
+（1）<strong>数据下溢</strong>：求序列概率的时候，序列概率是多个条件概率的乘积，每个概率都小于1甚至远远小于1，很多概率相乘起来，会得到很小很小的数字，会造成数据下溢，即数值太小，计算机的浮点表示不能精确储存。<br />
+（2）<strong>倾向于生成短的序列</strong>：生成的句子序列越长，概率值相乘（或者对数概率相加）的结果就越小，所以倾向于生成短序列。<br />
+（3）<strong>单一性问题</strong>：k个最佳候选差异性很小，无法体现语言的多样性。<br />
+优化：<br />
+（1）<strong>概率取log值</strong>。取log不会影响排序结果，但是在数值上会更稳定，不容易出现数据下溢。<br />
+（2）<strong>对序列长度进行惩罚</strong>，降低生成短序列的倾向，对于概率值相乘（或者对数概率相加）的结果，除以序列长度<span
+class="math inline">\(L^{\alpha}\)</span>，<span
+class="math inline">\(\alpha \in
+(0,1)\)</span>就是在完全归一化和没有归一化之间。<br />
+（3）可分组 加入<strong>相似性惩罚</strong>(diverse beam search)。<br />
+<span class="exturl" data-url="aHR0cHM6Ly9iYWlqaWFoYW8uYmFpZHUuY29tL3M/aWQ9MTY3NjE5MzQ0NjMxMzU5ODk3Ng==">详细介绍
+Beam Search 及其优化方法<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC80MzcwMzEzNg==">文本生成解码之 Beam
+Search<i class="fa fa-external-link-alt"></i></span></p>
+<h2 id="分类任务中会用到哪些loss-function">分类任务中会用到哪些loss
+function？</h2>
+<p>交叉熵损失、0-1损失(分类正确数量)、Focal loss等。</p>
+<h2 id="unilm介绍">UniLM介绍</h2>
+<p>UniLM
+1.0通过设计不同掩码，支持4种不同的训练目标：从左往右单向LM，从右往左单向LM，双向LM，序列到序列LM。<br />
+UniLM 2.0支持更多样的factorization
+order且无需重复构建训练实体。训练时部分自回归使用pseudo mask LM
+(PMLM)，直译为伪掩码，作为部分自回归训练时占位符，和自编码的<code>[M]</code>任务作为区分。</p>
+<h2 id="精排learning-to-rank-方法有哪些">精排learning to rank
+方法有哪些？</h2>
+<p>Point
+wise：将训练集中的每个item看作一个样本获取rank函数，主要解决方法是把分类问题转换为单个item的分类或回归问题。<br />
+pairwise：将同一个查询中两个不同的item作为一个样本，主要思想是把rank问题转换为二值分类问题。<br />
+list
+wise：将整个item序列看作一个样本，通过直接优化信息检索的评价方法和定义损失函数两种方法实现。</p>
+<h2
+id="cnntextcnn为什么能做文本分类超参数怎么确定">CNN(textcnn)为什么能做文本分类，超参数怎么确定？</h2>
+<p>CNN核心思想是获取局部特征，对文本来说局部特征就是上下文信息，CNN应用于文本类似N-gram。<br />
+其优势在于能自动地对N-gram特征进行组合和筛选。且在每次卷积中使用权重共享，训练速度较快。</p>
+<h2 id="如何做句子语义相似度的">如何做(句子)语义相似度的？</h2>
+<p>两种类型：representation-based(基于表示的，先得到两个向量，再计算相似度)
+和 interaction-based(基于交互式，比如bert)。<br />
+simcse，simbert(追一科技)，sentence bert</p>
+<p><span class="exturl" data-url="aHR0cHM6Ly93d3cuamlhbnNodS5jb20vcC9lYmU5NWMyNGJhYzA=">真正的利器：对比学习SimCSE<i class="fa fa-external-link-alt"></i></span>
+<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zNzgzNDAxNDg=">超细节的对比学习和SimCSE知识点<i class="fa fa-external-link-alt"></i></span><span class="exturl" data-url="aHR0cHM6Ly9rZXh1ZS5mbS9hcmNoaXZlcy84MzQ4">中文任务还是SOTA吗？我们给SimCSE补充了一些实验<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9zcGFjZXMuYWMuY24vYXJjaGl2ZXMvNzQyNw==">鱼与熊掌兼得：融合检索和生成的SimBERT模型<i class="fa fa-external-link-alt"></i></span>
+<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTMyNTA4NjEvYXJ0aWNsZS9kZXRhaWxzLzEyMzY0OTA0Nw==">SimBERT<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9rZXh1ZS5mbS9hcmNoaXZlcy84ODQ3">CoSENT（一）：比Sentence-BERT更有效的句向量方案<i class="fa fa-external-link-alt"></i></span></p>
+<p><img src="/images/面试/文本相似.png" width="80%"></p>
+<p>(1)基于<strong>字符串</strong>距离：编辑距离、LCS、Jaccard。<br />
+(2)基于<strong>向量</strong>距离：cosine、
+Euclidian、Pearson、WMD(两个文本之间所有词最小距离之和)。<br />
+(3)基于<strong>统计量</strong>的距离：BM25。<br />
+(4)基于<strong>深度匹</strong>配模型：Bert(构建正负样本训练句子相似性打分的能力)，simcse，simbert(追一科技)，sentence
+bert。</p>
+<p>jaccard：两句子分词后词语的交集中词语数与并集中词语数之比。<br />
+编辑距离：一个句子转换为另一个句子需要的编辑(删除、替换、添加)次数，然后使用最长句子的长度归一化得相似度。<br />
+LCS：最长公共子序列。<br />
+cosine：取值范围<code>[-1,1]</code>，绝对距离体现数值上的差异(对数值敏感)，余弦相似度体现相对差异。</p>
+<p>bm25：<strong>评价搜索query和文档之间的相关性</strong>。基于概率检索模型的算法：有一个query和一批文档Ds，计算<strong>query</strong>与<strong>文档d</strong>的相关性得分，先对query分词得到单词qi，然后单词的分数由三部分组成：单词的权重(IDF变形)、相关性分数R(单词和
+d
+之间相关性、单词和query之间相关性)。最后对于每个单词的分数求和，得到query和文档之间的分数。<br />
+<span class="math inline">\(Score(Q, d)=\sum \limits^n W_i
+R(q_i,d)\)</span><br />
+其中，<span class="math inline">\(W_i\)</span>代表单词 <span
+class="math inline">\(q_i\)</span> 权重，<span
+class="math inline">\(R(q_i,d)\)</span> 代表单词 <span
+class="math inline">\(q_i\)</span> 和文档 <span
+class="math inline">\(d\)</span> 相关性。<br />
+<strong>每个单词的权重(IDF变形)</strong><br />
+<span class="math inline">\(N\)</span> 表示所有文档数目，<span
+class="math inline">\(n(q_i)\)</span> 为单词 <span
+class="math inline">\(q_i\)</span>
+出现的文档数目，0.5主要是做平滑处理。<br />
+<span
+class="math display">\[IDF(q_i)=log(\frac{N-n(q_i)+0.5}{n(q_i)+0.5})\]</span><br />
+依据IDF的作用，对于某个 <span class="math inline">\(q_i\)</span> ，包含
+<span class="math inline">\(q_i\)</span> 的文档数越多，说明 <span
+class="math inline">\(q_i\)</span>
+重要性越小，或者区分度越低，IDF越小，因此IDF可以用来刻画 <span
+class="math inline">\(q_i\)</span> 与文档的相似性。<br />
+<strong>相关性分数(TF变形)</strong><br />
+BM25的设计依据一个重要的发现：词频和相关性之间的关系是非线性的，也就是说，每个词对于文档的相关性分数不会超过一个特定的阈值，当词出现的次数达到一个阈值后，其影响就不在线性增加了，而这个阈值会跟文档本身有关。<br />
+<span class="math display">\[R(q_i,d)=\frac{f_i\cdot
+(k_1+1)}{f_i+K}\cdot\frac{qf_i\cdot(k_2+1)}{qf_i+k_2}\]</span><br />
+<span
+class="math display">\[K=k_1\cdot(1-b+b\cdot\frac{dl}{avgdl})\]</span><br />
+其中，<span class="math inline">\(f_i\)</span> 为单词 <span
+class="math inline">\(q_i\)</span> 在文档 <span
+class="math inline">\(d\)</span> 中的词频。<span
+class="math inline">\(qf_i\)</span> 为单词 <span
+class="math inline">\(q_i\)</span> 在 <span
+class="math inline">\(query\)</span> 中出现的频率。<br />
+<span class="math inline">\(dl\)</span> 是文档 <span
+class="math inline">\(d\)</span> 的长度，<span
+class="math inline">\(avgdl\)</span> 是所有文档的平均长度。<br />
+<span class="math inline">\(k_1\)</span>
+是一个正的参数（一般为2），用来标准化文章词频的范围，<span
+class="math inline">\(k_1\)</span>
+越大，我们越看重单词在文档d中词频的影响。<br />
+<span class="math inline">\(k_2\)</span>
+越大，越看重单词在query中的词频，<span
+class="math inline">\(k_2\)</span> 一般为1。<span
+class="math inline">\(b\)</span>为0~1之间的值（一般为0.75），决定使用文档长度来表示信息量的范围。</p>
+<h2 id="文本生成评价指标">文本生成评价指标？</h2>
+<p><strong>PPL</strong>：困惑度越小越好，度量⼀个概率分布或概率模型预测样本的好坏/通顺程度。<br />
+<span class="math inline">\(logPPL(s)=\dfrac{-\sum
+logP(w_1,w_2..w_n)}{n}\)</span>，分子的语言模型可以使用N-gram计算。</p>
+<p><strong>Rouge</strong>：常用于机器翻译和文章摘要评价，主要基于召回率。<br />
+Rouge-N基于N-gram上的召回：<span
+class="math inline">\(\text{Rouge-N}=\dfrac{\sum
+Count_{match}(gram_N)}{\sum
+Count_{src}(gram_N)}\)</span>，分母是人工摘要n-gram个数，分子是机器和人工摘要共有的n-gram个数。<br />
+Rouge-L基于最长公共序列(LCS)：<span
+class="math inline">\(R_{lcs}=\dfrac{lcs(x,y)}{m}\)</span>，<span
+class="math inline">\(P_{lcs}=\dfrac{lcs(x,y)}{n}\)</span>，<span
+class="math inline">\(F_{lcs}=\dfrac{(1+\beta^2)R_{lcs}P_{lcs}}{R_{lcs}+\beta^2P_{lcs}}\)</span>，m是人工摘要长度，n是机器摘要长度。</p>
+<p><strong>BLEU</strong>：BLEU值越大越好，主要基于精确率。<br />
+<img src="/images/面试/bleu.png" width="80%"></p>
+<h2 id="混合精度遇到的问题如何解决">混合精度遇到的问题？如何解决？</h2>
+<p><strong>下溢</strong>：超出FP16表示的下限（2的-24次方）。<br />
+<strong>舍入误差</strong>：加不上。FP16的动态范围是-65536~65536，但是这些数不是等间隔分布的，在不同的区间，间隔是不一样的，如果权重更新的增量不到一个间隔，那么weight没有更新。</p>
+<p><strong>权重备份(Weight
+Backup)</strong>：解决舍入误差问题。把神经网络训练过程中产生的激活activations、梯度
+gradients、中间变量等数据，在训练中都利用FP16来存储，同时复制一份FP32的权重参数weights，用于训练时候的更新。因为更新时有<strong>相加操作</strong>，权重和梯度都是16会出现舍入误差。<br />
+<strong>损失缩放(Loss
+Scaling)</strong>：解决下溢问题。对前向计算出来的Loss值进行放大操作，也就是把FP32的参数乘以某一个因子系数(保证乘完后不上溢即可)后，把可能溢出的小数位数据往前移，平移到FP16能表示的数据范围内。<br />
+<strong>精度累加(Precision
+Accumulated)</strong>：减少计算过程中的舍入误差。在混合精度的模型训练过程中，使用FP16进行矩阵乘法运算，利用FP32来进行矩阵乘法中间的累加（accumulated），然后再将FP32的值转化为FP16进行存储。简单而言，就是利用FP16进行矩阵相乘，利用FP32来进行加法计算弥补丢失的精度。
+这样可以有效减少计算过程中的舍入误差，尽量减缓精度损失的问题。</p>
+<h2
+id="混合精度训练中weightactivation以及gradient都是从fp32改成了fp16为什么只有weight保留了副本">混合精度训练中weight、activation以及gradient都是从FP32改成了FP16，为什么只有weight保留了副本？</h2>
+<p>因为new_weight_32 = old_weight_32 + learning_rate * gradient_16<br />
+只有在weight换更新计算过程中会产生gradient的下溢和舍入误差，导致weight没有更新<br />
+为了尽量保证与FP32一致，所以一定要存储一份FP32的weight副本</p>
+<h2
+id="保留一份fp32的副本会占用更多的副本但是为什么最终会减少显存消耗呢">保留一份FP32的副本会占用更多的副本，但是为什么最终会减少显存消耗呢？</h2>
+<p>的确，复制FP32的weight会占用更多的显存<br />
+但是在深度学习中，显存中最多的是activation和gradient，尤其是在batchsize很大的情况下。<br />
+所以，FP16减少的显存远比FP32副本weight占用的显存多，最终导致显存占用减少<br />
+从这里也可以知道一点，当batchsize很较小的时候，往往FP16很带来更多的消耗，效率甚至不如FP32</p>
+<h2 id="pytorch模型保存后文件">pytorch模型保存后文件？</h2>
+<p><strong>config.json</strong>：里面包含构建模型结构的必要参数，如多头注意力的头数，编码器的层数等，代表典型的模型结构，如bert，xlnet，一般不更改。<br />
+<strong>pytorch_model.bin</strong>：又称为状态字典，包含模型的所有权重参数，可以使用torch.load加载查看。</p>
+<p><strong>tokenizer_config.json</strong>：里面包含构建分词器需要的参数，比如"do_lower_case":
+true。<br />
+<strong>vocab.txt</strong>：词表，每一个 token 占一行，行号就是对应的
+token ID（从 0 开始）。<br />
+<strong>added_token.json</strong>：记录在训练时通过代码添加的自定义token对应的数值，即在代码中使用add_token方法添加的自定义词汇。</p>
+<p><strong>tokenizer.json</strong>：加载fast
+tokenizer分词器需要的参数。<br />
+<strong>special_token_map.json</strong>：里面包含 unknown tokens
+等特殊字符的映射关系，如UNK、SEP，一般为"unk_token":"[UNK]"。<br />
+<strong>traning_args.bin</strong>：代表模型训练时的超参，如batch_size，epoch等，仍可使用torch.load查看。<br />
+<strong>checkpoint</strong>:
+若干步骤保存的模型参数文件(也叫检测点文件)。</p>
+<h2 id="对抗训练fgm和pgd">对抗训练FGM和PGD？</h2>
+<p><strong>Fast Gradient Method
+(FGM)</strong>：对embedding层在梯度方向添加扰动。<br />
+<strong>Projected Gradient Descent (PGD)</strong>
+：迭代扰动，每次扰动被投影到规定范围内。</p>
+<h1 id="自然语言处理">自然语言处理</h1>
+<h2
+id="详细讲一下不同的文本表征向量化方法对比区别">详细讲一下不同的文本表征向量化方法，对比区别？</h2>
+<p>稀疏的：one-hot、count、tf-idf。<br />
+稠密的：word2vec、fasttext、Glove。</p>
+<h2 id="nlp的数据预处理通常做什么">NLP的数据预处理通常做什么？</h2>
+<p>中文：分词、去停用词、特殊符号清洗、地点组织人名数字替换、统计词频、词性词频。</p>
+<h2 id="nlp数据增强方法">NLP数据增强方法？</h2>
+<p>同义词替换、同义词随机插入、回译。<br />
+库：nlpaug、TextAttack。</p>
+<h2 id="讲一下-word2vec-cbow-与-skip-gram-的区别和优缺点">讲一下
+word2vec？ cbow 与 skip-gram 的区别和优缺点？</h2>
+<p>cbow和skip-gram都是在word2vec中用于将文本进行向量表示的实现方法。</p>
+<p>主要有两种方法：<br />
+<strong>CBOW</strong>：上下文词来预测中心词。预测次数跟整个文本的词数是相等的，复杂度大概是O(V)。CBOW
+训练速度比Skip-Gram更快。但在计算时，CBOW 会将上下文词语加起来，
+在遇到生僻词时预测效果将会大大降低。<br />
+<strong>Skip-Gram</strong>：由中心词来预测上下文词。每次预测 K(窗口大小)
+次，因此时间的复杂度为O(KV)。Skip-Gram
+则会预测生僻字的使用环境来学习生僻词语义。</p>
+<p>优缺点：<br />
+skip-gram 准确率比 cbow 高，但训练时间要比 cbow 要长。<br />
+在计算时，cbow会将上下文向量加起来取均值，在遇到生僻词时预测效果将会大大降低。skip-gram则会预测生僻字的使用环境，预测效果更好。</p>
+<p>优化方法：<br />
+<strong>分层Softmax</strong>：词典按词频建立哈夫曼树，然后将词语与节点计算作为二分类任务，选择下一步分支。<br />
+<strong>负采样</strong>：上下文词语为正例，从词典中抽取 n
+个不在上下文中的词作为负例，负例抽取的方法与词频有关。词频使用了 3/4
+次方（工程 trick）。</p>
+<h2 id="fasttext和glovec原理介绍">FastText和Glovec原理介绍？</h2>
+<p>FastText是将句子中的每个词通过一个lookup层映射成词向量，对词向量叠加取平均作为句子的向量，然后直接用线性分类器进行分类，FastText中没有非线性的隐藏层，结构相对简单而且模型训练的更快。<br />
+Glovec融合了矩阵分解和全局统计信息的优势，统计语料库的词-词之间的共现矩阵，加快模型的训练速度而且又可以控制词的相对权重。<br />
+word2vec损失函数实质上是带权重的交叉熵，权重固定；glove的损失函数是最小平方损失函数，权重可以做映射变换。</p>
+<h2 id="fasttext和word2vec的区别">fastText和word2vec的区别？</h2>
+<p>除了训练词向量，fastText还能能胜任分类任务。fastText速度优于word2vec。<br />
+相似点：都采用很多相似的优化方法，比如使用Hierarchical
+softmax优化训练和预测中的打分速度。<br />
+不同点：<br />
+训练词向量：word2vec的输入层是上下文单词(有序的)；而fasttext对应的整个句子/文本的单词及其n-gram特征(无序的词袋思想)。<br />
+分类任务：fasttext结构和CBOW类似，但学习目标是人工标注的分类结果。<br />
+fastText 词向量得到的相似度是基于分类类别的相似。<br />
+word2vec 词向量得到的相似度是基于语义的相似。</p>
+<h2 id="crf原理">CRF原理？</h2>
+<p>设X与Y是随机变量，P(Y|X)是给定X的条件下Y的条件概率分布，若随机变量Y构成一个由无向图G=(V,E)表示的马尔科夫随机场。则称条件概率分布P(Y|X)为条件随机场。因为是在X条件下的马尔科夫随机场，所以叫条件随机场。</p>
+<h2 id="hmmmemm-vs-crf-对比">HMM、MEMM vs CRF 对比？</h2>
+<p>HMM(隐马模型)是有向图模型，是生成模型；HMM有两个假设：一阶马尔科夫假设+观测独立性假设；但对于序列标注问题不仅和单个词相关，而且和观察序列的长度，单词的上下文，等等相关。<br />
+MEMM（最大熵马尔科夫模型）是有向图模型，是判别模型；MEMM打破了HMM的观测独立性假设，MEMM考虑到相邻状态之间依赖关系，且考虑整个观察序列，因此MEMM的表达能力更强；但MEMM会带来标注偏置问题：由于局部归一化问题，MEMM倾向于选择拥有更少转移的状态。这就是标记偏置问题。<br />
+CRF模型解决了标注偏置问题，去除了HMM中两个不合理的假设，当然，模型相应得也变复杂了。</p>
+<p>CRF，HMM(隐马模型)，MEMM(最大熵隐马模型)都常用来做序列标注的建模，像分词、词性标注，以及命名实体标注。<br />
+HMM一个最大的缺点就是由于其输出独立性假设，导致其不能考虑上下文的特征，限制了特征的选择。<br />
+MEMM则解决了隐马的问题，可以任意选择特征，但由于其在每一节点都要进行归一化，所以只能找到局部的最优值，同时也带来了标记偏见的问题，即凡是训练语料中未出现的情况全都忽略掉。<br />
+CRF则很好的解决了这一问题，他并不在每一个节点进行归一化，而是所有特征进行全局归一化，因此可以求得全局的最优值。</p>
+<h1 id="计算即视觉">计算即视觉</h1>
+<h2 id="resnet">resnet？</h2>
+<p><img src="/images/面试/resnet.png" width="80%"></p>
+<p>以resnet-101为例，通道数变化在图上，不再写出：<br />
+<strong>conv1</strong>：<br />
+起始输入<code>224*224</code>，卷积核
+<code>kernel_size=7, padding=3, stride=2</code>，输出计算过程<code>(224-7+2*3+2)/2=112</code>。<br />
+<strong>conv2.x</strong>：<br />
+池化层输入<code>112*112</code>，maxpool<code>kernel_size=3, padding=1, stride=2</code>，输出计算过程<code>(112-3+2*1+2)/2=56</code>。<br />
+经过3个BottleBlock，每个block：<br />
+(1)
+输入<code>56*56</code>，卷积核<code>kernel_size=1, padding=0, stride=1</code>，输出计算过程<code>(56-1+2*0+1)/1=56</code>。<br />
+(2)
+输入<code>56*56</code>，卷积核<code>kernel_size=3, padding=1, stride=1</code>，输出计算过程<code>(56-3+2*1+1)/1=56</code>。<br />
+(3)
+输入<code>56*56</code>，卷积核<code>kernel_size=1, padding=0, stride=1</code>，输出计算过程<code>(56-3+2*0+1)/1=56</code>。<br />
+<strong>conv3.x</strong>：<br />
+经过4个BottleBlock：<br />
+第一个block：<br />
+(1)
+输入<code>56*56</code>，卷积核<code>kernel_size=1, padding=0, stride=1</code>，输出计算过程<code>(56-1+2*0+1)/1=56</code>。<br />
+(2)
+输入<code>56*56</code>，卷积核<code>kernel_size=3, padding=1, stride=2</code>，输出计算过程<code>(56-3+2*1+2)/2=28</code>。<br />
+(3)
+输入<code>28*28</code>，卷积核<code>kernel_size=1, padding=0, stride=1</code>，输出计算过程<code>(28-1+2*0+1)/1=28</code>。<br />
+之后的block：<br />
+(2)
+输入<code>28*28</code>，卷积核<code>kernel_size=3, padding=1, stride=1</code>，输出计算过程<code>(28-3+2*1+1)/1=28</code>。<br />
+<strong>conv4.x</strong>：<br />
+经过23个BottleBlock：<br />
+第一个block：<br />
+(1)
+输入<code>28*28</code>，卷积核<code>kernel_size=1, padding=0, stride=1</code>，输出计算过程<code>(28-1+2*0+1)/1=28</code>。<br />
+(2)
+输入<code>28*28</code>，卷积核<code>kernel_size=3, padding=1, stride=2</code>，输出计算过程<code>(28-3+2*1+2)/2=14</code>。<br />
+(3)
+输入<code>14*14</code>，卷积核<code>kernel_size=1, padding=0, stride=1</code>，输出计算过程<code>(14-1+2*0+1)/1=14</code>。<br />
+之后的block：<br />
+(2)
+输入<code>14*14</code>，卷积核<code>kernel_size=3, padding=1, stride=1</code>，输出计算过程<code>(14-3+2*1+1)/1=14</code>。<br />
+<strong>conv5.x</strong>：<br />
+经过3个BottleBlock：<br />
+第一个block：<br />
+(1)
+输入<code>14*14</code>，卷积核<code>kernel_size=1, padding=0, stride=1</code>，输出计算过程<code>(14-1+2*0+1)/1=14</code>。<br />
+(2)
+输入<code>14*14</code>，卷积核<code>kernel_size=3, padding=1, stride=2</code>，输出计算过程<code>(14-3+2*1+2)/2=7</code>。<br />
+(3)
+输入<code>7*7</code>，卷积核<code>kernel_size=1, padding=0, stride=1</code>，输出计算过程<code>(7-1+2*0+1)/1=7</code>。<br />
+之后的block：<br />
+(2)
+输入<code>7*7</code>，卷积核<code>kernel_size=3, padding=1, stride=1</code>，输出计算过程<code>(7-3+2*1+1)/1=7</code>。<br />
+<strong>average pool</strong>：<br />
+输入<code>7*7</code>，输出<code>1*1</code>，算上通道是<code>2048*1*1</code>。<br />
+<strong>FC</strong>：<br />
+经过<code>2048*1000</code>的fc，再softmax，得到1000个类别输出。<br />
+<img src="/images/面试/resnet1.png" width="60%"></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1RUVFNFUDlUSDIyNDQvYXJ0aWNsZS9kZXRhaWxzLzEyMzEyMzA2Nw==">使用PyTorch搭建ResNet50网络<i class="fa fa-external-link-alt"></i></span></p>
+<h2 id="triple-loss">Triple loss？</h2>
+<p>triplet是指的是三元组：Anchor、Positive、Negative。<br />
+通过优化Anchor与Positive的距离小于与Negative的距离，实现样本的相似性计算。</p>
+<p><span class="exturl" data-url="aHR0cHM6Ly93d3cuamlhbnNodS5jb20vcC80NmM2ZjY4MjY0YTE=">Triplet Loss
+损失函数<i class="fa fa-external-link-alt"></i></span></p>
+<h1 id="大数据等">大数据等</h1>
+<h2 id="mysqlhadoopspark区别">mysql、hadoop、spark区别？</h2>
+<p>mysql：数据库。<br />
+Spark：分布式计算平台，是一个用scala语言编写的计算框架，基于<strong>内存</strong>的快速、通用、可扩展的大数据分析引擎。<br />
+Hadoop，是分布式管理、存储、计算的生态系统；包括HDFS（存储）、MapReduce（计算）、Yarn（资源调度）。</p>
+<p>Spark基于内存的，速度比hadoop快。<br />
+Spark没有提供文件管理系统，所以和其他的分布式文件系统(如HDFS的HBase数据库/mysql)进行集成才能运作。<br />
+Hadoop适合处理静态数据，对于迭代式流式数据的处理能力差；Spark通过在内存中缓存处理的数据，提高了处理流式数据和迭代式数据的性能<br />
+Hadoop中对于数据计算只提供了Map和Reduce两个操作，Spark提供了丰富的算子，可以通过RDD转换算子和RDD行动算子，实现很多复杂算法操作，这些在复杂的算法在Hadoop中需要自己编写，而在Spark中直接通过scala语言封装好了，直接用就ok。</p>
+<h2
+id="reducebykey如何运行和groupbykey相比高效在哪">reducebykey如何运行，和groupbykey相比高效在哪？</h2>
+<p>reduceByKey和groupByKey都存在shuffle的操作，但是reduceByKey可以在shuffle前对分区内相同key的数据进行<strong>预聚合</strong>(combine)功能，这样会减少落磁盘的数据量；而groupByKey只是进行分组，不存在数据量减少的问题，reduceByKey的性能高。</p>
+<p>从功能的角度：<br />
+reduceByKey其实包含分组和聚合的功能。groupByKey只能分组，不能聚合。所以在分组聚合的场合下，推荐使用reduceByKey，而仅仅只是分组而不需要聚合的，那么只能使用groupByKey。</p>
+<h2 id="宽依赖窄依赖">宽依赖/窄依赖？</h2>
+<p>RDD和它依赖的父RDD(s)的关系有两种不同的类型，即窄依赖(narrow
+dependency)和宽依赖(wide dependency)。<br />
+宽依赖：父RDD的每个分区都可能被多个子RDD分区使用。<br />
+窄依赖：父RDD的每个分区只被某一个子RDD分区使用。<br />
+宽依赖往往需要 shuffle 操作，stage 会增加。</p>
+<h2 id="mysql索引">mysql索引？</h2>
+<p>MySQL索引的建立对于MySQL的高效运行是很重要的，索引可以大大提高MySQL的检索速度。<br />
+拿汉语字典的目录页（索引）打比方，我们可以按拼音、笔画、偏旁部首等排序的目录（索引）快速查找到需要的字。<br />
+索引分单列索引和组合索引。单列索引，即一个索引只包含单个列，一个表可以有多个单列索引，但这不是组合索引。组合索引，即一个索引包含多个列。<br />
+创建索引时，你需要确保该索引是应用在 SQL 查询语句的条件(一般作为 WHERE
+子句的条件)。<br />
+实际上，索引也是一张表，该表保存了主键与索引字段，并指向实体表的记录。<br />
+上面都在说使用索引的好处，但过多的使用索引将会造成滥用。因此索引也会有它的缺点：虽然索引大大提高了查询速度，同时却会降低更新表的速度，如对表进行INSERT、UPDATE和DELETE。因为更新表时，MySQL不仅要保存数据，还要保存一下索引文件。<br />
+建立索引会占用磁盘空间的索引文件。</p>
+<h1 id="python基础">python基础</h1>
+<h2 id="闭包">闭包？</h2>
+<p>闭包：出现在嵌套函数中，指的是内层函数引用到了外层函数的自由变量就形成了闭包。<br />
+局部变量无法共享和长久的保存，而全局变量可能造成变量污染，闭包既可以长久的保存变量又不会造成全局污染。<br />
+闭包使得函数内局部变量的值始终保持在内存中，不会在外层函数调用后被自动清除。<br />
+当外层函数返回了内层函数后，外层函数的局部变量还被内层函数引用。<br />
+带参数的装饰器，那么一般都会生成闭包。</p>
+<h2 id="深拷贝和浅拷贝">深拷贝和浅拷贝？</h2>
+<p>深拷贝是拷贝真正的数据。<br />
+浅拷贝是拷贝的指针，不是真正的数据。</p>
+<h2 id="可变不可变数据类型举例子">可变不可变数据类型，举例子？</h2>
+<p>基本的数据类型：数字型、字符串、元祖、列表、字典、集合<br />
+不可变数据类型：数字型、字符串、元祖<br />
+可变数据类型：列表、字典、集合</p>
+<h2 id="gil锁">GIL锁？</h2>
+<p>GIL锁，保证同一时刻只有一个线程能使用到cpu。<br />
+只有当线程获得了一个全局锁的时候，那么该线程的代码才能运行，而全局锁只有一个，所以使用python多线程，在同一时刻也只有一个线程在运行，因此在即使在多核的情况下也只能发挥出单核的性能。</p>
+<h2 id="多线程多进程">多线程，多进程？</h2>
+<p>进程控制自己的线程，所以进程可以互通资源，但线程不能，线程只从所属的进程拿资源。<br />
+<strong>CPU密集型</strong>：CPython中使用到了GIL，多线程的时候锁相互竞争，且多核优势不能发挥，Python<strong>多进程</strong>效率更高。<br />
+<strong>IO密集型</strong>：<strong>适合用多线程</strong>，可以减少多进程间IO的序列化开销。且在IO等待的时候，切换到其他线程继续执行，效率不错。</p>
+<h1 id="项目">项目</h1>
+<h2 id="营销文本生成">营销文本生成</h2>
+<p>项目介绍：基于公司子平台的营销文本生成，是seq2seq任务，可以考虑抽取或生成方式，抽取简单但多样性差，生成有多样性但又容易出现OOV无法处理等情况，最终使用生成+抽取模式PGN模型，baseline是seq2seq+attention，的encoder采用双向LSTM，decoder采用单向LSTM+Attention，<br />
+但这种纯生成的架构有缺点：<br />
+(1) 由于 Attention
+可能聚焦于某些单词，容易生成重复的的词语或短句。<br />
+(2) 只能生成词表中的单词，无法处理 OOV（out of vocabulary）问题。<br />
+PGN模型主要解决以上两点问题，它可以将原文中的一些重要、低频OOV单词直接copy到生成文本摘要中，极大避免OOV产生。<br />
+PGN相比seq2seq多了一个控制生成或抽取的概率P，它根据当前时间步计算的context
+vector、decoder隐状态、decoder输入计算得到。<br />
+然后使用P乘以Vocabulary Distribution，得到生成文本的相关信息。<br />
+使用1-P乘以Attention Distribution，得到原始文本的相关信息。<br />
+这两部分信息相加，得到 Final Distribution。<br />
+这个P相当于门控，控制有多少的信息来自于原文，有多少的信息来自于根据神经网络生成的文本。<br />
+除此之外，原始论文还引入了 coverage
+机制，可以缓解生成过程中的短语重复问题。<br />
+定义了一个C_t向量，它是先前所有解码器时间步的注意力分布之和，在计算attention
+score时也考虑之前时间步attention情况，从而减少重复生成。<br />
+此外还增加了coverage
+loss，对过往时刻或当前时刻受到注意力较多的单词进行惩罚。</p>
+<p>直接加coverage效果并不好，所以实际应用时采用fine-tune训练。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">data_utils.py、process.py</span><br><span class="line">数据处理：</span><br><span class="line">(1)使用3w条商品文本+图片数据，对商品关键属性进行建模。</span><br><span class="line">(2)文本中包括：图片id、商品标题、属性kv对、ocr信息，参考描述。</span><br><span class="line">(3)src：商品标题+属性kv对+ocr分词，tgt：参考描述。</span><br><span class="line">(4)有的商品tgt不止一条，可按tgt数量生成多个样本。tgt描述重点要和src构建的顺序一致，保证attention效果。</span><br><span class="line">样本格式为：src+[sep]+tgt</span><br><span class="line">后期样本格式：src+[sep]+tgt+[sep]+cate+[sep]+imgid，增加类别和图片id。</span><br><span class="line">最后切分数据集，按0.8,0.1,0.1比例处理成训练集、验证集、测试集。</span><br><span class="line"></span><br><span class="line">config.py dataset.py vocal.py</span><br><span class="line">构建词表，能加载预训练word embedding。</span><br><span class="line">功能函数：</span><br><span class="line">(1)word2idx, idx2word, word2count, </span><br><span class="line">(2)source2idx是src文本转idx，同时记录和使用src_oov扩展词表。</span><br><span class="line">(3)abstract2ids是tgt文本转idx，同时使用src_oov扩展词表，因为使用PGN会从src中抽取src_oov词。</span><br><span class="line">(4)outputids2words把预测结果时转成文本，同时使用src_oov扩展词表。</span><br><span class="line"></span><br><span class="line">构建数据集，处理成seq2seq输入，参数有：词典大小、最大序列长度、padding等。</span><br><span class="line">初始样本sample(keys: &#x27;src&#x27;, &#x27;tgt&#x27;, &#x27;cate&#x27;, &#x27;img_vec&#x27;)</span><br><span class="line">词表为sample[&#x27;src&#x27;]+sample[&#x27;tgt&#x27;]，取词频top词典大小。</span><br><span class="line">最终处理成return &#123;</span><br><span class="line">            &#x27;source&#x27;: sample[&#x27;src&#x27;],</span><br><span class="line">            &#x27;target&#x27;: sample[&#x27;tgt&#x27;],</span><br><span class="line">            &#x27;x&#x27;: [self.vocab.SOS] + x + [self.vocab.EOS],</span><br><span class="line">            &#x27;OOV&#x27;: oov,   # 当前src的src_oov词表。注意，每个src都有单独的src_oov词表</span><br><span class="line">            &#x27;len_OOV&#x27;: len(oov), # 当前src的src_oov词表长度。</span><br><span class="line">            &#x27;y&#x27;: [self.vocab.SOS] + y + [self.vocab.EOS],</span><br><span class="line">            &#x27;x_len&#x27;: len(sample[&#x27;src&#x27;]) + 2,</span><br><span class="line">            &#x27;y_len&#x27;: len(sample[&#x27;tgt&#x27;]) + 2,</span><br><span class="line">            &#x27;img_vec&#x27;: sample[&#x27;img_vec&#x27;]</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">utils.py model.py</span><br><span class="line">base模型结构：Encoder：Bi-LSTM；Decoder：LSTM+Attention。</span><br><span class="line">1、encoder最后时刻隐状态作为decoder隐状态初始化，bi-lstm到lstm需要降维(2层-&gt;1层)，可使用：</span><br><span class="line">(1) 直接相加。</span><br><span class="line">(2) 全连接层。</span><br><span class="line">2、attention时初始输入的query是encoder_states降维后的(h+c)，使用additive attention，</span><br><span class="line">注意mask掉pad词的权重，需要再Normalize一下，(除以mask后权重的和)使权重和为1。</span><br><span class="line">attention后序使用上一时刻decoder_states的(h+c)作为query。</span><br><span class="line">3、decoder：</span><br><span class="line">（1）正常additive attention是对decoder的模型输入(context向量+decoder_input+上一时刻decoder_state)，再接全连接层。</span><br><span class="line">（2）PGN中使用lstm(decoder_input)得到当前时刻decoder_states，再concat(context向量+decoder_states)后接全连接层。</span><br><span class="line">计算loss时也要mask掉tgt的pad词。</span><br><span class="line">损失函数是目标词 负 对数似然(预测概率&lt;1，取log后为负数，概率越接近1 log越接近0，为了最小损失优化，再取负数)，序列损失是所有预测词损失均值。</span><br><span class="line">梯度裁剪clip_grad_norm_，默认l2正则。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">train.py</span><br><span class="line">(1)train时使用teacher forcing。</span><br><span class="line">(2)增加Scheduled Sampling：</span><br><span class="line">每个 time step 以一个 p 的概率进行ground truth训练，以 1-p 的概率使用预测结果训练。</span><br><span class="line">p 的大小可以随着 batch 或者 epoch衰减，即开始训练的阶段完全使用 ground truth 以加快模型收敛，</span><br><span class="line">到后面逐渐将 ground truth 替换成模型自己的输出，到训练后期就与预测阶段的输出一致。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">predict.py</span><br><span class="line">预测时使用greedy、beam。</span><br><span class="line">Beam类具有：</span><br><span class="line">(1)extend方法：扩展当前的序列和评分+保存上一时刻decoder_states用于计算当前attention和decoder，得到当前时刻最优的k个结果。</span><br><span class="line">(2)score方法：用来计算当前序列的分数。</span><br><span class="line">best_k函数输入当前beam实例，返回最好的k个扩展(调用Beam类extend)。</span><br><span class="line">beam search：</span><br><span class="line">(1)维护最大的decoder_step 。</span><br><span class="line">(2)每个step对候选序列进行排序(调用best_k和score)+剪枝，保留全局最优k个。</span><br><span class="line">beam search结束时选择最优的结果。</span><br><span class="line"></span><br><span class="line">evaluate.py</span><br><span class="line">评价指标为Rouge-1，Rouge-2，Rouge-L。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">dataset.py</span><br><span class="line">source2idx是src文本转idx，同时记录和使用src_oov扩展词表。</span><br><span class="line">abstract2ids是tgt文本转idx，同时使用src_oov扩展词表，因为使用PGN会从src中抽取src_oov词。</span><br><span class="line">outputids2words把预测结果时转成文本，同时使用src_oov扩展词表。</span><br><span class="line">也就是src，tgt都使用了src_oov词表得到id序列，训练时要注意屏蔽。</span><br><span class="line"></span><br><span class="line">model.py</span><br><span class="line"># 通过以下配置可以训练以下模型：</span><br><span class="line"># 1. seq2seq+attention: 令 pointer = False</span><br><span class="line"># 2. PGN: 使用p_gen控制生成和抽取。令 pointer = True   </span><br><span class="line"># 3. PGN(with coverage): 使用历史attention_weights参与计算当前attention_weights。令 pointer,coverage = True </span><br><span class="line"># 4. PGN(fine-tuned with coverage): 先使用coverage训练好模型，再冻结除coverage外的权重，单独训练coverage。pointer,coverage,fine_tune = True  </span><br><span class="line">fine-tuning：与coverage无关的权重都固定住，只训练与coverage相关的权重，</span><br><span class="line">论⽂中作者建议coverage机制在训练好⼀个收敛的PGN模型加⼊之后效果更好，所以我们为了实现fine-tune机制。</span><br><span class="line">只要使用coverage和covloss，就要降低学习率，一般为baseline的1/10。</span><br><span class="line"></span><br><span class="line">PGN模型：</span><br><span class="line">以p_gen概率从词典生成，以(1-p_gen)概率从src抽取。</span><br><span class="line">生成：以p_gen概率乘以vacabulary Distribution(P_vocab)，得到生成文本的相关信息。</span><br><span class="line">抽取：以(1-p_gen)概率乘以attention Distribution，得到原始文本的相关信息。</span><br><span class="line">最后将这两部分信息相加，得到 Final Distribution。</span><br><span class="line"></span><br><span class="line">decoder：新增p_gen软概率，由当前时间步 激活函数(上下文向量 + decoder隐状态 + decoder_emb) 计算。</span><br><span class="line">         最后的预测的概率分布为p(w)=p_gen*p_vocab + (1-p_gen)*a_t</span><br><span class="line"></span><br><span class="line">         如何把生成词概率和抽取词概率整合起来？</span><br><span class="line">         可先扩展词表为 (vocab_size+ batch_max_oov)，</span><br><span class="line">         再按照 x 的 单词表(带src_oov)索引把attention_weighted放入扩展词表中。</span><br><span class="line"></span><br><span class="line">         新增coverage loss：a*sum(min(a^t,c^t))</span><br><span class="line">         对过往时刻或当前时刻受到注意力较多的单词进行惩罚。</span><br><span class="line"></span><br><span class="line">attention：抑制重复，在当前时刻的attention计算考虑历史attention信息，让模型注意力不保留在同一位置上。</span><br><span class="line">           新增coverage vector = 当前时刻之前所有attention_weights之和，</span><br><span class="line">           计算additive attention的score时新增一项 wc*coverage vector。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">train.py</span><br><span class="line">pgn模式下，train时encoder和decoder输入都要不要用src_oov词表，都要以原始词表为准，输出时不用屏蔽，要预测到src_oov的词汇。</span><br><span class="line">非pgn模式下，train时encoder和decoder输入、decoder输出，都要以原始词表为准，程序里src和tgt都使用了src_oov所以要屏蔽。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Beam search优化：</span><br><span class="line">length normalization和coverage penalty参考谷歌《Google’s Neural Machine Translation System》</span><br><span class="line">使用coverage penalty时Beam类需要保存coverage_vector。</span><br><span class="line">(1) length normalization：因为对数似然是负数，越长的序列在计算 score 时得分越低 (加的负数越多)。</span><br><span class="line">                          在得分函数中引入 length normalization 对长度进行归一化可以解决这一问题，</span><br><span class="line">                          socre除以lp(y)=(5+|y|)^a/(5+1)^a，句子越长lp越大，score为负数，除以越大的值分数越高。</span><br><span class="line">(2) coverage penalty：使用 Attention 的场合，可以让 Decoder 均匀地关注于输入序列 x 的每一个 token，防止一些 token 获得过多的 Attention。</span><br><span class="line">encoder每个位置对decoder之前所有时刻的累加(coverage_vector)，限制上限为1，再log求和，</span><br><span class="line">注意力越集中，该值被削为1，log之后该位置趋于0，其他位置都小于1，而且累加值都很小，每个值取log后都是绝对值很大的负数，求和后是一个趋于无穷的负数。</span><br><span class="line">注意力越分散，每个位置的值都会接近1，取log为负数，结果会越接近0，就是多个绝对值很小的负数，求和后会越接近0。</span><br><span class="line">score是取log的，是负数，那么再加上负数分数会越低。</span><br><span class="line"></span><br><span class="line">(3) EOS normalization：加上(1)和(2)有时Decoder生成序列很难停止，此时需要对最大生成长度进行控制。</span><br><span class="line">                       socre加上cp，cp(x,y)=g*(x/y)，x为src长度，y为预测长度，如果预测的过长分数越低。</span><br><span class="line">(4) diverse beam search：分组加入相似性惩罚，将beam size分为n组，组内生成的词要考虑不能和其他组生成的词相似，如果相似分数-1作为惩罚。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">参考京东MMPG模型把图片信息引入到PGN中，他提供了三种方法：</span><br><span class="line">(1) EncInit：使用rest-net抽取图片特征，作为encoder的初始化状态。</span><br><span class="line">(2) DecInit：使用rest-net抽取图片特征，作为decoder的初始化状态。</span><br><span class="line">(3) MMAtt：使用rest-net抽取图片特征，输入attention中计算context vector。</span><br><span class="line">抽取resnet-101最后一层卷积输出，作为decoder的初始化状态。</span><br><span class="line"></span><br><span class="line">都有提升，对不同种类商品提升幅度不同，EncInit提升幅度最小，DecInit提升最大(衣服)，MMAtt提升效果居中。</span><br><span class="line">融合DecInit核MMAtt，效果不如单独的，不考虑。</span><br><span class="line"></span><br><span class="line">后序改进：</span><br><span class="line">(1)使用预训练模型，</span><br><span class="line">(2)针对商品关键属性构建损失函数，让生成的文本更专注卖点。</span><br><span class="line">(3)coverage loss是字层面去重，考虑增加商品要素层面去重，</span><br><span class="line">    在计算loss时，和当前词同属于一类要素词的attention weight叠加，而不只是当前词。</span><br><span class="line">    防止出现同类要素描述一种信息。比如 安静、噪音小，只需要一种即可。</span><br><span class="line">(4)序列标注识别 卖点词/短语 ---&gt; 原始文本+卖点序列 生成商品摘要。</span><br><span class="line">(5)双重注意力机制，attention时增加卖点信息。</span><br><span class="line">(6)双重复制，不光从原始文本copy，还要从卖点、要素copy，增加生成文本中关于卖点、要素比例。</span><br><span class="line">(7)引入知识图谱知识。</span><br><span class="line">(8)挖槽，分类。对于固定属性，避免错误，比如100升不能101升。</span><br></pre></td></tr></table></figure>
+<h2 id="检索问答">检索问答</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">主要用于FAQ信息的回答。</span><br><span class="line"></span><br><span class="line">数据：使用2w对人工客服历史数据，对数据进行预处理：</span><br><span class="line">(1)分词、去停用词、对单号、表情、数字、网址等进行掩码、去掉常见问候单句，计算词频等统计信息。</span><br><span class="line">(2)对每个session中顾客和客服多句话进行合并为一句，保证每个人在一轮对话中只有完整的一句话。</span><br><span class="line">(3)最后切分数据集，按0.8,0.1,0.1比例处理成训练集、验证集、测试集。</span><br><span class="line">(4)构建QA对，使用双向高频来构建，先确定高频Q(确定FAQ范围)，再由高频Q的A反向找到对应Q(用于召回精排)，这样构建的QA就是FAQ。</span><br><span class="line"></span><br><span class="line">意图识别：这个地方我们做成一个简单的文本二分类任务，根据用户的开场白识别用户的意图是业务需求还是闲聊。</span><br><span class="line">训练数据使用关键词来自动标注，每个样本是一句用户的输入，整理一系列业务相关的词汇，将包含业务关键词的样本标注为1，否则为0。</span><br><span class="line"></span><br><span class="line">粗排(召回)：</span><br><span class="line">(1)使用HNSW(Hierarchical Navigable Small World)。发展过程，近邻图 --&gt; NSW --&gt; Skip List --&gt; HNSW。</span><br><span class="line">NSW 通过设计出一个具有导航性的图来解决近邻图发散搜索的问题，但其搜索复杂度仍然过高，达到多重对数的级别，并且整体性能极易被图的大小所影响。</span><br><span class="line">HNSW 则是着力于解决这个问题。作者借鉴了 SkipList 的思想，提出了Hierarchical-NSW 的设想。</span><br><span class="line">简单来说，按照一定的规则把一张的图分成多张，越接近上层的图，平均度数越低，节点之间的距离越远；越接近下层的图平均度数越高，节点之间的距离也就越近。</span><br><span class="line">搜索从最上层开始，找到本层距离最近的节点之后进入下一层。下一层搜索的起始节点即是上一层的最近节点，往复循环，直至找到结果。</span><br><span class="line">由于越是上层的图，节点越是稀少，平均度数也低，距离也远，所以可以通过非常小的代价提供了良好的搜索方向，</span><br><span class="line">通过这种方式减少大量没有价值的计算，减少了搜索算法复杂度。</span><br><span class="line">更进一步，如果把 HNSW 中节点的最大度数设为常数，这样可以获得一张搜索复杂度仅为 log(n) 的图。</span><br><span class="line">(2)Facebook AI Similarity Search (Faiss)： Facebook 开发的专门用于做Proximate Search 的 library，支持包括HNSW等多种搜索算法。</span><br><span class="line">底层是C++，还支持 GPU，所以速度快。</span><br><span class="line">faiss.IndexFlatL2：L2距离度量，精确但速度慢，会和每个候选query做匹配。</span><br><span class="line">faiss.IndexFlatIP：IndexFlatL2一样，但支持cosine度量(需要提前归一化向量)。</span><br><span class="line">faiss.IndexIVFFlat：先训练一遍划分partition，每次只和partition中心匹配，确定partition后再精确匹配。</span><br><span class="line">                    度量使用faiss中的index。精确度下降，速度提升。</span><br><span class="line">faiss.IndexIVFPQ：Product Quantization(PQ)可以对句子vector进行压缩。与IVF一样，都是降低搜索空间的approximate方法。</span><br><span class="line">                  先划分sub vector，对sub vector集合做聚类，找到类中心，将原始的vector的多个sub vector用最近的中心id代替。</span><br><span class="line">faiss.IndexHNSWFlat：hnsw方式，对内存要求较高。</span><br><span class="line">(3)其他的召回方法Annoy，KD树等。</span><br><span class="line">Annoy：Approximate Nearest Neighbors Oh Yeah，是Spotify开源的高维空间近邻库，用于音乐推荐。</span><br><span class="line">Annoy通过海量数据建立一个二叉树来使得每个数据查找时间复杂度是logn。随机选2个点找中线不断把空间划分一半，直到节点中样本数量达到设定值。</span><br><span class="line">查找时不断判断当前点在分割超平面的哪一边。从二叉树索引结构看，就是从根节点不断到叶子节点的过程。</span><br><span class="line">KD树：类似Annoy，但是它是平衡二叉树，计算每个点坐标的每一维度上的方差，取方差最大的那一维度对应的中间值，作为分裂点。</span><br><span class="line">(4)将index中已存在的部分query拿来作为测试集，查询其⾃身后通过判断返回的第⼀个结果是否为⾃身来计算recall@1。</span><br><span class="line"></span><br><span class="line">精排：</span><br><span class="line">(1)基于字符串距离：编辑距离、LCS、Jaccard。</span><br><span class="line">(2)基于向量距离：cosine、 Euclidian、Pearson、WMD(两个文本之间所有词最小距离之和)。</span><br><span class="line">(3)基于统计量的距离：BM25。</span><br><span class="line">(4)基于深度匹配模型：Bert(构建正负样本训练句子相似性打分的能力)。</span><br><span class="line">bm25.py、train_LM(tf-idf,word2vec,fasttext).py、similarity(TextSimilarity类).py</span><br><span class="line">matchnn.py深度匹配(BertModelTrain, BertModelPredict, MatchingNN)</span><br><span class="line"></span><br><span class="line">最后使用learn to rank方法得到最终的精排结果。</span><br><span class="line">排序学习是一个有监督的机器学习过程，对每一个给定的查询－文档对，抽取特征，通过排序模型，使得输入能够和实际的数据相似。</span><br><span class="line">常用的排序学习分为三种类型： PointWise， PairWise 和 ListWise。</span><br><span class="line"></span><br><span class="line">BertForNextSentencePrediction：输入为2个token，判断句子相关性，默认就是二分类。</span><br><span class="line">BertForSequenceClassification：输入为1个整体token，取cls接全连接层，当成文本分类任务，可多分类。</span><br><span class="line"></span><br><span class="line">生成模型：</span><br><span class="line">(1)使用 BERT类/GPT2 等预训练模型做 seq2seq 的生成任务，之后对 BERT 模型进行压缩(蒸馏或剪裁)。</span><br></pre></td></tr></table></figure>
+<h2 id="机器翻译">机器翻译</h2>
+<p>工程上：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">common:</span></span><br><span class="line">  <span class="attr">output_directory:</span> <span class="string">../download/unzip/067-OPUS-multiparacrawl-v7.1-eng-fra.txt</span></span><br><span class="line">  </span><br><span class="line"><span class="attr">steps:</span></span><br><span class="line">    <span class="comment"># 合并多个数据集后要去重</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">type:</span> <span class="string">remove_duplicates</span>  <span class="comment"># 最后一句不参与去重</span></span><br><span class="line">      <span class="attr">parameters:</span></span><br><span class="line">        <span class="attr">inputs:</span> [<span class="string">Honor.en</span>, <span class="string">Honor.fr</span>]</span><br><span class="line">        <span class="attr">outputs:</span> [<span class="string">H_rp.en</span>, <span class="string">H_rp.fr</span>]</span><br><span class="line">        <span class="attr">compare:</span> [<span class="number">0</span>,<span class="number">1</span>]  <span class="comment"># all相当于[0,1],指定按照双语都相同才过滤掉</span></span><br><span class="line">        <span class="attr">hash:</span> <span class="string">xx_64</span></span><br><span class="line">        <span class="attr">overlap:</span> <span class="literal">null</span>  <span class="comment"># 从inputs删除overlap数据,比如从训练集中剔除验证集和测试集数据</span></span><br><span class="line">    <span class="comment"># 预处理：空格标准化、保护、分句</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">type:</span> <span class="string">preprocess</span></span><br><span class="line">      <span class="attr">parameters:</span></span><br><span class="line">        <span class="attr">inputs:</span> [<span class="string">MultiParaCrawl.en-fr.en</span>, <span class="string">MultiParaCrawl.en-fr.fr</span>]</span><br><span class="line">        <span class="attr">outputs:</span> [<span class="string">p1.en</span>, <span class="string">p1.fr</span>]</span><br><span class="line">        <span class="attr">n_jobs:</span> <span class="number">5</span></span><br><span class="line">        <span class="attr">preprocessors:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">WhitespaceNormalizer:</span> &#123;&#125; <span class="comment"># 空格标准化</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">MyRegExpSub:</span> <span class="comment"># 自定义的保护替换</span></span><br><span class="line">              <span class="attr">path:</span> <span class="string">/mnt/public/gmd_test/nmt-enfr-wash/clean/dic</span></span><br><span class="line">              <span class="attr">languages:</span> [<span class="string">&#x27;en&#x27;</span>,<span class="string">&#x27;fr&#x27;</span>]</span><br><span class="line">              <span class="attr">names:</span> [<span class="string">&#x27;prm&#x27;</span>,<span class="string">&#x27;sym&#x27;</span>,<span class="string">&#x27;tag&#x27;</span>]</span><br><span class="line">            <span class="attr">module:</span> <span class="string">pre</span> <span class="comment"># pre.py</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">MyMonolingualSentenceSplitter:</span> <span class="comment"># 自定义的分句，适用双语分句（使用sentence-splitter库）</span></span><br><span class="line">              <span class="attr">languages:</span> [<span class="string">&#x27;en&#x27;</span>,<span class="string">&#x27;fr&#x27;</span>]</span><br><span class="line">              <span class="attr">non_breaking_prefix_file:</span> <span class="string">/mnt/public/gmd_test/nmt-enfr-wash/clean/dic/sentence_split.txt</span></span><br><span class="line">              <span class="attr">enable_parallel:</span> <span class="literal">True</span> <span class="comment"># 双语分句后，是否一致性检查</span></span><br><span class="line">            <span class="attr">module:</span> <span class="string">pre</span> <span class="comment"># pre.py</span></span><br><span class="line">    <span class="comment"># 预处理：过滤</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">type:</span> <span class="string">filter</span></span><br><span class="line">      <span class="attr">parameters:</span></span><br><span class="line">        <span class="attr">inputs:</span> [<span class="string">p1.en</span>, <span class="string">p1.fr</span>]</span><br><span class="line">        <span class="attr">outputs:</span> [<span class="string">p1_f1.en</span>, <span class="string">p1_f1.fr</span>]</span><br><span class="line">        <span class="attr">n_jobs:</span> <span class="number">5</span></span><br><span class="line">        <span class="attr">filter:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">LongWordFilter:</span> <span class="comment"># &lt;th 最长单词长度</span></span><br><span class="line">              <span class="attr">threshold:</span> <span class="number">40</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">LengthFilter:</span> <span class="comment"># min&lt;=单词长度&lt;=max(清理空行,按照空格分隔符来计算长度)</span></span><br><span class="line">              <span class="attr">min_length:</span> <span class="number">1</span></span><br><span class="line">              <span class="attr">max_lenght:</span> <span class="number">256</span></span><br><span class="line">              <span class="attr">unit:</span> <span class="string">word</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">LengthRatioFilter:</span> <span class="comment"># &lt;th 双语双向长度比</span></span><br><span class="line">              <span class="attr">threshold:</span> <span class="number">1.6</span></span><br><span class="line">              <span class="attr">unit:</span> <span class="string">word</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">AlphabetRatioFilter:</span> <span class="comment"># &gt;=th 单词和其他符号占比(排除标点过多的)</span></span><br><span class="line">              <span class="attr">threshold:</span> <span class="number">0.75</span></span><br><span class="line">              <span class="attr">exclude_whitespace:</span> <span class="literal">true</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">CharacterScoreFilter:</span> <span class="comment"># 过滤字符集</span></span><br><span class="line">              <span class="attr">scripts:</span> [<span class="string">Latin</span>, <span class="string">Latin</span>]</span><br><span class="line">              <span class="attr">threshold:</span> [<span class="number">1</span>, <span class="number">1</span>]</span><br><span class="line">          <span class="bullet">-</span> <span class="attr">HtmlTagFilter:</span> &#123;&#125; <span class="comment"># 过滤带html标签的</span></span><br><span class="line">          <span class="comment"># 起始分数为两个句子结束标点符号数量差值的绝对值，之后起始分数加上两个句子除第一个结束标点符号外的结束标点符号数量，</span></span><br><span class="line">          <span class="comment"># 这个值在句子标点符号越多时，分数越高，是反直觉的，所以使用score = -math.log(score + 1)，理想状态分数为0，标点符号差值越大，分数越低</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">TerminalPunctuationFilter:</span> <span class="comment"># &gt;=th 根据结束标点符号（. ... ? !）的共现情况，生成一个惩罚分数。</span></span><br><span class="line">              <span class="attr">threshold:</span> <span class="number">-2.5</span> <span class="comment"># 默认分数为-2，值越大要求越高，最大为0</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">NonZeroNumeralsFilter:</span> <span class="comment"># &gt;=th 非零数占比</span></span><br><span class="line">              <span class="attr">threshold:</span> <span class="number">0.5</span></span><br><span class="line">              <span class="attr">require_all:</span> <span class="literal">true</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">LanguageIDFilter:</span> <span class="comment"># &gt;th 语言模型过滤</span></span><br><span class="line">              <span class="attr">languages:</span> [<span class="string">&#x27;en&#x27;</span>,<span class="string">&#x27;fr&#x27;</span>]</span><br><span class="line">              <span class="attr">id_method:</span> <span class="string">fasttext</span></span><br><span class="line">              <span class="attr">thresholds:</span> [<span class="number">0.8</span>, <span class="number">0.8</span>]</span><br><span class="line">              <span class="attr">fasttext_model_path:</span> <span class="string">/mnt/public/gmd_test/nmt-enfr-wash/clean/model/lid.176.bin</span></span><br><span class="line">              <span class="comment"># id_method: cld2</span></span><br><span class="line">              <span class="comment"># thresholds: [0.8, 0.8]</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">RepetitionFilter:</span> <span class="comment"># 重复单词过滤,双语同时&lt;=th, min-1&lt;=单词长度&lt;=max+1, 过滤机器生成的词条</span></span><br><span class="line">              <span class="attr">threshold:</span> <span class="number">3</span></span><br><span class="line">              <span class="attr">min_length:</span> <span class="number">3</span></span><br><span class="line">              <span class="attr">max_length:</span> <span class="number">100</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">MyWordAlignFilter:</span> <span class="comment"># 双语评分&gt;=threshold</span></span><br><span class="line">              <span class="attr">src_threshold:</span> <span class="number">0.7</span>  <span class="comment"># 对齐后, 单词量 src/tgt</span></span><br><span class="line">              <span class="attr">tgt_threshold:</span> <span class="number">0.7</span>  <span class="comment"># 对齐后, 单词量 tgt/src</span></span><br><span class="line">              <span class="attr">len_threshold:</span> <span class="number">0.6</span>  <span class="comment"># 等价于LengthRatioFilter的1.6, 对齐后长度比</span></span><br><span class="line">              <span class="attr">model:</span> <span class="number">3</span></span><br><span class="line">              <span class="attr">score_for_empty:</span> <span class="number">-100</span></span><br><span class="line">            <span class="attr">module:</span> <span class="string">eflomal_align</span>  <span class="comment"># 更改WordAlignFilter</span></span><br><span class="line">    <span class="comment"># 预处理: 标点标准化、tokenzier</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">type:</span> <span class="string">preprocess</span></span><br><span class="line">      <span class="attr">parameters:</span></span><br><span class="line">        <span class="attr">inputs:</span> [<span class="string">p1_f1.en</span>, <span class="string">p1_f1.fr</span>]</span><br><span class="line">        <span class="attr">outputs:</span> [<span class="string">p1_f1_p2.en</span>, <span class="string">p1_f1_p2.fr</span>]</span><br><span class="line">        <span class="attr">n_jobs:</span> <span class="number">5</span></span><br><span class="line">        <span class="attr">preprocessors:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">MyPunctNormalizer:</span> <span class="comment"># sacremoses，标点符号标准化</span></span><br><span class="line">              <span class="attr">languages:</span> [<span class="string">&#x27;en&#x27;</span>,<span class="string">&#x27;fr&#x27;</span>]</span><br><span class="line">              <span class="attr">options:</span> &#123;<span class="string">&#x27;norm_quote_commas&#x27;</span><span class="string">:True</span>, <span class="string">&#x27;norm_numbers&#x27;</span><span class="string">:True</span>, <span class="string">&#x27;pre_replace_unicode_punct&#x27;</span><span class="string">:True</span>, <span class="string">&#x27;post_remove_control_chars&#x27;</span><span class="string">:True</span>&#125;</span><br><span class="line">            <span class="attr">module:</span> <span class="string">pre</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">MyTokenizer:</span> <span class="comment"># 改源码，保护词标签tokenzier时保护</span></span><br><span class="line">              <span class="attr">tokenizer:</span> [<span class="string">&#x27;moses&#x27;</span>,<span class="string">&#x27;moses&#x27;</span>]</span><br><span class="line">              <span class="attr">languages:</span> [<span class="string">&#x27;en&#x27;</span>,<span class="string">&#x27;fr&#x27;</span>]</span><br><span class="line">              <span class="comment"># options: &#123;protected_patterns:[&quot;=WEB=&quot;]&#125; # 有列表会报错</span></span><br><span class="line">            <span class="attr">module:</span> <span class="string">pre</span></span><br><span class="line">    <span class="comment"># 训练Truecase</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">type:</span> <span class="string">train_truecase</span> <span class="comment"># 在opusfilter源码中新增, 从文件训练, 修改train_from_file</span></span><br><span class="line">      <span class="attr">parameters:</span></span><br><span class="line">        <span class="attr">inputs:</span> <span class="string">p1_f1_p2.en</span></span><br><span class="line">        <span class="attr">model:</span> <span class="string">truecase_out/truecase_en.model</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">type:</span> <span class="string">train_truecase</span> <span class="comment"># 在opusfilter源码中新增, 从文件训练, 修改train_from_file</span></span><br><span class="line">      <span class="attr">parameters:</span></span><br><span class="line">        <span class="attr">inputs:</span> <span class="string">p1_f1_p2.fr</span></span><br><span class="line">        <span class="attr">model:</span> <span class="string">truecase_out/truecase_fr.model</span></span><br><span class="line">    <span class="comment"># 应用Truecase</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">type:</span> <span class="string">preprocess</span></span><br><span class="line">      <span class="attr">parameters:</span></span><br><span class="line">        <span class="attr">inputs:</span> [<span class="string">p1_f1_p2.en</span>, <span class="string">p1_f1_p2.fr</span>]</span><br><span class="line">        <span class="attr">outputs:</span> [<span class="string">p1_f1_p2_tc.en</span>, <span class="string">p1_f1_p2_tc.fr</span>]</span><br><span class="line">        <span class="attr">n_jobs:</span> <span class="number">5</span></span><br><span class="line">        <span class="attr">preprocessors:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">MyTruecase:</span> <span class="comment"># sacremoses</span></span><br><span class="line">              <span class="attr">model_src:</span> <span class="string">truecase_out/truecase_en.model</span></span><br><span class="line">              <span class="attr">model_tgt:</span> <span class="string">truecase_out/truecase_fr.model</span></span><br><span class="line">            <span class="attr">module:</span> <span class="string">pre</span></span><br><span class="line">    <span class="comment"># 合并</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">type:</span> <span class="string">concatenate</span></span><br><span class="line">      <span class="attr">parameters:</span></span><br><span class="line">        <span class="attr">inputs:</span> [<span class="string">p1_f1_p2_tc.en</span>, <span class="string">p1_f1_p2_tc.fr</span>]</span><br><span class="line">        <span class="attr">outputs:</span> <span class="string">concatenated.enfr</span></span><br><span class="line">    <span class="comment"># 训练bpe</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">type:</span> <span class="string">train_bpe</span> <span class="comment"># 修改源码, 增加输出词典, 默认名为设定model+&quot;_vocab&quot;</span></span><br><span class="line">      <span class="attr">parameters:</span></span><br><span class="line">        <span class="attr">inputs:</span> <span class="string">concatenated.enfr</span></span><br><span class="line">        <span class="attr">model:</span> <span class="string">bpe_out/spm_joint</span></span><br><span class="line">        <span class="attr">symbols:</span> <span class="number">50000</span></span><br><span class="line">        <span class="attr">min_frequency:</span> <span class="number">2</span></span><br><span class="line">        <span class="attr">num_workers:</span> <span class="number">5</span></span><br><span class="line">    <span class="comment"># 应用bpe</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">type:</span> <span class="string">preprocess</span></span><br><span class="line">      <span class="attr">parameters:</span></span><br><span class="line">        <span class="attr">inputs:</span> [<span class="string">p1_f1_p2_tc.en</span>, <span class="string">p1_f1_p2_tc.fr</span>]</span><br><span class="line">        <span class="attr">outputs:</span> [<span class="string">p1_f1_p2_tc_bpe.en</span>, <span class="string">p1_f1_p2_tc_bpe.fr</span>]</span><br><span class="line">        <span class="attr">n_jobs:</span> <span class="number">5</span></span><br><span class="line">        <span class="attr">preprocessors:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">BPESegmentation:</span> <span class="comment"># sacremoses</span></span><br><span class="line">              <span class="attr">model:</span> <span class="string">bpe_out/spm_joint</span></span><br><span class="line">              <span class="attr">merges:</span> <span class="number">-1</span></span><br><span class="line">              <span class="attr">separator:</span> <span class="string">&quot;@@&quot;</span></span><br><span class="line">              <span class="comment"># vocab: bpe_out/spm_joint</span></span><br><span class="line">              <span class="comment"># glossaries: &#123;&quot;TERM1&quot;, &quot;TERM2&quot;,&quot;TERM3&quot;,&quot;TERM4&quot;,&quot;TERM5&quot;,&quot;TERM6&quot;&#125;</span></span><br><span class="line">              <span class="attr">dropout:</span> <span class="number">0.1</span></span><br></pre></td></tr></table></figure>
+<h1 id="数学题">数学题</h1>
+<p>ABC三个人抛硬币，其抛硬币的正反概率都为1/2。A先抛，若为正，则A赢，否则B抛，若B抛正，B赢，否则C抛。如果都没有抛正，进行下一轮，继续从A开始抛，问ABC赢得比赛的概率是？<br />
+A赢得概率是1/2，<br />
+B赢得概率是(1/2)^2=1/4<br />
+C赢的概率是(1/2)^3=1/8<br />
+如果都没赢，第二轮：<br />
+A赢得概率是(1/2)^4=1/16，<br />
+B赢得概率是(1/2)^5=1/32<br />
+C赢的概率是(1/2)^6=1/64<br />
+所以总的：<br />
+A赢得概率是1/2+1/16+1/128+。。。， 无限多个不好算，但有办法<br />
+B赢得概率是1/4+1/32+。。。。 =1/2×A的概率<br />
+C赢的概率是1/8+1/64+。。。。 =1/4×A的概率<br />
+那么就有<br />
+A+B+C=7/4*A=1<br />
+A=4/7<br />
+B=2/7<br />
+C=1/7</p>
+<p>abcde，六个凳子，ab坐一起，cd不坐一起，多少种排列组合。<br />
+ab一起，5个，算5!<br />
+cd一起，4个，算4!，dc也一样<br />
+5!-2<em>4!=72个<br />
+ba也算一种，72</em>2=144个。</p>
+<h1 id="参考文献">参考文献</h1>
+<p><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpYW5nZG9uZzIwMTQvYXJ0aWNsZS9kZXRhaWxzLzc5NTE3NjM4">为什么L1正则项产生稀疏的权重，L2正则项产生相对平滑的权重<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC84NTczMTIwNg==">【机器学习】决策树（上）——ID3、C4.5、CART<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC84NjI2Mzc4Ng==">【机器学习】决策树（中）——Random
+Forest、Adaboost、GBDT<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC84Nzg4NTY3OA==">【机器学习】决策树（下）——XGBoost、LightGBM<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9tdWJ1LmNvbS9kb2MvY1VOOHBiRTdNMA==">总结<i class="fa fa-external-link-alt"></i></span><br />
+<a href="随机森林(Random%20Forest)">随机森林(Random Forest)</a><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC83MzIxNDgxMA==">激活函数总结<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC83NDUxNjkzMA==">NLP中 batch
+normalization与 layer normalization<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly93d3cubm93Y29kZXIuY29tL2Rpc2N1c3MvOTYzMDI0P3R5cGU9YWxsJm9yZGVyPXJlY2FsbCZwb3M9JnBhZ2U9MSZuY1RyYWNlSWQ9JmNoYW5uZWw9LTEmc291cmNlX2lkPXNlYXJjaF9hbGxfbmN0cmFjayZnaW9faWQ9ODI4NDQ0OTNBRjRFQTNBOUNBRDY5QUI2Njc5QTdDMkMtMTY1NDE1Mjc2MTM3MA==">硕一
+nlp算法社招面经<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTMwNjk1NTIvYXJ0aWNsZS9kZXRhaWxzLzEwODA3NDM0OQ==">Transform详解<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zNTkzNjY3MTc=">Transformer 中的
+positional embedding<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC80NjgzNTY2OTI=">Transformers之自定义学习率动态调整<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC84NDYxNDQ5MA==">Transformer中warm-up和LayerNorm的重要性探究<i class="fa fa-external-link-alt"></i></span></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8xNDg4MTMwNzk=">CRF条件随机场的原理、例子、公式推导和应用<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ppYW93b3Nob3V6aS9hcnRpY2xlL2RldGFpbHMvODkwNzM5NDQ=">一文读懂BERT(原理篇)<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ppYW93b3Nob3V6aS9hcnRpY2xlL2RldGFpbHMvOTMzODExMDQ/c3BtPTEwMDEuMjAxNC4zMDAxLjU1MDI=">后BERT时代<i class="fa fa-external-link-alt"></i></span></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>SoundMemories
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://soundmemories.github.io/2019/01/28/Other/%E9%9D%A2%E8%AF%95%E9%A2%98%E9%9B%86/" title="面试题集">https://soundmemories.github.io/2019/01/28/Other/面试题集/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Other/" rel="tag"><i class="fa fa-tag"></i> Other</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/01/27/Other/%E7%AE%97%E6%B3%95%E9%A2%98%E5%90%88%E9%9B%86/" rel="prev" title="算法题合集">
+                  <i class="fa fa-chevron-left"></i> 算法题合集
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/01/31/Python/14.Python-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%BF%9B%E9%98%B6/" rel="next" title="Python-面向对象-进阶">
+                  Python-面向对象-进阶 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">SoundMemories</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"neutral"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.min.js","integrity":"sha256-JFptYy4KzJ5OQP+Q9fubNf3cxpPPmZKqUOovyEONKrQ="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://soundmemories.github.io/2019/01/28/Other/%E9%9D%A2%E8%AF%95%E9%A2%98%E9%9B%86/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

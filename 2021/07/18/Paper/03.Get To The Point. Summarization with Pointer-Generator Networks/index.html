@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.1","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="摘要 把seq2seq模型应用于摘要生成时存在两个主要的问题： （1）难以准确复述原文的事实细节、无法处理原文中的未登录词(OOV)； （2）生成的摘要中存在重复的片段。 针对存在的问题提出对应解决之道，在标准seq2seq+attention的基础之上做了改进： （1）采用Pointer-Generator Network（抽取+生成），在保留生成新词的同时，还可以从原文中抽取内容，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Get To The Point. Summarization with Pointer-Generator Networks">
+<meta property="og:url" content="https://soundmemories.github.io/2021/07/18/Paper/03.Get%20To%20The%20Point.%20Summarization%20with%20Pointer-Generator%20Networks/index.html">
+<meta property="og:site_name" content="SoundMemories">
+<meta property="og:description" content="摘要 把seq2seq模型应用于摘要生成时存在两个主要的问题： （1）难以准确复述原文的事实细节、无法处理原文中的未登录词(OOV)； （2）生成的摘要中存在重复的片段。 针对存在的问题提出对应解决之道，在标准seq2seq+attention的基础之上做了改进： （1）采用Pointer-Generator Network（抽取+生成），在保留生成新词的同时，还可以从原文中抽取内容，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://soundmemories.github.io/images/PGN/%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/PGN/1+2.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/PGN/3.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/PGN/4.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/PGN/5.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/PGN/6.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/PGN/7.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/PGN/8.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/PGN/9.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/PGN/10.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/PGN/11.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/PGN/12.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/PGN/13.png">
+<meta property="article:published_time" content="2021-07-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-05-07T08:31:30.266Z">
+<meta property="article:author" content="SoundMemories">
+<meta property="article:tag" content="Paper">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://soundmemories.github.io/images/PGN/%E7%BB%93%E6%9E%84.png">
+
+
+<link rel="canonical" href="https://soundmemories.github.io/2021/07/18/Paper/03.Get%20To%20The%20Point.%20Summarization%20with%20Pointer-Generator%20Networks/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://soundmemories.github.io/2021/07/18/Paper/03.Get%20To%20The%20Point.%20Summarization%20with%20Pointer-Generator%20Networks/","path":"2021/07/18/Paper/03.Get To The Point. Summarization with Pointer-Generator Networks/","title":"Get To The Point. Summarization with Pointer-Generator Networks"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Get To The Point. Summarization with Pointer-Generator Networks | SoundMemories</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">SoundMemories</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">128</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">基础模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pointer-generator-network"><span class="nav-number">3.</span> <span class="nav-text">Pointer-Generator Network</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#coverage-mechanism"><span class="nav-number">4.</span> <span class="nav-text">Coverage mechanism</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">6.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SoundMemories"
+      src="/images/avstar.png">
+  <p class="site-author-name" itemprop="name">SoundMemories</p>
+  <div class="site-description" itemprop="description">今日事，今日毕</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">128</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NvdW5kbWVtb3JpZXM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;soundmemories"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNvdW5kbWVtb3JpZXNAMTYzLmNvbQ==" title="E-Mail → mailto:soundmemories@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+        <div class="pjax">
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2021/07/18/Paper/03.Get%20To%20The%20Point.%20Summarization%20with%20Pointer-Generator%20Networks/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Get To The Point. Summarization with Pointer-Generator Networks | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Get To The Point. Summarization with Pointer-Generator Networks
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-07-18 00:00:00" itemprop="dateCreated datePublished" datetime="2021-07-18T00:00:00+08:00">2021-07-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Paper/" itemprop="url" rel="index"><span itemprop="name">Paper</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="摘要">摘要</h1>
+<p>把seq2seq模型应用于摘要生成时存在两个主要的问题：<br />
+（1）难以准确复述原文的事实细节、无法处理原文中的未登录词(OOV)；<br />
+（2）生成的摘要中存在重复的片段。</p>
+<p>针对存在的问题提出对应解决之道，在标准seq2seq+attention的基础之上做了改进：<br />
+（1）采用Pointer-Generator
+Network（抽取+生成），在保留生成新词的同时，还可以从原文中抽取内容，促使生成更准确的摘要。<br />
+（2）覆盖率机制(coverage
+mechanism)，使用Coverage记录已经生成的内容，从而减少内容重复。</p>
+<p><img src="/images/PGN/结构.png" width="90%"></p>
+<h1 id="基础模型">基础模型</h1>
+<p>标准的seq2seq模型+Attention机制：<br />
+encoder使用Bi-LSTM，序列单词按顺序喂给encoder中，产生一系列编码器的隐状态
+<span class="math inline">\(h_i\)</span>。decoder使用LSTM，在每个时间步
+<span class="math inline">\(t\)</span>，接收前一个词（训练时采用teacher
+forcing方式，预测时是前一时刻decoder输出词），decoder隐状态为 <span
+class="math inline">\(s_t\)</span>。Attention计算采用Bahdanau方式，但这里采用decoder的当前时刻
+<span class="math inline">\(t\)</span> 的隐状态 <span
+class="math inline">\(s_t\)</span> 作为 query 计算attention，得到context
+vector 和
+当前时刻的隐状态拼接后作为全连接层输入。也可使用context上一时刻隐状态作为query，但得到context
+vector要与输入拼接作为decoder输入(Bahdanau Attention)。</p>
+<p><img src="/images/PGN/1+2.png" width="40%"></p>
+<p>编码器隐藏状态的加权和，称为上下文向量（context vector） <span
+class="math inline">\(h_t^*\)</span>。<br />
+<img src="/images/PGN/3.png" width="30%"></p>
+<p>上下文向量可以被看作是在当前时间步 <span
+class="math inline">\(t\)</span> 看encoder的哪些部分，与解码器隐状态
+<span class="math inline">\(s_t\)</span>
+拼接，通过两个线性层产生词汇分布 <span
+class="math inline">\(P_{\text{vocab}}\)</span>。<br />
+<img src="/images/PGN/4.png" width="40%"></p>
+<p><span class="math inline">\(P_{\text{vocab}}\)</span>
+是词汇表中所有单词的概率分布，它提供了预测单词 <span
+class="math inline">\(w\)</span> 的最终分布。<br />
+<img src="/images/PGN/5.png" width="30%"></p>
+<p>在训练过程中，时间步长 <span class="math inline">\(t\)</span>
+的损失是 <span class="math inline">\(t\)</span> 的目标词 <span
+class="math inline">\(w_t^*\)</span> 的负对数似然。<br />
+<img src="/images/PGN/6.png" width="30%"></p>
+<p>整个序列的损失是：<br />
+<img src="/images/PGN/7.png" width="30%"></p>
+<h1 id="pointer-generator-network">Pointer-Generator Network</h1>
+<p>通过Pointer-Generator可以从输入中复制单词，需要一个软开关 <span
+class="math inline">\(P_{\text{gen}}\)</span> 来融合baseline 和
+Pointer-Generator。<br />
+根据上下文向量 <span class="math inline">\(h_t^*\)</span>，解码器隐状态
+<span class="math inline">\(s_t\)</span>，解码器输入 <span
+class="math inline">\(x_t\)</span>，计算得到时间步 <span
+class="math inline">\(t\)</span> 的生成概率 <span
+class="math inline">\(P_{\text{gen}}\in [0,1]\)</span>。<br />
+<img src="/images/PGN/8.png" width="40%"></p>
+<p>使用软开关 <span class="math inline">\(P_{\text{gen}}\)</span>
+来融合baseline 和 Pointer-Generator。需要维护一个扩展词表（extended
+vocabulary）表示原始词表和出现在source中的所有词汇的联合，在扩展词表上得到以下概率分布，<span
+class="math inline">\(a_i^t\)</span> 表示通过attention
+weight来确定从source中拷贝词的概率分布。因为attention
+weight包括了所有source中单词出现的概率，即使是原始词表中oov的词(该词在src_oov中能找到)，也能通过attention
+weight从source扩展词表src_oov中抽取复制。<br />
+<img src="/images/PGN/9.png" width="40%"><br />
+注意，如果单词 <span class="math inline">\(w\)</span>
+是原始词表OOV单词，那么 <span
+class="math inline">\(P_{\text{vocab}}\)</span>
+一定为零，要是这个词也没出现在source中(即也没在扩展词表)，那么 <span
+class="math inline">\(a_i^t\)</span> 也是零。</p>
+<h1 id="coverage-mechanism">Coverage mechanism</h1>
+<p>重复序列是一个常见问题，本文维护一个覆盖向量（coverage vector） <span
+class="math inline">\(c^t\)</span>，它是所有先前decoder时间步的Attention值
+<span class="math inline">\(a_i^t\)</span> 的累加和：<br />
+<img src="/images/PGN/10.png" width="30%"><br />
+目的是用先前的注意力权重决策来影响当前注意力权重的决策（累加的某个值大代表一直关注它，要减少这个值，不让模型总关注它），这样就避免在同一位置重复，从而避免重复生成文本。</p>
+<p><span class="math inline">\(c^t\)</span>
+是source中单词的分布，表示这些单词从注意力机制到目前时间步的覆盖程度。
+<span class="math inline">\(c^0\)</span>
+是一个零向量。覆盖向量被引入到注意力机制中：<br />
+<img src="/images/PGN/11.png" width="40%"><br />
+作者认为有必要额外定义覆盖损失（coverage
+loss）处罚重复出现的参考位置，使注意力更分散，即对过往时刻或当前时刻受到注意力较多的单词进行惩罚：<br />
+<img src="/images/PGN/12.png" width="35%"><br />
+最后融合为复合损失函数：<br />
+<img src="/images/PGN/13.png" width="45%"></p>
+<h1 id="总结">总结</h1>
+<p>根据评价指标来看，提升效果明显，普遍提高2个百分点。</p>
+<p>作者还说了直接加coverage效果并不好，所以实际应用时采用fine-tuning训练。</p>
+<p>实际使用时建议增加weight_tying和scheduled_sampling尝试效果。</p>
+<h1 id="参考文献">参考文献</h1>
+<p><span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE3MDQuMDQzNjgucGRm">Get To The Point:
+Summarization with Pointer-Generator Networks<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMjMwMDg0Ng==">Get To The Point:
+Summarization with Pointer-Generator Networks 译文<i class="fa fa-external-link-alt"></i></span></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>SoundMemories
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://soundmemories.github.io/2021/07/18/Paper/03.Get%20To%20The%20Point.%20Summarization%20with%20Pointer-Generator%20Networks/" title="Get To The Point. Summarization with Pointer-Generator Networks">https://soundmemories.github.io/2021/07/18/Paper/03.Get To The Point. Summarization with Pointer-Generator Networks/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Paper/" rel="tag"><i class="fa fa-tag"></i> Paper</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/07/16/NLP/03.%E5%9F%BA%E4%BA%8ELSTM%E7%9A%84%E6%9C%BA%E5%99%A8%E7%BF%BB%E8%AF%91/" rel="prev" title="基于LSTM的机器翻译">
+                  <i class="fa fa-chevron-left"></i> 基于LSTM的机器翻译
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/07/19/NLP/04.Transformer/" rel="next" title="Transformer">
+                  Transformer <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">SoundMemories</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"neutral"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.min.js","integrity":"sha256-JFptYy4KzJ5OQP+Q9fubNf3cxpPPmZKqUOovyEONKrQ="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://soundmemories.github.io/2021/07/18/Paper/03.Get%20To%20The%20Point.%20Summarization%20with%20Pointer-Generator%20Networks/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

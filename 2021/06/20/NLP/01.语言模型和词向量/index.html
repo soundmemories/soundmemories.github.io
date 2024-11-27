@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.1","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="语言模型 模型指的是对事物的数学抽象，那么语言模型指的就是对语言现象的数学抽象。准确的讲，给定一个句子 \(w\) ，语言模型就是计算句子的出现概率 \(p(w)\) 的模型，而统计的对象就是人工标注而成的语料库。 假设构建如下的小型语料库： 123商品 和 服务商品 和服 物美价廉服务 和 货币 每个句子出现的概率都是 \(\dfrac{1}{3}\)，因为样本空间为 3 ，这 3">
+<meta property="og:type" content="article">
+<meta property="og:title" content="语言模型和词向量">
+<meta property="og:url" content="https://soundmemories.github.io/2021/06/20/NLP/01.%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E5%92%8C%E8%AF%8D%E5%90%91%E9%87%8F/index.html">
+<meta property="og:site_name" content="SoundMemories">
+<meta property="og:description" content="语言模型 模型指的是对事物的数学抽象，那么语言模型指的就是对语言现象的数学抽象。准确的讲，给定一个句子 \(w\) ，语言模型就是计算句子的出现概率 \(p(w)\) 的模型，而统计的对象就是人工标注而成的语料库。 假设构建如下的小型语料库： 123商品 和 服务商品 和服 物美价廉服务 和 货币 每个句子出现的概率都是 \(\dfrac{1}{3}\)，因为样本空间为 3 ，这 3">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E5%92%8C%E8%AF%8D%E5%90%91%E9%87%8F/CBOW%E5%92%8CSkip-gram.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E5%92%8C%E8%AF%8D%E5%90%91%E9%87%8F/one-word.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E5%92%8C%E8%AF%8D%E5%90%91%E9%87%8F/skip-gram.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E5%92%8C%E8%AF%8D%E5%90%91%E9%87%8F/cbow.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E5%92%8C%E8%AF%8D%E5%90%91%E9%87%8F/huffman.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E5%92%8C%E8%AF%8D%E5%90%91%E9%87%8F/huffman1.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E5%92%8C%E8%AF%8D%E5%90%91%E9%87%8F/hs.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E5%92%8C%E8%AF%8D%E5%90%91%E9%87%8F/good_embedding1.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E5%92%8C%E8%AF%8D%E5%90%91%E9%87%8F/good_embedding2.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/word2vec/1.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E5%92%8C%E8%AF%8D%E5%90%91%E9%87%8F/sigmoid.png">
+<meta property="article:published_time" content="2021-06-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-05-25T15:54:58.543Z">
+<meta property="article:author" content="SoundMemories">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://soundmemories.github.io/images/%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E5%92%8C%E8%AF%8D%E5%90%91%E9%87%8F/CBOW%E5%92%8CSkip-gram.png">
+
+
+<link rel="canonical" href="https://soundmemories.github.io/2021/06/20/NLP/01.%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E5%92%8C%E8%AF%8D%E5%90%91%E9%87%8F/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://soundmemories.github.io/2021/06/20/NLP/01.%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E5%92%8C%E8%AF%8D%E5%90%91%E9%87%8F/","path":"2021/06/20/NLP/01.语言模型和词向量/","title":"语言模型和词向量"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>语言模型和词向量 | SoundMemories</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">SoundMemories</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">128</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">语言模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#n%E5%85%83%E8%AF%AD%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">n元语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E5%9B%B0%E6%83%91%E5%BA%A6"><span class="nav-number">1.2.</span> <span class="nav-text">模型评估：困惑度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%B9%B3%E6%BB%91"><span class="nav-number">1.3.</span> <span class="nav-text">数据平滑</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E6%B3%95%E5%B9%B3%E6%BB%91"><span class="nav-number">1.3.1.</span> <span class="nav-text">加法平滑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E5%80%BC%E6%B3%95"><span class="nav-number">1.3.2.</span> <span class="nav-text">插值法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%A4%E5%BE%B7-%E5%9B%BE%E7%81%B5%E5%B9%B3%E6%BB%91"><span class="nav-number">1.3.3.</span> <span class="nav-text">古德-图灵平滑</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%8D%E5%90%91%E9%87%8F"><span class="nav-number">2.</span> <span class="nav-text">词向量</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E4%BC%BC%E5%BA%A6"><span class="nav-number">2.1.</span> <span class="nav-text">相似度</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%9D%E7%A6%BB"><span class="nav-number">2.1.1.</span> <span class="nav-text">距离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E5%90%91"><span class="nav-number">2.1.2.</span> <span class="nav-text">方向</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#one-hot"><span class="nav-number">2.2.</span> <span class="nav-text">One-Hot</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#boolean"><span class="nav-number">2.2.1.</span> <span class="nav-text">boolean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#count"><span class="nav-number">2.2.2.</span> <span class="nav-text">count</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tf-idf"><span class="nav-number">2.2.3.</span> <span class="nav-text">TF-IDF</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#word2vec"><span class="nav-number">2.3.</span> <span class="nav-text">word2vec</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#skip-gram"><span class="nav-number">2.3.1.</span> <span class="nav-text">Skip-Gram</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cbow"><span class="nav-number">2.3.2.</span> <span class="nav-text">CBOW</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hierarchical-softmax"><span class="nav-number">2.3.3.</span> <span class="nav-text">Hierarchical Softmax</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#negative-sampling"><span class="nav-number">2.3.4.</span> <span class="nav-text">Negative Sampling</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#a-good-word-embedding"><span class="nav-number">2.3.5.</span> <span class="nav-text">a good word embedding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="nav-number">2.3.6.</span> <span class="nav-text">常见问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#glove"><span class="nav-number">2.4.</span> <span class="nav-text">Glove</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fasttext"><span class="nav-number">2.5.</span> <span class="nav-text">fastText</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A1%A5%E5%85%85"><span class="nav-number">3.</span> <span class="nav-text">补充</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#softmax"><span class="nav-number">3.1.</span> <span class="nav-text">softmax</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sigmoid"><span class="nav-number">3.2.</span> <span class="nav-text">sigmoid</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gensim"><span class="nav-number">3.3.</span> <span class="nav-text">gensim</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">4.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SoundMemories"
+      src="/images/avstar.png">
+  <p class="site-author-name" itemprop="name">SoundMemories</p>
+  <div class="site-description" itemprop="description">今日事，今日毕</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">128</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NvdW5kbWVtb3JpZXM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;soundmemories"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNvdW5kbWVtb3JpZXNAMTYzLmNvbQ==" title="E-Mail → mailto:soundmemories@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+        <div class="pjax">
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2021/06/20/NLP/01.%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E5%92%8C%E8%AF%8D%E5%90%91%E9%87%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="语言模型和词向量 | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          语言模型和词向量
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-06-20 00:00:00" itemprop="dateCreated datePublished" datetime="2021-06-20T00:00:00+08:00">2021-06-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/NLP/" itemprop="url" rel="index"><span itemprop="name">NLP</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>18k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1:04</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="语言模型">语言模型</h1>
+<p><strong>模型</strong>指的是对事物的数学抽象，那么<strong>语言模型</strong>指的就是对语言现象的数学抽象。准确的讲，给定一个句子
+<span class="math inline">\(w\)</span> ，语言模型就是计算句子的出现概率
+<span class="math inline">\(p(w)\)</span>
+的模型，而统计的对象就是人工标注而成的语料库。</p>
+<p>假设构建如下的小型语料库：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">商品 和 服务</span><br><span class="line">商品 和服 物美价廉</span><br><span class="line">服务 和 货币</span><br></pre></td></tr></table></figure><br />
+每个句子出现的概率都是 <span
+class="math inline">\(\dfrac{1}{3}\)</span>，因为样本空间为 3 ，这 3
+次基数平均分给了 3 个句子，所以它们的概率都为<span
+class="math inline">\(\dfrac{1}{3}\)</span>，既然它们的概率之和为 1
+，那么其他句子的概率自然为 0 了，这就是语言模型。然而 <span
+class="math inline">\(p(w)\)</span>
+的计算非常难：句子数量无穷无尽，无法枚举。即便是大型语料库，也只能“枚举”有限的数百万个句子。实际遇到的句子大部分都在语料库之外，意味着它们的概率都被当作
+0，这种现象被称为<strong>数据稀疏</strong>。枚举不可行，我们需要一种可计算的、更合理的概率估计方法。</p>
+<p>考虑到句子由单词构成，句子无限，单词有限。于是我们从单词构成句子的角度出发去建模句子，把句子表示为单词列表
+<span class="math inline">\(\textbf{w}=w_1w_2...w_k\)</span>，每个 <span
+class="math inline">\(w_t,
+t\in[1,k]\)</span>都是一个单词，然后定义<strong>语言模型</strong>：<br />
+<span class="math display">\[
+\begin{aligned}
+p(\textbf{w})&amp;=p(w_1w_2...w_k)\\&amp;=p(w_1|w_0)\times
+p(w_2|w_0w_1)\times...\times p(w_{k+1}|w_0w_1...w_k)\\&amp;=
+\prod\limits _{t=1}^{k+1}p(w_{t}|w_0w_1...w_{t-1})
+\end{aligned}
+\]</span><br />
+其中，<span class="math inline">\(w_0\)</span>=BOS（begin of
+sentence，或&lt;s&gt;），<span
+class="math inline">\(w_{k+1}\)</span>=EOS（end of
+sentence，或&lt;/s&gt;），用来标记句子首尾两个特殊“单词”。<br />
+也就是说，语言模型模拟说话顺序：给定已经说出口的词语序列，预测下一个词语的后验概率。一个单词一个单词地乘上后验概率，我们就能估计任意一句话的概率。以极大似然估计来计算每个后验概率，即：<br />
+<span class="math display">\[
+\begin{aligned}
+p(w_{t}|w_0w_1...w_{t-1})=p_{MLE}(w_{t}|w_0w_1...w_{t-1})=\dfrac{c(w_0...w_t)}{c(w_0...w_{t-1})}
+\end{aligned}
+\]</span><br />
+其中，<span class="math inline">\(c(w_0...w_t)\)</span>表示<span
+class="math inline">\(w_0...w_t\)</span>的计数。</p>
+<p>以上面小型语料库为例，计算<span class="math inline">\(p(商品 和
+服务)\)</span>出现的概率？<br />
+（1）<span class="math inline">\(p(商品|BOS)
+=\frac{2}{3}\)</span>（“商品”作为第一个词出现的次数为2，所有单词作为第一个词出现的次数为3）；<br />
+（2）<span class="math inline">\(p(和|BOS 商品)
+=\frac{1}{2}\)</span>（“BOS 商品 和”出现的次数为1，“BOS
+商品”出现的次数为2）；<br />
+（3）<span class="math inline">\(p(服务|BOS 商品 和)
+=\frac{1}{1}\)</span>（“BOS 商品 和 服务”出现的次数为1，“BOS 商品
+和”出现的次数为1）；<br />
+（4）<span class="math inline">\(p(EOS|BOS 商品 和 服务)
+=\frac{1}{1}\)</span>（“BOS 商品 和 服务 EOS”出现的次数为1，“BOS 商品 和
+服务”出现的次数为1）；<br />
+整个句子的概率是4者乘积：<span class="math inline">\(p(商品 和
+服务)=\frac{2}{3}\times \frac{1}{2}\times \frac{1}{1}\times
+\frac{1}{1}=\frac{1}{3}\)</span>。</p>
+<p>但是随着句子长度增大，语言模型会遇到如下问题：<br />
+（1）<strong>数据稀疏</strong>。指长度越大的句子越难出现，语料库中极有可能统计不到长句子的频次，导致<span
+class="math inline">\(p(w_{t}|w_0w_1...w_{t-1})\)</span>为0。<br />
+（2）<strong>计算代价大</strong>。t越大，需要存储的<span
+class="math inline">\(p(w_{t}|w_0w_1...w_{t-1})\)</span>就越多。</p>
+<h2 id="n元语法">n元语法</h2>
+<p>为了解决上面两个问题，使用<strong>马尔可夫假设</strong>（Markov
+Assumption）来简化语言模型：给定时间线上有一串事件顺序发生，假设每个事件的发生概率只取决于前一个事件，那么这串事件构成的因果链被称作<strong>马尔可夫链</strong>。</p>
+<p>在语言模型中，第t个事件指的是<span
+class="math inline">\(w_t\)</span>作为第t个单词出现。也就是说，马尔科夫链假设每个单词出现的概率只取决于前一个单词：<br />
+<span class="math display">\[
+\begin{aligned}
+p(w_{t}|w_0w_1...w_{t-1})=p(w_t|w_{t-1})
+\end{aligned}
+\]</span><br />
+基于此假设，需要计算的量一下子减少了不少，由于每次计算只涉及连续两个单词的二元接续，所以此语言模型称为<strong>二元语法</strong>（bi-gram），也叫<strong>一阶马尔科夫链</strong>：<br />
+<span class="math display">\[
+\begin{aligned}
+p(\textbf{w})&amp;=p(w_1w_2...w_k)\\&amp;=p(w_1|w_0)\times
+p(w_2|w_1)\times...\times p(w_{k+1}|w_k)\\&amp;=
+\prod\limits _{t=1}^{k+1}p(w_{t}|w_{t-1})
+\end{aligned}
+\]</span></p>
+<p>那么根据这个思路推广下，可以得到<strong>n元语法</strong>（n-gram）的定义：每个单词出现的概率，仅取决于该单词之前n个单词，即：<br />
+<span class="math display">\[
+\begin{aligned}
+p(\textbf{w})=\prod\limits_{t=1}^{k+n-1}p(w_{t}|w_{t-(n-1)}...w_{t-1})
+\end{aligned}
+\]</span><br />
+当<span
+class="math inline">\(\text{n=1}\)</span>时（即出现在第t位的词<span
+class="math inline">\(w_t\)</span>独立于历史时），称为<strong>一元语法</strong>（uni-gram）；当<span
+class="math inline">\(\text{n=2}\)</span>时（即出现在第t位的词<span
+class="math inline">\(w_t\)</span>仅与它前面的一个历史词<span
+class="math inline">\(w_{t-1}\)</span>有关），称为<strong>二元语法</strong>（bi-gram），也叫<strong>一阶马尔科夫链</strong>；当<span
+class="math inline">\(\text{n=3}\)</span>时（即出现在第t位的词<span
+class="math inline">\(w_t\)</span>仅与它前面的两个历史词<span
+class="math inline">\(w_{t-1}w_{t-2}\)</span>有关），称为<strong>三元语法</strong>（tri-gram），也叫<strong>二阶马尔科夫链</strong>。当<span
+class="math inline">\(n\geqslant
+4\)</span>时数据稀疏和计算代价又变的显著了，实际工程中几乎不使用。另外，深度学习带了一种递归神经网络语言模型（RNN
+Language
+Model），理论上可以记忆无限个单词，可以看作“无穷元语法”（∞-gram）。</p>
+<p>以<strong>二元语法</strong>（bi-gram）为例，计算<span
+class="math inline">\(p(商品 和 服务)\)</span>出现的概率？<br />
+（1）<span class="math inline">\(p(商品|BOS)
+=\frac{2}{3}\)</span>；<br />
+（2）<span class="math inline">\(p(和|商品)
+=\frac{1}{2}\)</span>；<br />
+（3）<span class="math inline">\(p(服务|和)
+=\frac{1}{2}\)</span>；<br />
+（4）<span class="math inline">\(p(EOS|服务)
+=\frac{1}{1}\)</span>；<br />
+整个句子的概率是4者乘积：<span class="math inline">\(p(商品 和
+服务)=\frac{2}{3}\times \frac{1}{2}\times \frac{1}{2}\times
+\frac{1}{1}=\frac{1}{6}\)</span>。</p>
+<p>这次的概率比上次的<span
+class="math inline">\(\dfrac{1}{3}\)</span>要小一半，剩下的概率到哪里去了呢？来算算语料库之外的新句子<span
+class="math inline">\(p(商品 和 货币)\)</span>就知道了：<br />
+（1）<span class="math inline">\(p(商品|BOS)
+=\frac{2}{3}\)</span>；<br />
+（2）<span class="math inline">\(p(和|商品)
+=\frac{1}{2}\)</span>；<br />
+（3）<span class="math inline">\(p(货币|和)
+=\frac{1}{2}\)</span>；<br />
+（4）<span class="math inline">\(p(EOS|货币)
+=\frac{1}{1}\)</span>；<br />
+整个句子的概率是4者乘积：<span class="math inline">\(p(商品 和
+货币)=\frac{2}{3}\times \frac{1}{2}\times \frac{1}{2}\times
+\frac{1}{1}=\frac{1}{6}\)</span>。<br />
+原来剩下的<span
+class="math inline">\(\dfrac{1}{6}\)</span>分配给了语料库之外的句子，它们的概率终于不是0了，这样就缓解了一部分数据稀疏的问题。</p>
+<h2 id="模型评估困惑度">模型评估：困惑度</h2>
+<p>在理想情况下，对两个语言模型A，B进行评估，选定一个特定的任务比如拼写纠错系统，把两个模型A，B都应用在此任务中，最后比较准确率，从而判断A，B的表现。这种评估方法是以应用为中心的度量方法，通过在下游任务中的性能来进行评估。那有没有更简单的评估方法？不需要放在特定的任务中验证？——————<strong>困惑度</strong>（Perplexity）。</p>
+<p><strong>困惑度</strong>（Perplexity）是一种信息论测度，用来测量一个概率模型预测样本的好坏，困惑度越低越好。给定一个包含k个词的文本预料<span
+class="math inline">\(\textbf{w}=w_1w_2...w_k\)</span>，和一个基于历史行为的语言模型，其预测结果为<span
+class="math inline">\(p(\textbf{w})\)</span>，则这个语言模型在这个语料的困惑度是：<br />
+<span class="math display">\[
+\begin{aligned}
+pp(\textbf{w})=2^{-\dfrac{1}{k}\log p(\textbf{w})}
+\end{aligned}
+\]</span><br />
+以二元语法（bi-gram）为例，使用平均交叉熵，此时困惑度可以表示为：<br />
+<span class="math display">\[
+\begin{aligned}
+pp(\textbf{w})&amp;=2^{-\dfrac{1}{k}\log
+p(\textbf{w})}\\&amp;=2^{-\dfrac{1}{k}\log \prod\limits
+_{t=1}^{k+1}p(w_{t}|w_{t-1})}\\&amp;=
+2^{-\dfrac{1}{k}\sum\limits_{t=1}^{k+1}\log p(w_{t}|w_{t-1})}
+\end{aligned}
+\]</span><br />
+模型的困惑度越小越好。</p>
+<p>计算"商品 和 服务"的困惑度？<br />
+（1）<span class="math inline">\(p(商品|BOS)
+=\frac{2}{3}\)</span>；<br />
+（2）<span class="math inline">\(p(和|商品)
+=\frac{1}{2}\)</span>；<br />
+（3）<span class="math inline">\(p(服务|和)
+=\frac{1}{2}\)</span>；<br />
+（4）<span class="math inline">\(p(EOS|服务)
+=\frac{1}{1}\)</span>；<br />
+整个句子的困惑度：<span class="math inline">\(pp(商品 和
+服务)=2^{-\dfrac{1}{3}(log\frac{2}{3}+log\frac{1}{2}+log\frac{1}{2}+log\frac{1}{1})}\)</span>。</p>
+<h2 id="数据平滑">数据平滑</h2>
+<p>n元语法虽然有效，但它有一大不足，以二元语法为例，如果<span
+class="math inline">\(c(w_tw_{t-1})\text{=0}\)</span>，因为计算句子概率时的乘法计算，导致整个语料的0-概率分配。0概率会造成非常大的困惑度，这是一种很糟糕的情况。一种避免0-概率事件的方法是使用平滑技术，确保为每个可能的情况都分配一个概率（可能非常小）。</p>
+<h3 id="加法平滑">加法平滑</h3>
+<p>最简单的一类方法是<strong>加法平滑</strong>（Additive
+Smoothing），以下公式都以二元语法（bi-gram）为例。</p>
+<p>不加平滑时：<br />
+<span class="math display">\[
+\begin{aligned}
+p_{ MLE}(w_tw_{t-1})=\dfrac{c(w_{t-1}w_t)}{c(w_t)}
+\end{aligned}
+\]</span></p>
+<p><strong>加一平滑</strong>（Add-one Smoothing/Laplace
+Smoothing）：<br />
+<span class="math display">\[
+\begin{aligned}
+p_{
+add-one}(w_t|w_{t-1})=\dfrac{c(w_{t-1}w_t)+\textcolor{red}{1}}{c(w_t)+\textcolor{red}{V}},
+\quad \textcolor{red}{V}是词表大小，即语料库中所有单词去重的总数
+\end{aligned}
+\]</span><br />
+<strong>加K平滑</strong>（Add-K Smoothing/Laplace Smoothing）：<br />
+<span class="math display">\[
+\begin{aligned}
+p_{
+add-k}(w_t|w_{t-1})=\dfrac{c(w_{t-1}w_t)+\textcolor{red}{k}}{c(w_t)+\textcolor{red}{kV}},
+\quad \textcolor{red}{V}是词表大小，即语料库中所有单词去重的总数
+\end{aligned}
+\]</span></p>
+<h3 id="插值法">插值法</h3>
+<p>另外一类方法使用back-off策略，即如果没有观测到n元语法，那么就基于n-1元语法计算，利用低阶n元语法平滑高阶n元语法，这就产生了很多方案，最简单的一种是<strong>线性插值法</strong>（Linear
+Interpolation）。</p>
+<p>三元语法（tri-gram）的线性插值法：<br />
+<span class="math display">\[
+\begin{aligned}
+p_{tiny Int}(w_t|w_{t-2}w_{t-1})=\lambda_1
+p(w_t|w_{t-2}w_{t-1})+\lambda_2p(w_t|w_{t-1})+\lambda_3p(w_t),\quad
+\lambda_1+\lambda_2+\lambda_3=1
+\end{aligned}
+\]</span><br />
+二元语法（bi-gram）的线性插值法：<br />
+<span class="math display">\[
+\begin{aligned}
+p_{ Int}(w_t|w_{t-1})=\lambda_1 p(w_t|w_{t-1})+\lambda_2 p(w_t),\quad
+\lambda_1+\lambda_2=1
+\end{aligned}
+\]</span><br />
+一元语法（uni-gram）的线性插值法：<br />
+<span class="math display">\[
+\begin{aligned}
+p_{ Int}(w_t)=\lambda_1 p(w_t)+\lambda_2\frac{1}{V},\quad
+\lambda_1+\lambda_2=1
+\end{aligned}
+\]</span><br />
+其中，V是词表大小，即语料库中所有单词去重的总数。</p>
+<h3 id="古德-图灵平滑">古德-图灵平滑</h3>
+<p><strong>古德-图灵平滑</strong>（Good-Turing
+Smoothing）：对于任何一个出现 <span class="math inline">\(r\)</span>
+次n元语法，都假设它出现了<span
+class="math inline">\(r^*\)</span>次：<br />
+<span class="math display">\[
+\begin{aligned}
+r^*=\frac{(r+1)N_{r+1}}{N_r} ,\quad  N_r表示训练预料中出现
+r次的n元语法的数目
+\end{aligned}
+\]</span><br />
+要把整个统计数转化为概率，只需要进行归一化处理：对于统计数为<span
+class="math inline">\(r\)</span>的n元语法，其概率为：<br />
+<span class="math display">\[
+\begin{aligned}
+p_r=\frac{r^*}{N}=\frac{(r+1)N_{r+1}}{N_r*N},\quad  N=\sum\limits_{r=1}^{\infty}r^*
+N_r
+\end{aligned}
+\]</span><br />
+注意到：<br />
+<span class="math display">\[
+\begin{aligned}
+N=\sum\limits_{r=1}^{\infty}r^*
+N_r=\sum\limits_{r=1}^{\infty}(r+1)N_{r+1}=\sum\limits_{r=1}^{\infty}rN_r
+\end{aligned}
+\]</span><br />
+也就是说，N等于整个分布中的最初的计数。这样，样本中所有事件的概率之和为：<br />
+<span class="math display">\[
+\begin{aligned}
+\sum\limits_{r&gt;0}N_rp_r=1-\frac{N_1}{N}&lt;1
+\end{aligned}
+\]</span><br />
+因此，有$ N_1/N<span
+class="math inline">\(的概率剩余量可以分配给所有未见事件（\)</span>r=0$的事件）。</p>
+<p>但古德-图灵平滑也有其缺陷，比如某一个 $ N_{r+1}$ 为0，此时就无法计算
+<span class="math inline">\(p_{r}\)</span>
+了，一般这种情况，我们使用机器学习算法去拟合 $
+N_{r}$，这样就可以把缺失的部分补上。</p>
+<h1 id="词向量">词向量</h1>
+<p>主要考虑单词或句子，甚至是文章的表示，一般把它们进行向量化处理。</p>
+<h2 id="相似度">相似度</h2>
+<h3 id="距离">距离</h3>
+<p>单词/句子用向量表示后，可以计算它们的<strong>距离</strong>来判断相似度（距离越大，相似度越低），<span
+class="math inline">\(i\)</span>为向量下标：<br />
+（1）<strong>欧氏距离</strong>：<span
+class="math inline">\(d=||A-B||_2=\sqrt{\sum \limits_{i=1}^n(A_{i} -
+B_{i})^2}\)</span>，两个点的直线距离。<br />
+（2）<strong>曼哈顿距离</strong>：<span
+class="math inline">\(d=||A-B||_1=\sum
+\limits_{i=1}^{n}|A_{i}-B_{i}|\)</span>，各个维度的长度差进行累加。常用计算城市间到达距离计算。<br />
+（3）<strong>闵科夫斯基距离</strong>：<span
+class="math inline">\(d=||A-B||_P=\sqrt[p]{\sum
+\limits_{i=1}^n|A_{i}-B_{i}|^p}\)</span>，可以根据p来决定距离，如果p=1就是曼哈顿距离；p=2就是欧氏距离；当p趋近无穷时，就会变为长度差最大那个距离。</p>
+<h3 id="方向">方向</h3>
+<p>但是向量不光有大小还有<strong>方向</strong>的，两个向量之间是有夹角的，从这个角度发现了<strong>余弦相似度</strong>（值越大，相似度越高），<span
+class="math inline">\(i\)</span>为向量下标：<br />
+<span class="math display">\[
+\begin{aligned}
+cos(A,B)=\frac{A \cdot B}{|A||B|}=\frac{\sum
+\limits_{i=1}^{n}A_iB_i}{\sqrt{\sum \limits_{i=1}^{n}A_i^2}\sqrt{\sum
+\limits_{i=1}^{n}B_i^2}}
+\end{aligned}
+\]</span><br />
+余弦相似度的<strong>取值范围是[-1,
+1]，相同的两个向量之间的相似度为1</strong>。</p>
+<p>当一对文本相似度的长度差距很大、但内容相近时，如果使用词频/词向量作为特征：<br />
+（1）如果使用欧氏距离的话，它们在特定空间中的欧氏距离通常很大，因而相似度低；<br />
+（2）而如果使用余弦相似度的话，它们之间的夹角可能很小，因而相似度高。<br />
+在高维情况下：<br />
+（1）余弦相似度依然保持“<strong>相同时为1，正交时为0，相反时为-1</strong>”的性质；<br />
+（2）而欧式距离的数值则受维度的影响，范围不固定，并且含义也比较模糊。</p>
+<p>如果希望得到类似于距离的表示，使用<span
+class="math inline">\(\textbf{1-cos(A,B)}\)</span>即为<strong>余弦距离</strong>，<strong>其取值范围是[0,
+2]，相同的两个向量余弦距离为0</strong>。<br />
+在一些场景，比如word2vec中，其向量的模长是经过归一化的，此时欧式距离与余弦距离有着单调的关系：<br />
+<span class="math display">\[
+\begin{aligned}
+||A-B||_2=\sqrt{2(1-cos(A,B))}
+\end{aligned}
+\]</span><br />
+其中，<span class="math inline">\(||A-B||_2\)</span>表示欧氏距离，<span
+class="math inline">\(cos(A,B)\)</span>表示余弦相似度，<span
+class="math inline">\(1-cos(A,B)\)</span>表示余弦距离。此时，如果选择距离小的（相似度最大）的近邻，那么使用余弦相似度和欧氏距离的结果是相同的。<br />
+总的来说：<strong>欧氏距离体现数值上的绝对差异，余弦距离体现方向上的相对差异。</strong></p>
+<h2 id="one-hot">One-Hot</h2>
+<p><strong>词袋模型</strong>（Bag-of-words
+model）：将所有词语装进一个袋子里，不考虑其词法和语序的问题，即每个词语都是独立的。最简单的一种就是<strong>独热表示</strong>（One-Hot
+Representation）。<br />
+假设，词典：[是，天空，蓝色，的]。<strong>每个单词的表示</strong>：<br />
+“是”　——&gt;[1, 0, 0, 0]<br />
+“天空”——&gt;[0, 1, 0, 0]<br />
+“蓝色”——&gt;[0, 0, 1, 0]<br />
+“的”　——&gt;[0, 0, 0, 1]<br />
+向量的维度等于词典的的大小。<br />
+<div class="note info"><p>利用One-Hot表示法无法表达<strong>单词</strong>之间的相似度！不管用欧氏距离（任意两个词的相似度计算结果都相同）还是余弦相似度（任意两个词的相似度计算结果都是0）。</p>
+<p>One-Hot表示单词/句子的缺点：<br />
+（1）<strong>稀疏性</strong>（Sparsity）：如果词典非常大，维度就会很大，而一个句子可能只有很少的词，导致出现很多0，造成稀疏问题。核心问题是维度太大。<br />
+（2）<strong>弱语义</strong>（Semantically
+Weak）：无法表达词与词之间（语义）的相似度，因为One-Hot表示的单词向量是正交的。核心问题是每个单词的向量只能有一个有效值（local
+representation），且取值只能是{0,1}。</p>
+</div></p>
+<h3 id="boolean">boolean</h3>
+<p><strong>每个句子的表示（boolean）</strong>，向量对应的下标与字典的下标相匹配，其值为该词语出现为1，没出现为0：<br />
+“天空 是 蓝色”——&gt;[1, 1, 1, 0]<br />
+“蓝色 是 蓝色”——&gt;[1, 0, 1, 0]</p>
+<h3 id="count">count</h3>
+<p><strong>每个句子的表示（count）</strong>，向量对应的下标与字典的下标相匹配，其值为该词语出现的次数：<br />
+“天空 是 蓝色”——&gt;[1, 1, 1, 0]<br />
+“蓝色 是 蓝色”——&gt;[1, 0, 2, 0]</p>
+<h3 id="tf-idf">TF-IDF</h3>
+<p>一句话中每个词的重要程度是不同的，但boolean（每个单词权重相同）和count（出现次数越多不一定越重要）都不合理。由此考虑到新的计算方式————<strong>TF-IDF</strong>。<br />
+<strong>TF-IDF</strong>（term frequency–inverse document
+frequency）是一种用于信息检索与文本挖掘的常用加权技术。用以评估一个词，对于一个文件集或一个语料库中的其中一份文件的重要程度。词的重要性随着它在文件中出现的次数成正比增加，但同时会随着它在语料库中出现的频率成反比下降。其公式为：<br />
+<span class="math display">\[
+\begin{aligned}
+\text{TF-IDF(t,d)}=\text{TF(t,d)}\times \text{IDF(t)}
+\end{aligned}
+\]</span></p>
+<p>在一份给定的文件里，<strong>词频</strong>（term
+frequency，TF）指的是某一个给定的词语在该文件中出现的频率。这个数字是对<strong>词数</strong>（term
+count）的归一化，以防止它偏向长的文件。对于某一特定文件 <span
+class="math inline">\(d_j\)</span> 里的词语 <span
+class="math inline">\(t_i\)</span>
+来说，它的词频（在本文件的重要程度）可表示为：<br />
+<span class="math display">\[
+\begin{aligned}
+\text{TF}(t_i,d_j)=\frac{n_{i,j}}{\sum_k n_{k,j}}
+\end{aligned}
+\]</span><br />
+其中，<span class="math inline">\(n_{i,j}\)</span> 是该词在文件 <span
+class="math inline">\(d_j\)</span> 中的出现次数，而分母则是在文件 <span
+class="math inline">\(d_j\)</span> 中所有字词的出现次数之和。<br />
+有时 <span class="math inline">\(\text{TF}(t_i,d_j)\)</span>
+也可以直接采用词频 <span class="math inline">\(n_{i,j}\)</span>
+计算，不进行归一化处理。</p>
+<p><strong>逆向文件频率</strong>（inverse document
+frequency，IDF）是一个词语普遍重要性的度量（在整体文件的重要程度，和文件频率反比关系）。某一特定词语的IDF———总文件数目除以包含该词语的文件数目，再取对数（防止它的值过大）：<br />
+<span class="math display">\[
+\begin{aligned}
+\text{IDF}(t_i)=log\frac{|D|}{|1+\{j:t_i\in d_j\}|}
+\end{aligned}
+\]</span><br />
+其中，<span class="math inline">\(|D|\)</span> 是语料库中文件总数，<span
+class="math inline">\(\{j:t_i\in d_j\}\)</span> 是包含词语 <span
+class="math inline">\(t_i\)</span>
+的文件数目（如果词语不存在资料库中，按 1 处理）。</p>
+<p>假设，词典：[是，天空，蓝色，的]，语料库：[“天空 是 蓝色”, “蓝色 是
+蓝色”]。<br />
+<strong>每个句子的表示（TF-IDF）</strong>，向量对应的下标与字典的下标相匹配，其值为该词语的TF-IDF（TF按词频计算）：<br />
+“天空 是 蓝色”——&gt;<span class="math inline">\([1·\log\frac{2}{1},
+1·\log\frac{2}{2}, 1·\log\frac{2}{2}, 0]\)</span><br />
+“蓝色 是 蓝色”——&gt;<span class="math inline">\([1\log\frac{2}{1}, 0,
+2·\log\frac{2}{2}, 0]\)</span></p>
+<h2 id="word2vec">word2vec</h2>
+<p>之前我们说了One-Hot表示方法有<strong>稀疏性</strong>、<strong>弱语义</strong>缺点，那么如何解决这些问题？————分布式表示。</p>
+<p><strong>分布式表示</strong>（Distributed
+Representation）的思路是：通过训练，将每个词用<strong>低维度</strong>的向量表示（解决稀疏性/高维度问题，维度不再依赖字典长度），并且每个单词的向量<strong>有多个有效值</strong>（global
+representation），每个维度上的有效值不再是{0,1}，而是介于[0,1]的值（解决弱语义问题，可计算相似度）。这种把词映射到低维的向量表示，也叫做<strong>词嵌入</strong>（word
+embedding）。对于句子表示，可以使用平均策略，即句子中所有词的向量求和，再取均值。</p>
+<p><strong><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RtaWtvbG92L3dvcmQydmVj">word2vec<i class="fa fa-external-link-alt"></i></span></strong>
+就是分布式表示方法的一种，它将词的语义表示为训练语料库中上下文的向量。它根据输入和输出的不同分为<strong>CBOW</strong>（Continuous
+Bag-Of-Words）和<strong>Skip-Gram</strong>两种模型。而且word2vec对这两种方法进行了优化，从而得到<strong>Hierarchical
+Softmax</strong>模型和<strong>Negative Sampling</strong>模型。<br />
+<img src="/images/语言模型和词向量/CBOW和Skip-gram.png" width="80%" height="80%"></p>
+<p><strong>CBOW</strong>：基于上下文词（输入）预测中心词（输出）。<br />
+<strong>Skip-Gram</strong>：基于中心词（输入）预测上下文词（输出）。</p>
+<h3 id="skip-gram">Skip-Gram</h3>
+<p><strong>Skip-Gram</strong>核心思想是：用中心词（输入）预测上下文词（输出）。输入的中心词使用One-Hot向量表示，引入一个大小为
+<span class="math inline">\(c\)</span>
+的窗口，那么上下文词就是由中心词左 <span
+class="math inline">\(c\)</span> 个词和右 <span
+class="math inline">\(c\)</span> 个词构成（一般用<span
+class="math inline">\(2c\)</span>表示上下文）我们希望模型输出的就是这些上下文词，而通过<strong>神经网络输出+softmax</strong>计算得到的是所有词的概率，那么只需要优化上下文词的概率最大即可达到我们的目的。</p>
+<p>把这个核心思想转化成数学表示，假设有如下一句话：<br />
+<span class="math display">\[
+[w_1...w_{t-1}w_tw_{t+1}...w_V]
+\]</span><br />
+其中 <span class="math inline">\(w_t\)</span> 代表第 <span
+class="math inline">\(t\)</span> 个词，总共有$
+V$个词。我们要计算的就是：<br />
+<span class="math display">\[
+\prod\limits_{t=1}^Vp(\text{context}(w_t)|w_t)
+\]</span><br />
+每一个 <span class="math inline">\(p(\text{context}(w_t)|w_t)\)</span>
+是相互独立的。<br />
+此时引入窗口参数 <span class="math inline">\(i\in
+\text{[-c,c]}\)</span>，<span class="math inline">\(c\)</span>
+为窗口大小。中心词 <span class="math inline">\(w_t\)</span> 的上下文词
+<span class="math inline">\(\text{context}(w_t)\)</span> 就是其左 <span
+class="math inline">\(c\)</span> 个词和右 <span
+class="math inline">\(c\)</span> 个词构成，上式变为：<br />
+<span class="math display">\[
+\begin{aligned}
+\prod\limits_{t=1}^V \prod\limits_{i=-c}^c p(w_{t+i}|w_t)
+\end{aligned}
+\]</span><br />
+每一个 <span class="math inline">\(p(\text{context}(w_i)|w_t)\)</span>
+是相互独立且同分布的。<br />
+为了方便计算，转成<span
+class="math inline">\(log\)</span>（其实就是对数损失函数），并且取均值：<br />
+<span class="math display">\[
+\begin{aligned}
+\dfrac{1}{\text{V}} \sum\limits_{t=1}^V \sum\limits_{i=-c}^c \log
+p(w_{t+i}|w_t)
+\end{aligned}
+\]</span><br />
+我们的目标函数就是引入参数 <span
+class="math inline">\(\theta\)</span>，使整个式子最大化：<br />
+<span class="math display">\[
+\begin{aligned}
+\mathop{argmax}\limits_{\theta}\dfrac{1}{\text{V}} \sum\limits_{t=1}^V
+\sum\limits_{i=-c}^c \log p(w_{t+i}|w_t;\theta)
+=\mathop{argmin}\limits_{\theta}-\dfrac{1}{\text{V}} \sum\limits_{t=1}^V
+\sum\limits_{i=-c}^c \log p(w_{t+i}|w_t;\theta)
+\end{aligned}
+\]</span><br />
+上式其实就是我们的优化函数<span
+class="math inline">\(J(\theta)\)</span>，这里为了方便优化计算，最大化转成了最小化，而引入的参数
+<span class="math inline">\(\theta\)</span>
+其实就是我们要找的<strong>词向量</strong>。</p>
+<hr />
+<p>那么如何计算呢？一般采用的方法是一个三层的神经网络结构，分为输入层，隐藏层和输出层（softmax层）。<br />
+这个神经网络计算的是<strong>一个词</strong>（输入）预测<strong>所有词</strong>（输出）的情况：<br />
+<img src="/images/语言模型和词向量/one-word.png" width="60%" height="60%"></p>
+<p><span class="math inline">\(\text{V}\)</span>：词汇表的长度;<br />
+<span
+class="math inline">\(\text{N}\)</span>：隐层神经元个数（词向量维度，需要我们自己指定）;<br />
+<span
+class="math inline">\(\text{W}\)</span>：输入层到隐层的权重矩阵（词向量矩阵，每一行代表一个词的词向量），维度是<span
+class="math inline">\(\small [V,N]\)</span>;<br />
+<span
+class="math inline">\(\text{W}^\prime\)</span>：隐层到输出层的权重矩阵（词向量矩阵，每一列代表一个词的词向量），维度是<span
+class="math inline">\(\small [N,V]\)</span>;</p>
+<p>我们需要做的是用输入的词去预测输出的词（方便书写这里用行向量表示一个词）：<br />
+（1）输入层的一个单词 <span class="math inline">\(w_t\)</span>
+使用One-Hot表示：<br />
+<span class="math display">\[
+w_t=[x_1...x_t...x_V]
+\]</span><br />
+其中，只有 <span class="math inline">\(x_t\)</span>
+为1，其余为0，其中t是输入单词在词汇表中的索引下标，它的维度是<span
+class="math inline">\(\small [1,V]\)</span>。<br />
+（2）输入的词 <span class="math inline">\(w_t\)</span> 和词向量矩阵 $ W$
+相乘，得到一个维度为<span class="math inline">\(\small
+[1,N]\)</span>的隐层向量 <span
+class="math inline">\(h\)</span>。此过程可看作从词向量矩阵 $
+W$取对应的词向量。<br />
+<span class="math display">\[
+\begin{aligned}
+h=w_t\cdot\text{W}
+\end{aligned}
+\]</span><br />
+（3）隐层向量 <span class="math inline">\(h\)</span> 和 词向量矩阵 <span
+class="math inline">\(W^\prime\)</span> 相乘，得到一个维度为<span
+class="math inline">\(\small [1,V]\)</span>的输出向量 <span
+class="math inline">\(y\)</span>。此过程可看作计算当前词向量和所有词向量的相似度。从这个过程可看出<strong>word2vec中隐藏层没有用激活函数</strong>。<br />
+<span class="math display">\[
+\begin{aligned}
+y=h\cdot\text{W}^\prime
+\end{aligned}
+\]</span><br />
+（4）输出向量 <span class="math inline">\(y\)</span>
+再通过softmax计算，从而得到概率。此过程可看作把相似度转成概率，即向量
+<span class="math inline">\(y\)</span>
+的每个值是当前词向量和另一个词向量相似的概率。下面公式是预测一个词的概率：<br />
+<span class="math display">\[
+\normalsize p(w_{i,i\ne k}|w_t)=p(w_{i,i\ne
+k}|y)=\dfrac{e^{y_i}}{\sum\limits_{j=1}^V e^{y_j}}
+\]</span><br />
+其中，<span class="math inline">\(w_i\)</span> 代表词表中第 <span
+class="math inline">\(i\)</span> 个词且<span
+class="math inline">\(i\mathbb{\ne} t\)</span>（非中心词）。<span
+class="math inline">\(y_i\)</span>为在原始输出向量<span
+class="math inline">\(y\)</span>中，与单词<span
+class="math inline">\(w_i\)</span>所对应的维度取值。<span
+class="math inline">\(y\)</span>向量通过softamx计算出来就是当前词<span
+class="math inline">\(w_t\)</span>和所有词的相似概率。<br />
+为什么是softmax？因为其值域是<span
+class="math inline">\([0,1]\)</span>，且所有结果的和为<span
+class="math inline">\(1\)</span>。符合我们想要得到概率的目的。</p>
+<hr />
+<p><img src="/images/语言模型和词向量/skip-gram.png" width="40%"></p>
+<p>那么<strong>Skip-Gram</strong>是怎么计算的呢？回到核心思想：用<strong>中心词</strong>（输入）预测<strong>上下文词</strong>（输出）。<br />
+它引入了窗口 <span class="math inline">\(c\)</span> ，上下文词就是<span
+class="math inline">\(2c\)</span>（左 <span
+class="math inline">\(c\)</span> 个词和右 <span
+class="math inline">\(c\)</span> 个词构成），目标是给定一个词<span
+class="math inline">\(w_t\)</span>预测上下文词的概率最大化。以下是一个词<span
+class="math inline">\(w_t\)</span>的优化公式：<br />
+<span class="math display">\[
+\normalsize
+p(w_{t+i,i\in[-c,c]}|w_t)=\dfrac{e^{y_i}}{\sum\limits_{j=1}^V e^{y_j}}
+\]</span><br />
+<span class="math display">\[
+\normalsize \mathop{argmax}\limits_{W,W^{\prime}}
+\prod\limits_{i=-c}^{c}
+p(w_{t+i}|w_t;\scriptsize{W,W^{\prime}})\normalsize
+=\mathop{min}\limits_{W,W^{\prime}} \sum\limits_{i=-c}^{c}
+-logp(w_{t+i}|w_t;\scriptsize{W,W^{\prime}})
+\]</span><br />
+把所有中心词都训练一遍，就是以下公式：<br />
+<span class="math display">\[
+\begin{aligned}
+\mathop{argmax}\limits_{W,W^{\prime}}\dfrac{1}{\text{V}}
+\sum\limits_{t=1}^V \sum\limits_{i=-c}^c \log
+p(w_{t+i}|w_t;\scriptsize{W,W^{\prime}})\normalsize
+=\mathop{argmin}\limits_{W,W^{\prime}}-\dfrac{1}{\text{V}}
+\sum\limits_{t=1}^V \sum\limits_{i=-c}^c \log
+p(w_{t+i}|w_t;\scriptsize{W,W^{\prime}})
+\end{aligned}
+\]</span><br />
+其中，损失函数选择对数损失函数（<span
+class="math inline">\(log\)</span>），全局损失定义为所有训练样本上的平均损失。<br />
+上式损失函数优化过程就可以通过反向传播方法优化（基于梯度的优化），这里不再赘述。所有的中心词都训练一遍后，得到的<span
+class="math inline">\(\text{W}\)</span>和<span
+class="math inline">\(\text{W}^\prime\)</span>（论文中是<span
+class="math inline">\(v\)</span>和<span
+class="math inline">\(u\)</span>，代表中心词向量和上下文词向量）就是我们需要的词向量，可选其中一个作为V个词的N维向量表示（word2vec中一般选择<span
+class="math inline">\(\text{W}\)</span>作为词向量）。</p>
+<h3 id="cbow">CBOW</h3>
+<p><img src="/images/语言模型和词向量/cbow.png" width="40%"></p>
+<p><strong>CBOW</strong>核心思想：用上下文词（输入）预测中心词（输出）。<br />
+（1）输入是多个词（上下文词）的One-Hot表示。在计算隐层的向量前，对输入向量和取均值即可。<br />
+<span class="math display">\[
+\begin{aligned}
+h=\frac{\sum\limits_{i=-c}^c w_{t+i}\cdot
+W}{2c}=\frac{\sum\limits_{i=-c}^c h_{t+i}}{2c}
+\end{aligned}
+\]</span><br />
+（2）输出是上下文词向量和某一个词向量相似的概率，使中心词概率最大即可。以下是一个词<span
+class="math inline">\(w_t\)</span>的优化公式：<br />
+<span class="math display">\[
+\normalsize \mathop{argmax}\limits_{W,W^{\prime}}
+p(w_t|w_{t+i,i\in[-c,c]};\scriptsize{W,W^{\prime}})\normalsize
+=\mathop{argmin}\limits_{W,W^{\prime}}
+-logp(w_t|w_{t+i,i\in[-c,c]};\scriptsize{W,W^{\prime}})
+\]</span><br />
+把所有中心词的上下文词都训练一遍，就是以下公式：<br />
+<span class="math display">\[
+\begin{aligned}
+\mathop{argmax}\limits_{W,W^{\prime}}\dfrac{1}{\text{V}}
+\sum\limits_{t=1}^V \sum\limits_{i=-c}^c \log
+p(w_t|w_{t+i};\scriptsize{W,W^{\prime}})\normalsize
+=\mathop{argmin}\limits_{W,W^{\prime}}-\dfrac{1}{\text{V}}
+\sum\limits_{t=1}^V \sum\limits_{i=-c}^c \log
+p(w_t|w_{t+i};\scriptsize{W,W^{\prime}})
+\end{aligned}
+\]</span></p>
+<h3 id="hierarchical-softmax">Hierarchical Softmax</h3>
+<p>word2vec也是用了CBOW与Skip-Gram来训练模型与得到词向量，但没有使用神经网络结构，而是使用<strong>霍夫曼树</strong>（Huffman）来替代隐藏层到输出层的过程。</p>
+<hr />
+<p>我们先来复习下<strong>霍夫曼树</strong>，其特点是<strong>带权路径最短</strong>。首先明确一些概念：<br />
+（1）<strong>路径</strong>：指从树种一个结点到另一个结点的分支所构成的路线。<br />
+（2）<strong>路径长度</strong>：指路径上的分支数目。<br />
+（3）<strong>树的路径长度</strong>：指从根到每个结点的路径长度之和。<br />
+（4）<strong>带权路径长度</strong>：结点具有权值，从该结点到根之间的路径长度乘以结点的权值，就是该结点的带权路径长度。<br />
+（5）<strong>树的带权路径长度</strong>（WPL）：指树中所有叶子结点的带权路径长度之和。</p>
+<p><strong>霍夫曼树的构造方法</strong>（霍夫曼树可以是n叉树，我们主要以二叉树为例）<br />
+给定<span class="math inline">\(n\)</span>个权值，用这<span
+class="math inline">\(n\)</span>个权值构造霍夫曼树的算法如下：<br />
+（1）将这个<span
+class="math inline">\(n\)</span>个权值分别看作只有根节点的n棵二叉树，这些二叉树构成的集合记为<span
+class="math inline">\(\small F\)</span>。<br />
+（2）从<span class="math inline">\(\small
+F\)</span>中选出两棵根节点的权值最小的数（假设为<span
+class="math inline">\(a\)</span>、<span
+class="math inline">\(b\)</span>），作为左、右子树，构造一棵新的二叉树（假设为<span
+class="math inline">\(c\)</span>），新的二叉树的根节点权值为左、右子树根节点权值之和。<br />
+（3）从F中删除<span class="math inline">\(a\)</span>、<span
+class="math inline">\(b\)</span>，加入新构造的树<span
+class="math inline">\(c\)</span>。<br />
+（4）重复（2）（3）两步，直到<span class="math inline">\(\small
+F\)</span>中只剩下一棵树为止，这棵树就是霍夫曼树。</p>
+<p>一个简单的例子：“this is an example of a huffman tree”
+中得到的字母频率（权重）来建构霍夫曼树。<br />
+<img src="/images/语言模型和词向量/huffman.png" width="60%"></p>
+<p><strong>霍夫曼树特点</strong>：<br />
+（1）权重（频率）越大的结点，距离根结点越近。<br />
+（2）树的带权路径长度最短。</p>
+<p><strong>霍夫曼编码</strong>：<br />
+一般得到霍夫曼树后我们会对叶子节点进行霍夫曼编码，由于权重高的叶子节点越靠近根节点，而权重低的叶子节点会远离根节点，这样我们的高权重节点编码值较短，而低权重值编码值较长。这保证的树的带权路径最短，也符合我们的信息论，即我们希望越常用的词拥有更短的编码。如何编码呢？一般对于一个霍夫曼树的节点（根节点除外），可以约定<strong>左子树编码为0</strong>，<strong>右子树编码为1</strong>。如下图所示：<br />
+<img src="/images/语言模型和词向量/huffman1.png" width="60%"></p>
+<hr />
+<p><strong>word2vec中，霍夫曼编码方式和正常的相反，即约定沿着左子树走编码为1（负类），沿着右子树走编码为0（正类），同时约定左子树的权重不小于右子树的权重。</strong></p>
+<p><strong>Hierarchical
+Softmax</strong>的<strong>隐藏层</strong>到<strong>输出概率</strong>的计算过程（CBOW）：<br />
+首先按照<strong>词频</strong>建立一棵霍夫曼树，叶子结点就是词典中的每个单词，但顺序和词典中不一定相同。假设预测的词（叶子节点）为<span
+class="math inline">\(w\)</span>，定义一些符号：<br />
+（1）<span class="math inline">\(p^w\)</span>：从根节点到<span
+class="math inline">\(w\)</span>对应叶子节点的路径。<br />
+（2）<span class="math inline">\(n^w\)</span>：路径<span
+class="math inline">\(p^w\)</span>中包含结点个数。<br />
+（3）<span
+class="math inline">\(p_1^w,p_2^w,...,p_{n^w}^w\)</span>：路径<span
+class="math inline">\(p^w\)</span>中的<span
+class="math inline">\(n^w\)</span>个结点，<span
+class="math inline">\(p_1^w\)</span>表示根节点，<span
+class="math inline">\(p_{n^w}^w\)</span>表示词<span
+class="math inline">\(w\)</span>对应的叶子结点。<br />
+（4）<span
+class="math inline">\(d_2^w,d_3^w,...,d_{n^w}^w\)</span>：路径<span
+class="math inline">\(p^w\)</span>中的<span
+class="math inline">\(n^w\)</span>个结点的编码，总共有<span
+class="math inline">\(n^w\text{-1}\)</span>个，根结点不对应编码，每个编码值为<span
+class="math inline">\(\{0,1\}\)</span>。<br />
+（5）<span
+class="math inline">\(\theta_1^w,\theta_2^w,...,\theta_{n^w-1}^w\)</span>：路径<span
+class="math inline">\(p^w\)</span>中的<span
+class="math inline">\(n^w\text{-1}\)</span>个结点的向量（维度为<span
+class="math inline">\(N,1\)</span>），不包括叶子结点。</p>
+<p>对于词典中任意的词<span
+class="math inline">\(w\)</span>，霍夫曼树中必存在一条从根结点到词<span
+class="math inline">\(w\)</span>叶子节点的路径<span
+class="math inline">\(p^w\)</span>（路径唯一）。路径<span
+class="math inline">\(p^w\)</span>上存在<span
+class="math inline">\(n^w\text{-1}\)</span>个分支(边)，每个分支看做一次二分类，每一次分类就产生一个概率，将这些概率乘起来就是预测词<span
+class="math inline">\(w\)</span>的概率，即<span
+class="math inline">\(p(w|context(w))\)</span>。<br />
+由此可以给出<span class="math inline">\(w\)</span>的条件概率：<br />
+<span class="math display">\[
+p(w|context(w))=\prod\limits_{j=2}^{n^w}p(d_j^w|h_w;\theta_{j-1}^w)
+\]</span><br />
+从根节点到叶节点经过了<span
+class="math inline">\(n^w\text{-1}\)</span>个节点，编码从下标2开始（根节点无编码），对应的参数向量下标从1开始（根节点为1）。其中<span
+class="math inline">\(h_w\)</span>是隐藏层向量(context向量加权和)。<br />
+其中<strong>每个</strong> <span class="math inline">\(\small
+p(d_j^w|h_w;\theta_{j-1}^w)\)</span> 都是一个逻辑回归二分类：<br />
+<span class="math display">\[
+p(d_j^w|h_w;\theta_{j-1}^w)=
+\begin{cases}
+   \sigma(h_w\cdot\theta_{j-1}^w), &amp;d_j^w=0\quad\text{(正类)}\\
+   1-\sigma(h_w\cdot\theta_{j-1}^w), &amp;d_j^w=1\quad\text{(负类)}
+\end{cases}
+\]</span><br />
+其中<span
+class="math inline">\(h_w\)</span>是隐藏层向量(context向量加权和)，<span
+class="math inline">\(\sigma\)</span>是sigmoid函数。<br />
+考虑到<span
+class="math inline">\(d\)</span>只有0和1两种取值，我们可以用指数形式方便地将其写到一起：<br />
+<span class="math display">\[
+p(d_j^w|h_w;\theta_{j-1}^w)=[\sigma(h_w\cdot\theta_{j-1}^w)]^{1-d_j^w}\cdot[1-\sigma(h_w\cdot\theta_{j-1}^w)]^{d_j^w}
+\]</span><br />
+所以对于<span
+class="math inline">\(p(w|context(w))\)</span>，目标函数取对数似然，引入窗口<span
+class="math inline">\(C\)</span>代表<span
+class="math inline">\(context(w)\)</span>：<br />
+<span class="math display">\[
+\begin{aligned}
+p(w|context(w))&amp;=\sum\limits_{w\in
+C}log\prod\limits_{j=2}^{n^w}\{[\sigma(h_w\cdot\theta_{j-1}^w)]^{1-d_j^w}\cdot[1-\sigma(h_w\cdot\theta_{j-1}^w)]^{d_j^w}\}\\
+&amp;=\sum\limits_{w\in C}\sum\limits_{j=2}^{n^w}\{(1-d_j^w)\cdot
+log[\sigma(h_w\cdot\theta_{j-1}^w)]+d_j^w\cdot
+log[1-\sigma(h_w\cdot\theta_{j-1}^w)]\}
+\end{aligned}
+\]</span><br />
+其中<span
+class="math inline">\(C\)</span>是上下文单词。接下来只需要对<span
+class="math inline">\(h_w\)</span>和<span
+class="math inline">\(\theta_{j-1}^w\)</span>求梯度，然后用随机梯度上升法优化即可，这个过程和逻辑回归梯度优化类似。</p>
+<p>以 <strong>CBOW：上下文词（输入）预测中心词（输出）</strong>
+为例，从输入层到隐藏层计算方式不变，最后得到维度为<span
+class="math inline">\([1,N]\)</span>的隐藏层向量<span
+class="math inline">\(h\)</span>：<br />
+<img src="/images/语言模型和词向量/hs.png"></p>
+<p>使用<span class="math inline">\(w\)</span>表示图中<span
+class="math inline">\(w_2\)</span>，其计算过程如下：<br />
+第1次：<span
+class="math inline">\(p(d_2^w|h_w;\theta_1^w)=1-\sigma(h_w\cdot\theta_1^w)\)</span><br />
+第2次：<span
+class="math inline">\(p(d_3^w|h_w;\theta_2^w)=1-\sigma(h_w\cdot\theta_2^w)\)</span><br />
+第3次：<span
+class="math inline">\(p(d_4^w|h_w;\theta_3^w)=\sigma(h_w\cdot\theta_3^w)\)</span></p>
+<p><strong>基于Hierarchical
+Softmax的CBOW</strong>模型算法流程，梯度迭代使用了随机梯度上升法：<br />
+输入：基于CBOW的语料训练样本，词典大小<span
+class="math inline">\(V\)</span>，中心词<span
+class="math inline">\(w\)</span>，词向量的维度大小<span
+class="math inline">\(N\)</span>，上下文<span
+class="math inline">\(C\)</span>大小<span
+class="math inline">\(2c\)</span>，步长<span
+class="math inline">\(\eta\)</span>。<br />
+输出：霍夫曼树的内部节点模型参数<span
+class="math inline">\(\theta\)</span>，所有的词向量<span
+class="math inline">\(W=w_1,w_2,...,w_V\)</span>。<br />
+（1）基于语料训练样本建立霍夫曼树。<br />
+（2）随机初始化所有的模型参数<span
+class="math inline">\(\theta\)</span>和所有的词向量<span
+class="math inline">\(W\)</span>。<br />
+（3）进行梯度上升迭代过程，对于训练集中的每一个样本<span
+class="math inline">\((context(w),w)\)</span>做如下处理：</p>
+<ul>
+<li>e=0，计算<span
+class="math inline">\(h_w=\frac{1}{2c}\sum\limits_{i=-c}^cw_{i}\)</span></li>
+<li>for <span class="math inline">\(\text{j=2}\)</span> to <span
+class="math inline">\(n^w\)</span>，计算：
+<ul>
+<li><span
+class="math inline">\(f=\sigma(h_w\theta_{j-1}^w)\)</span></li>
+<li><span class="math inline">\(g=\eta(1-d_j^w-f)\)</span></li>
+<li><span class="math inline">\(e=e+g\cdot\theta_{j-1}^w\)</span></li>
+<li><span class="math inline">\(\theta_{j-1}^w=\theta_{j-1}^w+g\cdot
+h_w\)</span></li>
+</ul></li>
+<li>对于<span
+class="math inline">\((context(w),w)\)</span>中的每一个词向量<span
+class="math inline">\(w_i\)</span>（共<span
+class="math inline">\(2c\)</span>个）进行更新：
+<ul>
+<li><span class="math inline">\(w_i=w_i+e\)</span></li>
+</ul></li>
+<li>如果梯度收敛，则结束梯度迭代，否则回到（3）继续迭代。</li>
+</ul>
+<p><strong>基于Hierarchical
+Softmax的Skip-Gram</strong>模型算法流程，梯度迭代使用了随机梯度上升法：<br />
+输入：基于Skip-Gram的语料训练样本，词典大小<span
+class="math inline">\(V\)</span>，中心词<span
+class="math inline">\(w\)</span>，词向量的维度大小<span
+class="math inline">\(N\)</span>，上下文<span
+class="math inline">\(C\)</span>大小<span
+class="math inline">\(2c\)</span>，步长<span
+class="math inline">\(\eta\)</span>。<br />
+输出：霍夫曼树的内部节点模型参数<span
+class="math inline">\(\theta\)</span>，所有的词向量<span
+class="math inline">\(W=w_1,w_2,...,w_V\)</span>。<br />
+（1）基于语料训练样本建立霍夫曼树。<br />
+（2）随机初始化所有的模型参数<span
+class="math inline">\(\theta\)</span>和所有的词向量<span
+class="math inline">\(W\)</span>。<br />
+（3）进行梯度上升迭代过程，对于训练集中的每一个样本<span
+class="math inline">\((context(w),w)\)</span>做如下处理：</p>
+<ul>
+<li>for <span class="math inline">\(s=context(w)\)</span>，计算：
+<ul>
+<li>e=0，<span class="math inline">\(h_w=w_i\)</span></li>
+<li>for <span class="math inline">\(\text{j=2}\)</span> to <span
+class="math inline">\(n^w\)</span>，计算：
+<ul>
+<li><span
+class="math inline">\(f=\sigma(h_w\theta_{j-1}^s)\)</span></li>
+<li><span class="math inline">\(g=\eta(1-d_j^s-f)\)</span></li>
+<li><span class="math inline">\(e=e+g\cdot\theta_{j-1}^s\)</span></li>
+<li><span class="math inline">\(\theta_{j-1}^s=\theta_{j-1}^s+g\cdot
+h_w\)</span></li>
+</ul></li>
+</ul></li>
+<li>对于<span
+class="math inline">\((context(w),w)\)</span>中的每一个词向量<span
+class="math inline">\(w_i\)</span>（共<span
+class="math inline">\(2c\)</span>个）进行更新：
+<ul>
+<li><span class="math inline">\(w_i=w_i+e\)</span></li>
+</ul></li>
+<li>如果梯度收敛，则结束梯度迭代，否则回到（3）继续迭代。</li>
+</ul>
+<p><strong>优点</strong>：在前面的<strong>CBOW</strong>和<strong>Skip-gram</strong>模型中，softmax计算时分母时需要对所有词的值进行计算求和，word2vec的<strong>Hierarchical
+Softmax</strong>采用了霍夫曼二叉树来替代从隐藏层到输出softmax层的过程，<strong>之前softmax计算量为<span
+class="math inline">\(V\)</span>，现在为<span
+class="math inline">\(log_2V\)</span></strong>。</p>
+<p><strong>为什么word2vec中用<span
+class="math inline">\(\text{W}\)</span>作为词向量？</strong><br />
+在之前讲的三层网络中我们可以选择词向量是<span
+class="math inline">\(\{\text{W},\text{W}^\prime\normalsize\}\)</span>，word2vec这中<span
+class="math inline">\(\text{W}^\prime\)</span>替换成<span
+class="math inline">\(\large\theta\)</span>了，所以word2vec一般采用<span
+class="math inline">\(\text{W}\)</span>作为词向量而不用<span
+class="math inline">\(\text{W}^\prime\)</span>作为词向量。除此原因外，输入矩阵<span
+class="math inline">\(\text{W}\)</span>和输出矩阵<span
+class="math inline">\(\text{W}^\prime\)</span>可以看作<strong>所有词作为中心词</strong>或<strong>所有词作为上下文词</strong>而产生的词向量，它们侧重点不同，在不同算法作用也不同，比如在Skip-gram中<span
+class="math inline">\(\text{W}\)</span>可看作所有词作为中心词而产生的词向量，在CBOW中<span
+class="math inline">\(\text{W}\)</span>可看作所有词作为上下文词产生的词向量。对于<strong>于Hierarchical
+Softmax</strong>和后面的<strong>Negative Sampling</strong>都代替了<span
+class="math inline">\(\text{W}^\prime\)</span>，从而都是选择<span
+class="math inline">\(\text{W}\)</span>作为词向量，而<span
+class="math inline">\(\text{W}\)</span>作为中心词而得到词向量是Skip-gram中实现，所以word2vec中选择Skip-gram效果会更好。</p>
+<h3 id="negative-sampling">Negative Sampling</h3>
+<p>在讲基于<strong>Negative
+Sampling</strong>的word2vec模型前，我们先看看<strong>Hierarchical
+Softmax</strong>的的缺点。HS使用了霍夫曼树，不难发现对于词频高的词计算很快，但对于词频低的词计算很慢。如果我们的训练样本里的中心词<span
+class="math inline">\(w\)</span>是一个很生僻的词，那么就得在霍夫曼树中辛苦的向下走很久了。能不能不用搞这么复杂的一颗霍夫曼树，将模型变的更加简单呢？这就是<strong>Negative
+Sampling</strong>（负采样）。</p>
+<p><strong>Negative
+Sampling</strong>就是这么一种求解word2vec模型的方法，它<strong>摒弃了霍夫曼树</strong>，采用了Negative
+Sampling（负采样）的方法来求解，下面我们就来讲述NS中下预测一个词过程：<br />
+（1）已知词<span class="math inline">\(w\)</span>的上下文<span
+class="math inline">\(context(w)\)</span>，需要预测<span
+class="math inline">\(w\)</span>，那么认为词<span
+class="math inline">\(w\)</span>作为中心词就是一个正样本<span
+class="math inline">\((context(w),w)\)</span>，其他词作为中心词就是负样本<span
+class="math inline">\((context(w),w_i)\)</span>，其中<span
+class="math inline">\(i\in[1,\text{neg}]\)</span>。通过<strong>负采样</strong>得到
+<span class="math inline">\(\text{neg}\)</span> （自己指定）个负样本 +
+一个正样本，用<span
+class="math inline">\(u\)</span>表示它们的集合。<br />
+（2）利用这一个正例<span class="math inline">\((context(w),w)\)</span>和
+<span class="math inline">\(\text{neg}\)</span> 个负例<span
+class="math inline">\((context(w),w_i)\)</span>进行逻辑回归二分类，我们希望正样本分类概率最大化，可以通过梯度优化完成。这个就是预测一个词的过程。</p>
+<p>整个过程要明白两个核心问题：1）如何利用<span
+class="math inline">\(u\)</span>来做逻辑回归二分类？
+2）如何进行负采样？</p>
+<hr />
+<p><strong>我们通过基于Negative
+Sampling的CBOW来解答第一个问题。</strong><br />
+预测一个词时优化的目标函数<span
+class="math inline">\(g(w)\)</span>表示为：<br />
+<span class="math display">\[
+g(w)=\prod\limits_{u\in\{w\}\cup\{w_1...w_{neg}\}}p(u|context(w))
+\]</span><br />
+其中：<br />
+<span class="math display">\[
+\begin{aligned}
+p(u|context(w))&amp;=
+\begin{cases}
+   \sigma(h_w\cdot\theta^{u}), &amp;y_u=1\quad\text{(正类)}\\
+   1-\sigma(h_w\cdot\theta^{u}), &amp;y_u=0\quad\text{(负类)}
+\end{cases}
+~\\
+\\&amp;=[\sigma(h_w\cdot\theta^u)]^{y_u}\cdot[1-\sigma(h_w\cdot\theta^u)]^{1-y_u}
+\end{aligned}
+\]</span><br />
+上式，代入<span class="math inline">\(g(w)\)</span>中：<br />
+<span class="math display">\[
+g(w)=\prod\limits_{u\in\{w\}\cup\{w_1...w_{neg}\}}[\sigma(h_w\cdot\theta^u)]^{y_u}\cdot[1-\sigma(h_w\cdot\theta^u)]^{1-y_u}
+\]</span><br />
+这就是预测一次的优化函数了。此时引入窗口<span
+class="math inline">\(C=2c\)</span>，整体的优化函数就是：<br />
+<span class="math display">\[
+\begin{aligned}
+L=log\prod\limits_{C}g(w)=\sum\limits_{C}log(g(w))&amp;=\sum\limits_{C}log\prod\limits_{u\in\{w\}\cup\{w_1...w_{neg}\}}\{[\sigma(h_w\cdot\theta^u)]^{y_u}\cdot[1-\sigma(h_w\cdot\theta^u)]^{1-y_u}\}\\
+&amp;=\sum\limits_{C}\sum\limits_{u\in\{w\}\cup\{w_1...w_{neg}\}}\{y_u\cdot
+log[\sigma(h_w\cdot\theta^u)]+(1-y_u)\cdot
+log[1-\sigma(h_w\cdot\theta^u)]\}
+\end{aligned}
+\]</span><br />
+之后使用随机梯度上升优化即可。</p>
+<p><strong>基于Negative Sampling的CBOW</strong>：<br />
+输入：基于CBOW的语料训练样本，词典大小<span
+class="math inline">\(V\)</span>，中心词<span
+class="math inline">\(w\)</span>，词向量的维度大小<span
+class="math inline">\(N\)</span>，上下文<span
+class="math inline">\(C\)</span>大小<span
+class="math inline">\(2c\)</span>，步长<span
+class="math inline">\(\eta\)</span>。<br />
+输出：词汇表每个词对应的模型参数<span
+class="math inline">\(\theta\)</span>，所有的词向量<span
+class="math inline">\(W=x_1,x_2,...,x_V\)</span>（避免和下面负样本混淆）。<br />
+（1）随机初始化所有的模型参数<span
+class="math inline">\(\theta\)</span>和所有的词向量<span
+class="math inline">\(W\)</span>。<br />
+（2）对于每个训练样本<span
+class="math inline">\((context(w),w)\)</span>，负采样出<span
+class="math inline">\(neg\)</span>个负样本<span
+class="math inline">\((context(w),w_i)\)</span>，其中<span
+class="math inline">\(i\in[1,\text{neg}]\)</span>。<br />
+（3）进行梯度上升迭代过程，对于训练集中的每一个样本<span
+class="math inline">\((context(w),w,w_1...w_{neg})\)</span>做如下处理：</p>
+<ul>
+<li>e=0，计算<span
+class="math inline">\(h_w=\frac{1}{2c}\sum\limits_{i=-c}^cx_{i}\)</span></li>
+<li>for <span
+class="math inline">\(u=\{w\}\cup\{w_1...w_{neg}\}\)</span>，计算：
+<ul>
+<li><span class="math inline">\(f=\sigma(h_w\theta^u)\)</span></li>
+<li><span class="math inline">\(g=\eta(y^u-f)\)</span></li>
+<li><span class="math inline">\(e=e+g\cdot\theta^u\)</span></li>
+<li><span class="math inline">\(\theta^u=\theta^u+g\cdot
+h_w\)</span></li>
+</ul></li>
+<li>对于<span
+class="math inline">\(context(w)\)</span>中的每一个词向量<span
+class="math inline">\(x_i\)</span>（共<span
+class="math inline">\(2c\)</span>个）进行更新：
+<ul>
+<li><span class="math inline">\(x_i=x_i+e\)</span></li>
+</ul></li>
+<li>如果梯度收敛，则结束梯度迭代，否则回到（3）继续迭代。</li>
+</ul>
+<p><strong>基于Negative Sampling的Skip-gram</strong>：<br />
+输入：基于CBOW的语料训练样本，词典大小<span
+class="math inline">\(V\)</span>，中心词<span
+class="math inline">\(w\)</span>，词向量的维度大小<span
+class="math inline">\(N\)</span>，上下文<span
+class="math inline">\(C\)</span>大小<span
+class="math inline">\(2c\)</span>，步长<span
+class="math inline">\(\eta\)</span>。<br />
+输出：词汇表每个词对应的模型参数<span
+class="math inline">\(\theta\)</span>，所有的词向量<span
+class="math inline">\(W=x_1,x_2,...,x_V\)</span>（避免和下面负样本混淆）。<br />
+（1）随机初始化所有的模型参数<span
+class="math inline">\(\theta\)</span>和所有的词向量<span
+class="math inline">\(W\)</span>。<br />
+（2）对于每个训练样本<span
+class="math inline">\((context(w),w)\)</span>，负采样出<span
+class="math inline">\(neg\)</span>个负样本<span
+class="math inline">\((context(w),w_i)\)</span>，其中<span
+class="math inline">\(i\in[1,\text{neg}]\)</span>。<br />
+（3）进行梯度上升迭代过程，对于训练集中的每一个样本<span
+class="math inline">\((context(w),w,w_1...w_{neg})\)</span>做如下处理：</p>
+<ul>
+<li>for <span class="math inline">\(s=context(w)\)</span>，计算：
+<ul>
+<li>e=0，<span class="math inline">\(h_w=x_i\)</span></li>
+<li>for <span
+class="math inline">\(u=\{w\}\cup\{w_1...w_{neg}\}\)</span>，计算：
+<ul>
+<li><span class="math inline">\(f=\sigma(h_w^s\theta^u)\)</span></li>
+<li><span class="math inline">\(g=\eta(y^u-f)\)</span></li>
+<li><span class="math inline">\(e=e+g\cdot\theta^u\)</span></li>
+<li><span class="math inline">\(\theta^u=\theta^u+g\cdot
+h_w^s\)</span></li>
+</ul></li>
+</ul></li>
+<li>对于<span
+class="math inline">\(context(w)\)</span>中的每一个词向量<span
+class="math inline">\(x_i\)</span>（共<span
+class="math inline">\(2c\)</span>个）进行更新：
+<ul>
+<li><span class="math inline">\(x_i^s=x_i^s+e\)</span></li>
+</ul></li>
+<li>如果梯度收敛，则结束梯度迭代，否则回到（3）继续迭代。</li>
+</ul>
+<hr />
+<p><strong>第二个问题：负采样如何做？</strong><br />
+对于<strong>Negative
+Sampling</strong>模型，负采样是一个很重要的环节，对于一个中心词<span
+class="math inline">\(w\)</span>，如何生成<span
+class="math inline">\(neg\)</span>个负样本呢？由于词典中的词在预料中出现的频次不同，我们希望那些<strong>高频词被选为负样本的概率大</strong>，<strong>低频词被选为负样本的概率低</strong>，这就是负采样的本质要求————<strong>带权采样问题</strong>。</p>
+<p>通过一段通俗的描述来帮助理解带权采样的机理：<br />
+设大小为<span class="math inline">\(V\)</span>的词典<span
+class="math inline">\(D\)</span>中每一个词对应一个线段<span
+class="math inline">\(l(w)\)</span>，长度为：<br />
+<span class="math display">\[
+len(w)=\frac{count(w)}{\sum\limits_{u\in D}count(u)}
+\]</span><br />
+其中，分子表示一个词在语料中出现的次数（分母中的求和项用来做归一化）。将这些线段连接起来（共<span
+class="math inline">\(V\)</span>个线段），形成一个长度为 1
+的单位线段。如果随机的往这个线段上打点，则其中长度越长的线段（对应高频词）被打中的概率越大。</p>
+<p>word2vec中词典<span
+class="math inline">\(D\)</span>的词设置权值时，不是直接使用<span
+class="math inline">\(count(w)\)</span>，而是对其做了<span
+class="math inline">\(\alpha\)</span>次幂，其中<span
+class="math inline">\(\alpha=\large\frac{3}{4}\)</span>，即上式变为：<br />
+<span class="math display">\[
+len(w)=\frac{[count(w)]^{\large\frac{3}{4}}}{\normalsize\sum\limits_{u\in
+D}[count(u)]^{\large\frac{3}{4}}}
+\]</span></p>
+<p>word2vec中具体做法是：把上面长度为 1
+的单位线段分成<strong>等距离</strong>的M份（<span
+class="math inline">\(\text{M&gt;&gt;V}\)</span>），把这M份映射到前面讲的<strong>非等距离</strong>的V份中去。然后每次生成一个<span
+class="math inline">\([1,M]\)</span>间的随机整数，代表选择<span
+class="math inline">\(M\)</span>份中的一份，然后按映射找到对应<span
+class="math inline">\(V\)</span>份中的一份，此时它对应的单词就是我们选择的负样本了。这样重复取<span
+class="math inline">\(neg\)</span>次，就得到所有负样本了。word2vec中<span
+class="math inline">\(M=10^8\)</span>（对应源码中变量table_size）。</p>
+<h3 id="a-good-word-embedding">a good word embedding</h3>
+<p><span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE1MDcuMDU1MjMucGRmJTIwaHR0cDovL2llZWV4cGxvcmUuaWVlZS5vcmcvZG9jdW1lbnQvNzQ3ODQxNy8=">How
+to Generate a Good Word
+Embedding?<i class="fa fa-external-link-alt"></i></span>论文中对比了不同模型，总结了选择word embedding经验。<br />
+不同模型之间主要区别有两点：<br />
+1、目标词和上下文关系。上下文来预测目标词（这类模型更能够捕获单词之间的可替代关系）、目标词来预测上下文<br />
+2、上下文表示方法。<br />
+<img src="/images/语言模型和词向量/good_embedding1.png"></p>
+<p>不同模型之间上下文表示：<br />
+<img src="/images/语言模型和词向量/good_embedding2.png"></p>
+<p>据研究估计，<strong>文本含义信息的20%来自于词序，剩下的来自于词的选择</strong>。所以忽略词序信息的模型，将会损失约20%的信息。</p>
+<p>本文做了三类对比实验：<br />
+1、<strong>研究词向量的语义特性</strong>。该类实验是为了对比词向量的语义特性，包括：WordSim353，TOEFL，analogy
+task：semantic和syntactic。<br />
+2、<strong>将词向量作为特征</strong>。该类实验是为了对比词向量作为处理其他任务的特征时，对该任务性能的提升。包括：文本分类和命名实体识别。前者将词向量加权平均得到文本向量来分类，权值是词频，数据集用的是IMDB；后者用CoNLL03数据集做NER任务。<br />
+3、<strong>用词向量来初始化神经网络模型</strong>。该类实验是为了研究词向量作为神经网络的初始值，对NN模型的提升。包括：CNN文本分类和词性标注。前者用了我们之前提到过的Kim的CNN模型，将句子表示成矩阵作为CNN的输入得到句子的表示，进行情感分类，数据集是Stanford
+Sentiment Treebank；后者用Wall Street Journal数据集进行了POS
+tagging任务。</p>
+<p>该文对比了6种模型，并得到如下结论：<br />
+Q：<strong>哪个模型最好？如何选择c和w的关系以及c的表示方法？</strong><br />
+A：对于一个小型数据集来说，类似skip-gram这样越简单的模型效果越好，对于一个大型数据集来说，稍微复杂一点的模型，比如cbow和order就可以取得非常好的效果。真实数据中，skip-gram、cbow和order这样的模型足够了。在语义任务中，通过c来预测w的模型要更优于C&amp;W这种将c和w都放在输入层的模型。</p>
+<p>Q：<strong>数据集的规模和所属领域对词向量的效果有哪些影响？</strong><br />
+A：数据集的<strong>领域远比规模重要</strong>，给定一个任务之后，选择任务相关的领域数据将会提升性能，相反，如果数据并不相关，将会导致更差的性能。当然，如果数据都属于同一领域，规模越大性能越好。</p>
+<p>Q：<strong>在训练模型时迭代多少次可以有效地避免过拟合？</strong><br />
+A：通常的做法是在测试数据集上观察误差，当误差开始上升时即可停止训练，但经过本文的研究，这种方法并不能得到最好的task结果：因为训练词向量的目标是尽可能精确地预测目标词，这个优化目标和实际任务并不一致。因此最好的做法是：直接用实际任务的验证集来挑选迭代次数，即用task
+data作为early
+stopping的数据。如果实际任务非常耗时，则可以随机挑选某个简单任务（如：情感分类）及其验证集来挑选迭代次数。</p>
+<p>Q：<strong>词向量的维度与效果之间的关系？</strong><br />
+A：做词向量语义分析任务时，一般维度越大，效果越好。做具体NLP任务时（用作输入特征、或者网络初始化），50维之后效果提升就比较少了。</p>
+<p>本文作者做了大量的工作，针对当前词向量模型的方方面面问题进行了研究，并且给出了许多有意义的结果。对此想了解更多，可以看一下作者的<span class="exturl" data-url="aHR0cDovL2xpY3N0YXIubmV0L2FyY2hpdmVzLzYyMA==">《How to Generate a Good Word
+Embedding?》导读<i class="fa fa-external-link-alt"></i></span>。</p>
+<hr />
+<p><strong>word2vec结果评估</strong>：<br />
+1、通过kmeans聚类，查看聚类的簇分布。<br />
+2、通过词向量计算单词之间的相似度，查看相似词。<br />
+3、通过类比：a之于b等价于c之于d。<br />
+4、使用tsne降维可视化查看词的分布。</p>
+<p><strong>word2vec输入向量和输出向量</strong>（<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE2MDguMDU4NTkucGRm">Using the Output Embedding
+to Improve Language Models<i class="fa fa-external-link-alt"></i></span>）：<br />
+1、在skip-gram模型中，在常见的衡量词向量的指标上，输出向量略微弱于输入向量。<br />
+2、<strong>在基于RNN的语言模型中，输出向量反而强于输入向量</strong>。<br />
+3、强制输入向量的转置作为输出向量，这可以使得输入向量等于输出向量。这种方式得到的词向量能够提升语言模型的困惑度perplexity。</p>
+<p><strong>word2vec计算句子相似度</strong>（<span class="exturl" data-url="aHR0cDovL25scC50b3duL2Jsb2cvc2VudGVuY2Utc2ltaWxhcml0eS8=">Comparing Sentence
+Similarity Methods<i class="fa fa-external-link-alt"></i></span>）：<br />
+1、无监督方法：<br />
+（1）对句子中所有的词的词向量求平均，获得句子embedding。<br />
+（2）对句子中所有的词的词向量加权平均，每个词的权重为tf-idf，获得句子embedding。<br />
+（3）对句子中所有的词的词向量加权平均，每个词的权重为smooth inverse
+frequency:SIF（<span
+class="math inline">\(\frac{a}{a+p(w)}\)</span>，<span
+class="math inline">\(a\)</span>为超参数通常取0.001，<span
+class="math inline">\(p(w)\)</span>为数据集中单词<span
+class="math inline">\(w\)</span>的词频）；然后考虑所有的句子，并执行主成分分析；最后对每个句子的词向量加权平均减去first
+principal componet，获得句子embedding。<br />
+（4）通过 Word Mover's Distance:WMD
+，直接度量句子之间的相似度。WMD：使用两个句子中单词的词向量来衡量一个句子中的单词需要在语义空间中移动到另一个句子中的单词的最小距离。<br />
+2、有监督方法：<br />
+（5）通过分类任务来训练一个文本分类器，取最后一个hidden
+layer的输出作为句子embedding。就是使用文本分类器的前几层作为encoder。<br />
+（6）直接训练一对句子的相似性，其优点是可以直接得到句子embeding。<br />
+<strong>最终结论是：简单加权的词向量平均已经可以作为一个较好的baseline。</strong></p>
+<h3 id="常见问题">常见问题</h3>
+<p>问：噪声词在实际中被建议设为中心词的单字概率的3/4次幂，为什么？<br />
+答：在保证高频词容易被抽到的大方向下，通过权重3/4次幂的方式，适当提升低频词、罕见词被抽到的概率。如果不这么做，低频词，罕见词很难被抽到，以至于不被更新到对应的Embedding。</p>
+<p>问：一些“the”和“a”之类的英文高频词会对结果产生什么影响？如何处理？（可参考<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzEzMTAuNDU0Ni5wZGY=">word2vec论文<i class="fa fa-external-link-alt"></i></span>第2.3节）<br />
+答：噪声词为高频词对词向量训练没有什么效果，因为高频词太普遍了，为了抵消罕见词和高频词之间的不平衡，使用简单的二次抽样：训练集中的每个单词
+<span class="math inline">\(w_i\)</span>
+将有一定概率被丢弃，丢弃概率为：<br />
+<span class="math display">\[
+P(w_i)=1-\sqrt{\frac{t}{f(w_i)}}
+\]</span><br />
+其中 <span class="math inline">\(f(w_i)\)</span> 是单词 <span
+class="math inline">\(w_i\)</span> 的频率，<span
+class="math inline">\(t\)</span> 是选择的阈值，通常在 <span
+class="math inline">\(10^{-5}\)</span>
+左右，选择这个二次抽样公式是因为它主动地对频率大于 <span
+class="math inline">\(t\)</span>
+的词进行二次抽样，同时保持了频率ranking，即随着单词在语料库中出现的词频越来越大，该单词保留的概率越来越低。。虽然这个二次抽样公式是启发式选择的，但我们发现它在实践中运作良好。它加快了训练速度，甚至显着提高了罕见词所学向量的准确性。</p>
+<p>问：如何训练包括“new york”在内的词组向量？（可参考<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzEzMTAuNDU0Ni5wZGY=">word2vec论文<i class="fa fa-external-link-alt"></i></span>第4节）<br />
+答：首先要找到经常一同出现但在其他语境中并不常见的单词。 例如，"New York
+Times"和"Toronto Maple
+Leafs"在训练集中将被独一无二的token所取代，而"this
+is"将保持不变。这样，我们可以形成许多合理的短语，而不会大大增加词汇量的大小。理论上，我们可以使用所有的n元文法训练Skip-gram模型，但是这太消耗内存。
+许多识别文本中短语的技术之前已经被开发出来了，
+然而，比较它们超过了我们的工作范围。
+我们决定使用一种简单的数据驱动方法，基于unigram和bigram的计数来形成短语：<br />
+<span class="math display">\[
+score(w_i,w_j) = \frac{count(w_iw_j)-\sigma}{count(w_i)\times
+count(w_j)}
+\]</span><br />
+<span class="math inline">\(\sigma\)</span>
+被用作折扣系数，防止形成太多由非常罕见的单词组成的短语。
+得分高于所选阈值的bigram将被用作短语。
+通常，我们逐渐减少阈值对训练数据进行2-4次传递，从而允许形成更长的短语(由数个单词组成)。</p>
+<h2 id="glove">Glove</h2>
+<p>学习词向量的所有无监督方法最终都是基于语料库的单词共现统计，因此这些模型之间存在共性。词向量学习算法有两个主要的模型族：</p>
+<ul>
+<li>基于全局矩阵分解的方法，如：LSA：latent semantic analysis。
+<ul>
+<li>优点：能够有效的利用全局的统计信息。</li>
+<li>缺点：在单词类比任务（如：国王 vs 王后 类比于男人 vs
+女人）中表现相对较差。</li>
+</ul></li>
+<li>基于局部上下文窗口的方法，如：word2vec。
+<ul>
+<li>优点：在单词类比任务中表现较好。</li>
+<li>缺点：因为word2vec
+在独立的局部上下文窗口上训练，因此难以利用单词的全局统计信息。</li>
+<li>GloVe:Global Vectors for Word Representation，结合了 LSA 算法和
+Word2Vec 算法的优点，既考虑了全局统计信息，又利用了局部上下文。</li>
+</ul></li>
+</ul>
+<hr />
+<p>设单词-单词共现矩阵为 <span class="math inline">\(X\)</span>
+，其中元素 <span class="math inline">\(x_{ij}\)</span> 为词 <span
+class="math inline">\(j\)</span> 出现在词 <span
+class="math inline">\(i\)</span>
+环境(context)的次数。这里"环境"有多种可能的定义。举个例子，在一段文本序列中，如果词
+<span class="math inline">\(j\)</span> 出现在词 <span
+class="math inline">\(i\)</span>
+左边或者右边不超过10个词的距离，我们就可以认为词 <span
+class="math inline">\(j\)</span> 出现在词 <span
+class="math inline">\(i\)</span> 的环境一次，令 <span
+class="math inline">\(x_i=\sum_k x_{ik}\)</span> 为任意词出现在词 <span
+class="math inline">\(i\)</span> 的环境的次数，那么：<br />
+<span class="math display">\[
+P_{ij}=P(j|i)=\frac{x_{ij}}{x_i}
+\]</span><br />
+为词 <span class="math inline">\(j\)</span> 出现在词 <span
+class="math inline">\(i\)</span> 的环境的概率。这一概率也称词 <span
+class="math inline">\(i\)</span> 和词 <span
+class="math inline">\(j\)</span> 的共现概率。</p>
+<p>Glove论文展示了以下一组词对的共现概率与比值：</p>
+<p><img src="/images/word2vec/1.png" width="60%"></p>
+<p>我们通过商标可以观察以下现象：</p>
+<ul>
+<li>对于与“ice”相关但与“gas”无关的单词 <span
+class="math inline">\(k\)</span> ，例如 <span
+class="math inline">\(k=solid\)</span>
+，我们预计会有更大的共现概率比值，例如8.9。</li>
+<li>对于与“steam”相关但与“ice”无关的单词 <span
+class="math inline">\(k\)</span> ，例如 <span
+class="math inline">\(k=gas\)</span>
+，我们预计较小的共现概率比值，例如0.085。</li>
+<li>对于同时与“ice”和“steam”相关的单词 <span
+class="math inline">\(k\)</span> ，例如 <span
+class="math inline">\(k=water\)</span>
+，我们预计其共现概率的比值接近1，例如1.36.</li>
+<li>对于与“ice”和“steam”都不相关的单词 <span
+class="math inline">\(k\)</span> ，例如 <span
+class="math inline">\(k=fashion\)</span>
+，我们预计共现概率的比值接近1，例如0.96.</li>
+</ul>
+<p>由此可见，共现概率的比值能够直观地表达词与词之间的关系。因此，我们可以设计三个词向量的函数来拟合这个比值。<br />
+<span class="math display">\[
+f(v_i,v_j,\tilde{v}_k)=\frac{P_{ik}}{P_{jk}}
+\]</span><br />
+其中，<span class="math inline">\(i\)</span> 和 <span
+class="math inline">\(j\)</span>是中心词，<span
+class="math inline">\(k\)</span> 是上下文词。<br />
+<span class="math inline">\(f\)</span> 可以有多种设计，由于 <span
+class="math inline">\(f\)</span>
+映射的是向量空间，而向量空间是一个线性空间。因此从右侧的除法可以联想到减法：<br />
+<span class="math display">\[
+f(v_i,v_j,\tilde{v}_k)=f(v_i-v_j,\tilde{v}_k)
+\]</span><br />
+又因为共现概率的比值是标量，所以我们要求 <span
+class="math inline">\(f\)</span> 是标量函数，即 <span
+class="math inline">\(v_i-v_j\)</span> 和 <span
+class="math inline">\(\tilde{v}_k\)</span>
+均为向量，结果要求是标量，因此可以联想到向量的内积：<br />
+<span class="math display">\[
+f((v_i-v_j)^T\tilde{v}_k)=f(v_i^T\tilde{v}_k-v_j^T\tilde{v}_k)
+\]</span><br />
+我们希望左边为差的形式转为右边为商的方式，定义：<br />
+<span class="math display">\[
+f(v_i^T\tilde{v}_k-v_j^T\tilde{v}_k)=\frac{f(v_i^T\tilde{v}_k)}{f(v_j^T\tilde{v}_k)}
+\]</span><br />
+其中 <span
+class="math inline">\(f(v_i^T\tilde{v}_k)=P_{ik}\)</span>，<span
+class="math inline">\(f(v_j^T\tilde{v}_k)=P_{jk}\)</span>。<br />
+上式左边为差的形式，右边为商的形式。因此联想到 <span
+class="math inline">\(exp\)</span> 函数，即 <span
+class="math inline">\(f\)</span> 为 <span
+class="math inline">\(exp\)</span> 函数：<br />
+<span class="math display">\[
+exp(v_i^T\tilde{v}_k)=P_{ik}=\frac{x_{ik}}{x_i}
+\]</span><br />
+等式两边应用 <span class="math inline">\(log\)</span> 函数：<br />
+<span class="math display">\[
+\begin{aligned}
+v_i^T\tilde{v}_k=log(x_{ik})-log(x_i)
+\end{aligned}
+\]</span><br />
+即：<br />
+<span class="math display">\[
+log(x_{ik})=v_i^T\tilde{v}_k+log(x_i)
+\]</span><br />
+由于向量的内积具有对称性，即 <span class="math inline">\(X\)</span>
+为对称矩阵，需要满足整个条件，但上面式子不满足，因为 <span
+class="math inline">\(log(x_i)\)</span> 和 <span
+class="math inline">\(log(x_k)\)</span>
+不一定相等的，为了解决这个问题，模型引入两个偏置项：<br />
+<span class="math display">\[
+log(x_{ik})=v_i^T\tilde{v}_k+b_i+b_k
+\]</span><br />
+将索引 <span class="math inline">\(i\)</span> 和 <span
+class="math inline">\(k\)</span>
+互换，我们可以验证对称性得两个性质可以同时被上式满足。</p>
+<p>上面的公式仅仅是理想状态，实际上只能要求左右两边尽可能相等。于是设计代价函数为：<br />
+<span class="math display">\[
+J=\sum\limits_{i,j=1}^Vf(x_{ij})(v_i^T\tilde{v}_j+b_i+b_j-log(x_{ij}))^2
+\]</span><br />
+其中，<span class="math inline">\(f(x_{ij})\)</span>
+代表不同词频的词的重要性（权重）。使用优化算法最小化它即可。</p>
+<p>对于权重函数 <span class="math inline">\(f(x_{ij})\)</span>
+，一个建议的选择是：当 <span class="math inline">\(x&lt;c\)</span>
+（例如 <span class="math inline">\(c=100\)</span>），令 <span
+class="math inline">\(f(x)=(x/c)^\alpha\)</span> （例如 <span
+class="math inline">\(\alpha=0.75\)</span>），反之令 <span
+class="math inline">\(f(x)=1\)</span>
+。需要注意的是，损失函数的计算复杂度与共现词频矩阵 <span
+class="math inline">\(X\)</span> 中非零元素的数目呈线性关系。我们可以从
+<span class="math inline">\(X\)</span>
+中随机采样小批量非零元素，使用随机梯度下降迭代词向量和偏移项。当所有词向量学习得到后，Glove使用一个词得中心词向量与上下文词向量之和作为该词最终词向量。</p>
+<p>GloVe 模型性能与语料库大小的关系：<br />
+-
+在语法任务中，模型性能随着语料库大小的增长而单调增长。这是因为语料库越大，则语法的统计结果越可靠。<br />
+-
+在语义任务中，模型性能与语料库绝对大小无关，而与语料库的有效大小有关。有效大小指的是语料库中，与目标语义相关的内容的大小。</p>
+<p>GloVe 模型超参数选择：</p>
+<ul>
+<li>词向量大小：词向量大小越大，则模型性能越好。但是词向量超过 200
+维时，维度增加的收益是递减的。</li>
+<li>窗口对称性：计算一个单词的上下文时，上下文窗口可以是对称的，也可以是非对称的。
+<ul>
+<li>对称窗口：既考虑单词左侧的上下文，又考虑单词右侧的上下文。</li>
+<li>非对称窗口：只考虑单词左侧的上下文。因为语言的阅读习惯是从左到右，所以只考虑左侧的上下文，不考虑右侧的上下文。</li>
+</ul></li>
+<li>窗口大小：
+<ul>
+<li>语法任务：选择小的、非对称的窗口时，模型性能更好。因为语法是局部的，所以小窗口即可；因为语法是依赖于单词顺序的，所以需要非对称窗口。</li>
+<li>语义任务：则需要选择更大的窗口。因为语义是非局部的。</li>
+</ul></li>
+</ul>
+<h2 id="fasttext">fastText</h2>
+<p>fastText 是 Facebook AI Research 在 2016
+年开源的文本分类器，其提出是在论文 《Bag of Tricks for Efficient Text
+Classification》 中。目前 fastText 作为文本分类的基准模型。<br />
+fastText 的优点是：在保持分类效果的同时，大大缩短了训练时间。</p>
+<p>fastText在使用负采样的skip-gram模型基础上，将每个中心词视为子词(subword)的集合，并学习子词的词向量。<br />
+以where这个词为例，设子词为3个字符，它的子词包括“&lt;wh”、“whe”、“her”、“ere”、“re&gt;”
+和特殊子词（整词）“&lt;where&gt;”。其中的“&lt;”和“&gt;”是为了将作为前后缀的子词区分出来。而且，这里的子词“her”与整词“&lt;her&gt;”也可被分。给定一个词
+<span
+class="math inline">\(w\)</span>，我们通常可以把字符长度在3-6之间的所有子词和特殊子词的并集
+<span class="math inline">\(\mathcal{G}_w\)</span>
+取出。假设词典中任意子词 <span class="math inline">\(g\)</span>
+的子词向量为 <span
+class="math inline">\(z_g\)</span>，我们可以把使用负采样的skip-gram模型的损失函数（中心词
+<span class="math inline">\(w_c\)</span>，上下文词 <span
+class="math inline">\(w_o\)</span>，噪声词 <span
+class="math inline">\(w_k\)</span> 在词典中的索引为 <span
+class="math inline">\(i_k\)</span>）：<br />
+<span class="math display">\[
+-logP(w_o|w_c)=-log\frac{1}{1+exp(-u_o^Tv_c)}-\sum\limits_{k=1,w_k\sim
+P(w)}^K log\frac{1}{1+exp(u_{i_k}^Tv_c)}
+\]</span><br />
+直接替换成：<br />
+<span class="math display">\[
+-logP(w_o|w_c)=-log\frac{1}{1+exp(-u_o^T\sum_{g\in \mathcal{G}_w }z_g
+)}-\sum\limits_{k=1,w_k\sim P(w)}^K
+log\frac{1}{1+exp(u_{i_k}^T\sum_{g\in \mathcal{G}_w }z_g)}
+\]</span><br />
+我们可以看到，原中心词向量被替换成了中心词的子词向量的和。与整词学习（word2vec和Glove）不同，词典以外的新词的词向量可以使用fastText中相应的子词向量之和。</p>
+<p>fastText对于一些语言较重要(一定程度避免OOV)，例如阿拉伯语、德语和俄语。例如，德语中有很多复合词，例如兵乓球（table
+tennis）在德语中叫“Tischtennis”。fastText可以通过子词可以表达两个词的相关性，例如“Tischtennis”和“Tennis”。</p>
+<p><strong>总结：Glove用词向量表达共现词频的对数。fastText用子词向量之和表达整词。</strong></p>
+<p>Fasttext用作文本分类时，预测的是标签值。可看作 字符or单词 +
+N-gram方式输入，比如2-gram时<code>[w1,w2,w3]+[w12,w23]</code>。由于N-gram过多，使用hash分桶的方式确定N-gram的向量表示，缺点是桶少的话不同的N-gram会分到同一个桶(同一个向量表示)。Fasttext在做负采样时借点了Word2Vec方式，高词频被选为负样本概率大，同时上一个根号(降低高词频采样概率，提高低频词采样概率)。</p>
+<p>Fasttext可以做文本分类：<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE2MDcuMDE3NTl2Mi5wZGY=">Bag of Tricks for
+Efficient Text Classification<i class="fa fa-external-link-alt"></i></span>。<br />
+Fasttext可以训练词向量：<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE2MDcuMDQ2MDYucGRm">Enriching word vectors with
+subword information<i class="fa fa-external-link-alt"></i></span>。<br />
+Fasttext官方：https://fasttext.cc/docs/en/supervised-tutorial.html</p>
+<p><strong>补充问答</strong>：<br />
+问：如果一个词出现在另一个词的背景窗口中，如何利用它们之间在文本序列的距离重新设计条件概率
+<span class="math inline">\(P_{ij}\)</span> 的计算方式？（提示：可参考<span class="exturl" data-url="aHR0cHM6Ly9ubHAuc3RhbmZvcmQuZWR1L3B1YnMvZ2xvdmUucGRm">GloVe论文<i class="fa fa-external-link-alt"></i></span>4.2节）<br />
+问：如果丢弃Glove中的偏移项，是否也可以满足任意一对词共现的对称性？<br />
+问：在fastText中，子词过多怎么办？（例如，6字英文组合数为<span
+class="math inline">\(26^6\)</span>）？（提示：可参考<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE2MDcuMDE3NTl2Mi5wZGY=">fastText论文<i class="fa fa-external-link-alt"></i></span>3.2节）</p>
+<h1 id="补充">补充</h1>
+<h2 id="softmax">softmax</h2>
+<p><span class="math display">\[
+\begin{aligned}
+S_i=\dfrac{e^{V_i}}{\sum_j e^{V_j}}
+\end{aligned}
+\]</span><br />
+其中，一个向量$ V<span class="math inline">\(共有\)</span>j<span
+class="math inline">\(个值，\)</span>V_i<span
+class="math inline">\(表示第\)</span>i<span class="math inline">\(个值。
+首先对所有值进行\)</span>e^x$计算，保证所有值都是大于0的。其次进行归一化，保证所有值的和为1。这些特点非常符合概率的要求，所以经常把softmax处理后的值当成概率。</p>
+<h2 id="sigmoid">sigmoid</h2>
+<p><span class="math display">\[
+\sigma(x)=\dfrac{1}{1+e^{-x}}
+\]</span><br />
+定义域为<span
+class="math inline">\((-\infty,+\infty)\)</span>，值域为<span
+class="math inline">\((0,1)\)</span>，下图给出了sigmoid的图像：<br />
+<img src="/images/语言模型和词向量/sigmoid.png" width="40%"></p>
+<p>sigmoid函数<strong>导函数</strong>具有性质：<br />
+<span class="math display">\[
+\sigma^\prime(x)=\sigma(x)[1-\sigma(x)]
+\]</span><br />
+由此可知：<br />
+<span class="math display">\[
+[log\sigma(x)]^\prime=1-\sigma(x)
+\]</span><br />
+<span class="math display">\[
+[log(1-\sigma(x))]^\prime=-\sigma(x)
+\]</span></p>
+<p>sigmoid的每一次计算是相互独立的，是对当前事件的一次独立判断。我们把它用作二分类，是因为每一次判断的结果都可以根据阈值划分为两类，比如阈值为t，那么计算结果大于t的为一类，低于t的为另一类。也可以把计算结果看作二分类中一类的概率，比如计算结果为p，那么事件是一类的概率就是p，另一个类概率就是1-p。</p>
+<h2 id="gensim">gensim</h2>
+<p>Word2Vec：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 4.0</span></span><br><span class="line">gensim.models.word2vec.Word2Vec(sentences=<span class="literal">None</span>, corpus_file=<span class="literal">None</span>, vector_size=<span class="number">100</span>, </span><br><span class="line">alpha=<span class="number">0.025</span>, window=<span class="number">5</span>, min_count=<span class="number">5</span>, max_vocab_size=<span class="literal">None</span>, sample=<span class="number">0.001</span>, seed=<span class="number">1</span>, workers=<span class="number">3</span>, </span><br><span class="line">min_alpha=<span class="number">0.0001</span>, sg=<span class="number">0</span>, hs=<span class="number">0</span>, negative=<span class="number">5</span>, ns_exponent=<span class="number">0.75</span>, cbow_mean=<span class="number">1</span>, hashfxn=&lt;built-<span class="keyword">in</span> function <span class="built_in">hash</span>&gt;, </span><br><span class="line">epochs=<span class="number">5</span>, null_word=<span class="number">0</span>, trim_rule=<span class="literal">None</span>, sorted_vocab=<span class="number">1</span>, batch_words=<span class="number">10000</span>, </span><br><span class="line">compute_loss=<span class="literal">False</span>, callbacks=(), comment=<span class="literal">None</span>, max_final_vocab=<span class="literal">None</span>) </span><br><span class="line"><span class="comment"># 3.8</span></span><br><span class="line">gensim.models.word2vec.Word2Vec(sentences=<span class="literal">None</span>, corpus_file=<span class="literal">None</span>, size=<span class="number">100</span>, </span><br><span class="line">alpha=<span class="number">0.025</span>, window=<span class="number">5</span>, min_count=<span class="number">5</span>, max_vocab_size=<span class="literal">None</span>, sample=<span class="number">0.001</span>, seed=<span class="number">1</span>, workers=<span class="number">3</span>, </span><br><span class="line">min_alpha=<span class="number">0.0001</span>, sg=<span class="number">0</span>, hs=<span class="number">0</span>, negative=<span class="number">5</span>, ns_exponent=<span class="number">0.75</span>, cbow_mean=<span class="number">1</span>, hashfxn=&lt;built-<span class="keyword">in</span> function <span class="built_in">hash</span>&gt;, </span><br><span class="line"><span class="built_in">iter</span>=<span class="number">5</span>, null_word=<span class="number">0</span>, trim_rule=<span class="literal">None</span>, sorted_vocab=<span class="number">1</span>, batch_words=<span class="number">10000</span>, </span><br><span class="line">compute_loss=<span class="literal">False</span>, callbacks=(), max_final_vocab=<span class="literal">None</span>)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">sentences：(iterable of iterables, optional) 要分析的语料，可以是一个列表，或者从文件中遍历读出。</span></span><br><span class="line"><span class="string">          大语料库，建议直接从磁盘/网络流迭代传输句子。参阅word2vec模块中的BrownCorpus，Text8Corpus或LineSentence。</span></span><br><span class="line"><span class="string">corpus_file：(str, optional。LineSentence) 格式的语料库文件路径。</span></span><br><span class="line"><span class="string">size/vector_size：(int, optional) 词向量的维度，默认值是100。</span></span><br><span class="line"><span class="string">      这个维度的取值一般与我们的语料的大小相关，如果是不大的语料，比如小于100M的文本语料，则使用默认值一般就可以了。</span></span><br><span class="line"><span class="string">      如果是超大的语料，建议增大维度。</span></span><br><span class="line"><span class="string">window：(int, optional) 即词向量上下文最大距离。</span></span><br><span class="line"><span class="string">        这个参数在讲解中标记为c，值越大，则和某一词较远的词也会产生上下文关系。默认值为5。</span></span><br><span class="line"><span class="string">        如果是小语料则这个值可以设的更小。对于一般的语料这个值推荐在[5,10]之间。</span></span><br><span class="line"><span class="string">min_count：(int, optional) 忽略词频小于此值的单词。这个值可以去掉一些很生僻的低频词，默认是5。</span></span><br><span class="line"><span class="string">           如果是小语料，可以调低这个值。</span></span><br><span class="line"><span class="string">workers：(int, optional) 训练模型时使用的线程数。</span></span><br><span class="line"><span class="string">sg：(&#123;0, 1&#125;, optional) word2vec两个模型选择。0：CBOW模型。1：Skip-Gram模。默认是0即CBOW模型。</span></span><br><span class="line"><span class="string">hs：(&#123;0, 1&#125;, optional) word2vec两个解法选择。0：Negative Sampling。1：Hierarchical Softmax。默认是0即Negative Sampling。</span></span><br><span class="line"><span class="string">negative：(int, optional) 即使用Negative Sampling时负采样的个数，默认是5。推荐在[3,10]之间。这个参数在讲解中标记为neg。</span></span><br><span class="line"><span class="string">ns_exponent：(float, optional) 负采样分布指数。1.0样本值与频率成正比，0.0样本所有单词均等，负值更多地采样低频词。</span></span><br><span class="line"><span class="string">cbow_mean：(&#123;0, 1&#125;, optional) 仅用于CBOW在做投影的时候。</span></span><br><span class="line"><span class="string">           为0，则算法中的h为上下文的词向量之和，为1则为上下文的词向量的平均值。</span></span><br><span class="line"><span class="string">           在讲解中是按照词向量的平均值来描述的。</span></span><br><span class="line"><span class="string">alpha：(float, optional) 在随机梯度下降法中迭代的初始步长。讲解中标记为η，默认是0.025。</span></span><br><span class="line"><span class="string">min_alpha：(float, optional) 随着训练的进行，学习率线性下降到min_alpha。</span></span><br><span class="line"><span class="string">           由于算法支持在迭代的过程中逐渐减小步长，min_alpha给出了最小的迭代步长值。</span></span><br><span class="line"><span class="string">           随机梯度下降中每轮的迭代步长可以由iter，alpha， min_alpha一起得出。</span></span><br><span class="line"><span class="string">           对于大语料，需要对alpha, min_alpha,iter一起调参，来选择合适的三个值。</span></span><br><span class="line"><span class="string">seed：(int, optional) 随机数发生器种子。</span></span><br><span class="line"><span class="string">max_vocab_size：(int, optional) 词汇构建期间RAM的限制。</span></span><br><span class="line"><span class="string">                如果有更多的独特单词，则修剪不常见的单词。每1000万个类型的字需要大约1GB的RAM。</span></span><br><span class="line"><span class="string">max_final_vocab：(int, optional) 自动选择匹配的min_count将词汇限制为目标词汇大小。</span></span><br><span class="line"><span class="string">sample：(float, optional) 高频词随机下采样的配置阈值，范围是(0,1e-5)。</span></span><br><span class="line"><span class="string">hashfxn：(function, optional) 哈希函数用于随机初始化权重，以提高训练的可重复性。</span></span><br><span class="line"><span class="string">iter/epochs：随机梯度下降法中迭代的最大次数，默认是5。对于大语料，可以增大这个值。</span></span><br><span class="line"><span class="string">trim_rule：(function, optional) 词汇修剪规则，指定某些词语是否应保留在词汇表中，修剪掉或使用默认值处理。</span></span><br><span class="line"><span class="string">sorted_vocab：(&#123;0, 1&#125;, optional) 如果为1，则在分配单词索引前按降序对词汇表进行排序。</span></span><br><span class="line"><span class="string">batch_words：(int, optional) 每一个batch传递给线程单词的数量。</span></span><br><span class="line"><span class="string">compute_loss：(bool, optional) 如果为True，则计算并存储可使用get_latest_training_loss()检索的损失值。</span></span><br><span class="line"><span class="string">callbacks：(iterable of CallbackAny2Vec, optional) 在训练中特定阶段执行回调序列。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="comment"># 建立模型后</span></span><br><span class="line">build_vocab(sentences)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">遍历一次语料库建立词典</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="comment"># 3.8</span></span><br><span class="line">train(sentences=<span class="literal">None</span>, corpus_file=<span class="literal">None</span>, total_examples=<span class="literal">None</span>, total_words=<span class="literal">None</span>, </span><br><span class="line">epochs=<span class="literal">None</span>, start_alpha=<span class="literal">None</span>, end_alpha=<span class="literal">None</span>, word_count=<span class="number">0</span>, queue_factor=<span class="number">2</span>, </span><br><span class="line">report_delay=<span class="number">1.0</span>, compute_loss=<span class="literal">False</span>, callbacks=())</span><br><span class="line"><span class="comment"># 4.0</span></span><br><span class="line">train(corpus_iterable=<span class="literal">None</span>, corpus_file=<span class="literal">None</span>, total_examples=<span class="literal">None</span>, total_words=<span class="literal">None</span>, </span><br><span class="line">epochs=<span class="literal">None</span>, start_alpha=<span class="literal">None</span>, end_alpha=<span class="literal">None</span>, word_count=<span class="number">0</span>, queue_factor=<span class="number">2</span>, </span><br><span class="line">report_delay=<span class="number">1.0</span>, compute_loss=<span class="literal">False</span>, callbacks=(), **kwargs)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">第二次遍历语料库建立神经网络模型</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="comment"># 方法</span></span><br><span class="line">similar_by_word()</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">某一个词向量最相近的词集合</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">similarity()</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">两个词向量的相近程度</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">doesnt_match()</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">找出不同类的词</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">save_word2vec_format(<span class="string">&#x27;./model.txt&#x27;</span>,binary = <span class="literal">False</span>)</span><br><span class="line">save_word2vec_format(<span class="string">&#x27;./model.bin&#x27;</span>,binary = <span class="literal">True</span>)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">第一种，保存了训练的全部信息，可以在读取后追加训练</span></span><br><span class="line"><span class="string">第二种，保存为word2vec文本格式但是保存时丢失了词汇树等部分信息，不能追加训练</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">KeyedVectors.load_word2vec_format(<span class="string">&#x27;./model.bin&#x27;</span>, binary=<span class="literal">False</span>)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">加载模型</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="comment"># 使用Word2Vec得到model后：</span></span><br><span class="line"><span class="comment"># 3.8</span></span><br><span class="line">model.wv.vocab</span><br><span class="line">model.wv.vocab.keys()</span><br><span class="line"><span class="comment"># 4.0</span></span><br><span class="line">model.wv.key_to_index <span class="comment"># 字典</span></span><br><span class="line">model.wv.index_to_key <span class="comment"># 列表</span></span><br><span class="line">model.wv.vectors</span><br><span class="line"><span class="comment"># 共有</span></span><br><span class="line">model.vector_size</span><br><span class="line">model.wv[<span class="string">&#x27;key&#x27;</span>] <span class="comment"># 取单个词向量</span></span><br></pre></td></tr></table></figure><br />
+LdaMulticore：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 4.0/3.8</span></span><br><span class="line">gensim.models.ldamulticore.LdaMulticore(corpus=<span class="literal">None</span>, num_topics=<span class="number">100</span>, </span><br><span class="line">id2word=<span class="literal">None</span>, workers=<span class="literal">None</span>, chunksize=<span class="number">2000</span>, passes=<span class="number">1</span>, batch=<span class="literal">False</span>, alpha=<span class="string">&#x27;symmetric&#x27;</span>, </span><br><span class="line">eta=<span class="literal">None</span>, decay=<span class="number">0.5</span>, offset=<span class="number">1.0</span>, eval_every=<span class="number">10</span>, iterations=<span class="number">50</span>, gamma_threshold=<span class="number">0.001</span>, </span><br><span class="line">random_state=<span class="literal">None</span>, minimum_probability=<span class="number">0.01</span>, minimum_phi_value=<span class="number">0.01</span>, </span><br><span class="line">per_word_topics=<span class="literal">False</span>)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">corpus: &#123;iterable of list of (int, float), scipy.sparse.csc&#125;，语料库。</span></span><br><span class="line"><span class="string">num_topics: int，主题数量。</span></span><br><span class="line"><span class="string">id2word: &#123;dict of (int, str), gensim.corpora.dictionary.Dictionary&#125;，单词id-&gt;单词 词典。</span></span><br><span class="line"><span class="string">workers: int，线程数。</span></span><br><span class="line"><span class="string">chunksize: int，每个训练模块使用文档数量。</span></span><br><span class="line"><span class="string">passes: int，训练期间通过语料库的次数。</span></span><br><span class="line"><span class="string">alpha: float，文档-主题分布的先验信念。</span></span><br><span class="line"><span class="string">      &#x27;symmetric&#x27;: 使用 1.0 / num_topics 的固定对称先验。</span></span><br><span class="line"><span class="string">      &#x27;asymmetric&#x27;: 使用 1.0 / (topic_index + sqrt(num_topics)) 的固定归一化非对称先验。</span></span><br><span class="line"><span class="string">eta: float，主题-词分布的先验信念。</span></span><br><span class="line"><span class="string">      &#x27;symmetric&#x27;: 使用 1.0 / num_topics 的固定对称先验。</span></span><br><span class="line"><span class="string">      &#x27;auto&#x27;: 从语料库中学习非对称先验。</span></span><br><span class="line"><span class="string">per_word_topics: 如果为 True，该模型还会计算一个主题列表，按每个单词最可能的主题的降序排序，</span></span><br><span class="line"><span class="string">                  以及它们的 phi 值乘以特征长度（即字数）。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure><br />
+词典：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">gensim.corpora.dictionary.Dictionary(documents=<span class="literal">None</span>, prune_at=<span class="number">2000000</span>)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">根据文档生成词典</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="comment"># 属性</span></span><br><span class="line">token2id</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">词典：&#123;token:tokenId&#125;</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">dfs</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">单词出现的频率</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="comment"># 方法</span></span><br><span class="line">doc2bow(document, allow_update=<span class="literal">False</span>, return_missing=<span class="literal">False</span>)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">将文档转成词袋格式：一个列表，列表中每个元素为(token_id, token_count)</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">filter_n_most_frequent(remove_n)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">过滤掉出现频率最高的remove_n个单词</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">filter_extremes(no_below=<span class="number">5</span>, no_above=<span class="number">0.5</span>, keep_n=<span class="number">100000</span>) </span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">去掉出现次数低于no_below的。</span></span><br><span class="line"><span class="string">去掉出现次数高于no_above的（百分数）。</span></span><br><span class="line"><span class="string">在上面基础上，保留出现频率前keep_n的单词。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">filter_tokens(bad_ids=<span class="literal">None</span>, good_ids=<span class="literal">None</span>)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">两种用法:</span></span><br><span class="line"><span class="string">(1)去掉bad_id对应的词。</span></span><br><span class="line"><span class="string">(2)保留good_id对应的词而去掉其他词。</span></span><br><span class="line"><span class="string">注意，这里bad_ids和good_ids都是列表形式。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">compacity() </span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">执行完过滤操作以后，可能会造成单词的序号之间有空隙。</span></span><br><span class="line"><span class="string">可以使用该函数来对词典来进行重新排序，去掉这些空隙。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="参考文献">参考文献</h1>
+<p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2hhbmtjcy9IYW5MUA==">HanLP: Han Language
+Processing<i class="fa fa-external-link-alt"></i></span><br />
+统计自然语言处理 第二版 (宗成庆著)<br />
+<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzEzMDEuMzc4MS5wZGY=">Efficient Estimation of
+Word Representations in Vector Space<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzEzMTAuNDU0Ni5wZGY=">Distributed
+Representations of Words and Phrases and their
+Compositionality<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE0MTEuMjczOC5wZGY=">word2vec Parameter
+Learning Explained<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE1MDcuMDU1MjMucGRmJTIwaHR0cDovL2llZWV4cGxvcmUuaWVlZS5vcmcvZG9jdW1lbnQvNzQ3ODQxNy8=">How
+to Generate a Good Word Embedding?<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cDovL25scC50b3duL2Jsb2cvc2VudGVuY2Utc2ltaWxhcml0eS8=">Comparing Sentence
+Similarity Methods<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE2MDguMDU4NTkucGRm">Using the Output
+Embedding to Improve Language Models<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE0MDIuMzcyMi5wZGY=">word2vec Explained:
+Deriving Mikolov et al.’sNegative-Sampling Word-Embedding
+Method<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9ubHAuc3RhbmZvcmQuZWR1L3B1YnMvZ2xvdmUucGRm">GloVe: Global Vectors
+for Word Representation<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE2MDcuMDE3NTl2Mi5wZGY=">Bag of Tricks for
+Efficient Text Classification<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU5JTlDJThEJUU1JUE0JUFCJUU2JTlCJUJDJUU3JUJDJTk2JUU3JUEwJTgx">维基百科：霍夫曼编码<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vcGluYXJkL3AvNzI0MzUxMy5odG1s">word2vec原理(二)
+基于Hierarchical Softmax的模型<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vcGluYXJkL3AvNzI0OTkwMy5odG1s">word2vec原理(三)
+基于Negative Sampling的模型<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2l0cGx1cy9hcnRpY2xlL2RldGFpbHMvMzc5Njk5Nzk=">word2vec
+中的数学原理详解（四）基于 Hierarchical Softmax 的模型<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2l0cGx1cy9hcnRpY2xlL2RldGFpbHMvMzc5OTg3OTc=">word2vec
+中的数学原理详解（五）基于 Negative Sampling 的模型<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aC12Mi5kMmwuYWkvY2hhcHRlcl9uYXR1cmFsLWxhbmd1YWdlLXByb2Nlc3NpbmctcHJldHJhaW5pbmcvd29yZDJ2ZWMuaHRtbA==">词嵌入（Word2vec）<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMTJXNDExdjdHYT9mcm9tPXNlYXJjaCZzZWlkPTE0MTM1NDUwODQ5MzA3Mzg5Njc5JnNwbV9pZF9mcm9tPTMzMy4zMzcuMC4w">[MXNet/Gluon]
+动手学深度学习第十六课：词向量（word2vec）<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMWFXNDExZTcyOD9mcm9tPXNlYXJjaCZzZWlkPTU3NTg3NDE1MjA2MTQ0OTEzMzEmc3BtX2lkX2Zyb209MzMzLjMzNy4wLjA=">[MXNet/Gluon]
+动手学深度学习第十七课：GloVe、fastText和使用预训练的词向量<i class="fa fa-external-link-alt"></i></span></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>SoundMemories
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://soundmemories.github.io/2021/06/20/NLP/01.%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E5%92%8C%E8%AF%8D%E5%90%91%E9%87%8F/" title="语言模型和词向量">https://soundmemories.github.io/2021/06/20/NLP/01.语言模型和词向量/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/NLP/" rel="tag"><i class="fa fa-tag"></i> NLP</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/06/20/Paper/01.Unsupervised%20Data%20Augmentation%20for%20Consistency%20Training/" rel="prev" title="Unsupervised Data Augmentation for Consistency Training">
+                  <i class="fa fa-chevron-left"></i> Unsupervised Data Augmentation for Consistency Training
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/06/25/Paper/02.XGBoost%20A%20Scalable%20Tree%20Boosting%20System/" rel="next" title="XGBoost A Scalable Tree Boosting System">
+                  XGBoost A Scalable Tree Boosting System <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">SoundMemories</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"neutral"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.min.js","integrity":"sha256-JFptYy4KzJ5OQP+Q9fubNf3cxpPPmZKqUOovyEONKrQ="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://soundmemories.github.io/2021/06/20/NLP/01.%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E5%92%8C%E8%AF%8D%E5%90%91%E9%87%8F/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

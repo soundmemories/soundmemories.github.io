@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.1","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="简介 123456789101112131415161718192021222324252627|-业界产品    |-百度AI纠错服务    |-科大讯飞纠错服务|-纠错场景    |-对话系统    |-asr语音识别    |-ocr文字识别    |-文本内容校验|-文本错误类型    |-通用场景：不需要专业知识，普通人就能看出的错误。    |-垂直场景：需要领域内专业知识，才能发现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="纠错">
+<meta property="og:url" content="https://soundmemories.github.io/2023/05/21/NLP/10.%E7%BA%A0%E9%94%99/index.html">
+<meta property="og:site_name" content="SoundMemories">
+<meta property="og:description" content="简介 123456789101112131415161718192021222324252627|-业界产品    |-百度AI纠错服务    |-科大讯飞纠错服务|-纠错场景    |-对话系统    |-asr语音识别    |-ocr文字识别    |-文本内容校验|-文本错误类型    |-通用场景：不需要专业知识，普通人就能看出的错误。    |-垂直场景：需要领域内专业知识，才能发现">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E7%BA%A0%E9%94%99/%E5%B0%8F%E7%B1%B3%E6%A8%A1%E5%9E%8B.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E7%BA%A0%E9%94%99/%E5%B0%8F%E7%B1%B3%E6%A8%A1%E5%9E%8B2.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E7%BA%A0%E9%94%99/%E5%B0%8F%E7%B1%B3%E6%A8%A1%E5%9E%8B3.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E7%BA%A0%E9%94%99/%E5%B0%8F%E7%B1%B3%E6%A8%A1%E5%9E%8B4.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E7%BA%A0%E9%94%99/%E7%88%B1%E5%A5%87%E8%89%BA%E6%A8%A1%E5%9E%8B1.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E7%BA%A0%E9%94%99/%E7%88%B1%E5%A5%87%E8%89%BA%E6%A8%A1%E5%9E%8B2.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E7%BA%A0%E9%94%99/%E7%88%B1%E5%A5%87%E8%89%BA%E6%A8%A1%E5%9E%8B3.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E7%BA%A0%E9%94%99/%E5%B9%B3%E5%AE%89%E5%AF%BF%E9%99%A9.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E7%BA%A0%E9%94%99/%E5%B9%B3%E5%AE%89%E5%AF%BF%E9%99%A92.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E7%BA%A0%E9%94%99/bert1.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E7%BA%A0%E9%94%99/%E5%B9%B6%E8%A1%8C1.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E7%BA%A0%E9%94%99/%E5%B9%B6%E8%A1%8C2.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E7%BA%A0%E9%94%99/bilstm+crf.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E7%BA%A0%E9%94%99/bilstm+crf2.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E7%BA%A0%E9%94%99/bert+crf.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E7%BA%A0%E9%94%99/bert+span.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E7%BA%A0%E9%94%99/bert+mrc.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E7%BA%A0%E9%94%99/bert+mrc1.jpg">
+<meta property="article:published_time" content="2023-05-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-09-24T13:59:30.861Z">
+<meta property="article:author" content="SoundMemories">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://soundmemories.github.io/images/%E7%BA%A0%E9%94%99/%E5%B0%8F%E7%B1%B3%E6%A8%A1%E5%9E%8B.jpg">
+
+
+<link rel="canonical" href="https://soundmemories.github.io/2023/05/21/NLP/10.%E7%BA%A0%E9%94%99/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://soundmemories.github.io/2023/05/21/NLP/10.%E7%BA%A0%E9%94%99/","path":"2023/05/21/NLP/10.纠错/","title":"纠错"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>纠错 | SoundMemories</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">SoundMemories</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">128</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">错误类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E6%8A%80%E6%9C%AF"><span class="nav-number">3.</span> <span class="nav-text">关键技术</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%A7%E5%93%81%E8%AE%BE%E8%AE%A1"><span class="nav-number">4.</span> <span class="nav-text">产品设计</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%84%E5%88%99%E6%80%9D%E8%B7%AF"><span class="nav-number">5.</span> <span class="nav-text">规则思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%96%B9%E6%B3%95"><span class="nav-number">6.</span> <span class="nav-text">模型方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AB%AF%E5%88%B0%E7%AB%AF"><span class="nav-number">7.</span> <span class="nav-text">端到端</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%B1%B3"><span class="nav-number">7.1.</span> <span class="nav-text">小米</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%88%B1%E5%A5%87%E8%89%BA"><span class="nav-number">7.2.</span> <span class="nav-text">爱奇艺</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%86%E9%98%B6%E6%AE%B5"><span class="nav-number">8.</span> <span class="nav-text">分阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B3%E5%AE%89%E5%AF%BF%E9%99%A9"><span class="nav-number">8.1.</span> <span class="nav-text">平安寿险</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#bert%E7%B3%BB%E5%88%97"><span class="nav-number">9.</span> <span class="nav-text">BERT系列</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E8%AE%AD%E7%BB%83"><span class="nav-number">10.</span> <span class="nav-text">分布式训练</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#dataparallel"><span class="nav-number">10.1.</span> <span class="nav-text">DataParallel</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#distributeddataparallel"><span class="nav-number">10.2.</span> <span class="nav-text">DistributedDataParallel</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#horovod"><span class="nav-number">10.3.</span> <span class="nav-text">Horovod</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#apex%E5%8A%A0%E9%80%9F"><span class="nav-number">11.</span> <span class="nav-text">Apex加速</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%88%90%E5%88%86%E6%8A%BD%E5%8F%96"><span class="nav-number">12.</span> <span class="nav-text">成分抽取</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E6%A0%87%E6%B3%A8"><span class="nav-number">12.1.</span> <span class="nav-text">序列标注</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E9%92%88%E7%BB%9C"><span class="nav-number">12.2.</span> <span class="nav-text">指针⽹络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AE%B5%E6%8E%92%E5%88%97"><span class="nav-number">12.3.</span> <span class="nav-text">⽚段排列</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">13.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SoundMemories"
+      src="/images/avstar.png">
+  <p class="site-author-name" itemprop="name">SoundMemories</p>
+  <div class="site-description" itemprop="description">今日事，今日毕</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">128</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NvdW5kbWVtb3JpZXM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;soundmemories"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNvdW5kbWVtb3JpZXNAMTYzLmNvbQ==" title="E-Mail → mailto:soundmemories@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+        <div class="pjax">
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2023/05/21/NLP/10.%E7%BA%A0%E9%94%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="纠错 | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          纠错
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-05-21 00:00:00" itemprop="dateCreated datePublished" datetime="2023-05-21T00:00:00+08:00">2023-05-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/NLP/" itemprop="url" rel="index"><span itemprop="name">NLP</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>29 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="简介">简介</h1>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">|-业界产品</span><br><span class="line">    |-百度AI纠错服务</span><br><span class="line">    |-科大讯飞纠错服务</span><br><span class="line">|-纠错场景</span><br><span class="line">    |-对话系统</span><br><span class="line">    |-asr语音识别</span><br><span class="line">    |-ocr文字识别</span><br><span class="line">    |-文本内容校验</span><br><span class="line">|-文本错误类型</span><br><span class="line">    |-通用场景：不需要专业知识，普通人就能看出的错误。</span><br><span class="line">    |-垂直场景：需要领域内专业知识，才能发现的错误。</span><br><span class="line">|-纠错问题解决思路</span><br><span class="line">    |-基于规则和统计学习</span><br><span class="line">    |-基于深度学习模型</span><br><span class="line">|-业界解决方案</span><br><span class="line">    |-端到端纠错：bart生成式</span><br><span class="line">    |-阶段性纠错：平安寿险、小爱同学、爱奇艺FASPell</span><br><span class="line">|-方案拆解</span><br><span class="line">    |-通用文本错误</span><br><span class="line">        |-Macbert4csc模型</span><br><span class="line">        |-数据增强</span><br><span class="line">    |-垂直领域专有名词错误</span><br><span class="line">        |-成分抽取</span><br><span class="line">        |-对比学习下的语义相似度</span><br><span class="line">        |-实体链接</span><br><span class="line">        |-faiss语义搜索和向量检索</span><br><span class="line">        |-Ranking</span><br></pre></td></tr></table></figure>
+<h1 id="错误类型">错误类型</h1>
+<p>用于纠错的文本错误类型从宏观上可分为两大类：<br />
+1、<strong>通用文本错误</strong>，常见的多字、漏字、错字和别字等等。<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">类别            细类                        例子</span><br><span class="line">---------------------------------------------------------</span><br><span class="line">音似    谐音/混淆音/拼音全拼/拼音缩写       配副眼(睛)-配副眼(镜)/(流浪)织女-(牛郎)织女/xingfu-幸福/bj-北京</span><br><span class="line">形似    形似                              高(梁)-高(粱)</span><br><span class="line">多字    多字                              即帅(又又)高-即帅(又)高</span><br><span class="line">少字    少字                              爱有天意-(假如)爱有天意</span><br><span class="line">乱序    顺序颠倒                           伍迪艾伦-艾伦伍迪</span><br><span class="line">语法    搭配错误                           想象难以-难以想象</span><br></pre></td></tr></table></figure></p>
+<p>2、<strong>专有领域错误</strong>，垂直领域下专有名词、专有术语的错误。<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">领域     类型                 例子</span><br><span class="line">---------------------------------------------------------</span><br><span class="line">金融    股票名          (山河药辅)分时资金-(山河药铺)分时资金</span><br><span class="line">医疗    疾病/药物名     肌(萎缩)性侧索硬化症-肌性侧索硬化症/(砒)罗(昔)康-(眦)罗(喜)康</span><br></pre></td></tr></table></figure><br />
+一些成熟的纠错产品：<span class="exturl" data-url="aHR0cHM6Ly96ai54Znl1bi5jbi8=">讯飞智检<i class="fa fa-external-link-alt"></i></span>，<span class="exturl" data-url="aHR0cHM6Ly9qZHQubWlkdS5jb20vcHJvZHVjZQ==">校对通<i class="fa fa-external-link-alt"></i></span>。</p>
+<p>成熟产品可作为参考，比如讯飞智检中有日期、成语古诗、错别词、语法、机构、地点名称等纠错；校对通中有对标点、知识性差错、内容导向风险识别等。</p>
+<p>校对通还对错误检测类型进行了详细的介绍：<br />
+1、<strong>通用文本差错</strong>：错别字/词、多字、少字、语义重复、语序错误、句式杂糅、标点符号错误、量词和单位错误、数字错误、序号检查、句子查重，英文校对。<br />
+2、<strong>知识性差错</strong>：重要讲话引用、姓名和职务信息、地理名词、机构名称、专有名词及术语、法律法规名称、常识差错、时政重点词、媒体报道禁用词和慎用词。<br />
+3、<strong>内容导向风险识别</strong>：涉国家统一及主权和领土完整、涉民族宗教、涉黄赌毒暴恐、涉低俗辱骂、涉违法违规(如广告违禁)、其他敏感内容。</p>
+<h1 id="关键技术">关键技术</h1>
+<p><strong>语言知识学习</strong>：可以理解为是对语言规则等先验知识的学习，通过学习词法、句法等规则进行语言模型构建，例如中英文的主谓宾结构就是不一样的。</p>
+<p><strong>上下文理解</strong>：是指分析错误点上下文语境和语义，从纠错候选中选择最合适的。尤其是中文，相同的词汇在不同语境中往往表达不同的含义。</p>
+<p><strong>知识计算</strong>：知识计算主要包括关联知识计算和文本理解，关联知识主要是通过对全局知识的统计来实现纠错，可以是局部不完整语句的补充。文本理解是通过统计理解全局句子内容，解决低频领域知识的泛化问题。</p>
+<h1 id="产品设计">产品设计</h1>
+<p><strong>用户场景</strong>：审稿或者编辑人员输入中文文字信息，系统自动纠错，并给出修改建议，审稿人员对错误快速修订。<br />
+<strong>应用边界</strong>：(1)
+支持用词错误检测，针对音近、形近的错字和别字进行纠正。(2)
+支持句子级错误检测，主要是针对句子中出现的多字、少字等错误，相对难度校大。(3)
+支持场景类错误纠正，这类错误需要具备一些特定领域的知识才能识别纠错，所以尽量支持。</p>
+<p><strong>产品定位</strong>：为应用工具型产品，实现中文文本自动纠错功能。<br />
+<strong>用户定位</strong>：满足两类B端用户，(1)
+针对具备自主的文稿编辑工具，提供API服务，与现有系统进行改造融合；(2)
+针对缺少文稿编辑工具的用户，提供web页面功能。</p>
+<h1 id="规则思路">规则思路</h1>
+<p>中文纠错首先<strong>错误检测</strong>，其次是<strong>错误纠正</strong>。</p>
+<ul>
+<li><p><strong>错误检测</strong>：对于中文首先要分词，可以使用<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2Z4c2p5L2ppZWJh">jieba<i class="fa fa-external-link-alt"></i></span>、<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xhbmNvcGt1L3BrdXNlZy1weXRob24=">pkuseg<i class="fa fa-external-link-alt"></i></span>等工具分词，但由于句子中存在错误字，所以分词可能出现错误的情况，可从<strong>字粒度</strong>和<strong>词粒度</strong>两方面检测错误，整合这两种粒度的疑似错误结果，形成疑似错误位置候选集。</p>
+<ul>
+<li><strong>字粒度处理</strong>：先对句子进行n-gram的划分，之后根据语言模型对这些n-gram打分，汇总每个字下所有n-gram评分，通过计算MAD(<span
+class="math inline">\(\overline\sum|\text{每个字gram}-\text{当前字下所有gram的均值}|\)</span>)获得每个字的得分，通过设置超参数阈值和这些字的得分比较，如果高于阈值就认为这个字是错误的，把这个字和它的位置加入到字粒度疑似错误候选项里。</li>
+<li><strong>词粒度处理</strong>：首先准备一个常用词词典，如果句子中有gram出现在词典就是正确的，没有出现就可能是错误的，加入到词粒度疑似错误候选项里。</li>
+</ul></li>
+<li><p><strong>错误纠正</strong>：由字和词度疑似错误候选项组成的集合就是混淆字典。遍历混淆字典每个项，通过形近和音似字典替换它在句子中的位置，通过语言模型计算句子的困惑度，困惑度排序值越小代表句子可能性越高，这样得到最优的纠正结果。<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">|-规则纠错:</span><br><span class="line">    |-字粒度-语言模型-平均绝对离差(MAD)-基于字粒度疑似错误候选项</span><br><span class="line">        |-混淆字典-困惑度(perplexity)-排序-输出</span><br><span class="line">    |-词粒度-常用词典-基于词粒度疑似错误候选项</span><br><span class="line">        |-混淆字典-困惑度(perplexity)-排序-输出</span><br></pre></td></tr></table></figure></p></li>
+<li><p><strong>缺点</strong>：</p>
+<ul>
+<li>强依赖形近和音似等常用词字典，这种方式会造成精准率还可以，但召回率是极低的，整体的效果还是一般的。</li>
+<li>需要很多遍历搜索的操作，性能提升也是问题，这与字典的量级有关系。</li>
+</ul></li>
+</ul>
+<h1 id="模型方法">模型方法</h1>
+<p>主要分为<strong>端到端纠错</strong>和<strong>分阶段纠错</strong>。</p>
+<p>学术界大多基于预训练模型的方式进行<strong>端到端纠错</strong>，代表如下几种：<br />
+<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE5MTAuMTM0NjEucGRm">BART: Denoising
+Sequence-to-Sequence Pre-training for Natural Language Generation,
+Translation, and Comprehension<i class="fa fa-external-link-alt"></i></span>：<br />
+<strong>Auto-encoding</strong>(自编码模型)，Bert就是Auto-encoding的一个典型代表。不仅如此，Bert采用了MLM，在输入层加入一定的噪音，是一种典型的DAELM(Denoising
+Autoencoder)降噪自编码。<br />
+<strong>Autoregressive</strong>(自回归模型)，典型代表是GPT系列的模型，是一种基于上文预测下文或下文预测上文的模型。<br />
+<strong>BART是Auto-encoding和Autoregressive组合</strong>，结合自回归和自编码模型的优点，结构上和Transformer没什么不同，其主要区别在训练的任务和目标不同。<br />
+<strong>BART预训练</strong>：通过破坏文档再优化重建损失(即解码器输出和原始文档之间的交叉熵)训练得到的。与目前仅适合特定噪声机制的去噪自编码不同，BART可应用于任意类型的文档破坏。<br />
+<strong>BART的finetune</strong>：由于BART具备自回归解码器，因此它可以针对序列生成任务进行直接微调，如抽象问答和摘要。在这两项任务中，信息复制自输入但经过了处理，这与去噪预训练紧密相关，这里，编码器的输入是输入序列，解码器以自回归的方式生成输出。</p>
+<p>BART使用标准Transformer结果，但还是有些区别：<br />
+(1) 同GPT一样，将ReLU激活函数改为GeLU，并且参数初始化服从正态分布<span
+class="math inline">\(N(0,0.02)\)</span>。<br />
+(2) BART
+base模型的Encoder和Decoder各有6层，large模型增加到了12层。<br />
+(3) BART解码器的各层对编码器最终隐藏层额外执行cross-attention。<br />
+(4) BERT在词预测之前使用了额外的Feed Forward Layer，而BART没有。</p>
+<h1 id="端到端">端到端</h1>
+<h2 id="小米">小米</h2>
+<p>小米小爱同学：基于bert的asr(语音内容识别)纠错，F1准确率77.6%。<br />
+用户query文本，通常是由asr系统将用户的语音命令转换而成，但由于技术上的原因，这些由asr生成的文本可能包含错误，继而导致后续的用户意图理解出现偏差。如何利用NLP技术对asr的query文本进行预处理纠错成了一个待解决的问题。<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">    错误示例                   正确示例</span><br><span class="line">---------------------------------------------------------</span><br><span class="line">给我播放一首(升壁纸)        给我播放一首(生僻字)</span><br><span class="line">你讲话好像(被)句子          你讲话好像(背)句子</span><br><span class="line">(岫岩)血斑怎么回事          (右眼)血斑怎么回事</span><br><span class="line">(意味着)什么意思            (eraser)什么意思</span><br></pre></td></tr></table></figure><br />
+纠错初步设定：</p>
+<ul>
+<li>只考虑 6 字以上中长 query：短的 query
+不能体现充足的语境信息，纠错比较难。</li>
+<li>不考虑上下文对话信息：上下文对话信息问题更复杂，并且在小爱同学对话信息中多轮对话只占
+1%，目前先不考虑多轮对话的场景。</li>
+<li>不考虑音频信息：作为 ASR 下游的一个纠错产品，只考虑文本信息。</li>
+<li>仅考虑一对一纠错：基于 BERT
+模型的纠错，一对一比较容易实现，后续可以放宽限制。</li>
+<li>仅使用非监督语料：非监督语料节省人力成本，可以使用预训练模型，数据分布的头部语料可以嵌入到模型中，但可能不利于尾部数据的纠错，也就是说对于那些在语料中没有出现过的信息，不太可能纠正过来。</li>
+</ul>
+<p>网络结构：<strong>整个流程为自监督学习，无需标注</strong>。<br />
+<img src="/images/纠错/小米模型.jpg" width="90%"></p>
+<p><strong>语料库</strong>：包括维基百科中文、知乎中文、爬取的一些新闻语料，以及小爱同学运行的用户日志，总共将近有
+1 亿条的数据。</p>
+<p>从<strong>语料库中抽样</strong>出原始样本，类似“请播放歌曲芒种”、“布朗熊跳个舞”、“打开和平精英”等等。小米开发了专门模拟
+ASR
+生成错误数据的<strong>模糊音生成器</strong>，基于<strong>模糊拼音</strong>来对原始样本处理生成错误样本，生成结果如“请播放歌曲曼钟”、“波兰熊跳个舞”、“打开和平静音”等等。</p>
+<p>构造好正确样本和错误样本的样本对输入到<strong>判别器模型</strong>，判别器进行<strong>端到端的纠错</strong>，即给模型输入错误样本，模型输出为正确的样本。</p>
+<p><strong>模糊音生成器</strong>：<br />
+<img src="/images/纠错/小米模型2.jpg" width="70%"></p>
+<p>标准的拼音方案不能很好的体现<strong>汉字的发音相似问题</strong>，<strong>非标准拼音方案</strong>更准确的描述asr语音出现错误的规律，找到合适的编辑距离计算方案。比如正常“wa”和“hua”读音相似，但以编辑距离计算是2，通过非标准拼音方案把“wa”记为“ua”，此时和“hua”的编辑距离为1，这种方案更好处理发音相似问题。</p>
+<p><img src="/images/纠错/小米模型3.jpg" width="70%"></p>
+<p>判别器结构上，输入数据为汉字和拼音的特征，其中汉字经过Bert预训练模型得到汉字的词向量，而拼音数据则是通过Bert模型重新训练一个关于拼音数据的词向量，二者拼接后经过Softmax层，计算交叉熵损失。</p>
+<p><img src="/images/纠错/小米模型4.jpg" width="70%"></p>
+<p><strong>Trick-1，词表过滤</strong>：如果词表很大，比如 10000
+维，想要限制一下端到端纠错模型在纠错时的搜索范围，可以对词表增加限制，比如只允许在过滤后的
+300
+甚至几十个相似的词语中选择，理论上召回有所损失，但是纠正的准确率大大提升，并且这种过滤程度可以调整。实际测评中显示，加入词表过滤，显著提升了模型的效果和性能。<br />
+<strong>Trick-2，递归预测</strong>：BERT
+在纠错过程中是一对一的纠错，如果一个句子中有多个错误的位置，但是对于端到端输入模型一次
+Feed Forward
+过程可能只纠正了一个位置，若要整个句子实现纠错，那么需要把纠正后的结果放到句子中再次输入模型，进行递归纠错。如果两次递归结果相同则停止递归纠错，否则会递归纠错最多
+3 次。</p>
+<p>从结果中发现，原生 BERT 微调之后直接纠错，模型评测指标为
+9.3%，加入词表过滤和递归预测后，f1 提升到 21.6%，加入纠错训练后 f1
+大幅提升到 65%，加入 trick 后，又提升到
+73.4%，再加入拼音特征数据，效果提升明显，f1 提升到 77.6%。</p>
+<h2 id="爱奇艺">爱奇艺</h2>
+<p>爱奇艺拼写检查FASPell准确率73.5%。<br />
+FASPell: A Fast, Adaptable, Simple, Powerful Chinese Spell Checker Based
+On DAE-Decoder Paradigm<br />
+论文地址: <span class="exturl" data-url="aHR0cHM6Ly9hY2xhbnRob2xvZ3kub3JnL0QxOS01NTIyLnBkZg==">https://aclanthology.org/D19-5522.pdf<i class="fa fa-external-link-alt"></i></span><br />
+FASPell是爱奇艺在2019年提出的汉字纠错模型，主要解决的是相似字形、读音相似文字的纠错，模型采用的自动解码器DAE加上解码器decoder结构，其中的解码器涉及有助于减少模型对混淆集的使用，这是因为在解码器中充分利用了中文相似性特征。<br />
+<img src="/images/纠错/爱奇艺模型1.jpg" width="40%"></p>
+<p>Encoder训练：</p>
+<ul>
+<li>对于正确语句，按照bert的原始生成策略来。</li>
+<li>对于错误的语句，做如下处理：对于错误文字不做mask操作（也就是用自身作为mask），但是label为正确的文字，对于正确的文字也使用自身进行mask，label也是自身。</li>
+</ul>
+<p>CSD解码器：是FASPell首次提出的，相比过去提出的字符相似度量方法，FASPell更加精准。形状相似度+读音相似度+Encoder置信度，输入到CSD中处理。</p>
+<p><strong>形状相似度</strong>：按上下左右嵌套拆分，拆分后可以通过前序遍历二叉树记录idx序列，通过计算两个序列idx的编辑距离。<br />
+<img src="/images/纠错/爱奇艺模型2.jpg" width="40%"></p>
+<p><strong>读音相似度</strong>：中文存在很多方言，所以这里的相似度就是众多方言的读音的编辑距离的平均值。和上面一样，也需要进行归一化处理将值域放在[0,1]之间。</p>
+<p>有了上述相似文字的相似度衡量指标之后，结合bert给出语句中每个汉字的候选集置信度，通过绘制<strong>置信度-相似性曲线</strong>来过滤候选结果得到置信度最高的纠错结果。<br />
+<img src="/images/纠错/爱奇艺模型3.jpg" width="80%"></p>
+<p>形状相似度+读音相似度 -&gt; similarity参数。<br />
+Encoder置信度 -&gt; confidence参数。<br />
+通过以上两组参数画出的曲线来确定参数，从而筛选出每个字对应的候选集。</p>
+<h1 id="分阶段">分阶段</h1>
+<h2 id="平安寿险">平安寿险</h2>
+<p>平安寿险纠错方案(误报率0.1%，召回率70%)：<br />
+<img src="/images/纠错/平安寿险.jpg" width="90%"><br />
+在日常生活中，比如微信、微博等社交工具中会发现许多错别字，在这几个方面平安对文本出错概率进行了统计。<br />
+(1) 微博等新媒体领域，文本出错概率在2%左右；<br />
+(2) 语音识别领域，出错最高可达8-10%；<br />
+(3)
+平安人寿问答领域，用户提问错误率在去重后仍高达9%(应该包含直接输入错误和语音识别错误)。<br />
+<img src="/images/纠错/平安寿险2.jpg" width="90%"><br />
+上图是其纠错系统的流程图：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 此系统更注重效果，未对效率和性能进行优化</span><br><span class="line">|-错误检测</span><br><span class="line">    |-拼音匹配：规则上的处理，文字-拼音(通过拼音查找准确词)-文字，这种规则处理方式。</span><br><span class="line">    |-单双向2gram语言模型：基于输入中词与词搭配正确的比错误的多的假设，</span><br><span class="line">      句子中某些词前后组成的2gram分很低，这个词就可能是错误的，加入错误候选集中。</span><br><span class="line">    |-BILSTM+CRF实体识别的分类模型，看成是序列标注任务，也可以学习bert的mlm任务，</span><br><span class="line">      每个词都进行完形填空，如果实际词不在预测的候选集中，这个词就可能是错误的，加入错误候选集中。</span><br><span class="line">|-候选召回</span><br><span class="line">    |-拼音倒排、汉字倒排、同音召回、语言模型。</span><br><span class="line">    |-混淆字集：通过业界积累，以种子词为核心扩展，通过形近、音近、编辑距离等构建错误集合。</span><br><span class="line">|-候选排序</span><br><span class="line">    |-一级排序(粗排)：词频变化、编辑距离、拼音距离、语言模型，LR。</span><br><span class="line">    |-二级排序(精排)：词频变化、分词变化、音形距离、PMI变化、统计语言模型变化、nn语言模型变化。</span><br><span class="line">|-候选筛选：交叉处理、包含处理、点位跟踪。</span><br><span class="line">|-底层资源：双数组字典树、CSR压缩、分层倒排、4gram语言模型、nn语言模型。</span><br></pre></td></tr></table></figure></p>
+<h1 id="bert系列">BERT系列</h1>
+<p><img src="/images/纠错/bert1.jpg" width="90%"><br />
+可以看到，Bert和同时期的GPT和ELMo的一些区别：<br />
+（1）从结构来看，Bert和GPT同属Transformer系列（encoder和decoder），ELMo是lstm系列。<br />
+（2）从特征提取看，Transformer可以并行处理序列但不能过长序列，lstm可以单行双向处理长序列，但ELMo是分开的两边分开单独的双向和lstm有区别，算是伪双向。</p>
+<p>对于Bert的细节，可参考<a
+href="https://soundmemories.github.io/2021/07/20/NLP/05.Bert/">Bert</a>
+。<br />
+那么在做纠错任务时，可以想到mask策略定制化，比如用形近字、音近字去mask。</p>
+<h1 id="分布式训练">分布式训练</h1>
+<p>主要使用DistributedDataParallel和Horovod进行分布式训练：Distributed
+Sampler
+能够帮助我们分发数据，DistributedDataParallel、hvd.broadcast_parameters
+能够帮助我们分发模型，并在框架的⽀持下解决梯度汇总和参数更新的问题。</p>
+<p>交互过程：<br />
+（1）通过调⽤ <code>all_reduce(tensor, op=...)</code>
+，当前进程会向其他进程发送 tensor （如rank0 会发送 rank0 的 tensor 到
+rank 1、2、3）<br />
+（2）接受其他进程发来的 tensor （如 rank0 会接收 rank1 的 tensor、rank2
+的 tensor、rank3的 tensor）。<br />
+（3）在全部接收完成后，当前进程（如rank0）会对当前进程的和接收到的
+tensor （如 rank0、rank1、rank2、rank3 的 tensor）进行 op
+（如求和）操作。</p>
+<h2 id="dataparallel">DataParallel</h2>
+<p>DataParallel 是torch早期推出的用于分布式训练的包，DataParallel
+使用起来⾮常方便，只需要用 DataParallel
+包装模型，再设置⼀些参数即可。需要定义的参数包括：<br />
+（1）参与训练的 GPU 有哪些，device_ids=gpus。<br />
+（2）用于汇总梯度的 GPU 是哪个，output_device=gpus[0] 。<br />
+DataParallel 会自动将数据切分 load 到相应 GPU，将模型复制到相应
+GPU，进行正向传播计算梯度并汇总：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model = nn.DataParallel(model.cuda(), device_ids=gpus, output_device=gpus[<span class="number">0</span>])</span><br></pre></td></tr></table></figure><br />
+<img src="/images/纠错/并行1.jpg" width="100%"></p>
+<p>以4张GPU为例，那么就是1个进程，4个线程：<br />
+（1）<strong>将模型复制到各个GPU中</strong>，并将一个<strong>batch的数据划分成mini_batch</strong>并分发给各个GPU。<br />
+（2）各个GPU在<strong>独立的线程</strong>上，独自<strong>完成mini_batch的forward</strong>，并把获得的output传递给GPU_1（主GPU）。<br />
+（3）<strong>GPU_1整合各个GPU传递过来的output，并计算loss</strong>，再分发loss给各个GPU。<br />
+（4）各个GPU在<strong>独立的线程</strong>上，根据loss独自完成<strong>各自的backforward并计算梯度</strong>，再将各自的梯度传递给GPU_1。<br />
+（5）梯度汇总到GPU_1上，然后梯度下降，<strong>权重更新</strong>，GPU_1将<strong>更新好的模型权重又传递给其余GPU</strong>，保证每个GPU的模型一致。</p>
+<p>存在的问题：负载不均衡、网络通信瓶颈（类似PS模式通信，Parameter
+Server）。</p>
+<h2 id="distributeddataparallel">DistributedDataParallel</h2>
+<p>在 pytorch 1.0 之后，官方终于对分布式的常用方法进行了封装，支持
+all-reduce，broadcast，send 和 receive 等等。通过 MPI 实现 CPU
+通信，通过 NCCL 实现 GPU 通信。官方也曾经提到用 DistributedDataParallel
+解决 DataParallel 速度慢，GPU 负载不均衡的问题，目前已经很成熟了。</p>
+<p>与 DataParallel 的单进程控制多 GPU 不同，在 distributed
+的帮助下，我们只需要编写⼀份代码，torch 就会自动将其分配给 n
+个进程，分别在 n 个 GPU 上运行。<br />
+<img src="/images/纠错/并行2.jpg" width="90%"></p>
+<p>以4张GPU为例，那么就是4个进程：<br />
+（1）每个进程独立占有⼀张显卡，独立的加载自己的数据和模型，不需要数据广播、也不需要模型广播（每个gpu都有⼀个相同的模型副本），<strong>分布式数据采样器</strong>（DistributedSampler）可确保加载的数据在各个进程之间不重叠。<br />
+（2）每个gpu独立进行forward，计算output，每个gpu独立计算loss，在<strong>计算梯度同时对梯度执行all-reduce操作</strong>（进程独立将梯度进行汇总平均）。<br />
+（3）每个gpu用相同的梯度，独立更新参数，因为每个gpu都是从⼀个相同的模型副本开始的，初始参数⼀致，并且梯度被all-reduced，下降的梯度相同，因此每个GPU在反向传播结束时最终得到平均梯度的相同副本，所有gpu上的权重更新都相同，也就不需要模型同步了。</p>
+<p>注意：和DP的类似PS模式不同，DDP使用all-reduce模式通信。确切地说，DP和DDP默认首选的通信后端都是nccl。nccl支持的原语中，DP使用的Broadcast和Reduce，以及Scatter和Gather，而DDP则使用all-reduce。</p>
+<p><strong>使用方式</strong>：<br />
+1.在 API 层面，pytorch 为我们提供了 torch.distributed.launch
+启动器，用于在命令行分布式地执行 python
+文件。在执行过程中，启动器会将当前进程的（其实就是 GPU的）index
+通过参数传递给 python，我们可以这样获得当前进程的 index：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">local_rank = torch.distributed.get_rank()  <span class="comment"># 当前进程的index</span></span><br><span class="line">torch.cuda.set_device(local_rank)</span><br></pre></td></tr></table></figure></p>
+<p>2.接着，使用 init_process_group 设置GPU
+之间通信使用的后端和端口：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.distributed.init_process_group(backend=<span class="string">&#x27;nccl&#x27;</span>)</span><br></pre></td></tr></table></figure></p>
+<p>3.然后使用 DistributedSampler 对数据集进行划分。它能将每个 batch
+划分成几个 partition，在当前进程中只需要获取和 local_rank 对应的那个
+partition 进行训练：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">train_sampler = torch.utils.data.distributed.DistributedSampler(train_dataset)</span><br><span class="line">train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=..., sampler=train_sampler)</span><br></pre></td></tr></table></figure></p>
+<p>4.使用 DistributedDataParallel 包装模型，它能为不同 GPU
+上求得的梯度进行 all reduce（即汇总不同 GPU
+计算所得的梯度，并同步计算结果）。all reduce 后不同 GPU 中模型的梯度均为
+all reduce 之前各 GPU 梯度的均值。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[local_rank])</span><br></pre></td></tr></table></figure></p>
+<h2 id="horovod">Horovod</h2>
+<p>Horovod 是 Uber 开源的深度学习工具，它的发展吸取了 Facebook "Training
+ImageNet In 1 Hour" 与百度 "Ring Allreduce" 的优点，可以无痛与
+PyTorch/Tensorflow
+等深度学习框架结合，实现并行训练。Horovod优势体现在多级多卡，几百上千块卡的训练。</p>
+<p>在 API 层面，Horovod 和 torch.distributed 十分相似。在 mpirun
+的基础上，Horovod 提供了自己封装的 horovodrun 作为启动器。</p>
+<p>与 torch.distributed.launch 相似，我们只需要编写⼀份代码，horovodrun
+启动器就会自动将其分配给 n个进程，分别在n 个 GPU
+上运行。在执行过程中，启动器会将当前进程的（其实就是 GPU的）index 注入
+hvd，我们可以这样获得当前进程的 index：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> horovod.torch <span class="keyword">as</span> hvd</span><br><span class="line">hvd.local_rank()</span><br></pre></td></tr></table></figure></p>
+<p>与 init_process_group 相似，Horovod 使用 init 设置GPU
+之间通信使用的后端和端口:<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hvd.init()</span><br></pre></td></tr></table></figure></p>
+<p>接着，使用 DistributedSampler
+对数据集进行划分。如此前我们介绍的那样，它能帮助我们将每个batch
+划分成几个 partition，在当前进程中只需要获取和 rank 对应的那个 partition
+进行训练：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">train_sampler = torch.utils.data.distributed.DistributedSampler(train_dataset)</span><br><span class="line">train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=..., sampler=train_sampler)</span><br></pre></td></tr></table></figure></p>
+<p>之后，使用 broadcast_parameters 包装模型参数，将模型参数从编号为
+root_rank 的 GPU 复制到所有其他 GPU 中：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hvd.broadcast_parameters(model.state_dict(), root_rank=<span class="number">0</span>)</span><br></pre></td></tr></table></figure></p>
+<p>然后，使用 DistributedOptimizer 包装优化器。它能帮助我们为不同 GPU
+上求得的梯度进行 all reduce（即汇总不同 GPU
+计算所得的梯度，并同步计算结果）。all reduce 后不同 GPU 中模型的梯度均为
+all reduce 之前各 GPU 梯度的均值：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hvd.DistributedOptimizer(optimizer, named_parameters=model.named_parameters(),...)</span><br></pre></td></tr></table></figure></p>
+<p>在使用时，调用 horovodrun 启动器启动：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CUDA_VISIBLE_DEVICES=<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span> horovodrun -np <span class="number">4</span> -H localhost:<span class="number">4</span> python main.py</span><br></pre></td></tr></table></figure></p>
+<h1 id="apex加速">Apex加速</h1>
+<p>Apex 是 NVIDIA 开源的用于混合精度训练和分布式训练库。Apex
+除了对混合精度训练的过程进行了封装，改两三行配置就可以进行混合精度的训练，从而大幅度降低显存占用，节约运算时间。Apex
+也提供了对分布式训练的封装，针对 NVIDIA 的 NCCL 通信库进行了优化。</p>
+<p>在混合精度训练上，Apex 的封装十分优雅。直接使用 amp.initialize
+包装模型和优化器，apex
+就会自动帮助我们管理模型参数和优化器的精度了，根据精度需求不同可以传入其他配置参数。</p>
+<p>在分布式训练的封装上，Apex 改动并不大，主要是优化了 NCCL
+的通信。因此，大部分代码仍与torch.distributed
+保持⼀致。使用的时候只需要将 torch.nn.parallel.DistributedDataParallel
+替换为 apex.parallel.DistributedDataParallel 用于包装模型。在 API
+层面，相对于 torch.distributed
+，它可以自动管理⼀些参数（可以少传⼀点）：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> apex.parallel <span class="keyword">import</span> DistributedDataParallel</span><br><span class="line">model = DistributedDataParallel(model)</span><br></pre></td></tr></table></figure><br />
+在使用时，调用 torch.distributed.launch 启动器启动：<br />
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 --nnodes=3 --node_rank=0 --master_addr=<span class="string">&quot;192.168.1.201&quot;</span> --master_port=23456 train.py</span><br></pre></td></tr></table></figure><br />
+需要注意梯度溢出的问题。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torch.cuda.amp <span class="keyword">import</span> autocast <span class="keyword">as</span> ac</span><br><span class="line"><span class="comment"># 训练时加上, 不然一直报梯度溢出, 训练的模型可能有问题</span></span><br><span class="line"><span class="keyword">with</span> ac():</span><br><span class="line">    loss = model(input_ids=input_ids, attention_mask=attention_mask,token_type_ids=token_type_ids, labels=label)[<span class="number">0</span>]</span><br></pre></td></tr></table></figure></p>
+<h1 id="成分抽取">成分抽取</h1>
+<p>文本的错误类型有多种，但是没有⼀种纠错技术可以纠正所有类型的文本错误，对于特定的错误类型来说，需要设计特定的方式去纠错，其中，垂直领域下的专属名词，例如：金融领域的股票和基金名称、医疗领域的药物和疾病名称、地图和本地生活领域的poi名称，等等，这些<strong>专有名词</strong>⼀旦发生错误，<strong>很难通过端到端</strong>的方式直接进行纠错，需要定制化的策略去应对。</p>
+<p>如何对垂直领域下的专属名词进行抽取就是一个需要考虑的问题，目前工业界常见的成分抽取框架，例如<strong>序列标注</strong>、<strong>指针⽹络</strong>、<strong>⽚段排列</strong>等技术⽅案。</p>
+<h2 id="序列标注">序列标注</h2>
+<p>实现序列标注的常⽤⽅法有BiLSTM/IDCNN/BERT+CRF等，与BiLSTM/IDCNN/BERT+Softmax相⽐，CRF使模型考虑到了标签之间的相关性，标签之间的相关性就是标签之间的转移概率，CRF层可以学习到标签之间的转移概率。</p>
+<p><strong>BiLSTM+CRF</strong>：<br />
+<img src="/images/纠错/bilstm+crf.jpg" width="70%"><br />
+<img src="/images/纠错/bilstm+crf2.jpg" width="80%"></p>
+<p>重要的点一个是bilstm学习后得到每个token是什么标签的似然值，另一个是不断迭代后crf学习到的转移矩阵，从而确定最大概率序列标注结果，当然不是对所有可能结果的穷举探索，而是使用一些优化算法比如前向后向算法等，来确定最大概率序列标注结果。<br />
+对于crf的效果，在BiLSTM/IDCNN上面提升一般很大，在10%左右。</p>
+<p><strong>BERT+CRF</strong>：<br />
+⾃从bert横空出世之后，现在基本上都是基于bert这个强⼤的编码器来做的序列标注。<br />
+对于crf的效果，在bert上面提升一般很小，crf提升在1-2%左右，因为bert本身具有很强的编码能力。<br />
+<img src="/images/纠错/bert+crf.jpg" width="80%"></p>
+<h2 id="指针络">指针⽹络</h2>
+<p><strong>BERT+SPAN</strong>：<br />
+从句⼦中正确的抽取出实体，需要知道三个要素：开始位置、结束位置、实体类型。<br />
+下图中，有两个识别层，分别预测起始位置和结束位置，label中的颜色代表实体类型。<br />
+指针网络的后半部分是全连接层，不管是训练还是推理都比带crf的快，crf毕竟是串行维特比解码的。<br />
+<img src="/images/纠错/bert+span.jpg" width="80%"></p>
+<p><strong>BERT+MRC</strong>：<br />
+BERT-MRC模型在不同的数据集上的表现<strong>差异较⼤</strong>，并且不同的数据处理（主要是数据处理影响很大）对模型的性能影响也很⼤，需要使⽤者理解其内部的原理后采⽤合适的⽅法来使⽤。<br />
+在数据预处理阶段需要将实<strong>体类型的描述</strong>作为query，拼接到每个输⼊句⼦的前⾯，然后针对性的修改原有的标注。<br />
+（1）数据扩充：根据实体类型扩充；<br />
+（2）类别均衡：平衡负例；</p>
+<p>假设现在现在待抽取的成分有三种：<br />
+（1）股票名称：从公司全称中精选出2到4个字的称呼；<br />
+（2）⾦融指标：⽤于衡量公司经营状况⾦融描述；<br />
+（3）⼈名：⼈物的名称；<br />
+例如下⾯的例⼦：<br />
+（1）每个样本，根据要识别实体的数量，扩充对应数量的样本。<br />
+（2）每个样本不可能有全部要识别的实体，那么扩充后，没有query对应实体的样本负例很大，需要平衡负例，只需抽取部分负例训练而不是全部拿来训练。<br />
+<img src="/images/纠错/bert+mrc.jpg" width="60%"></p>
+<p>模型结构如下：<br />
+从下图label可以看出，没有用颜色来区分实体类别，是因为在输入时的query已经确定了要是别的实体类型了。<br />
+<img src="/images/纠错/bert+mrc1.jpg" width="80%"></p>
+<p>所以，总结起来，BERT-MRC模型能取得⽐其他模型更好的性能的原因是它特殊的数据处理⽅法使得变相做了<strong>数据扩充</strong>，其次在输⼊⽂本前加上了实体类型的描述信息，这些实体类型的描述作为<strong>先验知识</strong>提⾼了模型抽取的效果，所以BERT-MRC模型在数据量匮乏的场景下，通过在输⼊⽂本前⾯拼接的query获得了⼀定的先验信息，提升了性能。<br />
+作者论文使用了不同的query形式实验，结论是使用自然语言描述的大白话作为query效果最好。<br />
+实际使用时，数据量少的时候使用效果很好，数据量足够效果和其他模型比劣势，因为数据量大增，训练成本大；实体类型多时，推理次数也会10次，速度也很差。可以考虑用于小数据扩充方法。</p>
+<h2 id="段排列">⽚段排列</h2>
+<h1 id="参考文献">参考文献</h1>
+<p><span class="exturl" data-url="aHR0cHM6Ly93d3cuamlhbnNodS5jb20vcC84ZDJmMDk5MWI4NDA=">中文文本纠错任务简介<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9iYWlqaWFoYW8uYmFpZHUuY29tL3M/aWQ9MTczMzg3MzU5MDEwMTUzMzc4NCZ3ZnI9c3BpZGVyJmZvcj1wYw==">文本校对产品的应用设计场景<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTUzMzM2MS9hcnRpY2xlL2RldGFpbHMvMTEyMTU3OTAy">中文文本纠错_垂直电商搜索纠错<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly93d3cuaW5mb3EuY24vYXJ0aWNsZS81V3FrZUhsSkJFWjhqUlU5Sms2Uy8=">小米小爱同学-基于BERT的ASR纠错<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8xNTkxMDE4NjA=">平安寿险-文本纠错技术探索和实践<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly93d3cub3NjaGluYS5uZXQvcXVlc3Rpb24vMjkxODE4Ml8yMzEyNzg1Lw==">爱奇艺-开源SOTA高性能中文拼写检查工具FASPell<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zNzg0MTk5OTA=">文本纠错目前是怎么做的,BERT怎么做文本纠错<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzE1ODIxNDg3L2FydGljbGUvZGV0YWlscy8xMTk5OTc4ODI=">BART模型<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9hZGFuaW5nLmdpdGh1Yi5pby9wb3N0cy8xMzk0Lmh0bWw=">BART和mBART<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zNTY5NjcxOTU=">pytorch中的分布式训练之DP
+VS DDP<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC83NjYzODk2Mg==">Pytorch
+分布式训练<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9ncHVzaGFyZS5jb20v">Gpushare
+Cloud恒源云-可分布式练习<i class="fa fa-external-link-alt"></i></span></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>SoundMemories
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://soundmemories.github.io/2023/05/21/NLP/10.%E7%BA%A0%E9%94%99/" title="纠错">https://soundmemories.github.io/2023/05/21/NLP/10.纠错/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/NLP/" rel="tag"><i class="fa fa-tag"></i> NLP</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/04/05/NLP/09.%E5%88%86%E8%AF%8D/" rel="prev" title="分词">
+                  <i class="fa fa-chevron-left"></i> 分词
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/03/21/Other/%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E5%92%8C%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" rel="next" title="系统安装和环境配置">
+                  系统安装和环境配置 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">SoundMemories</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"neutral"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.min.js","integrity":"sha256-JFptYy4KzJ5OQP+Q9fubNf3cxpPPmZKqUOovyEONKrQ="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://soundmemories.github.io/2023/05/21/NLP/10.%E7%BA%A0%E9%94%99/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

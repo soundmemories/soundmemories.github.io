@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.1","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="检索式 检索 核心为信息检索（Information Retrieval，IR），即从大规模非结构化数据（通常为文本）的集合（通常保存在计算机上）中找出满足用户信息需求的资料（通常是文档）的过程。是研究信息的获取（acquisition）、表示（representation）、存储（storage）、组织（organization）和访问（access）的一门学问。 信息检索不仅仅是搜索，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="检索系统和常见指标">
+<meta property="og:url" content="https://soundmemories.github.io/2021/07/22/NLP/07.%E6%A3%80%E7%B4%A2%E7%B3%BB%E7%BB%9F%E5%92%8C%E5%B8%B8%E8%A7%81%E6%8C%87%E6%A0%87/index.html">
+<meta property="og:site_name" content="SoundMemories">
+<meta property="og:description" content="检索式 检索 核心为信息检索（Information Retrieval，IR），即从大规模非结构化数据（通常为文本）的集合（通常保存在计算机上）中找出满足用户信息需求的资料（通常是文档）的过程。是研究信息的获取（acquisition）、表示（representation）、存储（storage）、组织（organization）和访问（access）的一门学问。 信息检索不仅仅是搜索，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F/3.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E6%A3%80%E7%B4%A2%E5%92%8C%E6%8C%87%E6%A0%87/1.png">
+<meta property="article:published_time" content="2021-07-21T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-05-25T15:58:38.539Z">
+<meta property="article:author" content="SoundMemories">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://soundmemories.github.io/images/%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F/3.png">
+
+
+<link rel="canonical" href="https://soundmemories.github.io/2021/07/22/NLP/07.%E6%A3%80%E7%B4%A2%E7%B3%BB%E7%BB%9F%E5%92%8C%E5%B8%B8%E8%A7%81%E6%8C%87%E6%A0%87/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://soundmemories.github.io/2021/07/22/NLP/07.%E6%A3%80%E7%B4%A2%E7%B3%BB%E7%BB%9F%E5%92%8C%E5%B8%B8%E8%A7%81%E6%8C%87%E6%A0%87/","path":"2021/07/22/NLP/07.检索系统和常见指标/","title":"检索系统和常见指标"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>检索系统和常见指标 | SoundMemories</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">SoundMemories</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">128</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A3%80%E7%B4%A2%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">检索式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A3%80%E7%B4%A2"><span class="nav-number">1.1.</span> <span class="nav-text">检索</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95"><span class="nav-number">1.2.</span> <span class="nav-text">倒排索引</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%91%E9%82%BB%E6%90%9C%E7%B4%A2%E5%8F%AC%E5%9B%9E"><span class="nav-number">2.</span> <span class="nav-text">近邻搜索(召回)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E7%BA%A7%E5%88%AB"><span class="nav-number">2.1.</span> <span class="nav-text">字符级别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bm25"><span class="nav-number">2.1.1.</span> <span class="nav-text">BM25</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wand"><span class="nav-number">2.1.2.</span> <span class="nav-text">WAND</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%91%E9%87%8F%E7%BA%A7%E5%88%AB"><span class="nav-number">2.2.</span> <span class="nav-text">向量级别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sif"><span class="nav-number">2.2.1.</span> <span class="nav-text">SIF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wmd"><span class="nav-number">2.2.2.</span> <span class="nav-text">WMD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#annoy"><span class="nav-number">2.2.3.</span> <span class="nav-text">Annoy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hnsw"><span class="nav-number">2.2.4.</span> <span class="nav-text">HNSW</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#kd-tree"><span class="nav-number">2.2.5.</span> <span class="nav-text">KD Tree</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lsh"><span class="nav-number">2.2.6.</span> <span class="nav-text">LSH</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#faiss%E5%B7%A5%E5%85%B7"><span class="nav-number">2.3.</span> <span class="nav-text">Faiss工具</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ranking"><span class="nav-number">3.</span> <span class="nav-text">Ranking</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87"><span class="nav-number">3.1.</span> <span class="nav-text">评价指标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#map"><span class="nav-number">3.1.1.</span> <span class="nav-text">MAP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ndcg"><span class="nav-number">3.1.2.</span> <span class="nav-text">NDCG</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#point-wise"><span class="nav-number">3.2.</span> <span class="nav-text">Point-wise</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pair-wise-approach"><span class="nav-number">3.3.</span> <span class="nav-text">Pair-wise Approach</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#list-wise-approach"><span class="nav-number">3.4.</span> <span class="nav-text">List-wise Approach</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cfg"><span class="nav-number">3.5.</span> <span class="nav-text">CFG</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%B8%E4%BC%BC%E5%BA%A6%E7%9A%84%E8%AE%A1%E7%AE%97"><span class="nav-number">4.</span> <span class="nav-text">相似度的计算</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%9F%E8%AE%A1%E6%8C%87%E6%A0%87"><span class="nav-number">4.1.</span> <span class="nav-text">统计指标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#cosine"><span class="nav-number">4.1.1.</span> <span class="nav-text">Cosine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#jaccard"><span class="nav-number">4.1.2.</span> <span class="nav-text">Jaccard</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pearson"><span class="nav-number">4.1.3.</span> <span class="nav-text">Pearson</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#euclidian"><span class="nav-number">4.1.4.</span> <span class="nav-text">Euclidian</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%9C%AC%E8%B7%9D%E7%A6%BB"><span class="nav-number">4.2.</span> <span class="nav-text">文本距离</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ed"><span class="nav-number">4.2.1.</span> <span class="nav-text">ED</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lcs"><span class="nav-number">4.2.2.</span> <span class="nav-text">LCS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E5%8C%B9%E9%85%8D"><span class="nav-number">4.3.</span> <span class="nav-text">深度匹配</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">5.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SoundMemories"
+      src="/images/avstar.png">
+  <p class="site-author-name" itemprop="name">SoundMemories</p>
+  <div class="site-description" itemprop="description">今日事，今日毕</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">128</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NvdW5kbWVtb3JpZXM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;soundmemories"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNvdW5kbWVtb3JpZXNAMTYzLmNvbQ==" title="E-Mail → mailto:soundmemories@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+        <div class="pjax">
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2021/07/22/NLP/07.%E6%A3%80%E7%B4%A2%E7%B3%BB%E7%BB%9F%E5%92%8C%E5%B8%B8%E8%A7%81%E6%8C%87%E6%A0%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="检索系统和常见指标 | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          检索系统和常见指标
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-07-22 00:00:00" itemprop="dateCreated datePublished" datetime="2021-07-22T00:00:00+08:00">2021-07-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/NLP/" itemprop="url" rel="index"><span itemprop="name">NLP</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>25 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="检索式">检索式</h1>
+<h2 id="检索">检索</h2>
+<p>核心为<strong>信息检索</strong>（Information
+Retrieval，IR），即从大规模<strong>非结构化数据</strong>（通常为文本）的集合（通常保存在计算机上）中找出<strong>满足用户信息需求</strong>的资料（通常是文档）的过程。是研究信息的获取（acquisition）、表示（representation）、存储（storage）、组织（organization）和访问（access）的一门学问。</p>
+<p>信息检索不仅仅是搜索，信息检索系统也不仅仅是搜索引擎。比如：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">返回与信息检索相关的网页-&gt;搜索引擎（SearchEngine，SE）</span><br><span class="line">姚明是谁？-&gt;问答系统（Question Answering，QA）</span><br><span class="line">返回Ipad的各类型号、配置等-&gt;信息抽取（Information Extraction，IE）</span><br><span class="line">使用Google Reader订阅新闻，并获取推荐-&gt;信息过滤（Information Filtering）、信息推荐（Information Recommending）</span><br></pre></td></tr></table></figure></p>
+<h2 id="倒排索引">倒排索引</h2>
+<p>一个例子：《莎士比亚全集》这本大头书，我们想知道：哪些剧本包含Brutus和Caesar但是不包含Calpurnia？一种方式是采用Unix下的grep程序，先找出所有包含Brutus和Caesar的剧本，然后再将包含Calpurnia的剧本排除。但是很多情况下，采用上述线性扫描的方式是远远不够的。可以考虑用<strong>空间换取时间</strong>。</p>
+<p><strong>词项文档索引</strong><br />
+词项-文档关联矩阵（incidence
+matrix），采用非线性的扫描方式，事先给文档建立索引。比如行索引为人名，列索引为书名，如果此人在书中出现过就是1，否则为0。这种方法要很大的存储空间。遇到更大的数据集根本不可用这种方法。</p>
+<p><strong>倒排索引</strong><br />
+对于每一个词项，存储包含整个词项的文档的一个列表，一个文档用一个序列号docID来表示。我们能用一个固定长度的数据来存储它吗？不能，
+不利于增删。<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Brutus-&gt;[1,2,4,11,31,45,173,174]</span><br><span class="line">Caesar-&gt;[1,2,4,5,6,16,57,132]</span><br><span class="line">Calpurnia-&gt;[2,31,54,101]</span><br></pre></td></tr></table></figure><br />
+如果Caesar被添加到14号文档中，固定长度数组就不行了，所以使用可变长度的记录列表：<br />
+1、在硬盘上，一串<strong>连续的记录</strong>是正常的，也是最好的。<br />
+2、在内存里，可以使用<strong>链表</strong>，或者可变长度的整数。</p>
+<p>上面所说的<strong>docID链表</strong>（排序后的结果）就是<strong>倒排记录表</strong>（inverted
+list），人名构成的词项就是<strong>词项词典</strong>。词项-&gt;文档。</p>
+<p>建立步骤：<br />
+1、建立<strong>词条</strong>和<strong>docID</strong>序列。<br />
+2、排序（<strong>先按照词条排序，再按照docID排序</strong>）。<br />
+<img src="/images/对话系统/3.png" width="40%"></p>
+<p>考虑查询Brutus和Caesar：<br />
+1、在字典中找到Brutus，得到它的倒排记录表。<br />
+2、在字典中找到Caesar，得到它的倒排记录表。<br />
+3、两个倒排记录表取交集（使用双指针查询，O(n)）。</p>
+<h1 id="近邻搜索召回">近邻搜索(召回)</h1>
+<h2 id="字符级别">字符级别</h2>
+<h3 id="bm25">BM25</h3>
+<p>bm25
+是一种用来评价搜索词和文档之间相关性的算法，它是一种基于<strong>概率检索模型</strong>提出的算法，再用简单的话来描述下bm25算法：我们有一个
+<span class="math inline">\(query\)</span> 和一批文档 <span
+class="math inline">\(Ds\)</span> ，现在要计算 <span
+class="math inline">\(query\)</span> 和每篇文档 <span
+class="math inline">\(D\)</span> 之间的相关性分数，我们的做法是，先对
+<span class="math inline">\(query\)</span> 进行切分，得到单词 <span
+class="math inline">\(q_i\)</span> ，然后单词的分数由3部分组成：<br />
+- 每个单词的权重。<br />
+- 相关性分数 <span class="math inline">\(R\)</span>：单词和 <span
+class="math inline">\(D\)</span> 之间的相关性，单词和 <span
+class="math inline">\(query\)</span> 之间的相关性。</p>
+<p>最后对于每个单词的分数我们做一个求和，就得到了query和文档之间的分数。<br />
+<span
+class="math display">\[Score(Q,d)=\sum\limits^nW_iR(q_i,d)\]</span><br />
+其中，<span class="math inline">\(W_i\)</span>代表单词 <span
+class="math inline">\(q_i\)</span> 权重，<span
+class="math inline">\(R(q_i,d)\)</span> 代表单词 <span
+class="math inline">\(q_i\)</span> 和文档 <span
+class="math inline">\(d\)</span> 相关性。</p>
+<p><strong>每个单词的权重(IDF变形)</strong><br />
+<span class="math inline">\(N\)</span> 表示所有文档数目，<span
+class="math inline">\(n(q_i)\)</span> 为单词 <span
+class="math inline">\(q_i\)</span>
+出现的文档数目，0.5主要是做平滑处理。<br />
+<span
+class="math display">\[IDF(q_i)=log(\frac{N-n(q_i)+0.5}{n(q_i)+0.5})\]</span><br />
+依据IDF的作用，对于某个 <span class="math inline">\(q_i\)</span> ，包含
+<span class="math inline">\(q_i\)</span> 的文档数越多，说明 <span
+class="math inline">\(q_i\)</span>
+重要性越小，或者区分度越低，IDF越小，因此IDF可以用来刻画 <span
+class="math inline">\(q_i\)</span> 与文档的相似性。</p>
+<p><strong>相关性分数(TF变形)</strong><br />
+BM25的设计依据一个重要的发现：词频和相关性之间的关系是非线性的，也就是说，每个词对于文档的相关性分数不会超过一个特定的阈值，当词出现的次数达到一个阈值后，其影响就不在线性增加了，而这个阈值会跟文档本身有关。<br />
+<span class="math display">\[R(q_i,d)=\frac{f_i\cdot
+(k_1+1)}{f_i+K}\cdot\frac{qf_i\cdot(k_2+1)}{qf_i+k_2}\]</span><br />
+<span
+class="math display">\[K=k_1\cdot(1-b+b\cdot\frac{dl}{avgdl})\]</span><br />
+其中，<span class="math inline">\(f_i\)</span> 为单词 <span
+class="math inline">\(q_i\)</span> 在文档 <span
+class="math inline">\(d\)</span> 中的词频。<span
+class="math inline">\(qf_i\)</span> 为单词 <span
+class="math inline">\(q_i\)</span> 在 <span
+class="math inline">\(query\)</span> 中出现的频率。<br />
+<span class="math inline">\(dl\)</span> 是文档 <span
+class="math inline">\(d\)</span> 的长度，<span
+class="math inline">\(avgdl\)</span> 是所有文档的平均长度。<br />
+<span class="math inline">\(k_1\)</span>
+是一个正的参数（一般为2），用来标准化文章词频的范围，<span
+class="math inline">\(k_1\)</span>
+越大，我们越看重单词在文档d中词频的影响。<br />
+<span class="math inline">\(k_2\)</span>
+越大，越看重单词在query中的词频，<span
+class="math inline">\(k_2\)</span> 一般为1。<span
+class="math inline">\(b\)</span>为0~1之间的值（一般为0.75），决定使用文档长度来表示信息量的范围。</p>
+<h3 id="wand">WAND</h3>
+<p>wand（weak
+and）算法，通过计算每个词的贡献上限来估计文档的相关性上限，并与预设的阈值比较，进而跳过一些相关性一定达不到要求的文档，从而得到提速效果（<span
+class="math inline">\(query\)</span>比较长的时候使用）。</p>
+<p>wand 算法首先要估计<strong>每个词对相关性贡献的上限（upper
+bound）</strong>，最简单的相关性就是TF-IDF，一般IDF是固定的，因此只需要估计一个词在各个文档中的词频TF上限（即这个词在各个文档中最大的TF），该步骤通过线下计算即可完成。线下计算出各个词的相关性上限，可以计算出一个
+<span class="math inline">\(query\)</span>
+和一个文档的相关性上限值，就是它们共同出现的词的相关性上限值的和，通过与预设的阈值比较，如果
+<span class="math inline">\(query\)</span>
+与文档的相关性大于阈值，则进行下一步的计算，否则丢弃。<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">query：the quick brown fox     </span><br><span class="line">with top k=2</span><br></pre></td></tr></table></figure><br />
+根据倒排索引表，计算每个词的相关性贡献上限，即
+TF-IDF，取每个词的最大值即可，如下表中max值。<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">        max  倒排索引</span><br><span class="line">the     0.9  [2,3,7,8,9,10,11,12,13,17,18,19...]</span><br><span class="line">qucik   1.9  [5,6,9,11,14,18]</span><br><span class="line">brown   2.3  [2,4,5,15,42,84,96]</span><br><span class="line">fox     7.1  [5,7,8,13]</span><br></pre></td></tr></table></figure><br />
+根据max可得到 <span class="math inline">\(query\)</span>
+和文档的相关性上限。<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">the和brown都出现在2文档，假设2文档中the的tfidf为0.1，brown为1。</span><br><span class="line">the只出现在3文档，假设3文档中the的tfidf为0.5。</span><br><span class="line"># |score|id|</span><br><span class="line">------------</span><br><span class="line">1 | 2.0 | 2 |</span><br><span class="line">2 | 0.5 | 3 |</span><br><span class="line">一般用heap维持k个。</span><br></pre></td></tr></table></figure><br />
+维持top-2这个heap堆，不停的这样寻找。<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">当走到4的时候，只有brown出在4中，且max为2.3，那么文档4的score可能战胜0.5，计算文档4的tfidf，假设为1.4，替换掉0.5。</span><br><span class="line"># |score|id|</span><br><span class="line">------------</span><br><span class="line">1 | 2.0 | 2 |</span><br><span class="line">2 | 1.4 | 4 |</span><br><span class="line"></span><br><span class="line">同理，走到文档5的时候，brown、quick、fox都出现在文档5中，假设score计算为6.3，替换掉1.4。</span><br><span class="line"># |score|id|</span><br><span class="line">------------</span><br><span class="line">1 | 6.3 | 5 |</span><br><span class="line">2 | 2.0 | 2 |</span><br><span class="line"></span><br><span class="line">走到文档6的时候，只有quick出现在文档6中，且max为1.9，不可能超过heap中最小的score，所以跳过不用计算。</span><br></pre></td></tr></table></figure><br />
+预设的阈值，就是heap中最小score值，每次都是和它比较。</p>
+<h2 id="向量级别">向量级别</h2>
+<h3 id="sif">SIF</h3>
+<p>smooth inverse frequency（SIF），原论文<span class="exturl" data-url="aHR0cHM6Ly9vcGVucmV2aWV3Lm5ldC9wZGY/aWQ9U3lLMDB2NXh4">A SIMPLE BUT
+TOUGH-TO-BEAT BASELINE FOR SENTENCE EMBEDDINGS<i class="fa fa-external-link-alt"></i></span>，参考解析<span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vZGF0YWJpbmdvL3AvOTc4ODI0NC5odG1s">论文阅读<i class="fa fa-external-link-alt"></i></span>。</p>
+<h3 id="wmd">WMD</h3>
+<p>Word Mover's Distance，论文《From Word Embeddings To Document
+Distances》提出了一种新的计算文档距离的方法。该方法建立在Word
+Embeddings基础之上，通过累计计算一个文档中的词travel到另一篇文档中词的最小距离来进行度量。详情参考<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8yNTEzNDQ4Njg=">Word Mover's Distance
+论文笔记<i class="fa fa-external-link-alt"></i></span>，<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC84ODc4ODk2MQ==">对Word
+Mover's Distance的理解<i class="fa fa-external-link-alt"></i></span>。 优化算法WCD（Word centroid
+distance）和RWMD（Relaxed word moving distance）参考<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC85MTYyMTI0MQ==">深入理解WMD距离——一种衡量文本之间差异的度量<i class="fa fa-external-link-alt"></i></span>和<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8xNjQ5NTcyNTc=">WMD系列方法介绍（词移距离方法）<i class="fa fa-external-link-alt"></i></span>和<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC84ODY5OTc3Ng==">From Word Embeddings To
+Document Distances 小结<i class="fa fa-external-link-alt"></i></span>。</p>
+<h3 id="annoy">Annoy</h3>
+<p>Approximate Nearest Neighbors Oh Yeah，Annoy 是 Spotify
+开源的高维空间求近似最近邻的库，在 Spotify
+使用它进行音乐推荐。Annoy通过将海量数据建立成一个二叉树来使得每个数据查找时间复杂度是<span
+class="math inline">\(O(log n)\)</span>。详情参考<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hlcm9fZmFudGFvL2FydGljbGUvZGV0YWlscy83MDI0NTM4Nw==">海量数据相似查找系列2
+-- Annoy算法<i class="fa fa-external-link-alt"></i></span>。</p>
+<h3 id="hnsw">HNSW</h3>
+<p>Hierarchcal Navigable Small World graphs，详情参考<span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vZGFuZ3VpL3AvMTQ2NzUxMjEuaHRtbA==">HNSW<i class="fa fa-external-link-alt"></i></span>，<span class="exturl" data-url="aHR0cHM6Ly93d3cucnlhbmxpZ29kLmNvbS8yMDE4LzExLzI3LzIwMTgtMTEtMjclMjBITlNXJTIwJUU0JUJCJThCJUU3JUJCJThELw==">近似最近邻算法
+HNSW 学习笔记<i class="fa fa-external-link-alt"></i></span>，代码<a
+target="_blank" rel="noopener" href="https://github.com/facebookresearch/faiss/blob/13a2d4ef8fcb4aa8b92718ef4b9cc211033e7318/benchs/bench_hnsw.py">facebookresearch<br />
+/faiss</a>。</p>
+<h3 id="kd-tree">KD Tree</h3>
+<p>K dimentional Tree，详情参考李航的《统计学习方法》中K近邻算法，<span class="exturl" data-url="aHR0cHM6Ly9iYWlrZS5iYWlkdS5jb20vaXRlbS9rZC10cmVlLzIzMDI1MTU/ZnI9YWxhZGRpbg==">kd-tree<i class="fa fa-external-link-alt"></i></span>和<span class="exturl" data-url="aHR0cHM6Ly9sZWlsZWlsdW9sdW8uY29tL3Bvc3RzL2tkdHJlZS1hbGdvcml0aG0tYW5kLWltcGxlbWVudGF0aW9uLmh0bWw=">k-d
+tree算法原理及实现<i class="fa fa-external-link-alt"></i></span>。</p>
+<h3 id="lsh">LSH</h3>
+<p>Locality Sensitive Hashing，详情参考<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ljdnByL2FydGljbGUvZGV0YWlscy8xMjM0MjE1OQ==">局部敏感哈希(Locality-Sensitive
+Hashing, LSH)方法介绍<i class="fa fa-external-link-alt"></i></span>，<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hlcm9fZmFudGFvL2FydGljbGUvZGV0YWlscy83MDI0NTI4ND9zcG09MTAwMS4yMDE0LjMwMDEuNTUwMg==">海量数据相似查找系列1
+-- Minhashing &amp; LSH &amp; Simhash 技术汇总<i class="fa fa-external-link-alt"></i></span>。</p>
+<h2 id="faiss工具">Faiss工具</h2>
+<iframe src="https://nbviewer.org/github/soundmemories/StudyNotes/blob/f42b2aced7dfe7e25f078bf8c8a59725cced6c31/Cheatsheets/Faiss_demo.ipynb" width="1000" height="700">
+</iframe>
+<h1 id="ranking">Ranking</h1>
+<h2 id="评价指标">评价指标</h2>
+<h3 id="map">MAP</h3>
+<p>MAP（Mean Average
+Precision）：平均准确率是相关文档检索出后的准确率的平均值。<br />
+反映系统在全部相关文档的性能单值指标，检索出来的相关文档越靠前（rank越高），MAP就可能越高。<br />
+<img src="/images/检索和指标/1.png" width="100%"></p>
+<p>计算顺序：Precision-&gt;Average Precision-&gt;Mean Average
+Precision。<br />
+<strong>Precision</strong>：rank结果中的相关文档-&gt;<span
+class="math inline">\(\dfrac{\text{第几个相关文档}}{\text{文档rank数}}\)</span><br />
+<strong>Average Precision</strong>：<span
+class="math inline">\(\dfrac{rank结果中的相关文档Precision和}{相关文档总数}\)</span><br />
+<strong>Mean Average Precision</strong>：<span
+class="math inline">\(\dfrac{每次查询的Average
+Precision和}{查询次数}\)</span></p>
+<p>注意，在Precision中，分子是rank结果中的相关文档是第几个，比如主题1有4个相关网页，序号分别为1234，那么rank排序为1234和4321的Precision结果是一样的，分子都是1234，分母也都是1234。<strong>因为此MAP没有考虑相关文档内部排序</strong>。</p>
+<h3 id="ndcg">NDCG</h3>
+<p><strong>NDCG</strong>（Normalized Discounted Cumulative
+Gain），归一化折损累计增益。衡量和评价搜索结果算法。DCG的两个思想：<br />
+-
+<strong>高度关联的结果比一般关联度的结果更影响最终的指标得分</strong>。<br />
+-
+<strong>有高关联度的结果出现在更靠前的位置的时候，指标会越高</strong>。</p>
+<p><strong>CG</strong>（Cumulative
+Gain），是DCG的前身，只考虑到了相关性的关联程度，没有考虑到位置的因素。它是一个搜素结果相关性分数的总和。如一个搜索结果list页面有P个结果，其CG为：<br />
+<span
+class="math display">\[CG_{p}=\sum\limits_{i=1}^{p}rel_i\]</span><br />
+其中，<span class="math inline">\(rel_i\)</span> 代表 <span
+class="math inline">\(i\)</span> 位置上的相关度。<br />
+CG的统计不受到搜索结果的排序影响，CG得分高只能说明这个结果页面总体的质量比较高并不能说明这个算法做的排序好或差。</p>
+<p><strong>DCG</strong>（Discounted
+CG），就是在每一个CG的结果上除以一个折损值，为什么要这么做呢？目的就是为了让排名越靠前的结果越能影响最后的结果。公式：<br />
+<span
+class="math display">\[DCG_p=\sum\limits_{i=1}^{p}\frac{rel_i}{log_2(i+1)}=rel_1+\sum\limits_{i=2}^{p}\frac{rel_i}{log_2(i+1)}\]</span><br />
+当然还有一种比较常用的公式，用来增加相关度影响比重的DCG计算方式是：<br />
+<span class="math display">\[DCG_p=\sum\limits_{i=1}^{p}
+\frac{2^{rel_i}-1}{log_2(i+1)}\]</span></p>
+<p><strong>NDCG</strong>（Normalize
+DCG），由于搜索结果随着检索词的不同，返回的数量是不一致的，而DCG是一个累加的值，没法针对两个不同的搜索结果进行比较，因此需要归一化处理，这里是处以IDCG。<br />
+<span class="math display">\[nDCG_p=\frac{DCG_p}{IDCG_p}\]</span><br />
+IDCG（ideal
+DCG）为理想情况下最大的DCG值。IDCG如何计算？首先要拿到搜索的结果，人工对这些结果进行排序，排到最好的状态后，算出这个排列下本query的DCG，就是IDCG。<br />
+<span class="math display">\[\sum\limits_{i=1}^{|REL|}
+\frac{2^{rel_i}-1}{log_2(i+1)}\]</span><br />
+其中 <span class="math inline">\(|REL|\)</span>
+表示，结果按照相关性从大到小的顺序排序，取前p个结果组成的集合。也就是按照最优的方式对结果进行排序。</p>
+<h2 id="point-wise">Point-wise</h2>
+<p>Pointwise排序是将训练集中的每个item看作一个样本获取rank函数，主要解决方法是把分类问题转换为单个item的分类或回归问题。</p>
+<p>point-wise把排序问题当成一个二分类问题，训练的样本被组织成一个三元组
+<span class="math inline">\((q_i,c_{i,j},y_{i,j})\)</span>。<span
+class="math inline">\(y_{i,j}\)</span> 为一个二进制值，表明 <span
+class="math inline">\(c_{i,j}\)</span> 是否为 <span
+class="math inline">\(q_i\)</span>
+正确回答。我们就可以训练一个二分类网络：<span
+class="math inline">\(h_\theta(q_i,c_{i,j}\to y_{i,j})\)</span> ，其中
+<span class="math inline">\(0\leq y_{i,j}\leq
+1\)</span>。训练的目标为最小化数据集中所有问题和候选句子对的交叉熵。</p>
+<p><strong>算法</strong>：<br />
+- 基于回归的算法：此时，输出空间包含的是实值相关度得分。采用 ML
+中传统的回归方法即可。<br />
+- 基于分类的算法：此时，输出空间包含的是无序类别。对于二分类，SVM、LR
+等均可；对于多分类，提升树等均可。<br />
+-
+基于有序回归的算法：此时，输出空间包含的是有序类别。通常是找到一个打分函数，然后用一系列阈值对得分进行分割，得到有序类别。采用
+PRanking、基于 margin 的方法都可以。</p>
+<p>常见算法：Subset Ranking, McRank, Prank, OC SVM</p>
+<p><strong>缺点</strong>：<br />
+- ranking追求的是排序结果，并不要求精确打分，只要相对打分即可。<br />
+- pointwise类方法并没有考虑同一个query对应的docs间的内部依赖性。<br />
+-
+损失函数也没有利用model预测排序中的位置信息。因此，损失函数可能无意的过多强调那些不重要的docs，即会强调那些排序在后面对用户体验影响小的doc。<br />
+- query间docs的不平衡，如query1对应500个文档，query2对应10个文档。当不同
+query 对应不同数量的 docs 时，整体 loss 将会被对应 docs 数量大的 query
+组所支配，每组 query 应该都是等价的。</p>
+<p><strong>优点</strong>：速度快，标注简单，复杂度低。</p>
+<p><strong>改进</strong>：Pointwise 类算法也可以再改进，比如在 loss
+中引入基于 query 的正则化因子的 RankCosine 方法。</p>
+<h2 id="pair-wise-approach">Pair-wise Approach</h2>
+<p>Pairwise排序是将同一个查询中两个不同的item作为一个样本，主要思想是把rank问题转换为二值分类问题。</p>
+<p>在pair-wise方法中排序模型 <span
+class="math inline">\(h_{\theta}\)</span>
+让正确的回答的得分明显高于错误的获选答案。给一个提问，pair-wise给定一对候选回答学习并预测哪一个句子才是提问的最佳回答。训练的样例为
+<span class="math inline">\((q_i,c_i^+,c_i^-)\)</span> ，其中 <span
+class="math inline">\(q_i\)</span> 为提问， <span
+class="math inline">\(c_i^+\)</span> 为正确的回答，<span
+class="math inline">\(c_i^-\)</span> 为候选答案中一个错误的回答。</p>
+<p><strong>算法</strong>：基于二分类的算法，比如Random
+Forest，GBDT，RankSVM，RankBoost，RankNet，Lambda Rank,
+LambdaMart等。RankNet：原本Ranking常见的评价指标都无法求梯度，因此没法直接对评价指标做梯度下降，而它们将不适宜用梯度下降求解的Ranking问题，转化为对偏序概率的交叉熵损失函数的优化问题，从而适用梯度下降方法。</p>
+<p><strong>缺点</strong>：<br />
+- doc pair 的数量将是 doc 数量的二次（<span
+class="math inline">\(C_n^2\)</span>），从而 pointwise 方法就存在的
+query 间 doc 数量的不平衡性将在 pairwise 方法中进一步放大。<br />
+- pairwise 方法相对 pointwise
+方法对噪声标注更敏感，即一个错误标注会引起多个 doc pair 标注错误。<br />
+- pairwise 方法仅考虑了 doc pair 的相对位置，损失函数还是没有利用 model
+预测排序中的位置信息。<br />
+- 如果人工标注包含多有序类别，那么转化成 pairwise preference
+时必定会损失掉一些更细粒度的相关度标注信息。<br />
+- pairwise 方法只考虑了内部相对位置排序，没有考虑整体排序。</p>
+<p><strong>改进</strong>：<br />
+- IRSVM，主要针对前述第一个缺陷。<br />
+- 采用 Sigmoid 进行改进的 pairwise 方法，主要针对前述第二个缺陷。<br />
+- P-norm push，Ordered weighted average ranking，LambdaRank，Sparse
+ranker，主要针对前述第三个缺陷。<br />
+- Multiple hyperplane ranker，magnitude-preserving
+ranking，主要针对前述第四个缺陷。</p>
+<h2 id="list-wise-approach">List-wise Approach</h2>
+<p>List-wise排序是将整个item序列看作一个样本，通过<strong>直接优化信息检索的评价方法</strong>和<strong>定义损失函数</strong>两种方法实现。</p>
+<p>pair-wise 和 point-wise
+忽视了一个事实就是答案选择，即从一系列候选句子中的预测问题。在list-wise中单一训练样本就：query和它的所有候选句子。在训练过程中给定提问数据
+<span class="math inline">\(q_i\)</span> 和它的一系列候选句子 <span
+class="math inline">\(C(c_{i1},c_{i2},\dots,c_{im})\)</span> 和标签
+<span
+class="math inline">\(Y(y_{i1},y_{i2},\dots,y_{im})\)</span>，归一化的得分向量
+<span class="math inline">\(S\)</span> 通过如下公式计算：<br />
+<span
+class="math display">\[Score_j=h_{\theta}(q_i,c_{ij})\]</span><br />
+<span
+class="math display">\[S=softmax([Score_1,Score_2,\dots,Score_m])\]</span></p>
+<p><strong>算法</strong>：<br />
+- 直接基于评价指标的算法：直接取优化 ranking
+的评价指标，但这并不简单，因为评价指标基本都是离散不可微的，具体处理方式：<br />
+- 优化基于评价指标的 ranking error
+的连续可微的近似，如SoftRank，ApproximateRank，SmoothRank。<br />
+- 优化基于评价指标的 ranking error 的连续可微的上界，如
+SVM-MAP，SVM-NDCG，PermuRank。<br />
+- 使用可以优化非平滑目标函数的优化技术，如 AdaRank，RankGP。<br />
+- 非直接基于评价指标的算法：这里，不再使用和评价指标相关的 loss
+来优化模型，而是设计能衡量模型输出与真实排列之间差异的
+loss，如此获得的模型在评价指标上也能获得不错的性能。经典的如
+，ListNet，ListMLE，StructRank，BoltzRank。</p>
+<p>直接基于评价指标的算法的优化目标都是直接和 ranking
+的评价指标有关。现在来考虑一个概念，informativeness。通常认为一个更有信息量的指标，可以产生更有效的排序模型。而多层评价指标（NDCG）相较二元评价（AP）指标通常更富信息量。因此，有时虽然使用信息量更少的指标来评估模型，但仍然可以使用更富信息量的指标来作为
+loss 进行模型训练。</p>
+<p><strong>缺点</strong>：<br />
+- listwise 类相较 pointwise、pairwise 对 ranking 的 model 更自然，解决了
+ranking 应该基于 query 和 position 问题。<br />
+- listwise 类存在的主要缺陷是：一些 ranking 算法需要基于排列来计算
+loss，从而使得训练复杂度较高，如 ListNet和
+BoltzRank。此外，位置信息并没有在 loss 中得到充分利用，可以考虑在
+ListNet 和 ListMLE 的 loss 中引入位置折扣因子。</p>
+<h2 id="cfg">CFG</h2>
+<p>CFG：Context free grammars，上下文无关文法。是一种形式文法（formal
+grammar）。形式文法是形式语言（formal language）的文法，由一组产生规则
+（production rules）组成，描述该形式语言中所有可能的字符串形式。</p>
+<p>上面这段话比价令人费解，我理解，就是每个句子的产生都遵循着一定的规则（规则学习的理念）。在这里面有几个概念：<br />
+- 终止符：可以理解为基础符号，词法符号，是不可替
+代的，天然存在，不能通过文法规则生成。<br />
+- 非终结符，或者句法变量。<br />
+- Production rules： grammar
+是由终结符集、非终结符集和产生规则共同组成。产生规则定义了符号之间如何转换替代。规则的左侧是规则头，是可以被替代的符号；右侧是规则体，是具体的内容。</p>
+<p>CFGs的性质：<br />
+- 一个CFG定义了一个可能的推导的集合。<br />
+-
+一句话如果是可以被CFG定义出来，那么至少有一个推导可以产生这句话。<br />
+-
+每一句话的CFG可以是有歧义的（即有多种推导的可能，因为一个非终结符同时存在了多条规则），至于如何解决这个问题，在PCFGs中，也就是概率上下文无关文法中会有介绍，简单来说就是给予每条规则一个概率，再利用这些概率求得概率最大的那棵解析树。</p>
+<p>CKY算法：CKY处理的CFG必须是CNF形式的。所以算法首先要把非CNF形式的CFG转成CNF形式。</p>
+<h1 id="相似度的计算">相似度的计算</h1>
+<h2 id="统计指标">统计指标</h2>
+<h3 id="cosine">Cosine</h3>
+<p><span class="math display">\[ S = \frac{x\cdot y}{|x||y|}
+\]</span><br />
+两向量越相似，向量夹角越小，cosine绝对值越大；值为负，两向量负相关。</p>
+<h3 id="jaccard">Jaccard</h3>
+<p><span class="math display">\[ J(A,B)=\frac{|A\cap B|}{|A \cup B|}
+\]</span><br />
+值越大越相似，分子是A和B的交集大小，分母是A和B的并集大小。<br />
+Jaccard系数主要用于计算符号度量或布尔值度量的个体间的相似度，无法衡量差异具体值的大小，只能获得“是否相同”这个结果，所以Jaccard系数只关心个体间共同具有的特征是否一致这个问题。</p>
+<h3 id="pearson">Pearson</h3>
+<p><span class="math display">\[ r =
+\frac{\sum\limits_{i=1}^n(x_i-\overline{x})(y_i-\overline{y})}{\sqrt{\sum\limits_{i=1}^n(x_i-\overline{x})^2}\sum\limits_{i=1}^n(y_i-\overline{y})^2}
+\]</span><br />
+两个变量之间的协方差和标准差的商。反映两个变量X和Y的线性相关程度，r值介于-1到1之间，绝对值越大表明相关性越强。</p>
+<h3 id="euclidian">Euclidian</h3>
+<p><span class="math display">\[
+d=\sqrt{\sum\limits_{i=1}^n(x_i-y_i)^2}\]</span><br />
+欧氏距离。</p>
+<h2 id="文本距离">文本距离</h2>
+<h3 id="ed">ED</h3>
+<p>编辑距离（Edit Distance，ED），也叫Levenshtein
+Distance，是用来度量两个序列相似程度的指标。通俗地来讲，编辑距离指的是在两个单词之间，由其中一个单词转换为另一个单词所需要的<strong>最少单字符编辑</strong>次数。详情参考<span class="exturl" data-url="aHR0cHM6Ly93d3cuamlhbnNodS5jb20vcC9hNjE3ZDIwMTYyY2Y=">详解编辑距离(Edit
+Distance)及其代码实现<i class="fa fa-external-link-alt"></i></span>和<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Jhb2RyZWFtL2FydGljbGUvZGV0YWlscy84MDQxNzY5NQ==">最小编辑距离算法
+Edit Distance（经典DP）<i class="fa fa-external-link-alt"></i></span></p>
+<h3 id="lcs">LCS</h3>
+<p>最长公共子序列（Longest Common
+Subsequence，LCS），一个序列，如果是两个或多个已知序列的子序列，且是所有子序列中最长的，则为最长公共子序列。</p>
+<p>LCS和ED，两者都可以衡量字符串的相近程度。不同之处在于，LCS对两个的长度差异不敏感，编辑距离对两者的长度差异敏感。LCS衡量了两者的重合度，编辑距离衡量了两者的长度和重合度。对编辑距离的增删代价取0，改操作换成相同奖励，就是LCS。</p>
+<p>算法详解：<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NpbmF0XzM4ODE2OTI0L2FydGljbGUvZGV0YWlscy84MzI0MzQzNA==">LCS(longest
+common subsequence)（最长公共子序列）<i class="fa fa-external-link-alt"></i></span><br />
+### WAM<br />
+句向量表示（Word Averaging
+Model，WAM），首先对句子进行分词，然后对分好的每一个词获取其对应的
+Vector，然后将所有 Vector 相加并求平均，这样就可得到 Sentence
+Vector。</p>
+<h2 id="深度匹配">深度匹配</h2>
+<p>使用Bert的序列相似度预测。</p>
+<p><strong>Poly-encoders</strong>：开发了一种新的transformer体系结构，即Poly-encoder，该体系结构学习了全局而不是令牌级别的self-attention特征，同时解决了
+DSSM 式的 Bi-encoder 匹配质量低的问题和 ARC-II、BERT 等交互式的
+Cross-encoder 匹配速度慢的问题。</p>
+<p>论文原文：<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE5MDUuMDE5Njl2Mi5wZGY=">Poly-encoders: Transformer
+Architectures and Pre-training Strategies for Fast and Accurate
+Multi-sentence Scoring<i class="fa fa-external-link-alt"></i></span>。<br />
+详解参考：<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8xNDIxNDgzNzM=">《Poly-encoders》阅读笔记<i class="fa fa-external-link-alt"></i></span>、<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8xMTk0NDQ2Mzc=">PolyEncoder-Facebook的全新信息匹配架构-提速3000倍(附复现结果与代码)<i class="fa fa-external-link-alt"></i></span>。</p>
+<p><strong>Sentence-BERT</strong>：虽然BERT和RoBERTa在很多句子对形式的回归任务（例如文本语义相似度）上达到了SOTA效果，但是它们还存在一些缺点：在这些任务中，它们均需要将比较的两个句子都传入到模型中计算，计算开销过大。BERT模型在一个1W句子集合中，找出最相近的一个句子对，需要5千万次推断计算（约65小时）才能完成，所以BERT并不适合语义相似度搜索等任务。</p>
+<p>在该论文中，作者提出了一个新的模型，Sentence-BERT（简称SBERT）。SBERT采用双重或三重BERT网络结构，具体结构介绍会在后文中详细介绍。如果使用的是基于RoBERTa模型，则改造后的模型简称为SRoBERTa。</p>
+<p>通过SBERT模型获取到的句子embedding，可以直接通过cos相似度计算两个句子的相似度，这样就大大减少了计算量。因为在使用BERT模型进行句子间相似度的判断时，需要从句子集合中，选出两个句子进行组合，传入BERT中进行计算，而使用SBERT模型，只需要将集合中每个句子单独传入到模型中，得到每个句子的embeding，计算相似度只需要使用cos函数计算两两embeding的cos距离即可。因此，使用BERT/RoBERTa模型需要65h才能完成的寻找最相似句子对任务，SBERT模型完成仅需5s。</p>
+<p>作者在一些STS任务和迁移学习任务上评估SBERT模型，该模型达到了新的SOTA水平。</p>
+<p>论文原文：<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE5MDguMTAwODQucGRm">Sentence-BERT: Sentence
+Embeddings using Siamese BERT-Networks<i class="fa fa-external-link-alt"></i></span>。<br />
+模型地址：<span class="exturl" data-url="aHR0cHM6Ly93d3cuc2JlcnQubmV0Lw==">Sentence-Transformers<i class="fa fa-external-link-alt"></i></span>。<br />
+详解参考<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Zlbmd4aW5saW51eC9hcnRpY2xlL2RldGFpbHMvMTA5MTk1NzYy">论文阅读Sentence-BERT:
+Sentence Embeddings using Siamese BERT-Networks<i class="fa fa-external-link-alt"></i></span>。</p>
+<p><strong>SimCSE</strong>：句子向量表示一直是NLP领域的一个热门问题，主要是因为其应用范围比较广泛，而且作为很多任务的基石。最近连续出了好几篇关于句子表示的文章，从前段时间的BERT-Flow,
+BERT-whitening到最近的这个SimCSE。BERT-Flow以及BERT-whitenning其实像是后处理，将bert的输出进行一定的处理来解决各向异性的问题。本篇的这个工作则是采用了自监督来提升模型的句子表示能力，说到自监督最关键的问题应该就是如何构建正负例了。本文的正负例有两种构建方式，对于无监督来说，作者使用了Droupout来构建正例，将一个样本经过encoder两次，就得到了一个正例对，负例则是同一个batch里的其它句子。而对于有监督则采用了SNLI数据集天然的结构，对立类别的是负例，另外两个类别的就是正例。没错就是如此简单的方法催生了新的SOTA，而且提升还非常的明显。<br />
+论文原文：<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzIxMDQuMDg4MjEucGRm">SimCSE: Simple
+Contrastive Learning of Sentence Embeddings<i class="fa fa-external-link-alt"></i></span>。</p>
+<h1 id="参考文献">参考文献</h1>
+<p><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC83OTIwMjE1MQ==">BM25算法, Best
+Matching<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8xNTI1MjI5MDY=">K近邻算法哪家强？KDTree、Annoy、HNSW原理和使用方法介绍<i class="fa fa-external-link-alt"></i></span></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NvZnRfenp0aS9hcnRpY2xlL2RldGFpbHMvODc1Mjc5MTk=">18种和“距离(distance)”、“相似度(similarity)”相关的量的小结<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vZGFuZ3VpL3AvMTQ2NzU1NzUuaHRtbA==">相似度计算方法<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9tcC53ZWl4aW4ucXEuY29tL3MvdGFzWnRaMmRRT1NZdDF0TzdIdXJFZw==">机器学习中的相似性度量总结<i class="fa fa-external-link-alt"></i></span></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3ppamlrYW53YS9hcnRpY2xlL2RldGFpbHMvODc5ODAyOTA=">信息检索的评价指标<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vYnktZHJlYW0vcC85NDAzOTg0Lmh0bWw=">搜索评价指标——NDCG<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTAxMzg3NTgvYXJ0aWNsZS9kZXRhaWxzLzY5OTM2MDQxLw==">信息检索中常用的评价指标：MAP,nDCG,ERR,F-measure<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9tcC53ZWl4aW4ucXEuY29tL3MvMlZjQnd2LW9qNm9mT3l5R1ZpV3hmQQ==">从L2R开始理解一下Xgboost的
+'objective': 'rank:pairwise'参数<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3F1ZXN0aW9uLzIwNTY5ODMy">LTR （learning to
+Rank）<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMzc0NzgzNzM=">推荐- Point
+wise、pairwise及list wise的比较<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vc2hlbnhpYW9saW4vcC85NzIzODYwLmh0bWw=">Learning to
+Rank：Point-wise、Pair-wise 和 List-wise区别<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vYmVudHV3dXlpbmcvcC82NjgxOTQzLmh0bWw=">Learning to
+Rank简介<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vYmVudHV3dXlpbmcvcC82NjkwODM2Lmh0bWw=">Learning to
+Rank算法介绍：RankNet，LambdaRank，LambdaMart<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zOTgyNjQ1MTQ=">CFG：Context free
+grammars 上下文无关文法<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0NoYXNlMTk5OC9hcnRpY2xlL2RldGFpbHMvODQ1MDQxOTE=">基于CYK+PCFG的短语结构句法分析<i class="fa fa-external-link-alt"></i></span></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>SoundMemories
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://soundmemories.github.io/2021/07/22/NLP/07.%E6%A3%80%E7%B4%A2%E7%B3%BB%E7%BB%9F%E5%92%8C%E5%B8%B8%E8%A7%81%E6%8C%87%E6%A0%87/" title="检索系统和常见指标">https://soundmemories.github.io/2021/07/22/NLP/07.检索系统和常见指标/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/NLP/" rel="tag"><i class="fa fa-tag"></i> NLP</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/07/21/NLP/06.%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F/" rel="prev" title="对话系统简介">
+                  <i class="fa fa-chevron-left"></i> 对话系统简介
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/07/23/NLP/08.%E8%92%B8%E9%A6%8F/" rel="next" title="蒸馏">
+                  蒸馏 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">SoundMemories</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"neutral"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.min.js","integrity":"sha256-JFptYy4KzJ5OQP+Q9fubNf3cxpPPmZKqUOovyEONKrQ="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://soundmemories.github.io/2021/07/22/NLP/07.%E6%A3%80%E7%B4%A2%E7%B3%BB%E7%BB%9F%E5%92%8C%E5%B8%B8%E8%A7%81%E6%8C%87%E6%A0%87/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.1","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="安装 XGBoost安装很简单，直接pip install xgboost即可。 注意，目前只有Linux x86_64和Windows支持GPU，只有Linux x86_64支持多节点GPU。 使用例子： 12345678910import xgboost as xgb# read in datadtrain &#x3D; xgb.DMatrix(&amp;#x27;demo&#x2F;data&#x2F;agaricus">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ML-XGBoost">
+<meta property="og:url" content="https://soundmemories.github.io/2020/05/28/ML/09.ML-XGBoost/index.html">
+<meta property="og:site_name" content="SoundMemories">
+<meta property="og:description" content="安装 XGBoost安装很简单，直接pip install xgboost即可。 注意，目前只有Linux x86_64和Windows支持GPU，只有Linux x86_64支持多节点GPU。 使用例子： 12345678910import xgboost as xgb# read in datadtrain &#x3D; xgb.DMatrix(&amp;#x27;demo&#x2F;data&#x2F;agaricus">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-27T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-26T11:07:05.950Z">
+<meta property="article:author" content="SoundMemories">
+<meta property="article:tag" content="ML">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://soundmemories.github.io/2020/05/28/ML/09.ML-XGBoost/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://soundmemories.github.io/2020/05/28/ML/09.ML-XGBoost/","path":"2020/05/28/ML/09.ML-XGBoost/","title":"ML-XGBoost"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>ML-XGBoost | SoundMemories</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">SoundMemories</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">128</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">参数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E7%94%A8%E5%8F%82%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">通用参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tree-booster%E5%8F%82%E6%95%B0"><span class="nav-number">2.2.</span> <span class="nav-text">Tree Booster参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dart-booster%E5%8F%82%E6%95%B0"><span class="nav-number">2.3.</span> <span class="nav-text">Dart Booster参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linear-booster"><span class="nav-number">2.4.</span> <span class="nav-text">Linear Booster</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tweedie-regression%E5%8F%82%E6%95%B0"><span class="nav-number">2.5.</span> <span class="nav-text">Tweedie Regression参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#learning-task%E5%8F%82%E6%95%B0"><span class="nav-number">2.6.</span> <span class="nav-text">Learning Task参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0"><span class="nav-number">2.7.</span> <span class="nav-text">命令行参数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#scikit-learn-api"><span class="nav-number">3.</span> <span class="nav-text">Scikit-Learn API</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SoundMemories"
+      src="/images/avstar.png">
+  <p class="site-author-name" itemprop="name">SoundMemories</p>
+  <div class="site-description" itemprop="description">今日事，今日毕</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">128</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NvdW5kbWVtb3JpZXM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;soundmemories"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNvdW5kbWVtb3JpZXNAMTYzLmNvbQ==" title="E-Mail → mailto:soundmemories@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+        <div class="pjax">
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/05/28/ML/09.ML-XGBoost/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="ML-XGBoost | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ML-XGBoost
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-05-28 00:00:00" itemprop="dateCreated datePublished" datetime="2020-05-28T00:00:00+08:00">2020-05-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>23 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="安装">安装</h1>
+<p>XGBoost安装很简单，直接<code>pip install xgboost</code>即可。</p>
+<p>注意，目前只有Linux x86_64和Windows支持GPU，只有Linux
+x86_64支持多节点GPU。</p>
+<p>使用例子：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> xgboost <span class="keyword">as</span> xgb</span><br><span class="line"><span class="comment"># read in data</span></span><br><span class="line">dtrain = xgb.DMatrix(<span class="string">&#x27;demo/data/agaricus.txt.train&#x27;</span>)</span><br><span class="line">dtest = xgb.DMatrix(<span class="string">&#x27;demo/data/agaricus.txt.test&#x27;</span>)</span><br><span class="line"><span class="comment"># specify parameters via map</span></span><br><span class="line">param = &#123;<span class="string">&#x27;max_depth&#x27;</span>:<span class="number">2</span>, <span class="string">&#x27;eta&#x27;</span>:<span class="number">1</span>, <span class="string">&#x27;objective&#x27;</span>:<span class="string">&#x27;binary:logistic&#x27;</span> &#125;</span><br><span class="line">num_round = <span class="number">2</span></span><br><span class="line">bst = xgb.train(param, dtrain, num_round)</span><br><span class="line"><span class="comment"># make prediction</span></span><br><span class="line">preds = bst.predict(dtest)</span><br></pre></td></tr></table></figure><br />
+XGBoost详细信息，可以参考官网<span class="exturl" data-url="aHR0cHM6Ly94Z2Jvb3N0LnJlYWR0aGVkb2NzLmlvL2VuL2xhdGVzdC90dXRvcmlhbHMvaW5kZXguaHRtbA==">XGBoost
+Tutorials<i class="fa fa-external-link-alt"></i></span>。</p>
+<p>高频问题，可以参考官网<span class="exturl" data-url="aHR0cHM6Ly94Z2Jvb3N0LnJlYWR0aGVkb2NzLmlvL2VuL2xhdGVzdC9mYXEuaHRtbA==">Frequently
+Asked Questions<i class="fa fa-external-link-alt"></i></span>。<br />
+<span id="more"></span></p>
+<h1 id="参数">参数</h1>
+<p>参考官网<span class="exturl" data-url="aHR0cHM6Ly94Z2Jvb3N0LnJlYWR0aGVkb2NzLmlvL2VuL2xhdGVzdC9wYXJhbWV0ZXIuaHRtbA==">XGBoost
+Parameters<i class="fa fa-external-link-alt"></i></span>。</p>
+<p>经验总结：<br />
+当出现过拟合时，有两类参数可以缓解：<br />
+（1）第一类参数：用于<strong>直接控制模型的复杂度</strong>。包括max_depth,min_child_weight,gamma等参数。<br />
+（2）第二类参数：用于<strong>增加随机性</strong>，从而使得模型在训练时对于噪音不敏感。包括subsample,colsample_bytree等参数。<br />
+（3）除此之外，可直接减少步长eta，但是此时需要增加num_round参数。</p>
+<p>当遇到数据不平衡时（如广告点击率预测任务），有两种方式提高模型的预测性能：<br />
+（1）如果你关心的是预测的AUC：使用AUC来评估；通过scale_pos_weight参数来平衡正负样本的权重。<br />
+（2）如果你关心的是预测的正确率：不能重新平衡正负样本；设置max_delta_step为一个有限的值（如1）从而有助于收敛。</p>
+<h2 id="通用参数">通用参数</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">booster</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">指定了使用那一种booster。可选的值为：</span></span><br><span class="line"><span class="string">&#x27;gbtree&#x27;： 采用xgboost (默认值)。</span></span><br><span class="line"><span class="string">&#x27;gblinear&#x27;： 采用线性模型。</span></span><br><span class="line"><span class="string">            使用带l1,l2正则化的线性回归模型作为基学习器。</span></span><br><span class="line"><span class="string">            因为boost算法是一个线性叠加的过程，而线性回归模型也是一个线性叠加的过程。</span></span><br><span class="line"><span class="string">            因此叠加的最终结果就是一个整体的线性模型，xgboost最后会获得这个线性模型的系数。</span></span><br><span class="line"><span class="string">&#x27;dart&#x27;：采用dart booster。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">verbosity </span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">打印消息的详细程度。可选的值为：</span></span><br><span class="line"><span class="string">0：silent</span></span><br><span class="line"><span class="string">1：warning</span></span><br><span class="line"><span class="string">2：info</span></span><br><span class="line"><span class="string">3：debug</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">validate_parameters</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">默认为False，当设置为True时，XGBoost将执行输入参数的验证以检查是否使用了参数。</span></span><br><span class="line"><span class="string">该功能仍处于试验阶段。预计会有一些误报。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">nthread</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">指定了运行时的并行线程的数量。如果未设定该参数，则默认值为可用的最大线程数。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">disable_default_eval_metric</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">禁用默认指标。默认为False，设置为True/1则禁用默认指标。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">num_pbuffer</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">指定了prediction buffer的大小。通常设定为训练样本的数量。</span></span><br><span class="line"><span class="string">该参数由xgboost自动设定，无需用户指定。</span></span><br><span class="line"><span class="string">该buffer用于保存上一轮boostring step的预测结果。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">num_feature</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">样本的特征数量。通常设定为特征的最大维数。</span></span><br><span class="line"><span class="string">该参数由xgboost自动设定，无需用户指定。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<h2 id="tree-booster参数">Tree Booster参数</h2>
+<p>针对Tree
+Booster的参数，适用于<code>booster='gbtree''/dart'</code>。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br></pre></td><td class="code"><pre><span class="line">eta/learning_rate</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">学习率。默认为0.3。范围为[0,1]。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">gamma/min_split_loss</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">最小划分损失。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">它刻画的是：对于一个叶子节点，当对它采取划分之后，损失函数的降低值的阈值。</span></span><br><span class="line"><span class="string">如果大于该阈值，则该叶子节点值得继续划分。</span></span><br><span class="line"><span class="string">如果小于该阈值，则该叶子节点不值得继续划分。</span></span><br><span class="line"><span class="string">该值越大，则算法越保守（尽可能的少划分）。默认值为0。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">max_depth</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">每棵子树的最大深度。其取值范围为[0,∞]，0表示没有限制，默认值为6。</span></span><br><span class="line"><span class="string">该值越大，则子树越复杂；值越小，则子树越简单。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">min_child_weight</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">子节点的权重阈值。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">它刻画的是：对于一个叶子节点，当对它采取划分之后，它的所有子节点的权重之和的阈值。</span></span><br><span class="line"><span class="string">如果它的所有子节点的权重之和大于该阈值，则该叶子节点值得继续划分。</span></span><br><span class="line"><span class="string">如果它的所有子节点的权重之和小于该阈值，则该叶子节点不值得继续划分。</span></span><br><span class="line"><span class="string">该值越大，则算法越保守（尽可能的少划分）。默认值为1。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">权重：</span></span><br><span class="line"><span class="string">（1）对于线性模型(booster=gblinear)，权重是：叶子节点包含的样本数量。因此该参数就是每个节点包含的最少样本数量。</span></span><br><span class="line"><span class="string">（2）对于树模型(booster=gbtree,dart)，权重是：叶子节点包含样本的所有二阶偏导数之和。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">max_delta_step</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">每棵树的权重估计时的最大delta step。取值范围为[0,∞]，0表示没有限制，默认值为0。</span></span><br><span class="line"><span class="string">通常该参数不需要设置，但是在逻辑回归中，如果类别比例非常不平衡时，该参数可能有帮助。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">subsample</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">对训练样本的采样比例。取值范围为(0,1]，默认值为1。</span></span><br><span class="line"><span class="string">如果为0.5，表示随机使用一半的训练样本来训练子树。它有助于缓解过拟合。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">sampling_method</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">用于对训练实例进行采样的方法。可选值为：</span></span><br><span class="line"><span class="string">&#x27;uniform&#x27;：每个训练实例被选中的概率相等。通常设置子subsample&gt;=0.5以获得良好的结果。</span></span><br><span class="line"><span class="string">&#x27;gradient_based&#x27;：每个训练实例的选择概率与梯度的正则化绝对值（公式为(g^2+λh^2)^(1/2)）成正比。</span></span><br><span class="line"><span class="string">                 subsample可以设置为低至0.1，而不会损失模型精度。</span></span><br><span class="line"><span class="string">                 注意这种采样方式只有在tree_method=&#x27;gpu_hist&#x27;时才支持；其他树方法只支持&#x27;uniform&#x27;采样。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">colsample_bytree</span><br><span class="line">colsample_bylevel</span><br><span class="line">colsample_bynode </span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">这是用于对列进行采样的一系列参数。</span></span><br><span class="line"><span class="string">所有的colsample_by*参数范围为(0, 1]，默认为1。</span></span><br><span class="line"><span class="string">colsample_bytree：构建子树时，对特征的采样比例。</span></span><br><span class="line"><span class="string">                  如果为0.5，表示随机使用一半的特征来训练子树。它有助于缓解过拟合。</span></span><br><span class="line"><span class="string">colsample_bylevel：每个level寻找划分点时，对特征的采样比例。</span></span><br><span class="line"><span class="string">                  如果为0.5，表示随机使用一半的特征来寻找最佳划分点。它有助于缓解过拟合。</span></span><br><span class="line"><span class="string">colsample_bynode：每个结点寻找划分点时，对特征的采样比例。</span></span><br><span class="line"><span class="string">                  如果为0.5，表示随机使用一半的特征来寻找最佳划分点。它有助于缓解过拟合。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">在使用Python接口时，tree_method为&#123;&#x27;hist&#x27;,&#x27;gpu_hist&#x27;,&#x27;exact&#x27;&#125;时，</span></span><br><span class="line"><span class="string">可以为DMatrix设置 feature_weights参数以定义使用列采样时每个特征被选择的概率。</span></span><br><span class="line"><span class="string">在skleanr的fit方法中也有类似的参数。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">lambda</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">L2正则化系数（基于weights的正则化），默认为1。该值越大则模型越简单。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">alpha</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">L1正则化系数（基于weights的正则化），默认为0。该值越大则模型越简单。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">tree_method</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">指定了构建树的算法，可以为下列的值：</span></span><br><span class="line"><span class="string">&#x27;auto&#x27;：默认值，使用启发式算法来选择一个更快的tree_method：</span></span><br><span class="line"><span class="string">        对于小的和中等的训练集，使用exact greedy算法分裂节点。</span></span><br><span class="line"><span class="string">        对于非常大的训练集，使用近似算法分裂节点。</span></span><br><span class="line"><span class="string">        旧版本在单机上总是使用exact greedy分裂节点。</span></span><br><span class="line"><span class="string">&#x27;exact&#x27;：使用exact greedy算法分裂节点。</span></span><br><span class="line"><span class="string">&#x27;approx&#x27;：使用近似算法分裂节点。</span></span><br><span class="line"><span class="string">&#x27;hist&#x27;：使用histogram优化的近似算法分裂节点（比如使用了bin cacheing优化）。</span></span><br><span class="line"><span class="string">&#x27;gpu_hist&#x27;：基于GPU的histogram算法分裂节点。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">分布式支持&#x27;approx&#x27;,&#x27;hist&#x27;,&#x27;gpu_hist&#x27;。</span></span><br><span class="line"><span class="string">外存版本支持&#x27;approx&#x27;,&#x27;gpu_hist&#x27;。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">sketch_eps</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">指定了分桶的步长。其取值范围为(0,1)，默认值为0.03。</span></span><br><span class="line"><span class="string">它仅仅用于tree_medhod=&#x27;approx&#x27;。它会产生大约 1/sketch_pes 个分桶。</span></span><br><span class="line"><span class="string">它并不会显示的分桶，而是会每隔sketch_pes个单位（一个单位表示最大值减去最小值的区间）统计一次。</span></span><br><span class="line"><span class="string">通常用户不必调整这个参数。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">scale_pos_weight</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">用于调整正负样本的权重，常用于类别不平衡的分类问题。默认为1。</span></span><br><span class="line"><span class="string">一个典型的参数值为：负样本数量/正样本数量。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">updater</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">它是一个逗号分隔的字符串，指定了一组需要运行的tree updaters，用于构建和修正决策树。默认为 &#x27;grow_colmaker,prune&#x27;。</span></span><br><span class="line"><span class="string">该参数通常是自动设定的，无需用户指定。但是用户也可以显式的指定：</span></span><br><span class="line"><span class="string">&#x27;grow_colmaker&#x27;：非分布式基于列的树构造。</span></span><br><span class="line"><span class="string">&#x27;grow_histmaker&#x27;：基于直方图计数全局提议的基于行数据拆分的分布式树构建。</span></span><br><span class="line"><span class="string">&#x27;grow_local_histmaker&#x27;：基于局部直方图计数。</span></span><br><span class="line"><span class="string">&#x27;grow_quantile_histmaker&#x27;：使用量化直方图生成树。</span></span><br><span class="line"><span class="string">&#x27;grow_gpu_hist&#x27;：使用GPU生成树。</span></span><br><span class="line"><span class="string">&#x27;sync&#x27;：同步所有分布式节点中的树。</span></span><br><span class="line"><span class="string">&#x27;refresh&#x27;：根据当前数据，刷新树的统计信息和叶子值。不会执行数据行的随机子采样。</span></span><br><span class="line"><span class="string">&#x27;prune&#x27;：当loss&lt;min_split_loss/gamma时修建切分。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">refresh_leaf</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">它是一个updater plugin。</span></span><br><span class="line"><span class="string">如果为true，则树节点的统计数据和树的叶节点数据都被更新；否则只有树节点的统计数据被更新。默认为1。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">process_type</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">指定要执行的处理过程（如：创建子树、更新子树）。值为&#123;&#x27;default&#x27;,&#x27;update&#x27;&#125;</span></span><br><span class="line"><span class="string">该参数通常是自动设定的，无需用户指定。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">grow_policy</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">用于指定子树的生长策略。</span></span><br><span class="line"><span class="string">仅仅支持tree_method=&#x27;hist&#x27;/&#x27;gpu_hist&#x27;。有两种策略：</span></span><br><span class="line"><span class="string">&#x27;depthwise&#x27;：默认值，优先拆分那些靠近根部的子节点。</span></span><br><span class="line"><span class="string">&#x27;lossguide&#x27;：优先拆分导致损失函数降低最快的子节点。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">max_leaves</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">最多的叶子节点。如果为0，则没有限制。默认值为0。</span></span><br><span class="line"><span class="string">该参数仅在grow_policy=&#x27;lossguide&#x27;时相关。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">max_bin</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">指定了最大的分桶数量。默认值为256。</span></span><br><span class="line"><span class="string">该参数仅仅当tree_method=&#x27;hist&#x27;/&#x27;gpu_hist&#x27; 时有效。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">predictor</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">指定预测器的算法。值可以为：</span></span><br><span class="line"><span class="string">&#x27;auto&#x27;：默认值，自动配置。</span></span><br><span class="line"><span class="string">&#x27;cpu_predictor&#x27;：使用CPU来预测。</span></span><br><span class="line"><span class="string">&#x27;gpu_predictor&#x27;：使用GPU来预测。对于tree_method=&#x27;gpu_hist&#x27;时是默认值。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">num_parallel_tree</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">每次迭代期间构建的并行树的数量。此选项用于支持增强型随机森林。默认值为1。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="dart-booster参数">Dart Booster参数</h2>
+<p>适用于<code>booster='dart'</code>时。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">sample_type</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">丢弃时的策略：</span></span><br><span class="line"><span class="string">&#x27;uniform&#x27;：随机丢弃子树（默认值），丢弃的概率相同。</span></span><br><span class="line"><span class="string">&#x27;weighted&#x27;：根据权重的比例来丢弃子树。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">normaliz_type </span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">归一化策略：</span></span><br><span class="line"><span class="string">&#x27;tree&#x27;：新的子树将被缩放为1/(k+learning_rate)；被丢弃的子树被缩放为k/(k+learning_rate)。</span></span><br><span class="line"><span class="string">        其中learning_rate为学习率，k为被丢弃的子树的数量。</span></span><br><span class="line"><span class="string">&#x27;forest&#x27;：新的子树将被缩放为1/(1+learning_rate)； 被丢弃的子树被缩放为1/(1+learning_rate)。</span></span><br><span class="line"><span class="string">          其中learning_rate为学习率。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">rate_drop</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">dropout rate，指定了当前要丢弃的子树占当前所有子树的比例。范围为[0.0,1.0]，默认为0.0。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">one_drop</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">如果该参数为true，则在dropout期间，至少有一个子树总是被丢弃。默认为0。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">skip_drop</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">它指定了不执行dropout的概率，其范围是[0.0,1.0]，默认为0.0。</span></span><br><span class="line"><span class="string">如果跳过了dropout，则新的子树直接加入到模型中（和xgboost相同的方式）。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="linear-booster">Linear Booster</h2>
+<p>适用于<code>booster='gblinear'</code>时。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">lambda</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">L2正则化系数（基于weights的正则化），默认为1。该值越大则模型越简单。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">alpha</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">L1正则化系数（基于weights的正则化），默认为0。该值越大则模型越简单。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">updater </span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">选择适合线性模型的算法：</span></span><br><span class="line"><span class="string">&#x27;shotgun&#x27;：基于shotgun算法的平行坐标下降算法。</span></span><br><span class="line"><span class="string">           使用hogwild并行性，因此在每次运行时都会产生一个不确定的解决方案。</span></span><br><span class="line"><span class="string">&#x27;coord_descent&#x27;：普通坐标下降算法。也是多线程的，但仍会产生确定性的解决方案。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">feature_selector </span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">特征选择和排序方法：</span></span><br><span class="line"><span class="string">&#x27;cyclic&#x27;：通过一次一个特征循环进行确定性的选择。</span></span><br><span class="line"><span class="string">&#x27;shuffle&#x27;：类似于&#x27;cyclic&#x27;，但在每次更新之前具有随机特征洗牌。</span></span><br><span class="line"><span class="string">&#x27;random&#x27;：随机选择器。</span></span><br><span class="line"><span class="string">&#x27;greedy&#x27;：选择梯度幅度最大的坐标。复杂度O(num_feature^2)。</span></span><br><span class="line"><span class="string">        通过设置top_k参数，它允许将选择限制为每组具有最大单变量权重变化幅度的top_k特征。</span></span><br><span class="line"><span class="string">            这样做会将复杂性降低到O(num_feature*top_k)。</span></span><br><span class="line"><span class="string">&#x27;thrifty&#x27;：近似贪婪的特征选择器。在循环更新之前，按单变量权重变化的降序对特征重新排序。</span></span><br><span class="line"><span class="string">         此操作是多线程的，并且是二次贪婪选择的线性复杂度近似。</span></span><br><span class="line"><span class="string">         通过设置top_k参数，它允许将选择限制为每组具有最大单变量权重变化幅度的top_k特征。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">top_k </span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">feature_selector=&#x27;greedy&#x27;/&#x27;thrifty&#x27;时使用。默认为0表示使用所有特征。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="tweedie-regression参数">Tweedie Regression参数</h2>
+<p>当<code>objective=reg:tweedie</code>时。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">weedie_variance_power</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">指定了tweedie 分布的方差。取值范围为(1,2)，默认为1.5。</span></span><br><span class="line"><span class="string">越接近1，则越接近泊松分布；越接近2，则越接近gamma分布。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="learning-task参数">Learning Task参数</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line">objective</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">指定任务类型，默认为&#x27;reg:squarederror&#x27;。</span></span><br><span class="line"><span class="string">&#x27;reg:squarederror&#x27;：平方损失回归。</span></span><br><span class="line"><span class="string">&#x27;reg:squaredlogerror&#x27;：平方对数损失回归(1/2)*[log(pred+1)-log(label+1)]^2。所有输入标签都必须大于-1。</span></span><br><span class="line"><span class="string">&#x27;reg:logistic&#x27;：逻辑回归模型。它的模型输出是连续值，位于区间[0,1]，表示取正负类别的概率。</span></span><br><span class="line"><span class="string">&#x27;reg:pseudohubererror&#x27;：Pseudo Huber损失回归。</span></span><br><span class="line"><span class="string">&#x27;binary:logistic&#x27;：二分类的逻辑回归模型，它的模型输出是连续值，位于区间[0,1]，表示取正负类别的概率。</span></span><br><span class="line"><span class="string">                  它和&#x27;reg:logistic&#x27;几乎完全相同，除了有一点不同：</span></span><br><span class="line"><span class="string">                    &#x27;reg:logistic&#x27;的默认evaluation metric是rmse。</span></span><br><span class="line"><span class="string">                    &#x27;binary:logistic&#x27;的默认evaluation metric是error。</span></span><br><span class="line"><span class="string">&#x27;binary:logitraw&#x27;：二分类的逻辑回归模型，输出为分数值（在logistic转换之前的值）。</span></span><br><span class="line"><span class="string">&#x27;binary:hinge&#x27;：二分类的hinge loss（合页损失函数）。这使得预测为0或1，而不是产生概率。</span></span><br><span class="line"><span class="string">&#x27;count:poisson&#x27;：对count data的poisson regression，输出为泊松分布的均值。</span></span><br><span class="line"><span class="string">                 max_delta_step在泊松回归中默认设置为0.7（用于保护优化）。</span></span><br><span class="line"><span class="string">&#x27;survival:cox&#x27;：Cox回归用于right censored survival time data。负值为right censored。</span></span><br><span class="line"><span class="string">&#x27;survival:aft&#x27;：Accelerated failure time model for censored survival time data。</span></span><br><span class="line"><span class="string">&#x27;aft_loss_distribution&#x27;：survival:aft和aft-nloglik的概率密度函数。</span></span><br><span class="line"><span class="string">&#x27;multi:softmax&#x27;：基于softmax的多分类模型。此时你需要设定num_class参数来指定类别数量。</span></span><br><span class="line"><span class="string">&#x27;multi:softprob&#x27;：基于softmax的多分类模型，但是它的输出是一个矩阵：ndata*nclass，给出了每个样本属于每个类别的概率。</span></span><br><span class="line"><span class="string">&#x27;rank:pairwise&#x27;：排序模型（优化目标为最小化pairwise loss）。</span></span><br><span class="line"><span class="string">&#x27;rank:ndcg&#x27;：排序模型（优化目标为Normalized Discounted Cumulative Gain (NDCG)最大化）。</span></span><br><span class="line"><span class="string">&#x27;rank:map&#x27;： 排序模型（优化目标为Mean Average Precision (MAP)最大化）。</span></span><br><span class="line"><span class="string">&#x27;reg:gamma&#x27; gamma regression，输出为伽马分布的均值。</span></span><br><span class="line"><span class="string">&#x27;reg:tweedie&#x27;：Tweedie regression with log-link。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">base_score</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">所有样本的初始预测分，它用于设定一个初始的、全局的bias。默认为0.5。</span></span><br><span class="line"><span class="string">当迭代的数量足够大时，该参数没有什么影响。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">eval_metric</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">用于验证集的评估指标。其默认值和objective参数高度相关。</span></span><br><span class="line"><span class="string">回归问题的默认值是rmse；分类问题的默认值是error；排序问题的默认值是mean average precision。</span></span><br><span class="line"><span class="string">你可以指定多个evaluation metrics。</span></span><br><span class="line"><span class="string">如果有多个验证集，以及多个评估指标，则：使用最后一个验证集的最后一个评估指标来做早停。</span></span><br><span class="line"><span class="string">                                     但是还是会计算出所有的验证集的所有评估指标。</span></span><br><span class="line"><span class="string">&#x27;rmse&#x27;：均方根误差。</span></span><br><span class="line"><span class="string">&#x27;rmsle&#x27;：均方根对数误差。</span></span><br><span class="line"><span class="string">&#x27;mae&#x27;：绝对值平均误差。</span></span><br><span class="line"><span class="string">&#x27;mape&#x27;：绝对值平均误差百分比。</span></span><br><span class="line"><span class="string">&#x27;mphe&#x27;：mean Pseudo Huber error。</span></span><br><span class="line"><span class="string">&#x27;logloss&#x27;：负的对数似然函数。</span></span><br><span class="line"><span class="string">&#x27;error&#x27;：二分类的错误率。它计算的是：预测错误的样本数/所有样本数。</span></span><br><span class="line"><span class="string">         预测指：正类概率大于0.5的样本预测为正类；否则为负类（即阈值为0.5）。</span></span><br><span class="line"><span class="string">&#x27;error@t&#x27;：二分类的错误率。但是它的阈值不再是0.5，而是由字符串t给出（它是一个数值转换的字符串）。</span></span><br><span class="line"><span class="string">&#x27;merror&#x27;：多类分类的错误率。它计算的是：预测错误的样本数/所有样本数。</span></span><br><span class="line"><span class="string">&#x27;mlogloss&#x27;：多类分类的负对数似然函数。</span></span><br><span class="line"><span class="string">&#x27;auc&#x27;：AUC得分。</span></span><br><span class="line"><span class="string">&#x27;aucpr&#x27;：PR曲线下面积。</span></span><br><span class="line"><span class="string">&#x27;ndcg&#x27;：Normalized Discounted Cumulative Gain得分。</span></span><br><span class="line"><span class="string">&#x27;map&#x27;：Mean average precision得分。</span></span><br><span class="line"><span class="string">&#x27;ndcg@n&#x27;,&#x27;map@n&#x27;：n 为一个整数，用于切分验证集的top样本来求值。</span></span><br><span class="line"><span class="string">&#x27;ndcg-&#x27;,&#x27;map-&#x27;,&#x27;ndcg@n-&#x27;,&#x27;map@n-&#x27;：NDCG和MAP会将没有任何正样本的列表的分数评估为1。</span></span><br><span class="line"><span class="string">                                   通过在评估指标中添加“-”，XGBoost会将这些分数评估为0，以在某些条件下保持一致。</span></span><br><span class="line"><span class="string">&#x27;poisson-nloglik&#x27;：对于泊松回归，使用负的对数似然。</span></span><br><span class="line"><span class="string">&#x27;gamma-nloglik&#x27;：对于伽马回归，使用负的对数似然。</span></span><br><span class="line"><span class="string">&#x27;cox-nloglik&#x27;：negative partial log-likelihood for Cox proportional hazards regression。</span></span><br><span class="line"><span class="string">&#x27;gamma-deviance&#x27;：对于伽马回归，使用残差的方差。</span></span><br><span class="line"><span class="string">&#x27;tweedie-nloglik&#x27;：对于tweedie回归，使用负的对数似然。</span></span><br><span class="line"><span class="string">&#x27;aft-nloglik&#x27;： Negative log likelihood of Accelerated Failure Time model。</span></span><br><span class="line"><span class="string">&#x27;interval-regression-accuracy&#x27;：Fraction of data points whose predicted labels fall in the interval-censored labels。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">seed</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">随机数种子，默认为0。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">seed_per_iteration</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">通过迭代器编号确定性地Seed PRNG，此选项将在分布式模式下自动打开。默认值为false。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<h2 id="命令行参数">命令行参数</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">num_round</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">boosting的轮数。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">data</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">训练数据的路径。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">test:data</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">测试数据做预测的路径</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">save_period</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">模型保存时间。默认值为0。</span></span><br><span class="line"><span class="string">设置save_period=10意味着每10轮XGBoost将保存模型。</span></span><br><span class="line"><span class="string">将其设置为0意味着在训练期间不保存任何模型。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">task </span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">&#x27;train&#x27;：默认值，使用数据训练。</span></span><br><span class="line"><span class="string">&#x27;pred&#x27;：对test:data做预测。</span></span><br><span class="line"><span class="string">&#x27;eval&#x27;：用于评估由eval[name]=filename指定的统计信息。</span></span><br><span class="line"><span class="string">&#x27;dump&#x27;：将学习到的模型转储为文本格式。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">model_in </span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">输入模型的路径，需要task=&#x27;train&#x27;/&#x27;eval&#x27;/&#x27;dump&#x27;。默认为NULL。</span></span><br><span class="line"><span class="string">如果在训练中指定，XGBoost将继续从输入模型进行训练。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">model_out</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">训练完成后输出模型的路径。默认为NULL。</span></span><br><span class="line"><span class="string">如果未指定，XGBoost将输出名称为0003.model的文件，其中0003是提升轮数。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">model_dir</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">训练时保存模型的输出目录。默认为models/</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">fmap</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">特征图，用于dump模型。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">dump_format</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">模型转储文件的格式。默认为&#x27;text&#x27;，可选&#123;&#x27;text&#x27;,&#x27;json&#x27;&#125;</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">name_dump</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">模型转储文件的名称。默认为dump.txt。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">name_pred</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">预测文件名，用于task=&#x27;pred&#x27;。默认为pred.txt。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">pred_margin</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">预测边缘概率而不是转换概率，默认为0。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<h1 id="scikit-learn-api">Scikit-Learn API</h1>
+<p>参考官网<span class="exturl" data-url="aHR0cHM6Ly94Z2Jvb3N0LnJlYWR0aGVkb2NzLmlvL2VuL3N0YWJsZS9weXRob24vaW5kZXguaHRtbA==">XGBoost
+Python Package<i class="fa fa-external-link-alt"></i></span>。</p>
+<p>Scikit-Learn API：xgboost给出了针对scikit-learn接口的API。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">xgboost.XGBRegressor(*, objective=<span class="string">&#x27;reg:squarederror&#x27;</span>, **kwargs)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">n_estimators：一个整数，表示预期需要学习的子树的数量。</span></span><br><span class="line"><span class="string">max_depth：一个整数，表示子树的最大深度。</span></span><br><span class="line"><span class="string">learning_rate：一个浮点数，表示学习率。</span></span><br><span class="line"><span class="string">verbosity：一个整数，表示消息等级。</span></span><br><span class="line"><span class="string">          0：silent</span></span><br><span class="line"><span class="string">          1：warning</span></span><br><span class="line"><span class="string">          2：info</span></span><br><span class="line"><span class="string">          3：debug</span></span><br><span class="line"><span class="string">objective：一个字符串/可调用对象，指定了目标函数。其函数签名为：objective(y_true,y_pred) -&gt; gra,hess。</span></span><br><span class="line"><span class="string">            y_true：一个形状为[n_sample]的序列，表示真实的标签值。</span></span><br><span class="line"><span class="string">            y_pred：一个形状为[n_sample]的序列，表示预测的标签值。</span></span><br><span class="line"><span class="string">            grad：一个形状为[n_sample]的序列，表示每个样本处的梯度。</span></span><br><span class="line"><span class="string">            hess：一个形状为[n_sample]的序列，表示每个样本处的二阶偏导数。</span></span><br><span class="line"><span class="string">booster：一个字符串。指定了用哪一种基模型。可以为：&#x27;gbtree&#x27;,&#x27;gblinear&#x27;,&#x27;dart&#x27;。</span></span><br><span class="line"><span class="string">tree_method：指定了构建树的算法，可以为下列的值：</span></span><br><span class="line"><span class="string">            &#x27;auto&#x27;：默认值，使用启发式算法来选择一个更快的tree_method：</span></span><br><span class="line"><span class="string">                    对于小的和中等的训练集，使用exact greedy算法分裂节点。</span></span><br><span class="line"><span class="string">                    对于非常大的训练集，使用近似算法分裂节点。</span></span><br><span class="line"><span class="string">                    旧版本在单机上总是使用exact greedy分裂节点。</span></span><br><span class="line"><span class="string">            &#x27;exact&#x27;：使用exact greedy算法分裂节点。</span></span><br><span class="line"><span class="string">            &#x27;approx&#x27;：使用近似算法分裂节点。</span></span><br><span class="line"><span class="string">            &#x27;hist&#x27;：使用histogram优化的近似算法分裂节点（比如使用了bin cacheing优化）。</span></span><br><span class="line"><span class="string">            &#x27;gpu_hist&#x27;：基于GPU的histogram算法分裂节点。</span></span><br><span class="line"><span class="string">            分布式支持&#x27;approx&#x27;,&#x27;hist&#x27;,&#x27;gpu_hist&#x27;。</span></span><br><span class="line"><span class="string">            外存版本支持&#x27;approx&#x27;,&#x27;gpu_hist&#x27;。</span></span><br><span class="line"><span class="string">n_jobs：一个整数，指定了并行度，即开启多少个线程来训练。如果为-1，则使用所有的CPU。</span></span><br><span class="line"><span class="string">gamma：一个浮点数，也称作最小划分损失min_split_loss。</span></span><br><span class="line"><span class="string">        它刻画的是：对于一个叶子节点，当对它采取划分之后，损失函数的降低值的阈值。</span></span><br><span class="line"><span class="string">        如果大于该阈值，则该叶子节点值得继续划分。</span></span><br><span class="line"><span class="string">        如果小于该阈值，则该叶子节点不值得继续划分。</span></span><br><span class="line"><span class="string">min_child_weight：一个整数，子节点的权重阈值。</span></span><br><span class="line"><span class="string">    它刻画的是：对于一个叶子节点，当对它采取划分之后，它的所有子节点的权重之和的阈值。</span></span><br><span class="line"><span class="string">    如果它的所有子节点的权重之和大于该阈值，则该叶子节点值得继续划分。</span></span><br><span class="line"><span class="string">    如果它的所有子节点的权重之和小于该阈值，则该叶子节点不值得继续划分。</span></span><br><span class="line"><span class="string">    权重：</span></span><br><span class="line"><span class="string">    对于线性模型(booster=gblinear)，权重是：叶子节点包含的样本数量。因此该参数就是每个节点包含的最少样本数量。</span></span><br><span class="line"><span class="string">    对于树模型（booster=gbtree,dart），权重是：叶子节点包含样本的所有二阶偏导数之和。</span></span><br><span class="line"><span class="string">max_delta_step：一个整数，每棵树的权重估计时的最大delta step。取值范围为[0,∞]，0表示没有限制，默认值为0。</span></span><br><span class="line"><span class="string">subsample：一个浮点数，对训练样本的采样比例。取值范围为(0,1]，默认值为1。</span></span><br><span class="line"><span class="string">          如果为0.5，表示随机使用一半的训练样本来训练子树。它有助于缓解过拟合。</span></span><br><span class="line"><span class="string">colsample_bytree,colsample_bylevel,colsample_bynode：</span></span><br><span class="line"><span class="string">    这是用于对列进行采样的一系列参数。</span></span><br><span class="line"><span class="string">    所有的colsample_by*参数范围为(0, 1]，默认为1。</span></span><br><span class="line"><span class="string">    colsample_bytree：构建子树时，对特征的采样比例。</span></span><br><span class="line"><span class="string">                    如果为0.5，表示随机使用一半的特征来训练子树。它有助于缓解过拟合。</span></span><br><span class="line"><span class="string">    colsample_bylevel：每个level寻找划分点时，对特征的采样比例。</span></span><br><span class="line"><span class="string">                    如果为0.5，表示随机使用一半的特征来寻找最佳划分点。它有助于缓解过拟合。</span></span><br><span class="line"><span class="string">    colsample_bynode：每个结点寻找划分点时，对特征的采样比例。</span></span><br><span class="line"><span class="string">                    如果为0.5，表示随机使用一半的特征来寻找最佳划分点。它有助于缓解过拟合。</span></span><br><span class="line"><span class="string">    在使用Python接口时，tree_method为&#123;&#x27;hist&#x27;,&#x27;gpu_hist&#x27;,&#x27;exact&#x27;&#125;时，</span></span><br><span class="line"><span class="string">    可以为DMatrix设置 feature_weights参数以定义使用列采样时每个特征被选择的概率。</span></span><br><span class="line"><span class="string">reg_alpha：一个浮点数，是L1正则化系数。它是xgb的alpha参数。</span></span><br><span class="line"><span class="string">reg_lambda：一个浮点数，是L2正则化系数。它是xgb的lambda参数。</span></span><br><span class="line"><span class="string">scale_pos_weight：一个浮点数，用于调整正负样本的权重，常用于类别不平衡的分类问题。默认为1。</span></span><br><span class="line"><span class="string">                  一个典型的参数值为：负样本数量/正样本数量。</span></span><br><span class="line"><span class="string">base_score：一个浮点数，给所有样本的一个初始的预测得分。它引入了全局的bias。</span></span><br><span class="line"><span class="string">random_state：一个整数，表示随机数种子。</span></span><br><span class="line"><span class="string">missing：一个浮点数，它的值代表发生了数据缺失。默认为np.nan。</span></span><br><span class="line"><span class="string">num_parallel_tree：并行树数量。用于提升随机森林。</span></span><br><span class="line"><span class="string">kwargs：一个字典，给出了关键字参数。它用于设置Booster对象。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">xgboost.XGBClassifier(*, objective=<span class="string">&#x27;binary:logistic&#x27;</span>, use_label_encoder=<span class="literal">True</span>, **kwargs)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">参考xgboost.XGBRegressor。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure><br />
+xgboost模型的方法：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">fit(X, y, *, sample_weight=<span class="literal">None</span>, base_margin=<span class="literal">None</span>, eval_set=<span class="literal">None</span>, eval_metric=<span class="literal">None</span>, </span><br><span class="line">early_stopping_rounds=<span class="literal">None</span>, verbose=<span class="literal">True</span>, xgb_model=<span class="literal">None</span>, sample_weight_eval_set=<span class="literal">None</span>, </span><br><span class="line">base_margin_eval_set=<span class="literal">None</span>, feature_weights=<span class="literal">None</span>, callbacks=<span class="literal">None</span>)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">X：一个array-like，表示训练集。</span></span><br><span class="line"><span class="string">y：一个序列，表示标记。</span></span><br><span class="line"><span class="string">base_margin：一个array-like，每个实例的全局偏差。</span></span><br><span class="line"><span class="string">sample_weight：一个序列，给出了每个样本的权重。</span></span><br><span class="line"><span class="string">eval_set：一个列表，元素为(X,y)，给出了验证集及其标签。它们用于早停。如果有多个验证集，则使用最后一个。</span></span><br><span class="line"><span class="string">eval_metric：一个字符串/可调用对象，用于evaluation metric。</span></span><br><span class="line"><span class="string">            字符串：则是内置的度量函数的名字。</span></span><br><span class="line"><span class="string">            可调用对象：则它的签名为(y_pred,y_true)==&gt;(str,value)。</span></span><br><span class="line"><span class="string">early_stopping_rounds：指定早停的次数。参考xgboost.train()。</span></span><br><span class="line"><span class="string">verbose：一个布尔值。如果为True，则打印验证集的评估结果。</span></span><br><span class="line"><span class="string">xgb_model：一个Booster实例/一个存储了xgboost模型的文件的文件名。它给出了待训练的模型。这种做法允许连续训练。</span></span><br><span class="line"><span class="string">sample_weight_eval_set：一个列表。[L_1, L_2, …, L_n]形式的列表，其中每个L_i是一个数组，存储第i个验证集的实例权重。</span></span><br><span class="line"><span class="string">base_margin_eval_set：一个列表。[L_1, L_2, …, L_n]形式的列表，其中每个L_i是一个数组，存储第i个验证集的偏差。</span></span><br><span class="line"><span class="string">feature_weights：一个array_like。每个特征的权重，定义了使用colsample时每个特征被选择的概率。</span></span><br><span class="line"><span class="string">                所有值必须大于0，否则会抛出ValueError。仅适用于tree methods=&#x27;hist&#x27;/&#x27;gpu_hist&#x27;。</span></span><br><span class="line"><span class="string">callbacks：一个存储回调函数对象的列表，在每次迭代结束时应用的回调函数列表。</span></span><br><span class="line"><span class="string">          比如：callbacks = [xgb.callback.EarlyStopping(rounds=early_stopping_rounds,save_best=True)]</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">predict(X, output_margin=<span class="literal">False</span>, ntree_limit=<span class="literal">None</span>, validate_features=<span class="literal">True</span>, base_margin=<span class="literal">None</span>, iteration_range=<span class="literal">None</span>)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">X：一个array_like，表示测试集。</span></span><br><span class="line"><span class="string">output_margin：一个布尔值。表示是否输出原始的、未经过转换的margin value。</span></span><br><span class="line"><span class="string">ntree_limit：一个整数。表示使用多少棵子树来预测。默认值为0，表示使用所有的子树。</span></span><br><span class="line"><span class="string">            如果训练的时候发生了早停，则你可以使用booster.best_ntree_limit。</span></span><br><span class="line"><span class="string">validate_features：如果为True，验证Booster和data的feature_names是否相同。否则会假设feature_names是相同的。</span></span><br><span class="line"><span class="string">base_margin：一个array_like，预测偏差。</span></span><br><span class="line"><span class="string">iteration_range：指定在预测中使用哪一层树。</span></span><br><span class="line"><span class="string">                 如果随机森林训练了100轮。指定iteration_range=(10, 20)，</span></span><br><span class="line"><span class="string">                 那么在这个预测中只使用在[10, 20)轮次中构建的森林。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">返回值：一个ndarray，表示预测结果。</span></span><br><span class="line"><span class="string">对于回归问题，返回的就是原始的预测结果。</span></span><br><span class="line"><span class="string">对于分类问题，返回的就是预测类别(阈值为0.5)。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">predict_proba(X, ntree_limit=<span class="literal">None</span>, validate_features=<span class="literal">False</span>, base_margin=<span class="literal">None</span>, iteration_range=<span class="literal">None</span>)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">执行预测，预测的是各类别的概率。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">参考predict。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">evals_result()</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">返回一个字典，给出了各个验证集在各个验证参数上的历史值。</span></span><br><span class="line"><span class="string">它不同于cv()函数的返回值。cv()函数返回evaluation history是早停时刻的。而这里返回的是所有的历史值。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">save_model(fname)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">将模型保存到文件。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>SoundMemories
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://soundmemories.github.io/2020/05/28/ML/09.ML-XGBoost/" title="ML-XGBoost">https://soundmemories.github.io/2020/05/28/ML/09.ML-XGBoost/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/ML/" rel="tag"><i class="fa fa-tag"></i> ML</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/05/18/ML/08.ML-scikit-learn/" rel="prev" title="ML-scikit-learn">
+                  <i class="fa fa-chevron-left"></i> ML-scikit-learn
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/06/06/ML/10.ML-LightGBM/" rel="next" title="ML-LightGBM">
+                  ML-LightGBM <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">SoundMemories</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"neutral"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.min.js","integrity":"sha256-JFptYy4KzJ5OQP+Q9fubNf3cxpPPmZKqUOovyEONKrQ="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://soundmemories.github.io/2020/05/28/ML/09.ML-XGBoost/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

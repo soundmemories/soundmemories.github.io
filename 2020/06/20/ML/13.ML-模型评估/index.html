@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.1","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="常用词 错误率 ：分类错误的样本数占总样本数的比例。 精度：1-错误率。 训练误差&#x2F;经验误差 ：机器学习器在训练集上的误差。 泛化误差 ：机器学习器在新样本上的误差。 过拟合：我们希望学习器在新样本下也能有好的表现，因此应该从训练样本中尽可能学出适用于所有潜在潜在样本的“普遍规律”，然而有时候学习器把训练样本学得“太好了”，很可能把训练样本自身的一些特点当作了所有潜在样本都具有的一般性">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ML-模型评估">
+<meta property="og:url" content="https://soundmemories.github.io/2020/06/20/ML/13.ML-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/index.html">
+<meta property="og:site_name" content="SoundMemories">
+<meta property="og:description" content="常用词 错误率 ：分类错误的样本数占总样本数的比例。 精度：1-错误率。 训练误差&#x2F;经验误差 ：机器学习器在训练集上的误差。 泛化误差 ：机器学习器在新样本上的误差。 过拟合：我们希望学习器在新样本下也能有好的表现，因此应该从训练样本中尽可能学出适用于所有潜在潜在样本的“普遍规律”，然而有时候学习器把训练样本学得“太好了”，很可能把训练样本自身的一些特点当作了所有潜在样本都具有的一般性">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/K%E6%8A%98%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/PR.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/ROC%E5%92%8CAUC.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/ROC%E5%92%8CPR.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/%E5%A2%9E%E7%9B%8A%E4%B8%8EKS%E5%9B%BE.png">
+<meta property="article:published_time" content="2020-06-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-26T11:07:47.236Z">
+<meta property="article:author" content="SoundMemories">
+<meta property="article:tag" content="ML">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://soundmemories.github.io/images/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/K%E6%8A%98%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81.png">
+
+
+<link rel="canonical" href="https://soundmemories.github.io/2020/06/20/ML/13.ML-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://soundmemories.github.io/2020/06/20/ML/13.ML-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/","path":"2020/06/20/ML/13.ML-模型评估/","title":"ML-模型评估"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>ML-模型评估 | SoundMemories</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">SoundMemories</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">128</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E8%AF%8D"><span class="nav-number">1.</span> <span class="nav-text">常用词</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%88%92%E5%88%86"><span class="nav-number">2.</span> <span class="nav-text">数据划分</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%95%99%E5%87%BA%E6%B3%95hold-out"><span class="nav-number">2.1.</span> <span class="nav-text">留出法（hold-out）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#k%E6%8A%98%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81k-cross-validation"><span class="nav-number">2.2.</span> <span class="nav-text">K折交叉验证（k-cross
+validation）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%8A%A9%E6%B3%95boostrapping"><span class="nav-number">2.3.</span> <span class="nav-text">自助法（boostrapping）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0"><span class="nav-number">3.</span> <span class="nav-text">模型评估</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E7%B1%BB%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.1.</span> <span class="nav-text">分类模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%B7%E6%B7%86%E7%9F%A9%E9%98%B5"><span class="nav-number">3.1.1.</span> <span class="nav-text">混淆矩阵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%85%83%E6%B7%B7%E6%B7%86%E7%9F%A9%E9%98%B5"><span class="nav-number">3.1.2.</span> <span class="nav-text">多元混淆矩阵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pr%E6%9B%B2%E7%BA%BF"><span class="nav-number">3.1.3.</span> <span class="nav-text">PR曲线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#roc%E6%9B%B2%E7%BA%BF%E4%B8%8Eauc"><span class="nav-number">3.1.4.</span> <span class="nav-text">ROC曲线与AUC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A2%9E%E7%9B%8A%E5%9B%BE%E4%B8%8Eks%E5%9B%BE"><span class="nav-number">3.1.5.</span> <span class="nav-text">增益图与KS图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.2.</span> <span class="nav-text">回归模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%81%9A%E7%B1%BB%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.3.</span> <span class="nav-text">聚类模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E8%81%94%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.4.</span> <span class="nav-text">关联模型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">4.</span> <span class="nav-text">代码</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SoundMemories"
+      src="/images/avstar.png">
+  <p class="site-author-name" itemprop="name">SoundMemories</p>
+  <div class="site-description" itemprop="description">今日事，今日毕</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">128</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NvdW5kbWVtb3JpZXM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;soundmemories"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNvdW5kbWVtb3JpZXNAMTYzLmNvbQ==" title="E-Mail → mailto:soundmemories@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+        <div class="pjax">
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/06/20/ML/13.ML-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="ML-模型评估 | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ML-模型评估
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-06-20 00:00:00" itemprop="dateCreated datePublished" datetime="2020-06-20T00:00:00+08:00">2020-06-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>18 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="常用词">常用词</h1>
+<p><strong>错误率</strong> ：分类错误的样本数占总样本数的比例。<br />
+<strong>精度</strong>：1-错误率。</p>
+<p><strong>训练误差/经验误差</strong>
+：机器学习器在训练集上的误差。<br />
+<strong>泛化误差</strong> ：机器学习器在新样本上的误差。</p>
+<p><strong>过拟合</strong>：我们希望学习器在新样本下也能有好的表现，因此应该从训练样本中尽可能学出适用于所有潜在潜在样本的“普遍规律”，然而有时候学习器把训练样本学得“太好了”，很可能把训练样本自身的一些特点当作了所有潜在样本都具有的一般性质，这样就会导致泛化能力下降，这就称为过拟合。<br />
+<strong>欠拟合</strong>：和过拟合相对，即对训练样本的一般性质尚未学好。</p>
+<p><strong>生成模型与判别模型</strong>：<br />
+<strong>生成模型</strong>：学习得到联合概率分布<span
+class="math inline">\(P(x,y)\)</span>，即特征x和标记y共同出现的概率，然后求条件概率分布。能够学习到数据生成的机制。通过求输入与输出的<strong>联合概率分布</strong>，再求解类别归类的概率。比如，朴素贝叶斯生成的模型。生成模型，对数据要求较高（比如朴素贝叶斯要求数据是离散的），速度会快些。<br />
+<strong>判别模型</strong>：学习得到条件概率分布<span
+class="math inline">\(P(y|x)\)</span>，即在特征x出现的情况下标记y出现的概率。直接获得输出对应最大分类的概率。比如，KNN。判别模型，要求较低，有很好的容忍度，但速度会慢些。</p>
+<h1 id="数据划分">数据划分</h1>
+<p><strong>训练集</strong>：训练和拟合模型。提高训练集是好的，但比例不能变。<br />
+<strong>验证集</strong>：当通过训练集训练出多个模型后，使用验证集纠偏或比较预测。<br />
+<strong>测试集</strong>：模型的泛化能力考量。<br />
+<strong>测试集</strong>应该尽可能与<strong>训练集</strong>互斥，即测试样本尽量不在训练集中出现，未在训练过程中使用过。</p>
+<p>一般情况下：<strong>训练集:测试集:验证集=6：2：2</strong>。<br />
+有时候会忽略验证集，而通过 训练集-测试集
+不断的尝试来达到目的，此时训练集、测试集比例一般为8：2。</p>
+<h2 id="留出法hold-out">留出法（hold-out）</h2>
+<p>直接将数据集划分为两个互斥集合，一个作为训练，一个作为测试。</p>
+<p>注意点：<br />
+1. <strong>保持数据分布一致性</strong>
+：如保留类别比例一致的分层采样。<br />
+2. <strong>多次重复划分</strong>
+：单次使用留出法得到的估计结果往往不够稳定可靠，一般要采用若干次随机划分、重复进行实验评估后取平均值作为留出法的结果。<br />
+3.
+<strong>训练集和测试集比例问题</strong>：在划分时，如果训练集包含绝大多数样本，则训练出来的模型更接近于未划分的数据集训练出的模型，由于测试集比较小，评估的结果可能不够准确；若测试集包含的样本多些，则训练集和未划分的数据集差别更大，这样训练出的模型偏离初衷，而且降低评估结果的保真性。常见的作法是2/3<sub>4/5的样本用于训练，1/3</sub>1/5的样本用于测试。</p>
+<h2 id="k折交叉验证k-cross-validation">K折交叉验证（k-cross
+validation）</h2>
+<p><img src="/images/模型评估/K折交叉验证.png" width="80%"></p>
+<p>每个子集<span
+class="math inline">\(D_i\)</span>都尽可能的保持数据分布的一致性，即从<span
+class="math inline">\(D\)</span>中通过分层采样得到。<br />
+最终返回的是这k个测试结果的均值，所以交叉验证评估结果的稳定性和保真性很大程度取决于k的取值。</p>
+<p><strong>常用的k值为5，10。</strong><br />
+<strong>为减少因样本划分不同而引入的差别，<span
+class="math inline">\(k\)</span>折交叉验证通常要随机使用不同的划分重复<span
+class="math inline">\(p\)</span>次，最终的评估结果是这<span
+class="math inline">\(p\)</span>次<span
+class="math inline">\(k\)</span>折交叉验证结果的均值，例如常见的有10次10折交叉验证。</strong></p>
+<p><strong>当数据集<span class="math inline">\(D\)</span>中包含<span
+class="math inline">\(m\)</span>个样本，若令<span
+class="math inline">\(k=m\)</span>，则得到了交叉验证法的一个特例，留一法（Leave-One-Out）。</strong><br />
+即<span
+class="math inline">\(m\)</span>个样本只有唯一的方式划分为m个子集——每个子集包含一个样本；留一法使用的训练集与初始数据集相比只少了一个样本，这就使得在绝大多数情况下，留一法被实际评估的模型与期望评估的用<span
+class="math inline">\(D\)</span>训练出的模型很相似，因此留一法的评估结果往往被认为比较准确。<br />
+然而，留一法也有其缺陷：在数据集比较大的时候，计算开销非常大。</p>
+<h2 id="自助法boostrapping">自助法（boostrapping）</h2>
+<p>不管是留出法还是交叉验证法，都保留了一部分样本用于测试，因此实际评估的模型所使用的训练集比原始数据集<span
+class="math inline">\(D\)</span>小，这必然会引入一些<strong>因训练样本规模不同而导致的估计偏差</strong>。留一法受训练样本规模变化的影响较小，但计算复杂度太高。<strong>有没有办法可以减少训练样本规模不同造成的影响，同时还能比较高效地进行实验估计呢？</strong>————<strong>自助法（boostrapping）</strong>。</p>
+<p><strong>自助法（boostrapping）直接以自助采样法为基础。给定包含<span
+class="math inline">\(m\)</span>个样本的数据集<span
+class="math inline">\(D\)</span>，对它进行采样产生数据集<span
+class="math inline">\(D^\prime\)</span>：每次随机从<span
+class="math inline">\(D\)</span>中挑选一个样本，将其拷贝放入<span
+class="math inline">\(D^\prime\)</span>，然后再将该样本放回初始数据集<span
+class="math inline">\(D\)</span>中，使得该样本在下次采样时仍可能被采到；这个过程重复执行<span
+class="math inline">\(m\)</span>次后，我们就得到了包含<span
+class="math inline">\(m\)</span>个样本的数据集<span
+class="math inline">\(D^\prime\)</span>（和原数据集<span
+class="math inline">\(D\)</span>同规模），这就是自助采样的结果，显然<span
+class="math inline">\(D\)</span>中有一部分样本会在<span
+class="math inline">\(D^\prime\)</span>中多次出现，而另一部分样本不出现，可以做一个简单估计，样本<span
+class="math inline">\(m\)</span>次采样中始种不被采到的概率是<span
+class="math inline">\((1-\dfrac{1}{m})^{m}\)</span>，取极限得到：<span
+class="math inline">\(\lim\limits_{m \to \infty}(1-\dfrac{1}{m})^{m} \to
+\dfrac{1}{e} \approx 0.368\)</span>，即初始数据集<span
+class="math inline">\(D\)</span>中约有<span
+class="math inline">\(36.8\%\)</span> 的样本未出现在采样数据集<span
+class="math inline">\(D^\prime\)</span>中，可以使用这些样本作为测试集（约为总量1/3），<span
+class="math inline">\(D^\prime\)</span>作为训练集，这样的测试结果亦称为包外估计（out-of-bagestimate）</strong></p>
+<p><strong>优点：自助法在数据集较小、难以有效划分训练/测试集时很有效。</strong><br />
+<strong>缺点：自助法产生的数据集改变了初始数据集的分布，这会引入估计偏差，因此在数据量足够时，使用留出法/交叉验证更好</strong></p>
+<h1 id="模型评估">模型评估</h1>
+<p>主要为：分类模型、回归模型、聚类模型、关联模型的评估。</p>
+<h2 id="分类模型">分类模型</h2>
+<h3 id="混淆矩阵">混淆矩阵</h3>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<table>
+<tr>
+<td rowspan="2">
+真实情况
+</td>
+<td colspan="2">
+预测结果　　　　　
+</td>
+</tr>
+<tr>
+<td>
+正例　　
+</td>
+<td>
+反例　　
+</td>
+</tr>
+<tr>
+<td>
+正例
+</td>
+<td>
+TP（真正例）
+</td>
+<td>
+FN（假反例）
+</td>
+</tr>
+<tr>
+<td>
+反例
+</td>
+<td>
+FP（假正例）
+</td>
+<td>
+TN（真反例）
+</td>
+</tr>
+</table>
+<p><strong>准确率（Accuracy）</strong>：<span
+class="math inline">\(\dfrac{TP+TN}{TP+FP+FN+TN}\)</span>，注意只用准确率不行，比如样本极度不平衡标签0：1的比例为99：1，而模型只要是输入就判别为0，准确率还是能达到99%，所以只用准确率判别是不好的。</p>
+<p><strong>精确率（Precision）</strong>：<span
+class="math inline">\(P=\dfrac{TP}{TP+FP}\)</span>，预测结果正类中，正确的程度。</p>
+<p><strong>召回率/真正率（Recall/TPR）</strong>：<span
+class="math inline">\(R=\dfrac{TP}{TP+FN}\)</span>，真实情况正类中，预测出的占比。</p>
+<p><strong>假正率（False Positive Rate/FPR）：</strong><span
+class="math inline">\(\dfrac{FP}{FP+TN}\)</span>，真实负类中，被预测为正类的比例。</p>
+<p><strong>错误拒绝率（False Rejection Rate/FRR）：</strong><span
+class="math inline">\(\dfrac{FN}{TP+FN}\)</span>，真实正类中，被预测为负类的比例。</p>
+<p><strong><span class="math inline">\(F1\)</span>-score</strong>：<span
+class="math inline">\(\dfrac{2\ast P\ast R}{P + R}=\dfrac{2\ast
+TP}{\text{样例总数}+TP-TN}\)</span>，F1充分考量了精确率和召回率，比单独使用准确率更好。</p>
+<p><strong><span
+class="math inline">\(F_\beta\)</span>-score</strong>：<span
+class="math inline">\(\dfrac{(1+\beta^2)\ast P\ast R}{\beta^2\ast
+P+R}\)</span>，F1的一般形式，<span class="math inline">\(\beta
+&gt;1\)</span>时召回率有更大的影响；<span
+class="math inline">\(\beta&lt;1\)</span>时精确率有更大影响。</p>
+<h3 id="多元混淆矩阵">多元混淆矩阵</h3>
+<p>在多次训练/测试后会有多个二分类混淆矩阵，或者在多个数据集上训练/测试后希望估计算法全局性能，或者执行多分类任务，每两两类别的组合都能对应一个混淆矩阵，总之我们希望在n个二分类混淆矩阵上综合考察精确率和召回率。</p>
+<p>一种直接的做法是先在各混淆矩阵上分别计算出精确率和召回率，记为<span
+class="math inline">\((P_1,R_1),(P_2,R_2),...,(P_n,R_n)\)</span>，再计算平均值，这样就得到<strong>宏精确率</strong>（macro-P）和<strong>宏召回率</strong>（macro-R），以及相应的<strong>宏F1</strong>（macro-F1）。<br />
+<strong>macro-P</strong>：<span
+class="math inline">\(\dfrac{1}{n}\sum\limits_{i=1}^NP_i\)</span></p>
+<p><strong>macro-R</strong>：<span
+class="math inline">\(\dfrac{1}{n}\sum\limits_{i=1}^NR_i\)</span></p>
+<p><strong>macro-F1</strong>：<span class="math inline">\(\dfrac{2\times
+\text{macro-P}\times\text{macro-R}}{\text{macro-P}+\text{macro-R}}\)</span></p>
+<p>另一种是，先将混淆矩阵的对应元素进行平均，得到<span
+class="math inline">\(TP\)</span>、<span
+class="math inline">\(FP\)</span>、<span
+class="math inline">\(TN\)</span>、<span
+class="math inline">\(FN\)</span>的平均值，分别记为<span
+class="math inline">\(\overline{TP}\)</span>、<span
+class="math inline">\(\overline{FP}\)</span>、<span
+class="math inline">\(\overline{TN}\)</span>、<span
+class="math inline">\(\overline{FN}\)</span>，再基于这些平均值计算出<strong>微精确率</strong>（micro-P）和<strong>微召回率</strong>（micro-R），以及相应的<strong>微F1</strong>（micro-F1）。<br />
+<strong>micro-P</strong>：<span
+class="math inline">\(\dfrac{\overline{TP}}{\overline{TP}+\overline{FP}}\)</span></p>
+<p><strong>micro-R</strong>：<span
+class="math inline">\(\dfrac{\overline{TP}}{\overline{TP}+\overline{FN}}\)</span></p>
+<p><strong>micro-F1</strong>：<span class="math inline">\(\dfrac{2\times
+\text{macro-P}\times\text{macro-R}}{\text{macro-P}+\text{macro-R}}\)</span></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> recall_score</span><br><span class="line"></span><br><span class="line">recall_score(</span><br><span class="line">    y_true,</span><br><span class="line">    y_pred,</span><br><span class="line">    labels=<span class="literal">None</span>,</span><br><span class="line">    pos_label=<span class="number">1</span>,</span><br><span class="line">    average=<span class="string">&#x27;binary&#x27;</span>,<span class="comment">#默认是二分类;&#x27;micro&#x27;就是1的计算方式;&#x27;macro&#x27;就是2的不加权计算方式;&#x27;weighted&#x27;就是2的加权计算方式</span></span><br><span class="line">    sample_weight=<span class="literal">None</span>,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h3 id="pr曲线">PR曲线</h3>
+<p>根据学习器的预测结果，对样例进行排序，排在最前面的是学习器认为最可能是正例的样本，排在最后面的是学习器认为最不可能是正例的样本。按此顺序逐个把样本作为正例进行预测，则每次可以计算出当前的召回率（查全率）、精确率（查准率）。以精确率为纵轴，召回率为横轴，作图就得到了精确率-召回率曲线，简称P-R曲线。<br />
+<img src="/images/模型评估/PR.png" width="40%"></p>
+<p>P-R曲线能直观的显示出学习器在样本总体上的精确率和、召回率。在比较时，若一个学习器的P-R曲线被另一个学习器的曲线完全包住，则可断言后者性能优于前者。</p>
+<h3 id="roc曲线与auc">ROC曲线与AUC</h3>
+<p><strong>ROC</strong>（Receiver Operating characteristic
+Curve）根据学习器的结果对样例进行排序，按此顺序逐个把样本作为正例进行预测，每次可以计算出当前的<strong>召回率TPR</strong>和<strong>错误接收率FPR</strong>，作为纵轴和横轴。我们希望TPR越大越好，FPR越小越好。ROC曲线能很容易的查出任意阈值时，对性能的识别能力。一般我们取拐点处的阈值最佳，这兼顾了TPR和FPR。</p>
+<p><strong>TPR</strong>：<span
+class="math inline">\(\dfrac{TP}{TP+FN}\)</span><br />
+<strong>FPR</strong>：<span
+class="math inline">\(\dfrac{FP}{TN+FP}\)</span></p>
+<p><img src="/images/模型评估/ROC和AUC.png" width="80%"></p>
+<p>若一个学习器的ROC曲线被另一个学习器的曲线完全包住，则可断言后者性能优于前者。若两个学习器的ROC曲线发生交叉，则难以断定孰优孰劣，此时看AUC面积。<br />
+<strong>AUC</strong>（Area Under
+Curve）就是ROC曲线下方的面积，它反映了曲线向左上方靠近程度。越大越好。</p>
+<p><strong>ROC和PR区别</strong>：<br />
+<img src="/images/模型评估/ROC和PR.png" width="60%"></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly93d3cubWF0aC51Y2RhdmlzLmVkdS9+c2FpdG8vZGF0YS9yb2MvZmF3Y2V0dC1yb2MucGRm">An
+introduction to ROC analysis<i class="fa fa-external-link-alt"></i></span><br />
+根据作者原文来看，负例增加了10倍，ROC曲线没有改变，而PR曲线则变了很多。作者认为这是ROC曲线的优点，即具有鲁棒性，在类别分布发生明显改变的情况下依然能客观地识别出较好的分类器。<br />
+不过在类别不平衡的背景下，负例的数目众多致使FPR的增长不明显，导致ROC曲线呈现一个过分的效果估计。</p>
+<p><strong>ROC和PR应用场景</strong>：<br />
+ROC曲线由于兼容正例与负例，所以适合评估分类器的整体性能，相比而言PR曲线完全聚焦于正例。</p>
+<p>如果有<strong>多份数据且存在不同的类别分布</strong>，比如信用卡欺诈问题中，每个月正例和负例的比例可能都不相同，这时候如果只想单纯地比较分类器的性能且剔除类别分布改变的影响，则ROC曲线比较适合，因为类别分布的改变可能使得PR曲线发生变化时好时坏，这种时候难以进行模型比较。反之，如果想测试不同类别分布下，对分类器的性能的影响，则PR曲线比较合适。</p>
+<p>如果想要评估在<strong>相同的类别分布</strong>下正例的预测情况，则宜选PR曲线。</p>
+<p>类别不平衡问题中，ROC曲线通常会给一个乐观的效果估计，所以大部分时候还是PR曲线更好。</p>
+<h3 id="增益图与ks图">增益图与KS图</h3>
+<p><img src="/images/模型评估/增益与KS图.png" width="60%"></p>
+<p>左图是<strong>增益图</strong>，虚线是1。比如挖取游戏作弊玩家，100个玩家，10个作弊的：计算得分，取出得分前10的用户，发现有9个作弊的，那么正样本比例是9/10=0.9，测试集取样比例为10/100=0.1，正样本比例/平均比例为0.9/0.1=9。增益图最好情况是在取样比例为0.5为转折点，前部分全是最高值，后部分全是最低值。增益图宏观上反映了分类器的分类效果。</p>
+<p>右图是<strong>KS图</strong>，我们关心的是两条曲线的最大差值，横坐标是阈值，纵坐标是差值<span
+class="math inline">\(TPR-FPR\)</span>，这个差值反映了对正类样本的区分度。一般选择差值最大的阈值作为分类阈值。</p>
+<h2 id="回归模型">回归模型</h2>
+<p><strong>MSE（Mean Square Error）均方误差:</strong> <span
+class="math inline">\(\dfrac{1}{n}\sum\limits_{i=1}^n (f_i -
+y_i)^2\)</span>，真实值和预测值差值的平方和。</p>
+<p><strong>RMSE（Root MSE）均方根误差:</strong> <span
+class="math inline">\(\sqrt{MSE}\)</span>，对MSE开根号，如果MSE都是比较小的，可以放大它们之间尺度。</p>
+<p><strong>MAE（Mean Absolute Error）平均绝对误差:</strong> <span
+class="math inline">\(\dfrac{1}{n}\sum\limits_{i=1}^n |f_i -
+y_i|\)</span>，真实值和预测值差值的绝对值和。用此为指标，求导非常麻烦，常用MSE。</p>
+<p><strong>MAPE（Mean Absolute Percentage
+Error）平均绝对百分比误差：</strong> <span
+class="math inline">\(\dfrac{100\%}{n}\sum\limits_{i=1}^n |\dfrac{f_i -
+y_i}{y_i}|\)</span>，范围<span
+class="math inline">\([0,+\infty)\)</span>，MAPE 为0%表示完美模型，MAPE
+大于 100 %则表示劣质模型。<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8yNTk2NjI4NjQ=">mape和smape<i class="fa fa-external-link-alt"></i></span>。</p>
+<p><strong>r2_score（决定系数）:</strong> <span
+class="math inline">\(R^2=\dfrac{\sum\limits_{i=1}^n ( y_i -
+f_i)^2}{\sum\limits_{i=1}^n ( y_i - \bar y)^2}\)</span>，<span
+class="math inline">\(f_i\)</span>是预测值，<span
+class="math inline">\(y_i\)</span>是实际值，<span
+class="math inline">\(\bar
+y\)</span>是实际值的平均值。分子代表预测值对实际值的离散程度，分母代表真实值的离散程度。R平方为回归平方和与总离差平方和的比值，表示总离差平方和中可以由回归平方和解释的比例，这一比例越大越好，模型越精确，回归效果越显著。R平方介于0~1之间，越接近1，回归拟合效果越好，一般认为超过0.8的模型拟合优度比较高。</p>
+<h2 id="聚类模型">聚类模型</h2>
+<p><strong>RMS（Root Mean Square）：</strong> <span
+class="math inline">\(\dfrac{1}{n}\sqrt{\sum\limits_{i=1}^n (x_i-\bar
+x)^2}\)</span>，聚类的值减去每个类的平均值，然后平方和开根号，除以n。越小越好，越大表示每个类和它的中心比较远，效果差。</p>
+<p><strong>轮廓系数：</strong> <span
+class="math inline">\(s(i)=\dfrac{b(i)-a(i)}{max\{a(i),b(i)\}}\)</span>，<span
+class="math inline">\(a(i)\)</span>为样本i与簇内其他样本的平均距离，也叫内聚度；<span
+class="math inline">\(b(i)\)</span>为样本i与其他某簇样本的平均距离，多个簇<span
+class="math inline">\(b(i)\)</span>取最小的，也叫分离度。它结合了内聚度和分离度来评价，可以在相同数据的基础上评价不同的算法，或者算法的不同运行方式对聚类结果产生的影响。这个值越趋近于1，越好；越接近于-1，越差。</p>
+<h2 id="关联模型">关联模型</h2>
+<p>支持度、置信度、提升度即可。</p>
+<h1 id="代码">代码</h1>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> MinMaxScaler,StandardScaler</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> LabelEncoder,OneHotEncoder</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> Normalizer</span><br><span class="line"><span class="keyword">from</span> sklearn.discriminant_analysis <span class="keyword">import</span> LinearDiscriminantAnalysis</span><br><span class="line"><span class="keyword">from</span> sklearn.decomposition <span class="keyword">import</span> PCA</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> pydotplus</span><br><span class="line">os.environ[<span class="string">&quot;PATH&quot;</span>]+=os.pathsep+<span class="string">&quot;D:/Program/Graphviz/bin/&quot;</span></span><br><span class="line"><span class="comment">#sl:satisfaction_level---False:MinMaxScaler;True:StandardScaler</span></span><br><span class="line"><span class="comment">#le:last_evaluation---False:MinMaxScaler;True:StandardScaler</span></span><br><span class="line"><span class="comment">#npr:number_project---False:MinMaxScaler;True:StandardScaler</span></span><br><span class="line"><span class="comment">#amh:average_monthly_hours--False:MinMaxScaler;True:StandardScaler</span></span><br><span class="line"><span class="comment">#tsc:time_spend_company--False:MinMaxScaler;True:StandardScaler</span></span><br><span class="line"><span class="comment">#wa:Work_accident--False:MinMaxScaler;True:StandardScaler</span></span><br><span class="line"><span class="comment">#pl5:promotion_last_5years--False:MinMaxScaler;True:StandardScaler</span></span><br><span class="line"><span class="comment">#dp:department--False:LabelEncoding;True:OneHotEncoding</span></span><br><span class="line"><span class="comment">#slr:salary--False:LabelEncoding;True:OneHotEncoding</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hr_preprocessing</span>(<span class="params">sl=<span class="literal">False</span>,le=<span class="literal">False</span>,npr=<span class="literal">False</span>,amh=<span class="literal">False</span>,tsc=<span class="literal">False</span>,wa=<span class="literal">False</span>,pl5=<span class="literal">False</span>,dp=<span class="literal">False</span>,slr=<span class="literal">False</span>,lower_d=<span class="literal">False</span>,ld_n=<span class="number">1</span></span>):</span><br><span class="line">    df=pd.read_csv(<span class="string">&quot;./data/HR.csv&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#1、清洗数据</span></span><br><span class="line">    df=df.dropna(subset=[<span class="string">&quot;satisfaction_level&quot;</span>,<span class="string">&quot;last_evaluation&quot;</span>])</span><br><span class="line">    df=df[df[<span class="string">&quot;satisfaction_level&quot;</span>]&lt;=<span class="number">1</span>][df[<span class="string">&quot;salary&quot;</span>]!=<span class="string">&quot;nme&quot;</span>]</span><br><span class="line">    <span class="comment">#2、得到标注</span></span><br><span class="line">    label = df[<span class="string">&quot;left&quot;</span>]</span><br><span class="line">    df = df.drop(<span class="string">&quot;left&quot;</span>, axis=<span class="number">1</span>)</span><br><span class="line">    <span class="comment">#3、特征选择</span></span><br><span class="line">    <span class="comment">#4、特征处理</span></span><br><span class="line">    scaler_lst=[sl,le,npr,amh,tsc,wa,pl5]</span><br><span class="line">    column_lst=[<span class="string">&quot;satisfaction_level&quot;</span>,<span class="string">&quot;last_evaluation&quot;</span>,<span class="string">&quot;number_project&quot;</span>,\</span><br><span class="line">                <span class="string">&quot;average_monthly_hours&quot;</span>,<span class="string">&quot;time_spend_company&quot;</span>,<span class="string">&quot;Work_accident&quot;</span>,\</span><br><span class="line">                <span class="string">&quot;promotion_last_5years&quot;</span>]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(scaler_lst)):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> scaler_lst[i]:</span><br><span class="line">            df[column_lst[i]]=\</span><br><span class="line">                MinMaxScaler().fit_transform(df[column_lst[i]].values.reshape(-<span class="number">1</span>,<span class="number">1</span>)).reshape(<span class="number">1</span>,-<span class="number">1</span>)[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            df[column_lst[i]]=\</span><br><span class="line">                StandardScaler().fit_transform(df[column_lst[i]].values.reshape(-<span class="number">1</span>,<span class="number">1</span>)).reshape(<span class="number">1</span>,-<span class="number">1</span>)[<span class="number">0</span>]</span><br><span class="line">    scaler_lst=[slr,dp]</span><br><span class="line">    column_lst=[<span class="string">&quot;salary&quot;</span>,<span class="string">&quot;department&quot;</span>]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(scaler_lst)):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> scaler_lst[i]:</span><br><span class="line">            <span class="keyword">if</span> column_lst[i]==<span class="string">&quot;salary&quot;</span>:</span><br><span class="line">                df[column_lst[i]]=[map_salary(s) <span class="keyword">for</span> s <span class="keyword">in</span> df[<span class="string">&quot;salary&quot;</span>].values]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                df[column_lst[i]]=LabelEncoder().fit_transform(df[column_lst[i]])</span><br><span class="line">            df[column_lst[i]]=MinMaxScaler().fit_transform(df[column_lst[i]].values.reshape(-<span class="number">1</span>,<span class="number">1</span>)).reshape(<span class="number">1</span>,-<span class="number">1</span>)[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            df=pd.get_dummies(df,columns=[column_lst[i]])</span><br><span class="line">    <span class="keyword">if</span> lower_d:</span><br><span class="line">        <span class="keyword">return</span> PCA(n_components=ld_n).fit_transform(df.values),label</span><br><span class="line">    <span class="keyword">return</span> df,label</span><br><span class="line">d=<span class="built_in">dict</span>([(<span class="string">&quot;low&quot;</span>,<span class="number">0</span>),(<span class="string">&quot;medium&quot;</span>,<span class="number">1</span>),(<span class="string">&quot;high&quot;</span>,<span class="number">2</span>)])</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">map_salary</span>(<span class="params">s</span>):</span><br><span class="line">    <span class="keyword">return</span> d.get(s,<span class="number">0</span>)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hr_modeling_nn</span>(<span class="params">features,label</span>):</span><br><span class="line">    <span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">    f_v = features.values</span><br><span class="line">    f_names = features.columns.values</span><br><span class="line">    l_v = label.values</span><br><span class="line">    X_tt, X_validation, Y_tt, Y_validation = train_test_split(f_v, l_v, test_size=<span class="number">0.2</span>)</span><br><span class="line">    X_train, X_test, Y_train, Y_test = train_test_split(X_tt, Y_tt, test_size=<span class="number">0.25</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">from</span> keras.models <span class="keyword">import</span> Sequential</span><br><span class="line">    <span class="keyword">from</span> keras.layers.core <span class="keyword">import</span> Dense, Activation</span><br><span class="line">    <span class="keyword">from</span> keras.optimizers <span class="keyword">import</span> SGD</span><br><span class="line">    mdl = Sequential()</span><br><span class="line">    mdl.add(Dense(<span class="number">50</span>, input_dim=<span class="built_in">len</span>(f_v[<span class="number">0</span>])))</span><br><span class="line">    mdl.add(Activation(<span class="string">&quot;sigmoid&quot;</span>))</span><br><span class="line">    mdl.add(Dense(<span class="number">2</span>))</span><br><span class="line">    mdl.add(Activation(<span class="string">&quot;softmax&quot;</span>))</span><br><span class="line">    sgd = SGD(lr=<span class="number">0.1</span>)</span><br><span class="line">    mdl.<span class="built_in">compile</span>(loss=<span class="string">&quot;mean_squared_error&quot;</span>, optimizer=<span class="string">&quot;adam&quot;</span>)</span><br><span class="line">    mdl.fit(X_train, np.array([[<span class="number">0</span>, <span class="number">1</span>] <span class="keyword">if</span> i == <span class="number">1</span> <span class="keyword">else</span> [<span class="number">1</span>, <span class="number">0</span>] <span class="keyword">for</span> i <span class="keyword">in</span> Y_train]), nb_epoch=<span class="number">1000</span>, batch_size=<span class="number">8999</span>)</span><br><span class="line">    xy_lst = [(X_train, Y_train), (X_validation, Y_validation), (X_test, Y_test)]</span><br><span class="line">    <span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 评价指标</span></span><br><span class="line">    <span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> roc_curve, auc, roc_auc_score</span><br><span class="line">    f = plt.figure()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(xy_lst)):</span><br><span class="line">        X_part = xy_lst[i][<span class="number">0</span>]</span><br><span class="line">        Y_part = xy_lst[i][<span class="number">1</span>]</span><br><span class="line">        Y_pred = mdl.predict(X_part)</span><br><span class="line">        <span class="built_in">print</span>(Y_pred)</span><br><span class="line">        Y_pred = np.array(Y_pred[:, <span class="number">1</span>]).reshape((<span class="number">1</span>, -<span class="number">1</span>))[<span class="number">0</span>]</span><br><span class="line">        <span class="comment"># print(i)</span></span><br><span class="line">        <span class="comment"># print(&quot;NN&quot;, &quot;-ACC:&quot;, accuracy_score(Y_part, Y_pred))</span></span><br><span class="line">        <span class="comment"># print(&quot;NN&quot;, &quot;-REC:&quot;, recall_score(Y_part, Y_pred))</span></span><br><span class="line">        <span class="comment"># print(&quot;NN&quot;, &quot;-F1:&quot;, f1_score(Y_part, Y_pred))</span></span><br><span class="line">        f.add_subplot(<span class="number">1</span>, <span class="number">3</span>, i + <span class="number">1</span>)</span><br><span class="line">        <span class="comment"># 使用roc_curve绘制ROC曲线，返回三部分</span></span><br><span class="line">        fpr, tpr, threshold = roc_curve(Y_part, Y_pred)</span><br><span class="line">        plt.plot(fpr, tpr)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;NN&quot;</span>, <span class="string">&quot;AUC&quot;</span>, auc(fpr, tpr))</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;NN&quot;</span>, <span class="string">&quot;AUC_Score&quot;</span>, roc_auc_score(Y_part, Y_pred))</span><br><span class="line">    plt.show()</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hr_modeling</span>(<span class="params">features,label</span>):</span><br><span class="line">    <span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">    f_v=features.values</span><br><span class="line">    f_names=features.columns.values</span><br><span class="line">    l_v=label.values</span><br><span class="line">    X_tt,X_validation,Y_tt,Y_validation=train_test_split(f_v,l_v,test_size=<span class="number">0.2</span>)</span><br><span class="line">    X_train,X_test,Y_train,Y_test=train_test_split(X_tt,Y_tt,test_size=<span class="number">0.25</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 评价指标</span></span><br><span class="line">    <span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> accuracy_score, recall_score, f1_score</span><br><span class="line">    <span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> NearestNeighbors,KNeighborsClassifier</span><br><span class="line">    <span class="keyword">from</span> sklearn.naive_bayes <span class="keyword">import</span> GaussianNB,BernoulliNB</span><br><span class="line">    <span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeClassifier,export_graphviz</span><br><span class="line">    <span class="keyword">from</span> sklearn.externals.six <span class="keyword">import</span> StringIO</span><br><span class="line">    <span class="keyword">from</span> sklearn.svm <span class="keyword">import</span> SVC</span><br><span class="line">    <span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier</span><br><span class="line">    <span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> AdaBoostClassifier</span><br><span class="line">    <span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LogisticRegression</span><br><span class="line">    <span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> GradientBoostingClassifier</span><br><span class="line">    models=[]</span><br><span class="line">    models.append((<span class="string">&quot;KNN&quot;</span>,KNeighborsClassifier(n_neighbors=<span class="number">3</span>)))</span><br><span class="line">    models.append((<span class="string">&quot;GaussianNB&quot;</span>,GaussianNB()))</span><br><span class="line">    models.append((<span class="string">&quot;BernoulliNB&quot;</span>,BernoulliNB()))</span><br><span class="line">    models.append((<span class="string">&quot;DecisionTreeGini&quot;</span>,DecisionTreeClassifier()))</span><br><span class="line">    models.append((<span class="string">&quot;DecisionTreeEntropy&quot;</span>,DecisionTreeClassifier(criterion=<span class="string">&quot;entropy&quot;</span>)))</span><br><span class="line">    models.append((<span class="string">&quot;SVM Classifier&quot;</span>,SVC(C=<span class="number">1000</span>)))</span><br><span class="line">    models.append((<span class="string">&quot;OriginalRandomForest&quot;</span>,RandomForestClassifier()))</span><br><span class="line">    models.append((<span class="string">&quot;RandomForest&quot;</span>,RandomForestClassifier(n_estimators=<span class="number">11</span>,max_features=<span class="literal">None</span>)))</span><br><span class="line">    models.append((<span class="string">&quot;Adaboost&quot;</span>,AdaBoostClassifier(n_estimators=<span class="number">100</span>)))</span><br><span class="line">    models.append((<span class="string">&quot;LogisticRegression&quot;</span>,LogisticRegression(C=<span class="number">1000</span>,tol=<span class="number">1e-10</span>,solver=<span class="string">&quot;sag&quot;</span>,max_iter=<span class="number">10000</span>)))</span><br><span class="line">    models.append((<span class="string">&quot;GBDT&quot;</span>,GradientBoostingClassifier(max_depth=<span class="number">6</span>,n_estimators=<span class="number">100</span>)))</span><br><span class="line">    <span class="keyword">for</span> clf_name,clf <span class="keyword">in</span> models:</span><br><span class="line">        clf.fit(X_train,Y_train)</span><br><span class="line">        xy_lst=[(X_train,Y_train),(X_validation,Y_validation),(X_test,Y_test)]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(xy_lst)):</span><br><span class="line">            X_part=xy_lst[i][<span class="number">0</span>]</span><br><span class="line">            Y_part=xy_lst[i][<span class="number">1</span>]</span><br><span class="line">            Y_pred=clf.predict(X_part)</span><br><span class="line">            <span class="built_in">print</span>(i)</span><br><span class="line">            <span class="built_in">print</span>(clf_name,<span class="string">&quot;-ACC:&quot;</span>,accuracy_score(Y_part,Y_pred))</span><br><span class="line">            <span class="built_in">print</span>(clf_name,<span class="string">&quot;-REC:&quot;</span>,recall_score(Y_part,Y_pred))</span><br><span class="line">            <span class="built_in">print</span>(clf_name,<span class="string">&quot;-F1:&quot;</span>,f1_score(Y_part,Y_pred))</span><br><span class="line">            <span class="comment"># dot_data=StringIO()</span></span><br><span class="line">            <span class="comment"># export_graphviz(clf,out_file=dot_data,</span></span><br><span class="line">            <span class="comment">#                          feature_names=f_names,</span></span><br><span class="line">            <span class="comment">#                          class_names=[&quot;NL&quot;,&quot;L&quot;],</span></span><br><span class="line">            <span class="comment">#                          filled=True,</span></span><br><span class="line">            <span class="comment">#                          rounded=True,</span></span><br><span class="line">            <span class="comment">#                          special_characters=True)</span></span><br><span class="line">            <span class="comment"># graph=pydotplus.graph_from_dot_data(dot_data.getvalue())</span></span><br><span class="line">            <span class="comment"># graph.write_pdf(&quot;dt_tree_2.pdf&quot;)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">regr_test</span>(<span class="params">features,label</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;X&quot;</span>,features)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Y&quot;</span>,label)</span><br><span class="line">    <span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression,Ridge,Lasso</span><br><span class="line">    <span class="comment">#regr=LinearRegression()</span></span><br><span class="line">    regr=Ridge(alpha=<span class="number">1</span>)</span><br><span class="line">    regr.fit(features.values,label.values)</span><br><span class="line">    Y_pred=regr.predict(features.values)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Coef:&quot;</span>,regr.coef_)</span><br><span class="line">    <span class="comment"># 回归模型评价指标</span></span><br><span class="line">    <span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> mean_squared_error,mean_absolute_error,r2_score</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;MSE:&quot;</span>,mean_squared_error(label.values,Y_pred))</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;MAE:&quot;</span>,mean_absolute_error(label.values,Y_pred))</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;R2:&quot;</span>,r2_score(label.values,Y_pred))</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    features,label=hr_preprocessing()</span><br><span class="line">    regr_test(features[[<span class="string">&quot;number_project&quot;</span>,<span class="string">&quot;average_monthly_hours&quot;</span>]],features[<span class="string">&quot;last_evaluation&quot;</span>])</span><br><span class="line">    <span class="comment">#hr_modeling(features,label)</span></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    main()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>SoundMemories
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://soundmemories.github.io/2020/06/20/ML/13.ML-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/" title="ML-模型评估">https://soundmemories.github.io/2020/06/20/ML/13.ML-模型评估/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/ML/" rel="tag"><i class="fa fa-tag"></i> ML</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/06/17/ML/12.ML-%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/" rel="prev" title="ML-特征工程">
+                  <i class="fa fa-chevron-left"></i> ML-特征工程
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/09/20/ML/16.Introduction/" rel="next" title="Introduction">
+                  Introduction <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">SoundMemories</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"neutral"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.min.js","integrity":"sha256-JFptYy4KzJ5OQP+Q9fubNf3cxpPPmZKqUOovyEONKrQ="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://soundmemories.github.io/2020/06/20/ML/13.ML-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

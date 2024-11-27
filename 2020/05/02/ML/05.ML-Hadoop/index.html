@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.1","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="大数据 大数据：指无法在一定时间范围内用常规软件工具进行捕捉、管理和处理的数据集合，是需要新处理模式才能具有更强的决策力、洞察发现力和流程优化能力的海量、高增长率和多样化的信息资产。主要解决，海量数据的存储和海量数据的分析计算问题。 一般数据存储单位：bit、Byte、KB、MB、GB、TB、PB、EB、ZB、YB、BB、NB、DB。 1Byte &#x3D; 8bit、1K &#x3D; 1024Byte、1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ML-Hadoop">
+<meta property="og:url" content="https://soundmemories.github.io/2020/05/02/ML/05.ML-Hadoop/index.html">
+<meta property="og:site_name" content="SoundMemories">
+<meta property="og:description" content="大数据 大数据：指无法在一定时间范围内用常规软件工具进行捕捉、管理和处理的数据集合，是需要新处理模式才能具有更强的决策力、洞察发现力和流程优化能力的海量、高增长率和多样化的信息资产。主要解决，海量数据的存储和海量数据的分析计算问题。 一般数据存储单位：bit、Byte、KB、MB、GB、TB、PB、EB、ZB、YB、BB、NB、DB。 1Byte &#x3D; 8bit、1K &#x3D; 1024Byte、1">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://soundmemories.github.io/images/Hadoop/%E4%BC%81%E4%B8%9A%E6%95%B0%E6%8D%AE%E9%83%A8.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Hadoop/bigdata_arcit.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Hadoop/%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%94%9F%E6%80%81%E4%BD%93%E7%B3%BB.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Hadoop/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E4%B8%9A%E5%8A%A1%E6%9E%B6%E6%9E%84.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Hadoop/hdfs.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/Hadoop/hdfs-structure.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/Hadoop/hdfs1.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/Hadoop/hdfs2.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/Hadoop/hdfs3.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/Hadoop/hdfs4.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/Hadoop/yarn.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Hadoop/Yarn%E6%9E%B6%E6%9E%84.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Hadoop/yarn2.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Hadoop/mapreduce.jpg">
+<meta property="og:image" content="https://soundmemories.github.io/images/Hadoop/mp3.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Hadoop/mp4.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Hadoop/mp5.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Hadoop/mp6.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Hadoop/mp1.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Hadoop/MapReduce4.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Hadoop/MapReduce5.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Hadoop/MapReduce%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Hadoop/hadoop-state.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Hadoop/hadoop-state1.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Hadoop/hadoop-state2.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Hadoop/hadoop-streaming.jpeg">
+<meta property="og:image" content="https://soundmemories.github.io/images/Hadoop/mapreduce.png">
+<meta property="og:image" content="https://soundmemories.github.io/images/Hadoop/word_count.png">
+<meta property="article:published_time" content="2020-05-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-26T11:06:39.845Z">
+<meta property="article:author" content="SoundMemories">
+<meta property="article:tag" content="ML">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://soundmemories.github.io/images/Hadoop/%E4%BC%81%E4%B8%9A%E6%95%B0%E6%8D%AE%E9%83%A8.png">
+
+
+<link rel="canonical" href="https://soundmemories.github.io/2020/05/02/ML/05.ML-Hadoop/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://soundmemories.github.io/2020/05/02/ML/05.ML-Hadoop/","path":"2020/05/02/ML/05.ML-Hadoop/","title":"ML-Hadoop"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>ML-Hadoop | SoundMemories</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">SoundMemories</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">128</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%A7%E6%95%B0%E6%8D%AE"><span class="nav-number">1.</span> <span class="nav-text">大数据</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#hadoop%E7%94%9F%E6%80%81%E4%BD%93%E7%B3%BB"><span class="nav-number">2.</span> <span class="nav-text">Hadoop生态体系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#hadoop%E7%AE%80%E4%BB%8B"><span class="nav-number">3.</span> <span class="nav-text">Hadoop简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#hadoop%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84"><span class="nav-number">4.</span> <span class="nav-text">Hadoop组成结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#hdfs%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8"><span class="nav-number">4.1.</span> <span class="nav-text">HDFS（数据存储）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#yarn%E8%B5%84%E6%BA%90%E8%B0%83%E5%BA%A6"><span class="nav-number">4.2.</span> <span class="nav-text">Yarn（资源调度）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mapreduce%E8%AE%A1%E7%AE%97"><span class="nav-number">4.3.</span> <span class="nav-text">MapReduce（计算）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#hadoop%E5%AE%89%E8%A3%85"><span class="nav-number">5.</span> <span class="nav-text">Hadoop安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#hdfs%E5%90%AF%E5%8A%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">6.</span> <span class="nav-text">HDFS启动、命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#hadoop-streaming"><span class="nav-number">7.</span> <span class="nav-text">Hadoop Streaming</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E5%8F%82%E6%95%B0%E5%92%8C%E6%B5%81%E7%A8%8B"><span class="nav-number">7.1.</span> <span class="nav-text">工作参数和流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7%E5%8A%9F%E8%83%BD%E4%B8%8E%E5%85%B6%E4%BB%96%E4%BE%8B%E5%AD%90"><span class="nav-number">7.2.</span> <span class="nav-text">高级功能与其他例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%8F%E5%85%B8%E6%A1%88%E4%BE%8B--%E8%AF%8D%E9%A2%91%E7%BB%9F%E8%AE%A1"><span class="nav-number">7.3.</span> <span class="nav-text">经典案例--词频统计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E4%BD%93%E6%B5%81%E7%A8%8B"><span class="nav-number">7.3.1.</span> <span class="nav-text">总体流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#map%E9%98%B6%E6%AE%B5"><span class="nav-number">7.3.2.</span> <span class="nav-text">Map阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E9%98%B6%E6%AE%B5"><span class="nav-number">7.3.3.</span> <span class="nav-text">排序阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#reduce%E9%98%B6%E6%AE%B5"><span class="nav-number">7.3.4.</span> <span class="nav-text">Reduce阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E6%A8%A1%E6%8B%9F%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81"><span class="nav-number">7.3.5.</span> <span class="nav-text">本地模拟测试代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hadoop%E9%9B%86%E7%BE%A4%E8%BF%90%E8%A1%8C"><span class="nav-number">7.3.6.</span> <span class="nav-text">Hadoop集群运行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mrjob"><span class="nav-number">7.4.</span> <span class="nav-text">MRJob</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8Cmrjob%E7%9A%84%E4%B8%8D%E5%90%8C%E6%96%B9%E5%BC%8F"><span class="nav-number">7.4.1.</span> <span class="nav-text">运行MRJob的不同方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mrjob%E5%AE%9E%E7%8E%B0topn%E7%BB%9F%E8%AE%A1%E5%AE%9E%E9%AA%8C"><span class="nav-number">7.4.2.</span> <span class="nav-text">mrjob实现topN统计（实验）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mrjob%E6%96%87%E4%BB%B6%E5%90%88%E5%B9%B6"><span class="nav-number">7.4.3.</span> <span class="nav-text">MRJOB文件合并</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SoundMemories"
+      src="/images/avstar.png">
+  <p class="site-author-name" itemprop="name">SoundMemories</p>
+  <div class="site-description" itemprop="description">今日事，今日毕</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">128</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NvdW5kbWVtb3JpZXM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;soundmemories"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNvdW5kbWVtb3JpZXNAMTYzLmNvbQ==" title="E-Mail → mailto:soundmemories@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+        <div class="pjax">
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/05/02/ML/05.ML-Hadoop/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="ML-Hadoop | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ML-Hadoop
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-05-02 00:00:00" itemprop="dateCreated datePublished" datetime="2020-05-02T00:00:00+08:00">2020-05-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>19k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1:09</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="大数据">大数据</h1>
+<p>大数据：指<strong>无法在一定时间范围</strong>内用常规软件工具进行捕捉、管理和处理的数据集合，是需要新处理模式才能具有更强的决策力、洞察发现力和流程优化能力的<strong>海量、高增长率和多样化的信息资产</strong>。主要解决，海量数据的<strong>存储</strong>和海量数据的<strong>分析计算</strong>问题。</p>
+<p>一般数据存储单位：bit、Byte、KB、MB、GB、TB、PB、EB、ZB、YB、BB、NB、DB。<br />
+<div class="note info"><p>1Byte = 8bit、1K = 1024Byte、1MB = 1024K、1G = 1024M、1T = 1024G、1P
+= 1024T...</p>
+</div></p>
+<p><strong>1、大数据的特点：</strong><br />
+（1）<strong>大量（Volume）</strong>：截至目前，人类生产的所有印刷材料的数据量是200PB，而历史上全人类总共说过的话的数据量大约是5EB。当前，典型个人计算机硬盘的容量为TB量级，而一些大企业的数据量已经接近EB量级。<br />
+（2）<strong>高速（Velocity）</strong>：这是大数据区分于传统数据挖掘的最显著特征。预计到2022年，全球数据使用量将达到40ZB。在如此海量的数据面前，处理数据的效率就是企业的生命。<br />
+（3）<strong>多样（Variety）</strong>：类型的多样性也让数据被分为<strong>结构化数据</strong>和<strong>非结构化数据</strong>。相对于以往便于存储的以数据库/文本为主的结构化数据，非结构化数据越来越多，包括网络日志、音频、视频、图片、地理位置信息等，这些多类型的数据对数据的处理能力提出了更高要求。<br />
+（4）<strong>低价值密度（Value）</strong>：价值密度的高低与数据总量的大小成反比。比如，在某一天的监控视频中，我们只关心出事故的那一分钟。如何快速对有价值数据“提纯”成为目前大数据背景下待解决的难题。<br />
+<span id="more"></span><br />
+<strong>2、一般企业数据部门的组织结构：</strong><br />
+<img src="/images/Hadoop/企业数据部.png" /></p>
+<p><strong>3、一般数据部门业务流程：</strong><br />
+（1）产品人员提需求（统计总用户数、日活跃用户数、回流用户数等）。<br />
+（2）数据部门搭建数据平台、分析数据指标。<br />
+（3）数据可视化（报表展示、邮件发送、大屏幕展示等）。</p>
+<p><strong>4、大数据平台架构：</strong><br />
+<img src="/images/Hadoop/bigdata_arcit.png" width="80%" height="80%"></p>
+<ul>
+<li>数据采集
+<ul>
+<li>App/Web 产生的数据&amp;日志同步到大数据系统</li>
+<li>数据库同步（Sqoop） 日志同步（Flume） 打点（Kafka）</li>
+<li>不同数据源产生的数据质量可能差别很大
+<ul>
+<li>数据库--&gt;也许可以直接用</li>
+<li>日志、爬虫--&gt;大量的清洗、转化处理</li>
+</ul></li>
+</ul></li>
+<li>数据处理
+<ul>
+<li>大数据存储与计算的核心</li>
+<li>数据同步后导入HDFS</li>
+<li>MapReduce Hive Spark 读取数据进行计算 结果再保存到HDFS</li>
+<li>MapReduce Hive Spark 离线计算, HDFS 离线存储
+<ul>
+<li>离线计算通常针对（某一类别）全体数据, 比如 历史上所有订单</li>
+<li>离线计算特点: 数据规模大, 运行时间长</li>
+</ul></li>
+<li>流式计算
+<ul>
+<li>淘宝双11 每秒产生订单数 监控宣传</li>
+<li>Storm(毫秒) SparkStreaming(秒)</li>
+</ul></li>
+</ul></li>
+<li>数据输出与展示
+<ul>
+<li>HDFS需要把数据导出交给应用程序，让用户实时展示 ECharts。比如
+淘宝卖家量子魔方。</li>
+<li>给运营和决策层提供各种统计报告，数据需要写入数据库。比如
+很多运营管理人员，上班后就会登陆后台数据系统。</li>
+</ul></li>
+<li>任务调度系统
+<ul>
+<li>将上面三个部分整合起来</li>
+</ul></li>
+</ul>
+<p><strong>5、大数据应用--数据分析：</strong><br />
+-
+通过数据分析指标监控企业运营状态，及时调整运营和产品策略，是大数据技术的关键价值之一<br />
+-
+大数据平台（互联网企业）运行的绝大多数大数据计算都是关于数据分析的<br />
+- 统计指标<br />
+- 关联分析<br />
+- 汇总报告<br />
+- 运营数据是公司管理的基础<br />
+- 了解公司目前发展的状况<br />
+- 数据驱动运营: 调节指标对公司进行管理<br />
+- 运营数据的获取需要大数据平台的支持<br />
+- 埋点采集数据<br />
+- 数据库、日志、三方采集数据<br />
+- 对数据清洗、转换、存储<br />
+- 利用SQL进行数据统计、汇总、分析<br />
+- 得到需要的运营数据报告<br />
+- 运营常用数据指标<br />
+- 新增用户数、UG（user growth，用户增长）<br />
+- 产品增长性的关键指标<br />
+- 新增访问网站（新下载APP）的用户数<br />
+-
+用户留存率：<code>用户留存率 = 留存用户数 / 当期新增用户数</code><br />
+- 3日留存、5日留存、7日留存<br />
+- 活跃用户数<br />
+- 打开使用产品的用户<br />
+- 日活<br />
+- 月活<br />
+- 提升活跃是网站运营的重要目标<br />
+- PV（Page View）<br />
+- 打开产品就算活跃<br />
+- 打开以后是否频繁操作就用PV衡量，每次点击，页面跳转都记一次PV<br />
+- GMV<br />
+- 成交总金额（Gross Merchandise
+Volume）电商网站统计营业额，反应网站应收能力的重要指标<br />
+- GMV相关的指标: 订单量 客单价<br />
+- 转化率：<code>转化率 = 有购买行为的用户数 / 总访问用户数</code></p>
+<p>主要涉及数据批处理的技能，这是在<strong>机器学习/深度学习</strong>的数据处理中需要频繁使用到的技能，包括Hadoop和Spark相关知识。<br />
+- Hadoop部分：需要重点掌握<strong>HDFS的相关知识和操作命令、Hadoop
+Map-Reduce计算模型的核心思想</strong>。hadoop
+streaming使用脚本编写MapReduce现在很少用理解即可，spark面向对象的编写方式会更方便。<br />
+-
+Spark部分：需要重点掌握<strong>Spark的RDD核心transformation和actions，基于DataFrame的操作，Spark
+SQL数据处理</strong>。</p>
+<h1 id="hadoop生态体系">Hadoop生态体系</h1>
+<p>广义的Hadoop，指的是Hadoop生态系统，Hadoop生态系统是一个很庞大的概念，hadoop是其中最重要最基础的一个部分，生态系统中每一子系统只解决某一个特定的问题域（甚至可能更窄），不搞统一型的全能系统，而是小而精的多个小系统。</p>
+<p><img src="/images/Hadoop/大数据生态体系.png" /></p>
+<p>1、<strong>Sqoop</strong>：是一款开源的工具，主要用于在Hadoop（Hive）与传统的数据库（MySQL）间进行数据的传递，可以将一个关系型数据库中的数据导进到Hadoop的HDFS中，也可以将HDFS的数据导进到关系型数据库中。<br />
+2、<strong>Flume</strong>：日志收集框架。是Cloudera提供的一个高可用的，高可靠的，分布式的海量日志采集、聚合和传输的系统，Flume支持在日志系统中定制各类数据发送方，用于收集数据；同时，Flume提供对数据进行简单处理，并写到各种数据接受方（可定制）的能力。<br />
+3、<strong>Kafka</strong>：是一种高吞吐量的分布式发布订阅消息系统，有如下特性：<br />
+（1）通过O(1)的磁盘数据结构提供消息的持久化，这种结构对于即使数以TB的消息存储也能够保持长时间的稳定性能。<br />
+（2）高吞吐量：即使是非常普通的硬件Kafka也可以支持每秒数百万的消息<br />
+（3）支持通过Kafka服务器和消费机集群来分区消息。<br />
+（4）支持Hadoop并行数据加载。<br />
+4、<strong>Storm</strong>：为分布式实时计算提供了一组通用原语，可被用于“流处理”之中，实时处理消息并更新数据库。这是管理队列及工作者集群的另一种方式。
+Storm也可被用于“连续计算”，对数据流做连续查询，在计算时就将结果以流的形式输出给用户。不适合python操作storm。<br />
+5、<strong>Spark</strong>：基于Scala编写的，是当前最流行的开源大数据内存计算框架。可以基于Hadoop上存储的大数据进行计算，Python中有pyspark操作Spark。Spark核心有：<br />
+（1）spark core--&gt;MapReduce。<br />
+（2）spark sql--&gt;hive。<br />
+（3）spark
+streaming（准实时，不算是一个标准的流式计算）--&gt;storm/flink。<br />
+（4）spark ML spark MLlib--&gt;机器学习库。<br />
+6、<strong>Oozie</strong>：是一个管理Hdoop作业（job）的工作流程调度管理系统。Oozie协调作业就是通过时间频率和有效数据触发当前的Oozie工作流程。<br />
+7、<strong>Hbase</strong>：是一个基于HDFS分布式的、面向列的开源数据库。HBase是非关系型数据库，它适合于非结构化数据存储的数据库。<br />
+8、<strong>Hive</strong>：数据仓库。是基于Hadoop的一个数据仓库工具，可以将结构化的数据文件映射为一张数据库表，并提供简单的sql查询功能，可以将sql语句转换为MapReduce任务进行运行。
+其优点是学习成本低，可以通过类SQL语句快速实现简单的MapReduce统计，不必开发专门的MapReduce应用，十分适合数据仓库的统计分析。<br />
+10、<strong>R语言</strong>：是用于统计分析、绘图的语言和操作环境。R是属于GNU系统的一个自由、免费、源代码开放的软件，它是一个用于统计计算和统计制图的优秀工具。现在更倾向于Python。<br />
+11、<strong>Mahout</strong>：Apache
+Mahout是个可扩展的机器学习和数据挖掘库。现在用的比较少了。<br />
+12、<strong>ZooKeeper</strong>：是Google的Chubby一个开源的实现。它是一个针对大型分布式系统的可靠协调系统，提供的功能：配置维护、名字服务、
+分布式同步、组服务等。ZooKeeper的目标就是封装好复杂易出错的关键服务，将简单易用的接口和性能高效、功能稳定的系统提供给用户。</p>
+<p>推荐系统框架图为例：<br />
+<img src="/images/Hadoop/推荐系统业务架构.png" /></p>
+<p>详细阐述下上面重点工具发展过程和用途：<br />
+<strong>1、大数据三驾马车</strong><br />
+Google在2003年到2004年先后发布了被称为大数据三驾马车的三篇重要论文，分别是分布式数据处理MapReduce、分布式数据存储GFS以及列式存储
+数据库BigTable。正是谷歌的这三驾马车掀开了大数据时代的序幕，谷歌也毋庸置疑的成为了当代大数据技术的始祖，可以说现今几乎所有的大数据技术都是由这三种技术发展而来的。</p>
+<p>谷歌的这三驾马车之所以能够奠定大数据技术的基础，是因为这三种技术涵盖了大数据技术所需要的海量存储、海量数据库、分布式计算这三个最基本的需求。
+大数据之所以能被称为大数据，就是因为要处理的数据量比一般情况下大得多，大到单独一台机器远远无法承担。
+为了处理更大量的数据，传统的解决办法是升级机器，配上更大的磁盘容量，更多核数的CPU，更大的内存，来存储和处理更多的数据，这种做法叫做纵向扩展。这种做法简单直接，但是成本高昂。更麻烦的是，单台机器的性能是有极限的，对于现在动不动就要上PB的数据规模来说，再高的配置也远远不够。更不用说，单台机器还存在机器故障后数据丢失的风险，数据的可靠性难以保证。
+谷歌的三驾马车则为大数据问题提供了更优的解决思路，那就是增多机器数而非提升机器性能，即横向扩展。按照这种思路，可以使用大量的廉价通用服务器构建一个巨大的集群，对海量的数据进行分布式的存储和处理。俗话说，三个臭皮匠顶上诸葛亮，100台廉价服务器加在一起的性能是要远高于单独一台顶配服务器的。因此利用谷歌的这种思路，你就能通过堆机器这种方法以相对低的成本获得以往无法想象的数据处理性能。</p>
+<p>谷歌的这三驾马车虽然牛逼，但是一直以来都只作为谷歌的内部技术被使用，并没有向业界开源，因此真正熟知并理解这三种技术的人其实并不多。真正被世人熟知的大数据技术始祖其实是Hadoop，这个后人借助谷歌三驾马车思想而构建的开源大数据套件。</p>
+<p><strong>2、数据存储Hadoop HDFS</strong><br />
+大数据处理的第一步自然是要先找到一个存放数据的地方。HDFS提供的便是海量文件的存储技术。
+HDFS是谷歌GFS技术的开源实现版本。HDFS将文件分成块分布到不同的机器上，从而借助成千上万台廉价PC实现海量数据的高可靠性存储。
+在HDFS中，一份文件会拥有多份分布在不同机器上的复制，因此即使某台机器坏了数据也不会丢失，具备极高的可靠性。
+尽管HDFS使用了很多复杂的分布式存储技术，但是对用户来说，使用HDFS和使用以往的文件系统一样简单。用户不用关心文件是如何分块的或者文件存储在集群的哪个节点上这种问题，只需要连上HDFS，之后像使用Linux本地文件系统一样使用HDFS即可。</p>
+<p><strong>3、数据计算Hadoop MapReduce</strong><br />
+Hadoop
+MapReduce和Google的MapReduce一样，提供海量数据的分布式处理能力。通过MapReuduce，成百上千台机器可以共同协作去计算同一个问题，从而依靠大量机器的共同力量去解决海量数据的计算问题。
+MapReduce通过Map和Reduce两个主要阶段。在Map阶段，MapReuce把数据划分成很多个部分读入，然后将数据解析成方便计算和key-value形式。在Reduce阶段，数据按照key的不同被再次划分到不同的机器，然后每台机器格子对数据进行聚合计算，最终形成用户期望的计算结果。</p>
+<p>MapReduce实际的计算流程要比上边描述的复杂的多，但只要记住，MapReduce解决的本质问题就是如何将数据合理的分布到很多台机器上进行计算，以及如何合理的合并多台机器上的计算结果。</p>
+<p><strong>4、Pig</strong><br />
+脚本语言，跟Hive类似。通过编写MapReduce脚本已经可以借助大数据手段解决几乎所有的海量数据的计算和分析问题。但是，MapReduce存在一个严重的问题，那就是MapReduce脚本编写起来实在是太费劲了！想编写MapReuce程序，你首先需要弄懂MapReduce的原理，合理的把计算过程拆分成Map和Reduce两步，然后你还需要正确的配置一大堆MapReduce的执行参数，之后提交任务，反复检查运行状态，检查运行结果，这时候如果你的MapReduce脚本存在问题，那么你还需要去翻log分析问题出在哪里，然后修改你的脚本再来一遍。因此，想写出一个能用的MapReduce程序不但有较高的难度，还需要耗费大量的时间和精力。</p>
+<p>那么，如果我很懒，实在不想去写复杂的MapReduce程序，那么有没有什么办法能够简化写MapReduce的这个繁杂的过程呢？当然有，那就是Pig了（此时你一定明白Pig这个名称的由来了，就是为懒人服务的工具）。Pig的意义就是替你编写复杂的MapReduce脚本，从而简化MapReduce的开发流程，大大缩短开发周期。
+Pig实现了一种叫做Pig
+Latin的语言，你只需要编写简单的几行Latin代码，就可以实现在MapReduce需要大量代码才能实现的功能。Pig帮你预设了多种数据结构，从而帮助你方便的将输入文本中的内容转换为Pig中结构化数据。Pig还提供了诸如filter、group
+by、max、min等常用的计算方法，帮助你快速实现一些常规的数据计算。执行和查看结果在Pig中也非常的简单，你不再需要配置MapReduce中的一大堆复杂的参数，也不再需要手动到HDFS上下载运行结果并对下载结果进行排版，Pig会直接把运行结果用良好的排版展示给你看，就像在SQL数据库中一样方便。</p>
+<p>有了Pig，不用写MapReduce了，数据开发也快多了。但是Pig仍然存在一些局限，因为使用Pig从本质上来说还相当于用MapReduce，只是脚本的编写比以前快了，但是你仍然要一行一行的去写Pig脚本，从而一步一步的实现你的数据分析过程。此时如果有工程师说自己已经懒得无可救药了，连Pig脚本也不想写；或者有数据分析师说自己不懂技术，压根不会写脚本，只会写几句简单的SQL，那么有没有什么比Pig还简单的办法呢？那么下边就该Hive出场了！</p>
+<p><strong>5、Hive</strong><br />
+Hive是一种数据仓库软件，可以在分布式存储系统的基础之上（例如HDFS）构建支持SQL的海量数据存储数据库。
+简单的说，Hive的作用就是把SQL转换为MapReduce任务进行执行，拿到结果后展示给用户。如此一来，你就可以使用普通的SQL去查询分布在分布式系统上的海量数据。
+尽管Hive能提供和普通SQL数据库一样好用的SQL语句，但是Hive的查询时延是要远高于普通数据库的，毕竟查询时间和数据规模二者还是不能兼得的啊！由于Hive并且每次查询都需要运行一个复杂的MapReduce任务，因此Hive
+SQL的查询延时是远高于普通SQL的。与此同时，对于传统数据库必备的行更新、事务、索引这一类“精细化”操作，大条的Hive自然也都不支持。毕竟Hive的诞生就是为了处理海量数据，用Hive处理小数据无异于杀鸡用牛刀，自然是无法得到理想的效果，因此，Hive只适合海量数据的SQL查询。</p>
+<p><strong>6、Spark</strong><br />
+有了Hive，不会编程的你也能用SQL分析大数据了，世界似乎已经美好了很多。可惜好戏不长，慢慢的，你还发现Hive依旧有一堆的问题，最典型的问题就是查询时延太长（这里特指MapReduce
+Hive，而非Spark
+Hive）。受限于MapReduce任务的执行时间，查一次Hive快则几十分钟，慢则几小时都是有可能的。试想领导着急的问你还要报表，而你只能无奈的等待缓慢的Hive查询运行完，此时的你一定急的想砸显示屏了。那么有没有什么既好用，又执行迅速的大数据工具呢？下边就是新星级产品Spark登场了。</p>
+<p>与MapReduce类似，Spark同样是分布式计算引擎，只是Spark的诞生要比MapReduce晚一些，但是Spark后来者居上，如今在很多领域都大有取代MapReduce的趋势。</p>
+<p>Spark相较于MapReduce最大的特点就是内存计算和对DAG模型的良好支持，借助这些特点，对于计算任务，尤其是需要分很多个阶段进行的复杂计算任务，Spark的执行速度要远远快于MapReeduce。<br />
+在MapReduce执行过程中，需要将中间数据先写入到磁盘中，然后再加载到各个节点上进行计算，受限于巨大的磁盘IO开销，MapReduce的执行经常要很长时间。而<strong>Spark则是将中间数据加载在内存中</strong>，因此能取得远高于MapReduce的执行速度。</p>
+<p>Spark的优点还远不止此。相较MapReduce，Spark提供了很多高层次封装的功能，在易用性上和功能丰富程度上都要远远高于MapReduce。用Spark你甚至只需要一行代码就能实现group、sort等多种计算过程。这点上Spark可以说是同时融合了Pig和Hive的特点，能够用简单几行代码实现以往MapReduce需要大量代码才能实现的功能。下边来一行Spark代码实现Word
+Count感受下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">val wordCounts = textFile.flatMap(line =&gt; line.split(&quot; &quot;)).groupByKey(identity).count()</span><br></pre></td></tr></table></figure>
+<p>除此之外，Spark还支持Python、Scala、Java三种开发语言，对于Python和Scala甚至还提供了交互式操作功能，对于非Java开发者以及科研工作者真是友好到爆，事实上Spark确实也广受科研工作者的欢迎。<br />
+新版本的Spark还提供了Spark SQL、Spark
+streaming（后边会介绍）等高层次的功能，前者提供类似Hive的SQL查询，后者提供强大的实时计算功能（后边会详细介绍），大有一统大数据分析领域的趋势。因此Spark绝对是当今发展势头最好的大数据组件之一。</p>
+<p>不过Spark也并非真的就无敌了，内存计算的特点还是会对Spark能够应对的数据规模产生影响。另外，对于计算过程的控制和调优，Spark也不如MapReduce灵活。</p>
+<p><strong>7、Storm</strong><br />
+有了前边讲的这一系列工具，已经能够对海量数据进行方便的计算分析了。但是前边的这些工具，从基础的MapReduce到简单易用的Hive，都依然存在一个问题，那就是计算过程需要较长的时间。也就是说，从你开始执行数据分析任务，到MapReduce生成你要的结果，常常需要若干小时的时间。由于这个延时的存在，MapReduce得到的数据分析结果是要比线上业务慢半拍的，例如今天得到昨天的日志分析结果，也因此，MapReduce又被称作离线数据处理或者批处理。<br />
+但是，如果你希望能够立刻得到数据的分析结果，例如像天猫双十一实时大屏那样实时的显示最新的成交额，那么你就需要一些实时数据处理工具了。</p>
+<p>最新火起来的实时数据处理工具要当属Apache
+Storm了。在MapReduce这类离线处理工具中，数据是要一批一批的被处理的，并且每批数据都需要一定的处理时延。而在Storm中，是没有批这个概念的，在Storm中数据就如同水龙头中的水一样源源不断地流出，并被实时的进行处理。因此在Storm中，只要你搭建好了数据处理流程，数据就会源源不断的，永不停止的被接受并处理，并且你可以随时看到数据的最新处理结果。</p>
+<p>尽管Storm和MapReduce的处理流程差异很大，但是它们的基本思路是一致的，都是把数据按照key分散到不同的机器上，之后由各个机器对数据进行处理，最终将各个机器的计算结果汇总在一起。<br />
+不同的是，Storm中的数据处理是一条一条实时进行的，因此结果会处于一种不断的刷新过程中；而MapReduce是一次性处理完所有输入数据并得到最终结果，因此你将会直接看到最终结果。<br />
+例如，假设有大量的文章需要统计单词的出现次数，对于MapReduce，你将直接看到最终结果：<code>hello: 3, world: 2, you: 6</code>；而对于Storm，你将会看到<code>hello:1, world:1, you: 1, world: 2, you:2...</code>这样的处于不断刷新中的统计结果。</p>
+<p>另外值得一提的是，Storm和MapReduce也并不是一个互相取代的关系，而是一个互补的关系。Storm可是让你实时的得到数据的最新统计状态，但是在数据吞吐量方面是要低于MapReduce的，并且对于相同的数据量，如果只关注最终结果，MapReuce得到最终结果所需的时间和资源肯定是要小于Storm的。因此，如果你需要实时的查看数据的最新统计状态，用Storm；如果你只关注数据的最终统计结果，用MapReduce。</p>
+<p><strong>8、Flink和Spark Streaming</strong><br />
+谈完Storm，就必须顺带也谈一下另外两种同样火爆的实时数据处理工具，那就是Flink和Spark
+Streaming。这两种技术要晚于storm诞生，但是现在大有后来者居上的趋势。</p>
+<p>Flink与Storm非常类似，都能够提供实时数据流处理功能。区别在于Flink还能够支持一些更高层的功能，例如group
+by这种常用算法。另外，Flink还具备比Storm更高的吞吐量和更低的延时，这是因为Flink在处理完一条条数据的时候是分组批量确认的，而Storm则是一条一条确认。Flink的这种特性带来了很大的性能优势，但是也会对单条数据的处理时延带来很大的不稳定因素，因为任何相邻数据的处理失败都会导致整组数据被重新处理，从而严重影响一组数据的处理时延。因此，如果你追求更高的吞吐量，可以选择Flink，如果你对每条数据的处理时延都有极高的要求，那么选Storm。</p>
+<p>至于Spark Streaming，其实并不能算得上是纯正的实时数据处理，因为Spark
+Streaming在处理流数据时依然用的是批处理的模式，即凑齐一批数据后启动一个Spark任务得到处理结果。你甚至可以把Spark
+Streaming简单看成是带流输入的Spark。得益于Spark任务执行快速的优点，尽管Spark
+Streaming是一种伪实时处理系统，但是依然能得到还不错的实时性（秒级），当然要跟Storm比的话实时性还是差不少的，但是Spark在吞吐量方面要强于Storm。</p>
+<p>Spark
+Streaming和Flink除了吞吐量这个优点外，还有另一个重要的优点，那就是能够同时支持批处理和实时数据处理。也就是说，你只需要一套系统就能够同时分析你的实时数据和离线数据，这对于架构精简来说是大有好处的。</p>
+<h1 id="hadoop简介">Hadoop简介</h1>
+<p>名字来源于Doug Cutting儿子的玩具大象。</p>
+<p>Hadoop是所有搜索引擎的共性问题的廉价解决方案：<br />
+- 如何存储持续增长的海量网页？ 单节点 or 分布式存储？Hadoop
+HDFS解决分布式存储问题。<br />
+- 如何对持续增长的海量网页进行排序？超算 or 分布式计算？Hadoop MapReduce
+解决分布式计算问题。</p>
+<p><strong>1、Hadoop是什么？</strong><br />
+（1）Hadoop是一个由Apache基金会所开发的，分布式系统基础架构。<br />
+（2）主要解决海量数据的<strong>存储</strong>和海量数据的分析<strong>计算</strong>问题。<br />
+（3）广义上来说，Hdoop通常是指一个更广泛的概念——Hadoop生态圈。</p>
+<p><strong>2、Hadoop的优势</strong><br />
+（1）<strong>高可靠性</strong>：Hadoop底层维护多个数据副本，所以即使Hadoop某个计算元素或存储出现故障，也不会导致数据的丢失。<br />
+（2）<strong>高扩展性</strong>：在集群间分配任务数据，可方便的扩展数以千计的节点。<br />
+（3）<strong>高效性</strong>：在MapReduce的思想下，Hadoop是并行工作的，以加快任务处理速度。<br />
+（4）<strong>高容错性</strong>：能够自动将失败的任务重新分配。</p>
+<p><strong>3、Hadoop发展史</strong><br />
+（1）Lucene--Doug
+Cutting开创的开源软件，用java书写代码，实现与Google类似的全文搜索功能，它提供了全文检索引擎的架构，包括完整的查询引擎和索引引擎。2001年年底成为apache基金会的一个子项目。<br />
+（2）对于大数量的场景，Lucene面对与Google同样的困难：如何存储持续增长的海量网页？如何对持续增长的海量网页进行排序？学习和模仿Google解决这些问题的办法
+：微型版Nutch。<br />
+（3）Google的GFS发表于2003年10月，Google的MapReduce论文发表于2004年12月。可以说Google是hadoop的思想之源，Google在大数据方面的三篇重要论文：<strong>分布式数据存储GFS--&gt;HDFS，分布式数据处理Map-Reduce--&gt;MR，列式存储数据库BigTable--&gt;Hbase</strong>。<br />
+（4）2003-2004年，Google公开了部分GFS和MapReduce思想的细节，以此为基础Doug
+Cutting等人用了2年业余时间实现了GFS和MapReduce机制，使Nutch性能飙升。<br />
+（5）2005年Hadoop作为Lucene的子项目Nutch的一部分正式引入Apache基金会。2006年3月份，Map-Reduce和Nutch
+Distributed File System (NDFS) 分别被纳入称为 Hadoop 的项目中。<br />
+（6）2006年4月—标准排序(10
+GB每个节点)在188个节点上运行47.9个小时。2008年4月—赢得世界最快1TB数据排序在900个节点上用时209秒。<br />
+（7）2008年—
+<strong>淘宝开始投入研究基于Hadoop的系统–云梯</strong>。云梯总容量约9.3PB，共有1100台机器，每天处理18000道作业，扫描500TB数据。<br />
+（8）2009年3月— <strong>Cloudera推出CDH（Cloudera’s Dsitribution
+Including Apache Hadoop）</strong>。<br />
+（9）2009年5月— Yahoo的团队使用Hadoop对1
+TB的数据进行排序只花了62秒时间。<br />
+（10）2009年7月— <strong>Hadoop Core项目更名为Hadoop Common</strong>
+。<br />
+（11）2009年7月— <strong>MapReduce和Hadoop Distributed File System
+(HDFS)成为Hadoop项目的独立子项目</strong>。<br />
+（12）2012年11月— Apache Hadoop 1.0 Available。<br />
+（13）2018年4月— Apache Hadoop 3.1 Available。</p>
+<p><strong>4、Hadoop三大发行版本</strong><br />
+（1）Apache：最基础的版本，开源社区版，适合学习。最新的Hadoop版本都是从Apache
+Hadoop发布的。<span class="exturl" data-url="aHR0cDovL2hhZG9vcC5hcGFjaGUub3JnL3JlbGVhc2VzLmh0bWw=">官网地址<i class="fa fa-external-link-alt"></i></span>。<br />
+（2）Cloudera：Cloudera Distributed
+Hadoop（CDH）在企业中用的较多，解决了Hadoop-Hive-Flume版本不兼容的问题。<span class="exturl" data-url="aHR0cHM6Ly93d3cuY2xvdWRlcmEuY29tL2Rvd25sb2Fkcy9jZGguaHRtbA==">官网地址<i class="fa fa-external-link-alt"></i></span>。<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1）2008年成立的Cloudera是最早将Hadoop商用的公司，为合作伙伴提供Hadoop的商用解决方案，主要是包括支持、咨询服务、培训。</span><br><span class="line">2）2009年Hadoop的创始人Doug Cutting也加盟Cloudera公司。Cloudera产品主要为CDH，Cloudera Manager，Cloudera Support</span><br><span class="line">3）CDH是Cloudera的Hadoop发行版，完全开源，比Apache Hadoop在兼容性，安全性，稳定性上有所增强。</span><br><span class="line">4）Cloudera Manager是集群的软件分发及管理监控平台，可以在几个小时内部署好一个Hadoop集群，并对集群的节点及服务进行实时监控。Cloudera Support即是对Hadoop的技术支持。</span><br><span class="line">5）Cloudera的标价为每年每个节点4000美元。Cloudera开发并贡献了可实时处理大数据的Impala项目。</span><br></pre></td></tr></table></figure><br />
+（3）Hortonworks：Hortonworks Data Platform（HDP）文档较好。<span class="exturl" data-url="aHR0cHM6Ly93d3cuY2xvdWRlcmEuY29tL3Byb2R1Y3RzL2hkcC5odG1s">官网地址<i class="fa fa-external-link-alt"></i></span>。<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1）2011年成立的Hortonworks是雅虎与硅谷风投公司Benchmark Capital合资组建。</span><br><span class="line">2）公司成立之初就吸纳了大约25名至30名专门研究Hadoop的雅虎工程师，上述工程师均在2005年开始协助雅虎开发Hadoop，贡献了Hadoop80%的代码。</span><br><span class="line">3）雅虎工程副总裁、雅虎Hadoop开发团队负责人Eric Baldeschwieler出任Hortonworks的首席执行官。</span><br><span class="line">4）Hortonworks的主打产品是Hortonworks Data Platform（HDP），也同样是100%开源的产品，HDP除常见的项目外还包括了Ambari，一款开源的安装和管理系统。</span><br><span class="line">5）HCatalog，一个元数据管理系统，HCatalog现已集成到Facebook开源的Hive中。Hortonworks的Stinger开创性的极大的优化了Hive项目。Hortonworks为入门提供了一个非常好的，易于使用的沙盒。</span><br><span class="line">6）Hortonworks开发了很多增强特性并提交至核心主干，这使得Apache Hadoop能够在包括Window Server和Windows Azure在内的microsoft Windows平台上本地运行。定价以集群为基础，每10个节点每年为12500美元。</span><br></pre></td></tr></table></figure><br />
+在18年时候，Cloudera和Hortonworks已经宣布合并了。</p>
+<h1 id="hadoop组成结构">Hadoop组成结构</h1>
+<p>Hadoop1.x组成（上层-&gt;下层）：<br />
+（1）MapReduce（计算+资源调度）：一个分布式的资源调度和离线并行计算框架。<br />
+（2）HDFS（数据存储）：一个高可靠、高吞吐量的分布式文件系统。<br />
+（3）Common（辅助工具）：支持其他模块的工具模块（Configuration、RPC、序列化机制、日志操作）。</p>
+<p>Hadoop2.x组成（上层-&gt;下层）：<br />
+（1）<strong>MapReduce（计算）</strong>：一个分布式的离线并行计算框架。<br />
+（2）<strong>Yarn（资源调度）</strong>：作业调度与集群资源管理的框架。<br />
+（3）<strong>HDFS（数据存储）</strong>：一个高可靠、高吞吐量的分布式文件系统。<br />
+（4）<strong>Common（辅助工具）</strong>：支持其他模块的工具模块（Configuration、RPC、序列化机制、日志操作）。</p>
+<p>在Hadoop1.x时代，Hadoop中的MapReduce同时处理业务逻辑运算和资源的调度，耦合性较大的，在Hadoop2.x时代，增加了Yarn。Yarn只负责资源的调度，MapReduce只负责运算。</p>
+<h2 id="hdfs数据存储">HDFS（数据存储）</h2>
+<p><strong>1、Hadoop Distributed File System
+(HDFS，分布式文件系统)：</strong><br />
+- 源自于Google的GFS论文, 论文发表于2003年10月。<br />
+- HDFS是GFS的开源实现。<br />
+- 将文件切分成指定大小的数据块, 并在多台机器上保存多个副本。<br />
+- 数据切分、多副本、容错等操作对用户是透明的。</p>
+<p><strong>2、HDFS的设计特点是：</strong><br />
+-
+<strong>大数据文件</strong>，非常适合上T级别的大文件或者一堆大数据文件的存储，如果文件只有几个G甚至更小就没啥意思了。<br />
+-
+<strong>文件分块存储</strong>，HDFS会将一个完整的大文件平均分块存储到不同计算器上，它的意义在于读取文件时可以同时从多个主机取不同区块的文件，多主机读取比单主机读取效率要高得多得都。<br />
+-
+<strong>流式数据访问</strong>，一次写入多次读写，这种模式跟传统文件不同，它不支持动态改变文件内容，而是要求让文件一次写入就不做变化，要变化也只能在文件末添加内容。<br />
+-
+<strong>廉价硬件</strong>，HDFS可以应用在普通PC机上，这种机制能够让给一些公司用几十台廉价的计算机就可以撑起一个大数据集群。<br />
+-
+<strong>硬件故障</strong>，HDFS认为所有计算机都可能会出问题，为了防止某个主机失效读取不到该主机的块文件，它将同一个文件块副本分配到其它某几个主机上，如果其中一台主机失效，可以迅速找另一块副本取文件。</p>
+<p>HDFS的设计之初就是针对超大文件的存储的，小文件不会提高访问和存储速度，反而会降低；其次它采用了最高效的流式数据访问模式，特点就是一次写入多次读取；再有就是它运行在普通的硬件之上的，即使硬件故障，也就通过容错来保证数据的高可用。</p>
+<p><strong>3、优点：</strong><br />
+-
+<strong>数据冗余、硬件容错</strong>：数据可保存多个副本，当某个数据结点出现故障，可及时通过其他数据结点存储的副本获取数据，这样提高了硬件故障容错性。<br />
+-
+<strong>适合处理大数据</strong>：文件规模达到百万、数据规模达到GB、TB、甚至PB级别的数据都可以处理。<br />
+- <strong>可构建在廉价机器上</strong>，通过副本机制，提高可靠性。</p>
+<p><strong>4、缺点：</strong><br />
+- <strong>不适合低延时数据访问</strong>。比如毫秒级的存储数据。<br />
+-
+<strong>无法高效的对大量小文件进行存储</strong>。小文件会占用NameNode大量的内存来存储文件目录和块信息，但NameNode的内存总是有限的。小文件存储额寻址时间会超过读取时间，它违反了HDFS设计目标。<br />
+-
+<strong>不支持并发写入、文件随机修改</strong>。一个文件只能有一个写，不允许多个线程同时写。仅支持数据的追加，不支持文件的随机修改。</p>
+<p><strong>5、HDFS架构：</strong><br />
+- <strong>NameNode（nn）</strong>：Master，管理者。<br />
+-
+管理HDFS的名称空间、配置副本策略、管理数据块映射信息（MetaData）、处理客户端读写请求。<br />
+-
+保存整个文件系统的目录信息、文件信息及分块信息，这是由唯一一台主机专门保存，当然这台主机如果出错，NameNode就失效了。在Hadoop2.x开始支持activity-standy模式：如果主NameNode失效，启动备用主机运行NameNode。<br />
+-
+监控DataNode健康状况，10分钟没有收到DataNode报告，就认为DataNode死掉了。<br />
+-
+<strong>DataNode(dn)</strong>：Slave，执行者。NameNode下达命令，DataNode执行实际的操作。<br />
+-
+负责存储文件对应的数据块（Block）、执行数据块的读/写操作。Block，将一个文件分块，默认是128M。<br />
+- 要定期向nn发送心跳信息，汇报本身及其所有的Block信息，健康情况。<br />
+- 分布式集群NameNode和DataNode部署在不同机器上。<br />
+- <strong>Secondary
+NameNode(2nn)</strong>：用来监控HDFS状态，每隔一段时间获取HDFS元数据的快照，但并非NameNode的热备。当NameNode挂掉的时候，它并不能马上替换NameNode并提供服务。主要是辅助NameNode，平时分担其工作量，比如定期合并Fsimage和Eidts，并推送给NameNode。在紧急情况下，可辅助恢复NameNode。<br />
+<img src="/images/Hadoop/hdfs.jpg" /><br />
+<img src="/images/Hadoop/hdfs-structure.jpg" width="80%" height="80%"></p>
+<p><strong>HDFS读、写流程：</strong><br />
+- 客户端向NameNode发出写文件请求。<br />
+-
+检查是否已存在文件、检查权限。若通过检查，直接先将操作写入EditLog，并返回输出流对象。<br />
+（注：WAL，write ahead
+log，先写Log，再写内存，因为EditLog记录的是最新的HDFS客户端执行所有的写操作。如果后续真实写操作失败了，由于在真实写操作之前，操作就被写入EditLog中了，故EditLog中仍会有记录，我们不用担心后续client读不到相应的数据块，因为在第5步中DataNode收到块后会有一返回确认信息，若没写成功，发送端没收到确认信息，会一直重试，直到成功）<br />
+- client端按128MB的块切分文件。<br />
+-
+client将NameNode返回的分配的可写的DataNode列表和Data数据一同发送给最近的第一个DataNode节点，此后client端和NameNode分配的多个DataNode构成pipeline管道，client端向输出流对象中写数据。client每向第一个DataNode写入一个packet，这个packet便会直接在pipeline里传给第二个、第三个…DataNode。<br />
+（注：并不是写好一个块或一整个文件后才向后分发）<br />
+- 每个DataNode写完一个块后，会返回确认信息。<br />
+（注：并不是每写完一个packet后就返回确认信息，个人觉得因为packet中的每个chunk都携带校验信息，没必要每写一个就汇报一下，这样效率太慢。正确的做法是写完一个block块后，对校验信息进行汇总分析，就能得出是否有块写错的情况发生）<br />
+- 写完数据，关闭输输出流。<br />
+- 发送完成信号给NameNode。<br />
+（注：发送完成信号的时机取决于集群是强一致性还是最终一致性，强一致性则需要所有DataNode写完后才向NameNode汇报。最终一致性则其中任意一个DataNode写完后就能单独向NameNode汇报，HDFS一般情况下都是强调强一致性）</p>
+<p><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC81MzY0MTM0NQ==">中文版漫画<i class="fa fa-external-link-alt"></i></span></p>
+<p><img src="/images/Hadoop/hdfs1.jpg"></p>
+<p><img src="/images/Hadoop/hdfs2.jpg"></p>
+<p><strong>HDFS容错：</strong><br />
+<img src="/images/Hadoop/hdfs3.jpg"></p>
+<p><strong>HDFS副本存放策略：</strong><br />
+<img src="/images/Hadoop/hdfs4.jpg"></p>
+<h2 id="yarn资源调度">Yarn（资源调度）</h2>
+<p><strong>1、Yet Another Resource
+Negotiator（Yarn，另一种资源协调者）</strong>：<br />
+-
+通用资源管理系统。负责整个<strong>集群</strong>资源的<strong>管理</strong>和<strong>调度</strong>。<br />
+-
+为上层应用提供统一的资源管理和调度，为集群在利用率、资源统一管理和数据共享等方面带来了巨大好处。</p>
+<p><strong>2、YARN产生背景</strong><br />
+通用资源管理系统？<br />
+（1）Hadoop数据分布式存储（数据分块，冗余存储）。<br />
+（2）当多个MapReduce任务要用到相同的hdfs数据，
+需要进行资源调度管理。<br />
+（3）Hadoop1.x时并没有YARN，MapReduce既负责进行计算作业又处理服务器集群资源调度管理。</p>
+<p>服务器集群资源调度管理和MapReduce执行过程耦合在一起带来的问题：<br />
+（1）随着大数据技术的发展，Spark Storm
+等计算框架都要用到服务器集群资源。<br />
+（2）如果没有通用资源管理系统，只能为多个集群分别提供数据，这样资源利用率低、运维成本高。</p>
+<p>不同计算框架可以共享同一个HDFS集群上的数据，享受整体的资源调度：<br />
+<img src="/images/Hadoop/yarn.png" width="80%" height="80%"></p>
+<p><strong>Yarn架构：</strong><br />
+- <strong>ResourceManager(RM)</strong>： 资源管理器。<br />
+-
+整个集群同一时间提供服务的RM只有一个，负责集群资源的统一管理和调度。<br />
+- 处理客户端请求、启动/监控AM、监控NM、资源分配与调度。<br />
+- <strong>NodeManager(NM)</strong>：节点管理器。<br />
+- 整个集群中有多个，负责自己本身节点资源管理和使用。<br />
+- 处理来自RM（启动Container）、AM的命令。<br />
+- 定时向RM汇报本节点的资源使用情况。<br />
+- <strong>ApplicationMaster(AM)</strong>：程序管理器。<br />
+- 每个应用程序对应一个，负责应用程序的管理。<br />
+-
+数据切分、为应用程序向RM申请资源（core、memory），分配给内部task。<br />
+-
+需要与NM通信：启动/停止task，task（AM也是）是运行在container里面，。<br />
+- <strong>Container</strong>：容器。<br />
+- 封装了CPU、Memory等资源的一个容器，是一个任务运行环境的抽象。<br />
+- 封装了环境变量、启动命令等任务运行相关的信息。<br />
+-
+<strong>Client</strong>：提交作业、查询作业的运行进度，杀死作业。<br />
+<img src="/images/Hadoop/Yarn架构.png" /></p>
+<p><img src="/images/Hadoop/yarn2.png" width="80%" height="80%"></p>
+<p>（1）Client提交作业请求。<br />
+（2）ResourceManager 进程和 NodeManager
+进程通信，根据集群资源NodeManager空闲情况，为用户程序分配第一个Container，并将
+ApplicationMaster 分发到这个Container上面。<br />
+（3）在启动的Container中创建ApplicationMaster。<br />
+（4）ApplicationMaster启动后向ResourceManager注册进程、申请资源（哪些NodeManager符合任务条件）。<br />
+（5）ApplicationMaster申请到资源后，向对应的NodeManager申请启动Container，将要执行的程序分发到NodeManager上。<br />
+（6）Container启动后，执行对应的任务。<br />
+（7）Tast执行完毕之后，向ApplicationMaster返回结果。<br />
+（8）ApplicationMaster向ResourceManager请求kill。</p>
+<h2 id="mapreduce计算">MapReduce（计算）</h2>
+<ul>
+<li>分布式计算框架。</li>
+<li>源于Google的MapReduce论文，论文发表于2004年12月。</li>
+<li>MapReduce是GoogleMapReduce的开源实现。</li>
+<li>MapReduce特点：扩展性、容错性、海量数据离线处理。</li>
+</ul>
+<p><strong>1、核心思想是将计算过程分为两个阶段</strong>：Map阶段并行处理输入数据，Reduce阶段对Map结果进行汇总。<br />
+通俗说MapReduce是一套从海量源数据提取分析元素最后返回结果集的编程模型，将文件分布式存储到硬盘是HDFS，而从海量数据中提取分析需要的内容就是MapReduce做的事了。</p>
+<p>下面以一个计算海量数据最大值为例：一个银行有上亿储户，银行希望找到存储金额最高的金额是多少？<br />
+（1）传统计算一个个去比较，串行操作，如果计算的数组长度少的话，这样实现是不会有问题的，还是面对海量数据的时候就会有问题。<br />
+（2）MapReduce会这样做：首先数字是分布存储在不同块中的，以某几个块为一个Map，计算出Map中最大的值，然后将每个Map中的最大值做Reduce操作，Reduce再取最大值给用户。<br />
+<img src="/images/Hadoop/mapreduce.jpg" /></p>
+<p>MapReduce的基本原理就是：将大的数据分析分成小块逐个分析，最后再将提取出来的数据汇总分析，最终获得想要的内容。当然怎么分块分析，怎么做Reduce操作非常复杂，Hadoop已经提供了数据分析的实现，只需要编写简单的需求命令即可达成想要的数据。</p>
+<p><strong>2、优点：</strong><br />
+-
+<strong>易于编程</strong>：简单实现一些接口，就可以完成一个分布式程序。<br />
+-
+<strong>良好的扩展性</strong>：当计算资源不能满足时，可以通过增加机器来扩展它的计算能力。<br />
+-
+<strong>高容错性</strong>：MapReduce设计的初衷就是使程序能够部署在廉价的PC机器上，这就要求它具有很高的容错性。比如其中一台机器挂了，它可以把上面的计算任务转移到另外一个节点上运行，不至于这个任务运行失败，而且这个过程不需要人工参与，而完全是由Hadoop内部完成的。<br />
+-
+<strong>适合PB级以上海量数据的离线处理</strong>：可以实现上千台服务器集群并发工作，提供数据处理能力。</p>
+<p><strong>3、缺点：</strong><br />
+-
+<strong>不擅长实时计算</strong>：MapReduce无法像MySQL一样，在毫秒或者秒级内返回结果。<br />
+-
+<strong>不擅长流式计算</strong>：流式计算的输入数据是动态的，而MapReduce的输入数据集是静态的，不能动态变化。这是因为MapReduce自身的设计特点决定了数据源必须是静态的。<br />
+-
+<strong>不擅长DAG（有向图）计算</strong>：多个应用程序存在依赖关系，后一个应用程序的输入为前一个的输出。在这种情况下，MapReduce并不是不能做，而是使用后，每个MapReduce作业的输出结果都会写入到磁盘，会造成大量的磁盘IO，导致性能非常的低下。</p>
+<p><strong>4、和传统对比详解</strong><br />
+<img src="/images/Hadoop/mp3.png" width="80%" height="80%"></p>
+<p><strong>单机程序计算流程</strong>：输入数据---&gt;读取数据---&gt;处理数据---&gt;写入数据---&gt;输出数据。</p>
+<p><strong>Hadoop计算流程</strong>：<br />
+（1）input data：输入数据。<br />
+（2）InputFormat：对数据进行切分，格式化处理。<br />
+（3）map：将前面切分的数据做map处理(将数据进行分类，输出(k,v)键值对数据)。<br />
+（4）shuffle&amp;sort：将相同的数据放在一起，并对数据进行排序处理。<br />
+（5）reduce：将map输出的数据进行hash计算，对每个map数据进行统计计算。<br />
+（6）OutputFormat：格式化输出数据。</p>
+<p><img src="/images/Hadoop/mp4.png" width="70%" height="80%"></p>
+<p><img src="/images/Hadoop/mp5.png" width="70%" height="80%"></p>
+<p><img src="/images/Hadoop/mp6.png" width="70%" height="80%"></p>
+<p><img src="/images/Hadoop/mp1.png" width="90%" height="90%"></p>
+<p>map：将数据进行处理。<br />
+buffer in
+memory：达到80%数据时，将数据锁在内存上，将这部分输出到磁盘上。<br />
+partitions：在磁盘上有很多"小的数据"，将这些数据进行归并排序。<br />
+merge on disk：将所有的"小的数据"进行合并。<br />
+reduce：不同的reduce任务，会从map中对应的任务中copy数据（在reduce中同样要进行merge操作）。<br />
+​<br />
+map/reduce
+会频繁的在内存和硬盘上进行IO操作，所以效率不高。Spark就是基于内存的了，效率就提高了。</p>
+<p><strong>5、MapReduce架构</strong><br />
+MapReduce 1.X：<br />
+（1）JobTracker：master计算集群的管理。负责接收客户作业提交，负责任务到作业节点上运行，检查作业的状态。<br />
+（2）TaskTracker：slave负责具体任务执行。由JobTracker指派任务，定期向JobTracker汇报状态，在每一个工作节点上永远只会有一个TaskTracker。<br />
+<img src="/images/Hadoop/MapReduce4.png" width="90%" height="90%"></p>
+<p>MapReduce 2.X：<br />
+（1）ResourceManager：master资源管理器。。负责提交任务到NodeManager所在的节点运行，检查节点的状态<br />
+（2）NodeManager：slave节点管理器。由ResourceManager指派任务，定期向ResourceManager汇报状态.<br />
+<img src="/images/Hadoop/MapReduce5.png" width="90%" height="90%"></p>
+<p>Word Count例子：<br />
+<img src="/images/Hadoop/MapReduce核心思想.png" /></p>
+<h1 id="hadoop安装">Hadoop安装</h1>
+<p>下载jdk 和 hadoop 放到 ~/software目录下 然后解压到 ~/app目录下<br />
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf 压缩包名字 -C ~/app/</span><br></pre></td></tr></table></figure><br />
+配置环境变量<br />
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">vi ~/.bash_profile</span><br><span class="line">export JAVA_HOME=/home/hadoop/app/jdk1.8.0_91</span><br><span class="line">export PATH=$JAVA_HOME/bin:$PATH</span><br><span class="line">export HADOOP_HOME=/home/hadoop/app/hadoop......</span><br><span class="line">export PATH=$HADOOP_HOME/bin:$PATH</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">保存退出后</span></span><br><span class="line">source ~/.bash_profile</span><br></pre></td></tr></table></figure><br />
+进入到解压后的hadoop目录，有几个重要的配置文件：<br />
+- core-site.xml：指定hdfs的访问方式。<br />
+- hdfs-site.xml：指定 namenode 和 datanode 的数据存储位置。<br />
+- mapred-site.xml：配置mapreduce。<br />
+- yarn-site.xml：配置yarn。</p>
+<p>修改配置文件：<br />
+- 修改<code>hadoop-env.sh</code>：<br />
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd etc/hadoop</span><br><span class="line">vi hadoop-env.sh</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">找到下面内容添加java home</span></span><br><span class="line">export_JAVA_HOME=/home/hadoop/app/jdk1.8.0_91</span><br></pre></td></tr></table></figure><br />
+-
+修改<code>core-site.xml</code>在<code>&lt;configuration&gt;</code>节点中添加：<br />
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">name</span>&gt;</span>fs.default.name<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">value</span>&gt;</span>hdfs://hadoop000:8020<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure><br />
+-
+修改<code>hdfs-site.xml</code>在<code>&lt;configuration&gt;</code>节点中添加：<br />
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.namenode.name.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>/home/hadoop/app/tmp/dfs/name<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.datanode.data.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>/home/hadoop/app/tmp/dfs/data<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.replication<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>1<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure><br />
+- 修改
+<code>mapred-site.xml</code>（默认没有这个配置文件，从模板文件复制）：<br />
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp mapred-site.xml.template mapred-site.xml</span><br></pre></td></tr></table></figure><br />
+-
+在<code>mapred-site.xml</code>的<code>&lt;configuration&gt;</code>节点中添加：<br />
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>mapreduce.framework.name<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>yarn<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure><br />
+-
+修改<code>yarn-site.xml</code>在<code>&lt;configuration&gt;</code>节点中添加：<br />
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.nodemanager.aux-services<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>mapreduce_shuffle<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure><br />
+- 来到hadoop的bin目录，格式化hadoop系统（这个命令只运行一次）：<br />
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./hadoop namenode -format </span><br></pre></td></tr></table></figure><br />
+启动/停止服务：<br />
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">启动</span></span><br><span class="line">sbin/start-yarn.sh</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">停止</span></span><br><span class="line">sbin/stop-yarn.sh</span><br></pre></td></tr></table></figure></p>
+<h1 id="hdfs启动命令">HDFS启动、命令</h1>
+<p>来到<code>$HADOOP_HOME/sbin</code>目录下，执行<code>start-dfs.sh</code>。<br />
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop00 sbin]$ ./start-dfs.sh</span><br></pre></td></tr></table></figure><br />
+可以看到namenode和datanode启动的日志信息：<br />
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Starting namenodes on [hadoop00]</span><br><span class="line">hadoop00: starting namenode, logging to /home/hadoop/app/hadoop-2.6.0-cdh5.7.0/logs/hadoop-hadoop-namenode-hadoop00.out</span><br><span class="line">localhost: starting datanode, logging to /home/hadoop/app/hadoop-2.6.0-cdh5.7.0/logs/hadoop-hadoop-datanode-hadoop00.out</span><br><span class="line">Starting secondary namenodes [0.0.0.0]</span><br><span class="line">0.0.0.0: starting secondarynamenode, logging to /home/hadoop/app/hadoop-2.6.0-cdh5.7.0/logs/hadoop-hadoop-secondarynamenode-hadoop00.out</span><br></pre></td></tr></table></figure><br />
+通过jps命令查看当前运行的进程：<br />
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop00 sbin]$ jps</span><br><span class="line">4416 DataNode</span><br><span class="line">4770 Jps</span><br><span class="line">4631 SecondaryNameNode</span><br><span class="line">4251 NameNode</span><br></pre></td></tr></table></figure><br />
+可以看到 NameNode、DataNode、SecondaryNameNode，这说明启动成功。</p>
+<p>通过可视化界面查看HDFS的运行情况：地址是<code>主机ip:50070</code>。<br />
+<img src="/images/Hadoop/hadoop-state.png" width="80%" height="80%"><br />
+Overview界面查看整体情况：<br />
+<img src="/images/Hadoop/hadoop-state1.png" width="80%" height="80%"><br />
+Datanodes界面查看datanode的情况：<br />
+<img src="/images/Hadoop/hadoop-state2.png" width="80%" height="80%"></p>
+<p>注意3个不同的位置：<br />
+（1）本地电脑。<br />
+（2）服务器。<br />
+（3）集群。<br />
+一般我们会用本地电脑，通过terminal、Xshell、scureCRT终端ssh登陆远程服务器，在服务器上启动Hadoop、执行Hadoop命令，Hadoop的命令是对其下集群操作的。</p>
+<p>HDFS上的数据，分布在不同的地方，有一些命令可以用于 增加/查看/删除
+等数据操作。<br />
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示/下的所有文件夹信息</span></span><br><span class="line">hadoop fs -ls /</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">递归显示所有文件夹和子文件(夹)</span></span><br><span class="line">hadoop fs -lsr</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建/user/hadoop目录</span></span><br><span class="line">hadoop fs -mkdir /user/hadoop</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">把a.txt放到集群/user/hadoop/文件夹下</span></span><br><span class="line">hadoop fs -put a.txt /user/hadoop/</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">把集群上的/user/hadoop/a.txt拉到本地/目录下</span></span><br><span class="line">hadoop fs -get /user/hadoop/a.txt /</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">把集群上的/user/hadoop/下的文件组合在一起拉到本地/目录下result.txt文件中</span></span><br><span class="line">hadoop fs -getmerge /user/hadoop/ result.txt</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">集群上复制文件</span></span><br><span class="line">hadoop fs -cp src dst</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">集群上移动文件</span></span><br><span class="line">hadoop fs -mv src dst</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看集群上文件/user/hadoop/a.txt的内容</span></span><br><span class="line">hadoop fs -cat /user/hadoop/a.txt</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除集群上/user/hadoop/a.txt文件</span></span><br><span class="line">hadoop fs -rm /user/hadoop/a.txt</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除目录和目录下所有文件</span></span><br><span class="line">hadoop fs -rmr /user/hadoop/a.txt</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">与hadoop fs -put功能类似</span></span><br><span class="line">hadoop fs -copyFromLocal localsrc dst </span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将本地文件上传到hdfs，同时删除本地文件</span></span><br><span class="line">hadoop fs -moveFromLocal localsrc dst </span><br></pre></td></tr></table></figure><br />
+在使用put方法时，提示你在safe mode模式，可以用下面命令处理：<br />
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hdfs dfsadmin -safemode leave</span><br></pre></td></tr></table></figure></p>
+<h1 id="hadoop-streaming">Hadoop Streaming</h1>
+<p>Hadoop生态有非常多的工具可以用于大数据的管理和数据处理。这里详细介绍一下，如何使用Hadoop
+Streaming方式，对大数据进行处理。</p>
+<p>Hadoop Streaming大数据处理详解:<br />
+<img src="/images/Hadoop/hadoop-streaming.jpeg" /></p>
+<h2 id="工作参数和流程">工作参数和流程</h2>
+<p>Hadoop
+streaming是Hadoop的一个工具，它帮助用户创建和运行一类特殊的map/reduce作业，这些特殊的map/reduce作业是由一些可执行文件或脚本文件充当mapper或者reducer。<br />
+例如，<strong>通过Hadoop
+Streaming提交作业到Hadoop集群（hadoop-streaming会主动将map的输出数据进行字典排序）</strong>：<br />
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">hadoop streaming jar包所在位置</span></span><br><span class="line">STREAM_JAR_PATH=&quot;/root/bigdata/hadoop/share/hadoop/tools/lib/hadoop-streaming-2.7.1.jar&quot;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">要进行词频统计的文档在hdfs中的路径</span></span><br><span class="line">INPUT_FILE_PATH_1=&quot;/The_Man_of_Property.txt&quot;  </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">MR作业后结果的存放路径</span></span><br><span class="line">OUTPUT_PATH=&quot;/output&quot;  </span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">输出路径如果之前存在 先删掉否则会报错</span></span><br><span class="line">hadoop fs -rm -r -skipTrash $OUTPUT_PATH    </span><br><span class="line"></span><br><span class="line">hadoop jar $STREAM_JAR_PATH \   </span><br><span class="line">    -input $INPUT_FILE_PATH_1 \ # 指定输入文件位置</span><br><span class="line">    -output $OUTPUT_PATH \      # 指定输出结果位置</span><br><span class="line">    -mapper &quot;python map.py&quot; \   # 指定mapper执行的程序</span><br><span class="line">    -reducer &quot;python red.py&quot; \  # 指定reduce阶段执行的程序</span><br><span class="line">    -file ./map.py \            # 通过-file 打包提交，把python源文件分发到集群的每一台机器上  </span><br><span class="line">    -file ./red.py</span><br></pre></td></tr></table></figure><br />
+<strong>1、-mapper和-reducer</strong><br />
+-mapper和-reducer指定map和reduce过程使用的可执行文件，可以是python或java等语言脚本，它们从标准输入读入数据（一行一行读），
+并把计算结果发给标准输出。Streaming工具会创建一个Map/Reduce作业，
+并把它发送给合适的集群，同时监视这个作业的整个执行过程。</p>
+<ul>
+<li>如果一个可执行文件被用于mapper/reducer，则在mapper/reducer初始化时，
+每一个mapper/reducer任务会把这个可执行文件作为一个单独的进程启动。</li>
+<li>mapper/reducer任务运行时，它把输入切分成行，并把每一行提供给可执行文件进程的标准输入。同时，mapper/reducer收集可执行文件进程标准输出的内容，并把收到的每一行内容转化成key/value对，作为mapper/reducer的输出。</li>
+<li>默认情况下，一行中第一个tab之前的部分作为key，之后的（不包括tab）作为value。
+如果没有tab，整行作为key值，value值为null。不过，这可以定制，在下文中将会讨论如何自定义key和value的切分方式。</li>
+</ul>
+<p>用户可以设定<code>stream.non.zero.exit.is.failure</code>为True/False来表明streaming
+task的返回值非零时是 Failure 还是 Success 。默认情况，streaming
+task返回非零时表示Failure失败。</p>
+<p><strong>2、-file</strong><br />
+<font color="red">hadoop允许用脚本语言完成处理过程，并把文件打包提交到作业中，完成大数据的处理。任何可执行文件都可以被指定为mapper/reducer。这些可执行文件不需要事先存放在集群上；如果在集群上还没有，则需要用-file选项让framework把可执行文件作为作业的一部分，一起打包提交。</font></p>
+<p><font color="red">除了可执行文件外，其他mapper或reducer需要用到的辅助文件（比如字典，配置文件等）也可以用这种方式打包上传。</font></p>
+<p><strong>3、-jobconf</strong><br />
+用户可以使用“-jobconf <n>=<v>”增加一些配置变量。例如：<br />
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">hadoop  jar $HADOOP_HOME/hadoop-streaming.jar \</span><br><span class="line">    -input myInputDirs \</span><br><span class="line">    -output myOutputDir \</span><br><span class="line">    -mapper org.apache.hadoop.mapred.lib.IdentityMapper\</span><br><span class="line">    -reducer /bin/wc \</span><br><span class="line">    -jobconf mapred.map.tasks=2 # 表明用两个mapper完成作业</span><br><span class="line">    -jobconf mapred.reduce.tasks=2 # 表明用两个reducer完成作业</span><br></pre></td></tr></table></figure><br />
+<strong>有时只需要map函数处理输入数据</strong>：只需把mapred.reduce.tasks设置为0，Map/reduce框架就不会创建reducer任务，mapper任务的输出就是整个作业的最终输出。<br />
+为了做到向下兼容，Hadoop Streaming也支持“-reduce
+None”选项，它与“-jobconf mapred.reduce.tasks=0”等价。</p>
+<p><strong>4、-cacheFile和-cacheArchive</strong><br />
+任务使用“-cacheFile”和“-cacheArchive”选项在集群中分发文件和档案，选项的参数是用户已上传至HDFS的文件或档案的URI。这些文件和档案在不同的作业间缓存。用户可以通过fs.default.name.config配置参数的值得到文件所在的host和fs_port。</p>
+<p>这个是使用“-cacheFile”选项的例子：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-cacheFile hdfs://host:fs_port/user/testfile.txt#testlink</span><br></pre></td></tr></table></figure><br />
+在上面的例子里，url中#后面的部分是建立在任务当前工作目录下的符号链接的名字。这里的任务的当前工作目录下有一个“testlink”符号链接，它指向testfile.txt文件在本地的拷贝。如果有多个文件，选项可以写成：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-cacheFile hdfs://host:fs_port/user/testfile1.txt#testlink1 -cacheFile hdfs://host:fs_port/user/testfile2.txt#testlink2</span><br></pre></td></tr></table></figure><br />
+-cacheArchive选项用于把jar文件拷贝到任务当前工作目录并自动把jar文件解压缩。例如：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-cacheArchive hdfs://host:fs_port/user/testfile.jar#testlink3</span><br></pre></td></tr></table></figure><br />
+在上面的例子中，testlink3是当前工作目录下的符号链接，它指向testfile.jar解压后的目录。</p>
+<p>下面是使用“-cacheArchive”选项的另一个例子。其中，input.txt文件有两行内容，分别是两个文件的名字：testlink/cache.txt和testlink/cache2.txt。“testlink”是指向档案目录（jar文件解压后的目录）的符号链接，这个目录下有“cache.txt”和“cache2.txt”两个文件。<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">hadoop  jar $HADOOP_HOME/hadoop-streaming.jar \</span><br><span class="line">    -input &quot;/user/me/samples/cachefile/input.txt&quot;  \</span><br><span class="line">    -mapper &quot;xargs cat&quot;  \</span><br><span class="line">    -reducer &quot;cat&quot;  \</span><br><span class="line">    -output &quot;/user/me/samples/cachefile/out&quot; \  </span><br><span class="line">    -cacheArchive &#x27;hdfs://hadoop-nn1.example.com/user/me/samples/cachefile/cachedir.jar#testlink&#x27; \  </span><br><span class="line">    -jobconf mapred.map.tasks=1 \</span><br><span class="line">    -jobconf mapred.reduce.tasks=1 \ </span><br><span class="line">    -jobconf mapred.job.name=&quot;Experiment&quot;</span><br></pre></td></tr></table></figure><br />
+再来看一样过程和内容：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">$ ls test_jar/</span><br><span class="line">cache.txt  cache2.txt</span><br><span class="line"></span><br><span class="line">$ jar cvf cachedir.jar -C test_jar/ .</span><br><span class="line">added manifest</span><br><span class="line">adding: cache.txt(in = 30) (out= 29)(deflated 3%)</span><br><span class="line">adding: cache2.txt(in = 37) (out= 35)(deflated 5%)</span><br><span class="line"></span><br><span class="line">$ hadoop dfs -put cachedir.jar samples/cachefile</span><br><span class="line"></span><br><span class="line">$ hadoop dfs -cat /user/me/samples/cachefile/input.txt</span><br><span class="line">testlink/cache.txt</span><br><span class="line">testlink/cache2.txt</span><br><span class="line"></span><br><span class="line">$ cat test_jar/cache.txt </span><br><span class="line">This is just the cache string</span><br><span class="line"></span><br><span class="line">$ cat test_jar/cache2.txt </span><br><span class="line">This is just the second cache string</span><br><span class="line"></span><br><span class="line">$ hadoop dfs -ls /user/me/samples/cachefile/out      </span><br><span class="line">Found 1 items</span><br><span class="line">/user/me/samples/cachefile/out/part-00000  &lt;r 3&gt;   69</span><br><span class="line"></span><br><span class="line">$ hadoop dfs -cat /user/me/samples/cachefile/out/part-00000</span><br><span class="line">This is just the cache string   </span><br><span class="line">This is just the second cache string</span><br></pre></td></tr></table></figure></p>
+<p><strong>5、为作业指定其他插件</strong><br />
+和其他普通的Map/Reduce作业一样，用户可以为streaming作业指定其他插件：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-inputformat JavaClassName</span><br><span class="line">-outputformat JavaClassName</span><br><span class="line">-partitioner JavaClassName</span><br><span class="line">-combiner JavaClassName</span><br></pre></td></tr></table></figure><br />
+用于处理输入格式的类要能返回Text类型的key/value对。如果不指定输入格式，则默认会使用TextInputFormat。
+因为TextInputFormat得到的key值是LongWritable类型的（其实key值并不是输入文件中的内容，而是value偏移量），
+所以key会被丢弃，只把value用管道方式发给mapper。</p>
+<p>用户提供的定义输出格式的类需要能够处理Text类型的key/value对。如果不指定输出格式，则默认会使用TextOutputFormat类。<br />
+<strong>6、其他选项</strong><br />
+Streaming 作业的其他选项如下表：</p>
+<table>
+<colgroup>
+<col style="width: 38%" />
+<col style="width: 44%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>选项</th>
+<th style="text-align: center;">可选/必须</th>
+<th style="text-align: left;">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>-cluster name</td>
+<td style="text-align: center;">可选</td>
+<td
+style="text-align: left;">在本地Hadoop集群与一个或多个远程集群间切换</td>
+</tr>
+<tr class="even">
+<td>-dfs host:port or local</td>
+<td style="text-align: center;">可选</td>
+<td style="text-align: left;">覆盖作业的HDFS配置</td>
+</tr>
+<tr class="odd">
+<td>-jt host:port or local</td>
+<td style="text-align: center;">可选</td>
+<td style="text-align: left;">覆盖作业的JobTracker配置</td>
+</tr>
+<tr class="even">
+<td>-additionalconfspec specfile</td>
+<td style="text-align: center;">可选</td>
+<td
+style="text-align: left;">用一个类似于hadoop-site.xml的XML文件保存所有配置，从而不需要用多个"-jobconf
+name=value"类型的选项单独为每个配置变量赋值</td>
+</tr>
+<tr class="odd">
+<td>-cmdenv name=value</td>
+<td style="text-align: center;">可选</td>
+<td style="text-align: left;">传递环境变量给streaming命令</td>
+</tr>
+<tr class="even">
+<td>-cacheFile fileNameURI</td>
+<td style="text-align: center;">可选</td>
+<td style="text-align: left;">指定一个上传到HDFS的文件</td>
+</tr>
+<tr class="odd">
+<td>-cacheArchive fileNameURI</td>
+<td style="text-align: center;">可选</td>
+<td
+style="text-align: left;">指定一个上传到HDFS的jar文件，这个jar文件会被自动解压缩到当前工作目录下</td>
+</tr>
+<tr class="even">
+<td>-inputreader JavaClassName</td>
+<td style="text-align: center;">可选</td>
+<td style="text-align: left;">为了向下兼容：指定一个record
+reader类（而不是input format类）</td>
+</tr>
+<tr class="odd">
+<td>-verbose</td>
+<td style="text-align: center;">可选</td>
+<td style="text-align: left;">详细输出</td>
+</tr>
+</tbody>
+</table>
+<p>使用-cluster
+<name>实现“本地”Hadoop和一个或多个远程Hadoop集群间切换。默认情况下，使用hadoop-default.xml和hadoop-site.xml；当使用-cluster
+<name>选项时，会使用$HADOOP_HOME/conf/hadoop-<name>.xml。</p>
+<p>下面的选项改变temp目录：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-jobconf dfs.data.dir=/tmp</span><br></pre></td></tr></table></figure><br />
+下面的选项指定其他本地temp目录：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-jobconf mapred.local.dir=/tmp/local</span><br><span class="line">-jobconf mapred.system.dir=/tmp/system</span><br><span class="line">-jobconf mapred.temp.dir=/tmp/temp</span><br></pre></td></tr></table></figure><br />
+更多有关jobconf的细节请参考<span class="exturl" data-url="aHR0cDovL3dpa2kuYXBhY2hlLm9yZy9oYWRvb3AvSm9iQ29uZkZpbGU=">JobConfFile<i class="fa fa-external-link-alt"></i></span>。</p>
+<p>在streaming命令中设置环境变量：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-cmdenv EXAMPLE_DIR=/home/example/dictionaries/</span><br></pre></td></tr></table></figure></p>
+<h2 id="高级功能与其他例子">高级功能与其他例子</h2>
+<p><strong>1、使用自定义的方法切分行来形成Key/Value对</strong><br />
+之前已经提到，当Map/Reduce框架从mapper的标准输入读取一行时，它把这一行切分为key/value对。
+在默认情况下，每行第一个tab符之前的部分作为key，之后的部分作为value（不包括tab符）。</p>
+<p>但是，用户可以自定义，可以指定分隔符是其他字符而不是默认的tab符，或者指定在第n（n&gt;=1）个分割符处分割而不是默认的第一个。例如<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/hadoop  jar $HADOOP_HOME/hadoop-streaming.jar \</span><br><span class="line">    -input myInputDirs \</span><br><span class="line">    -output myOutputDir \</span><br><span class="line">    -mapper org.apache.hadoop.mapred.lib.IdentityMapper \</span><br><span class="line">    -reducer org.apache.hadoop.mapred.lib.IdentityReducer \</span><br><span class="line">    -jobconf stream.map.output.field.separator=. \</span><br><span class="line">    -jobconf stream.num.map.output.key.fields=4</span><br></pre></td></tr></table></figure><br />
+在上面的例子，“-jobconf
+stream.map.output.field.separator=.”指定“.”作为map输出内容的分隔符，并且从在第四个“.”之前的部分作为key，之后的部分作为value（不包括这第四个“.”）。
+如果一行中的“.”少于四个，则整行的内容作为key，value设为空的Text对象（就像这样创建了一个Text：new
+Text("")）。</p>
+<p>同样，用户可以使用“-jobconf
+stream.reduce.output.field.separator=SEP”和“-jobconf
+stream.num.reduce.output.fields=NUM”来指定reduce输出的行中，第几个分隔符处分割key和value。</p>
+<p><strong>2、一个实用的Partitioner类 （二次排序，-partitioner
+org.apache.hadoop.mapred.lib.KeyFieldBasedPartitioner
+选项）</strong><br />
+Hadoop有一个工具类org.apache.hadoop.mapred.lib.KeyFieldBasedPartitioner，
+它在应用程序中很有用。Map/reduce框架用这个类切分map的输出，
+切分是基于key值的前缀，而不是整个key。例如：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">hadoop  jar $HADOOP_HOME/hadoop-streaming.jar \</span><br><span class="line">    -input myInputDirs \</span><br><span class="line">    -output myOutputDir \</span><br><span class="line">    -mapper org.apache.hadoop.mapred.lib.IdentityMapper \</span><br><span class="line">    -reducer org.apache.hadoop.mapred.lib.IdentityReducer \</span><br><span class="line">    -partitioner org.apache.hadoop.mapred.lib.KeyFieldBasedPartitioner \</span><br><span class="line">    -jobconf stream.map.output.field.separator=. \</span><br><span class="line">    -jobconf stream.num.map.output.key.fields=4 \</span><br><span class="line">    -jobconf map.output.key.field.separator=. \</span><br><span class="line">    -jobconf num.key.fields.for.partition=2 \</span><br><span class="line">    -jobconf mapred.reduce.tasks=12</span><br></pre></td></tr></table></figure><br />
+其中，-jobconf stream.map.output.field.separator=. 和-jobconf
+stream.num.map.output.key.fields=4是前文中的例子。Streaming用这两个变量来得到mapper的key/value对。</p>
+<p>上面的Map/Reduce
+作业中map输出的key一般是由“.”分割成的四块。但是因为使用了 -jobconf
+num.key.fields.for.partition=2
+选项，所以Map/Reduce框架使用key的前两块来切分map的输出。其中，-jobconf
+map.output.key.field.separator=.
+指定了这次切分使用的key的分隔符。这样可以保证在所有key/value对中，
+key值前两个块值相同的所有key被分到一组，分配给一个reducer。</p>
+<p>这种高效的方法等价于指定前两块作为主键，后两块作为副键。
+主键用于切分块，主键和副键的组合用于排序。一个简单的示例如下：</p>
+<p>Map的输出（key）：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">11.12.1.2</span><br><span class="line">11.14.2.3</span><br><span class="line">11.11.4.1</span><br><span class="line">11.12.1.1</span><br><span class="line">11.14.2.2</span><br></pre></td></tr></table></figure><br />
+切分给3个reducer（前两块的值用于切分）：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">11.11.4.1</span><br><span class="line">-----------</span><br><span class="line">11.12.1.2</span><br><span class="line">11.12.1.1</span><br><span class="line">-----------</span><br><span class="line">11.14.2.3</span><br><span class="line">11.14.2.2</span><br></pre></td></tr></table></figure><br />
+在每个切分后的组内排序（四个块的值都用于排序）：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">11.11.4.1</span><br><span class="line">-----------</span><br><span class="line">11.12.1.1</span><br><span class="line">11.12.1.2</span><br><span class="line">-----------</span><br><span class="line">11.14.2.2</span><br><span class="line">11.14.2.3</span><br></pre></td></tr></table></figure></p>
+<p><strong>3、Hadoop聚合功能包的使用（-reduce aggregate
+选项）</strong><br />
+Hadoop有一个工具包<span class="exturl" data-url="aHR0cHM6Ly9zdm4uYXBhY2hlLm9yZy9yZXBvcy9hc2YvaGFkb29wL2NvcmUvdHJ1bmsvc3JjL2phdmEvb3JnL2FwYWNoZS9oYWRvb3AvbWFwcmVkL2xpYi9hZ2dyZWdhdGU=">Aggregate<i class="fa fa-external-link-alt"></i></span>。
+Aggregate提供一个特殊的reducer类和一个特殊的combiner类，
+并且有一系列的聚合器（aggregator，例如sum，max，min等）用于聚合一组value的序列。
+用户可以使用Aggregate定义一个mapper插件类，
+这个类用于为mapper输入的每个key/value对产生可聚合项。combiner/reducer利用适当的聚合器聚合这些可聚合项。</p>
+<p>要使用Aggregate，只需指定“-reducer aggregate”：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">hadoop  jar $HADOOP_HOME/hadoop-streaming.jar \</span><br><span class="line">    -input myInputDirs \</span><br><span class="line">    -output myOutputDir \</span><br><span class="line">    -mapper myAggregatorForKeyCount.py \</span><br><span class="line">    -reducer aggregate \</span><br><span class="line">    -file myAggregatorForKeyCount.py \</span><br><span class="line">    -jobconf mapred.reduce.tasks=12</span><br></pre></td></tr></table></figure><br />
+python程序myAggregatorForKeyCount.py例子：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="keyword">import</span> sys;</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">generateLongCountToken</span>(<span class="params"><span class="built_in">id</span></span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;LongValueSum:&quot;</span> + <span class="built_in">id</span> + <span class="string">&quot;\t&quot;</span> + <span class="string">&quot;1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>(<span class="params">argv</span>):</span><br><span class="line">    line = sys.stdin.readline()</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">while</span> line:</span><br><span class="line">            line = line[:-<span class="number">1</span>]</span><br><span class="line">            fields = line.split(<span class="string">&quot;\t&quot;</span>)</span><br><span class="line">            <span class="built_in">print</span> generateLongCountToken(fields[<span class="number">0</span>])</span><br><span class="line">            line = sys.stdin.readline()</span><br><span class="line">    <span class="keyword">except</span> <span class="string">&quot;end of file&quot;</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">     main(sys.argv)</span><br></pre></td></tr></table></figure></p>
+<p><strong>4、字段的选取（类似于unix中的 'cut' 命令）</strong><br />
+Hadoop的工具类org.apache.hadoop.mapred.lib.FieldSelectionMapReduce帮助用户高效处理文本数据，
+就像unix中的“cut”工具。工具类中的map函数把输入的key/value对看作字段的列表。
+用户可以指定字段的分隔符（默认是tab），
+可以选择字段列表中任意一段（由列表中一个或多个字段组成）作为map输出的key或者value。
+同样，工具类中的reduce函数也把输入的key/value对看作字段的列表，用户可以选取任意一段作为reduce输出的key或value。例如：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">hadoop  jar $HADOOP_HOME/hadoop-streaming.jar \</span><br><span class="line">    -input myInputDirs \</span><br><span class="line">    -output myOutputDir \</span><br><span class="line">    -mapper org.apache.hadoop.mapred.lib.FieldSelectionMapReduce\</span><br><span class="line">    -reducer org.apache.hadoop.mapred.lib.FieldSelectionMapReduce\</span><br><span class="line">    -partitioner org.apache.hadoop.mapred.lib.KeyFieldBasedPartitioner \</span><br><span class="line">    -jobconf map.output.key.field.separa=. \</span><br><span class="line">    -jobconf num.key.fields.for.partition=2 \</span><br><span class="line">    -jobconf mapred.data.field.separator=. \</span><br><span class="line">    -jobconf map.output.key.value.fields.spec=6,5,1-3:0- \</span><br><span class="line">    -jobconf reduce.output.key.value.fields.spec=0-2:5- \</span><br><span class="line">    -jobconf mapred.reduce.tasks=12</span><br></pre></td></tr></table></figure><br />
+选项“-jobconf
+map.output.key.value.fields.spec=6,5,1-3:0-”指定了如何为map的输出选取key和value。Key选取规则和value选取规则由“:”分割。
+在这个例子中，map输出的key由字段6，5，1，2和3组成。输出的value由所有字段组成（“0-”指字段0以及之后所有字段）。</p>
+<p>选项“-jobconf
+reduce.output.key.value.fields.spec=0-2:5-”指定如何为reduce的输出选取value。
+本例中，reduce的输出的key将包含字段0，1，2（对应于原始的字段6，5，1）。
+reduce输出的value将包含起自字段5的所有字段（对应于所有的原始字段）。</p>
+<h2 id="经典案例--词频统计">经典案例--词频统计</h2>
+<p><img src="/images/Hadoop/mapreduce.png" width="80%" height="80%"></p>
+<p>前面提完了用hadoop完成大数据处理的一些基本知识，这次示例一下，如何编写Hadoop的map/reduce任务，完成大数据的处理。</p>
+<p>这是一个非常经典的例子，几乎在任何的hadoop教材上都会看到它，即使如此，它依旧是最经典最有代表性的案例，学习大数据处理，可以从先理解清楚它入手。</p>
+<h3 id="总体流程">总体流程</h3>
+<p>咱们来看看对特别大的文件统计，整个过程是如何分拆的。<br />
+词频统计的过程，如果是单机完成，需要做的事情是维护一个计数器字典，对每次出现的词，词频+1，但是当数据量非常大的时候，没办法在内存中维护这么大的一个字典，这就要换一种思路来完成这个任务了，也就是所谓的map-reduce过程。大体的过程画成图是下面这个样子：<br />
+<img src="/images/Hadoop/word_count.png" /><br />
+大概是分成下面几个环节：<br />
+-
+<strong>Map阶段</strong>：主要完成key-value对生成，这里是每看到一个单词，就输出<code>(单词，1)</code>的kv对。<br />
+-
+<strong>shuffle阶段</strong>：对刚才的kv对进行排序，这样相同单词就在一块儿了。<br />
+-
+<strong>Reduce阶段</strong>：对同一个单词的次数进行汇总，得到(词，频次)对。</p>
+<h3 id="map阶段">Map阶段</h3>
+<p>流程已经清楚啦，咱们来看看用代码如何实现，你猜怎么着，有了hadoop
+streaming，咱们可以用python脚本完成map和reduce的过程，然后把整个流程跑起来！</p>
+<p>比如咱们map阶段要做的就是把每一个单词和出现1次的信息输出来！写一个mapper.py文件，具体内容如下：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding: utf-8</span></span><br><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从标准输入过来的数据</span></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:</span><br><span class="line">    <span class="comment"># 把首位的空格去掉</span></span><br><span class="line">    line = line.strip()</span><br><span class="line">    <span class="comment"># 把这一行文本切分成单词(按照空格)</span></span><br><span class="line">    words = line.split(<span class="string">&quot; &quot;</span>)</span><br><span class="line">    <span class="comment"># 对见到的单词进行次数标注(出现1次)</span></span><br><span class="line">    <span class="keyword">for</span> word <span class="keyword">in</span> words:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;%s\t%s&#x27;</span> % (word.lower(), <span class="number">1</span>))</span><br></pre></td></tr></table></figure><br />
+对，就这么简单，你看到了，对于输入进来的每一行，做完切分之后，都会输出<code>(单词，1)</code>这样一个kv对，表明这个单词出现过。</p>
+<h3 id="排序阶段">排序阶段</h3>
+<p>中间会有一个对上述结果进行排序的过程，以保证所有相同的单词都在一起，不过不用担心，这个过程是系统会自动完成的，因此不用编写额外的代码。</p>
+<h3 id="reduce阶段">Reduce阶段</h3>
+<p>接下来就是对map排序后的结果进行汇总了，这个阶段可以用一个reducer.py的python脚本来完成，具体完成的任务，就是：</p>
+<p>对于读入的<code>(单词，1)</code>对：<br />
+-
+如果这个单词还没有结束（排序后所有相同的单词都在一起了），就对单词的次数+1。<br />
+- 如果遇到新单词了，那重新开始对新单词计数。</p>
+<p>基于上面的想法，可以完成以下的reducer.py脚本：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding: utf-8</span></span><br><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> operator <span class="keyword">import</span> itemgetter</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">current_word = <span class="literal">None</span></span><br><span class="line">current_count = <span class="number">0</span></span><br><span class="line">word = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 依旧是标准输入过来的数据</span></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:</span><br><span class="line">    <span class="comment"># 去除左右空格</span></span><br><span class="line">    line = line.strip()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 按照tab键对行切分，得到word和次数1</span></span><br><span class="line">    word, count = line.split(<span class="string">&#x27;\t&#x27;</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 你得到的1是一个字符串，需要对它进行类型转化</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        count = <span class="built_in">int</span>(count)</span><br><span class="line">    <span class="keyword">except</span> ValueError:</span><br><span class="line">        <span class="comment">#如果不能转成数字，输入有问题，调到下一行</span></span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 如果本次读取的单词和上一次一样，对次数加1</span></span><br><span class="line">    <span class="keyword">if</span> current_word == word:</span><br><span class="line">        current_count += count</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">if</span> current_word:</span><br><span class="line">            <span class="comment"># 输出统计结果</span></span><br><span class="line">            <span class="built_in">print</span> <span class="string">&#x27;%s\t%s&#x27;</span> % (current_word, current_count)</span><br><span class="line">        current_count = count</span><br><span class="line">        current_word = word</span><br><span class="line"></span><br><span class="line"><span class="comment"># 不要忘了最后一个词哦，也得输出结果</span></span><br><span class="line"><span class="keyword">if</span> current_word == word:</span><br><span class="line">    <span class="built_in">print</span> <span class="string">&#x27;%s\t%s&#x27;</span> % (current_word, current_count)</span><br></pre></td></tr></table></figure></p>
+<h3 id="本地模拟测试代码">本地模拟测试代码</h3>
+<p>一般情况下，不会一遍遍用hadoop
+streaming执行任务，去测试脚本写得对不对，这个过程太麻烦了。</p>
+<p>有没有本地可以测试的办法？有！</p>
+<p>可以利用linux管道模拟map-reduce的过程！比如可以下面这样测试：<br />
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">very basic <span class="built_in">test</span>(把字符串传入/mapper.py中处理)</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">echo</span> <span class="string">&quot;foo foo quux labs foo bar quux&quot;</span> | /home/hduser/mapper.py</span></span><br><span class="line">foo     1</span><br><span class="line">foo     1</span><br><span class="line">quux    1</span><br><span class="line">labs    1</span><br><span class="line">foo     1</span><br><span class="line">bar     1</span><br><span class="line">quux    1</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">(把字符串传入/mapper.py中处理，排序(-k1,1按照第1列到第1列排序)，再传入reducer.py中处理)</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">echo</span> <span class="string">&quot;foo foo quux labs foo bar quux&quot;</span> | /home/hduser/mapper.py | <span class="built_in">sort</span> -k1,1 | /home/hduser/reducer.py</span></span><br><span class="line">bar     1</span><br><span class="line">foo     3</span><br><span class="line">labs    1</span><br><span class="line">quux    2</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">用一本英文电子书作为输入测试一下！比如可以在http://www.gutenberg.org/etext/20417下载到！</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cat</span> /tmp/gutenberg/20417-8.txt | /home/hduser/mapper.py</span></span><br><span class="line">The     1</span><br><span class="line">Project 1</span><br><span class="line">Gutenberg       1</span><br><span class="line">EBook   1</span><br><span class="line">of      1</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">后面的<span class="built_in">sort</span>和reducer过程是一样的，自己试一下！</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="hadoop集群运行">Hadoop集群运行</h3>
+<p>如果测试通过了，就可以在集群上运行案例了，先从下面3个链接拉取3本电子书。<br />
+<span class="exturl" data-url="aHR0cDovL3d3dy5ndXRlbmJlcmcub3JnL2V0ZXh0LzIwNDE3">The Outline of Science,
+Vol. 1 (of 4) by J. Arthur Thomson<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cDovL3d3dy5ndXRlbmJlcmcub3JnL2V0ZXh0LzUwMDA=">The Notebooks of Leonardo
+Da Vinci<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cDovL3d3dy5ndXRlbmJlcmcub3JnL2V0ZXh0LzQzMDA=">Ulysses by James
+Joyce<i class="fa fa-external-link-alt"></i></span></p>
+<p>把它们下载到一个本地路径下，比如/tmp/gutenberg：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ ls -l /tmp/gutenberg/</span><br><span class="line">total 3604</span><br><span class="line">-rw-r--r-- 1 hduser hadoop  674566 Feb  3 10:17 pg20417.txt</span><br><span class="line">-rw-r--r-- 1 hduser hadoop 1573112 Feb  3 10:18 pg4300.txt</span><br><span class="line">-rw-r--r-- 1 hduser hadoop 1423801 Feb  3 10:18 pg5000.txt</span><br></pre></td></tr></table></figure><br />
+<strong>1、拷贝文件到HDFS上</strong><br />
+执行下面的命令：<br />
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hadoop dfs -copyFromLocal /tmp/gutenberg /user/hduser/gutenberg</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hadoop dfs -<span class="built_in">ls</span></span></span><br><span class="line">Found 1 items</span><br><span class="line">drwxr-xr-x   - user supergroup          0 2016-05-08 17:40 /user/hduser/gutenberg</span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">bin/hadoop dfs -<span class="built_in">ls</span> /user/hduser/gutenberg</span></span><br><span class="line">Found 3 items</span><br><span class="line">-rw-r--r--   3 hduser supergroup     674566 2016-05-10 11:38 /user/hduser/gutenberg/pg20417.txt</span><br><span class="line">-rw-r--r--   3 hduser supergroup    1573112 2016-05-10 11:38 /user/hduser/gutenberg/pg4300.txt</span><br><span class="line">-rw-r--r--   3 hduser supergroup    1423801 2016-05-10 11:38 /user/hduser/gutenberg/pg5000.txt</span><br></pre></td></tr></table></figure><br />
+<strong>2、执行map-reduce任务</strong><br />
+下面就可以用hadoop streaming执行map-reduce任务了，命令行执行：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ hadoop jar contrib/streaming/hadoop-*streaming*.jar \</span><br><span class="line">-file /home/hduser/mapper.py    -mapper /home/hduser/mapper.py \</span><br><span class="line">-file /home/hduser/reducer.py   -reducer /home/hduser/reducer.py \</span><br><span class="line">-input /user/hduser/gutenberg/* -output /user/hduser/gutenberg-output</span><br></pre></td></tr></table></figure><br />
+-file指定文件，-mapper前面指定文件作为mapper。reducer也一样。input和output指定输入输出文件地址。</p>
+<p>你甚至可以用-D去指定reducer的个数（mapred.reduce.tasks=16）：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hadoop jar contrib/streaming/hadoop-*streaming*.jar -D mapred.reduce.tasks=16 ...</span><br></pre></td></tr></table></figure><br />
+运行的结果过程输出的信息大概是下面这个样子：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$ hadoop jar contrib/streaming/hadoop-*streaming*.jar -mapper /home/hduser/mapper.py -reducer /home/hduser/reducer.py -input /user/hduser/gutenberg/* -output /user/hduser/gutenberg-output</span><br><span class="line"> additionalConfSpec_:null</span><br><span class="line"> null=@@@userJobConfProps_.get(stream.shipped.hadoopstreaming</span><br><span class="line"> packageJobJar: [/app/hadoop/tmp/hadoop-unjar54543/]</span><br><span class="line"> [] /tmp/streamjob54544.jar tmpDir=null</span><br><span class="line"> [...] INFO mapred.FileInputFormat: Total input paths to process : 7</span><br><span class="line"> [...] INFO streaming.StreamJob: getLocalDirs(): [/app/hadoop/tmp/mapred/local]</span><br><span class="line"> [...] INFO streaming.StreamJob: Running job: job_200803031615_0021</span><br><span class="line"> [...]</span><br><span class="line"> [...] INFO streaming.StreamJob:  map 0%  reduce 0%</span><br><span class="line"> [...] INFO streaming.StreamJob:  map 43%  reduce 0%</span><br><span class="line"> [...] INFO streaming.StreamJob:  map 86%  reduce 0%</span><br><span class="line"> [...] INFO streaming.StreamJob:  map 100%  reduce 0%</span><br><span class="line"> [...] INFO streaming.StreamJob:  map 100%  reduce 33%</span><br><span class="line"> [...] INFO streaming.StreamJob:  map 100%  reduce 70%</span><br><span class="line"> [...] INFO streaming.StreamJob:  map 100%  reduce 77%</span><br><span class="line"> [...] INFO streaming.StreamJob:  map 100%  reduce 100%</span><br><span class="line"> [...] INFO streaming.StreamJob: Job complete: job_200803031615_0021</span><br><span class="line"> [...] INFO streaming.StreamJob: Output: /user/hduser/gutenberg-output</span><br></pre></td></tr></table></figure><br />
+<strong>3、查看执行结果</strong><br />
+上面的信息告诉我们任务执行成功了，结果文件存储在hdfs上的/user/hduser/gutenberg-output目录下，我们来看一眼：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hadoop dfs -ls /user/hduser/gutenberg-output</span><br><span class="line">Found 1 items</span><br><span class="line">/user/hduser/gutenberg-output/part-00000     &amp;lt;r 1&amp;gt;   903193  2017-03-21 13:00</span><br></pre></td></tr></table></figure><br />
+还可以直接查看结果的内容：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ hadoop dfs -cat /user/hduser/gutenberg-output/part-00000</span><br><span class="line">&quot;(Lo)cra&quot;       1</span><br><span class="line">&quot;1490   1</span><br><span class="line">&quot;1498,&quot; 1</span><br><span class="line">&quot;35&quot;    1</span><br><span class="line">&quot;40,&quot;   1</span><br><span class="line">&quot;A      2</span><br><span class="line">&quot;AS-IS&quot;.        2</span><br><span class="line">&quot;A_     1</span><br><span class="line">&quot;Absoluti       1</span><br><span class="line">[...]</span><br></pre></td></tr></table></figure></p>
+<h2 id="mrjob">MRJob</h2>
+<p>Hadoop Streaming
+是硬写脚本去MapReduce，使用很不方便，而且还有很多可优化的地方，如果非要写可使用第三方库
+MRJob，它底层还是使用的Hadoop Streaming。<br />
+（1）使用python开发在Hadoop上运行的程序, mrjob是最简单的方式。<br />
+（2）mrjob程序可以在本地测试运行也可以部署到Hadoop集群上运行。<br />
+（3）如果不想成为hadoop专家,
+但是需要利用Hadoop写MapReduce代码,mrJob是很好的选择。</p>
+<p>首先使用pip安装它：<code>pip install mrjob</code>。详细使用方式参考<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1llbHAvbXJqb2I=">mrjob官网<i class="fa fa-external-link-alt"></i></span>。</p>
+<p><strong>1、mrjob实现WordCount</strong><br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> mrjob.job <span class="keyword">import</span> MRJob</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MRWordFrequencyCount</span>(<span class="title class_ inherited__">MRJob</span>):</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">mapper</span>(<span class="params">self, key, line</span>):</span><br><span class="line">        <span class="keyword">yield</span> (<span class="string">&quot;chars&quot;</span>, <span class="built_in">len</span>(line))</span><br><span class="line">        <span class="keyword">yield</span> (<span class="string">&quot;words&quot;</span>, <span class="built_in">len</span>(line.split()))</span><br><span class="line">        <span class="keyword">yield</span> (<span class="string">&quot;lines&quot;</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 相同的key会自动送给同一个reducer处理</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">reducer</span>(<span class="params">self, key, values</span>):</span><br><span class="line">        <span class="keyword">yield</span> key, <span class="built_in">sum</span>(values)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    MRWordFrequencyCount.run()</span><br></pre></td></tr></table></figure><br />
+<strong>2、本地运行WordCount代码</strong><br />
+打开命令行, 找到一篇文本文档, 敲如下命令:<br />
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python mr_word_count.py my_file.txt</span><br></pre></td></tr></table></figure><br />
+<strong>3、Hadoop运行WordCount代码</strong><br />
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python word_count.py -r hadoop hdfs:///test.txt -o  hdfs:///output</span><br></pre></td></tr></table></figure></p>
+<h3 id="运行mrjob的不同方式">运行MRJob的不同方式</h3>
+<p><strong>1、内嵌(-r inline)方式</strong><br />
+特点是调试方便，启动单一进程模拟任务执行状态和结果，默认(-r
+inline)可以省略，输出文件使用 &gt; output-file 或-o
+output-file，比如下面两种运行方式是等价的：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python word_count.py -r inline input.txt &gt; output.txt</span><br><span class="line">python word_count.py input.txt &gt; output.txt</span><br></pre></td></tr></table></figure><br />
+<strong>2、本地(-r local)方式</strong><br />
+用于本地模拟Hadoop调试，与内嵌(inline)方式的区别是启动了多进程执行每一个任务。如：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python word_count.py -r local input.txt &gt; output1.txt</span><br></pre></td></tr></table></figure><br />
+<strong>3、Hadoop(-r hadoop)方式</strong><br />
+用于hadoop环境，支持Hadoop运行调度控制参数，如：<br />
+（1）指定Hadoop任务调度优先级(VERY_HIGH/HIGH)，如：--jobconf
+mapreduce.job.priority=VERY_HIGH。<br />
+（2）Map及Reduce任务个数限制，如：--jobconf mapreduce.map.tasks=2
+--jobconf mapreduce.reduce.tasks=5<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># hadoop上的要统计的文件地址 hdfs:///test.txt</span><br><span class="line"># hadoop上的输出结果的文件地址 hdfs:///output</span><br><span class="line">python word_count.py -r hadoop hdfs:///test.txt -o  hdfs:///output</span><br></pre></td></tr></table></figure><br />
+如果在虚拟环境下运行，需要在最后面在指定python虚拟环境地址，比如"/minniconda2/envs/py365/bin/python"</p>
+<h3 id="mrjob实现topn统计实验">mrjob实现topN统计（实验）</h3>
+<p>统计数据中出现次数最多的前n个数据：<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="comment"># MRStep可以指定map/reduce执行步骤，适合多个map/reduce执行</span></span><br><span class="line"><span class="keyword">from</span> mrjob.job <span class="keyword">import</span> MRJob,MRStep</span><br><span class="line"><span class="keyword">import</span> heapq</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TopNWords</span>(<span class="title class_ inherited__">MRJob</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">mapper</span>(<span class="params">self, _, line</span>):</span><br><span class="line">        <span class="keyword">if</span> line.strip() != <span class="string">&quot;&quot;</span>:</span><br><span class="line">            <span class="keyword">for</span> word <span class="keyword">in</span> line.strip().split():</span><br><span class="line">                <span class="keyword">yield</span> word,<span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#介于mapper和reducer之间，用于临时的将mapper输出的数据进行统计</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">combiner</span>(<span class="params">self, word, counts</span>):</span><br><span class="line">        <span class="keyword">yield</span> word,<span class="built_in">sum</span>(counts)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">reducer_sum</span>(<span class="params">self, word, counts</span>):</span><br><span class="line">        <span class="keyword">yield</span> <span class="literal">None</span>,(<span class="built_in">sum</span>(counts),word)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#利用heapq将数据进行排序，将最大的2个取出</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">top_n_reducer</span>(<span class="params">self,_,word_cnts</span>):</span><br><span class="line">        <span class="keyword">for</span> cnt,word <span class="keyword">in</span> heapq.nlargest(<span class="number">2</span>,word_cnts):</span><br><span class="line">            <span class="keyword">yield</span> word,cnt</span><br><span class="line">    </span><br><span class="line">	<span class="comment">#实现steps方法用于指定自定义的mapper，comnbiner和reducer方法</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">steps</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> [</span><br><span class="line">            MRStep(mapper=self.mapper,</span><br><span class="line">                   combiner=self.combiner,</span><br><span class="line">                   reducer=self.reducer_sum),</span><br><span class="line">            MRStep(reducer=self.top_n_reducer)</span><br><span class="line">        ]</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    TopNWords.run()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure></p>
+<h3 id="mrjob文件合并">MRJOB文件合并</h3>
+<p><strong>1、需求描述</strong><br />
+两个文件合并 类似于数据库中的两张表合并：<br />
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">uid uname</span><br><span class="line">01 user1 </span><br><span class="line">02 user2</span><br><span class="line">03 user3</span><br><span class="line"></span><br><span class="line">uid orderid order_price</span><br><span class="line">01   01       80</span><br><span class="line">01   02       90</span><br><span class="line">02   03       82</span><br><span class="line">02   04       95</span><br></pre></td></tr></table></figure><br />
+<strong>2、mrjob 实现</strong><br />
+实现对两个数据表进行join操作，显示效果为每个用户的所有订单信息：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot;01:user1&quot;	&quot;01:80,02:90&quot;</span><br><span class="line">&quot;02:user2&quot;	&quot;03:82,04:95&quot;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> mrjob.job <span class="keyword">import</span> MRJob</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UserOrderJoin</span>(<span class="title class_ inherited__">MRJob</span>):</span><br><span class="line">    SORT_VALUES = <span class="literal">True</span></span><br><span class="line">    <span class="comment"># 二次排序参数：http://mrjob.readthedocs.io/en/latest/job.html</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">mapper</span>(<span class="params">self, _, line</span>):</span><br><span class="line">        fields = line.strip().split(<span class="string">&#x27;\t&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(fields) == <span class="number">2</span>:</span><br><span class="line">            <span class="comment"># user data</span></span><br><span class="line">            source = <span class="string">&#x27;A&#x27;</span></span><br><span class="line">            user_id = fields[<span class="number">0</span>]</span><br><span class="line">            user_name = fields[<span class="number">1</span>]</span><br><span class="line">            <span class="keyword">yield</span>  user_id,[source,user_name] <span class="comment"># 01 [A,user1]</span></span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">len</span>(fields) == <span class="number">3</span>:</span><br><span class="line">            <span class="comment"># order data</span></span><br><span class="line">            source =<span class="string">&#x27;B&#x27;</span></span><br><span class="line">            user_id = fields[<span class="number">0</span>]</span><br><span class="line">            order_id = fields[<span class="number">1</span>]</span><br><span class="line">            price = fields[<span class="number">2</span>]</span><br><span class="line">            <span class="keyword">yield</span> user_id,[source,order_id,price] <span class="comment">#01 [&#x27;B&#x27;,01,80][&#x27;B&#x27;,02,90]</span></span><br><span class="line">        <span class="keyword">else</span> :</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">reducer</span>(<span class="params">self,user_id,values</span>):</span><br><span class="line">        <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">        每个用户的订单列表</span></span><br><span class="line"><span class="string">        &quot;01:user1&quot;	&quot;01:80,02:90&quot;</span></span><br><span class="line"><span class="string">        &quot;02:user2&quot;	&quot;03:82,04:95&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        :param user_id:</span></span><br><span class="line"><span class="string">        :param values:[A,user1]  [&#x27;B&#x27;,01,80]</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        &#x27;&#x27;&#x27;</span></span><br><span class="line">        values = [v <span class="keyword">for</span> v <span class="keyword">in</span> values]</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(values)&gt;<span class="number">1</span> :</span><br><span class="line">            user_name = values[<span class="number">0</span>][<span class="number">1</span>]</span><br><span class="line">            order_info = [<span class="string">&#x27;:&#x27;</span>.join([v[<span class="number">1</span>],v[<span class="number">2</span>]]) <span class="keyword">for</span> v <span class="keyword">in</span> values[<span class="number">1</span>:]] <span class="comment">#[01:80,02:90]</span></span><br><span class="line">            <span class="keyword">yield</span> <span class="string">&#x27;:&#x27;</span>.join([user_id,user_name]),<span class="string">&#x27;,&#x27;</span>.join(order_info)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    UserOrderJoin.run()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<p>实现对两个数据表进行join操作，显示效果为每个用户所下订单的订单总量和累计消费金额：<br />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot;01:user1&quot;	[2, 170]</span><br><span class="line">&quot;02:user2&quot;	[2, 177]</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> mrjob.job <span class="keyword">import</span> MRJob</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UserOrderJoin</span>(<span class="title class_ inherited__">MRJob</span>):</span><br><span class="line">    <span class="comment"># 二次排序参数：http://mrjob.readthedocs.io/en/latest/job.html</span></span><br><span class="line">    SORT_VALUES = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">mapper</span>(<span class="params">self, _, line</span>):</span><br><span class="line">        fields = line.strip().split(<span class="string">&#x27;\t&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(fields) == <span class="number">2</span>:</span><br><span class="line">            <span class="comment"># user data</span></span><br><span class="line">            source = <span class="string">&#x27;A&#x27;</span></span><br><span class="line">            user_id = fields[<span class="number">0</span>]</span><br><span class="line">            user_name = fields[<span class="number">1</span>]</span><br><span class="line">            <span class="keyword">yield</span>  user_id,[source,user_name]</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">len</span>(fields) == <span class="number">3</span>:</span><br><span class="line">            <span class="comment"># order data</span></span><br><span class="line">            source =<span class="string">&#x27;B&#x27;</span></span><br><span class="line">            user_id = fields[<span class="number">0</span>]</span><br><span class="line">            order_id = fields[<span class="number">1</span>]</span><br><span class="line">            price = fields[<span class="number">2</span>]</span><br><span class="line">            <span class="keyword">yield</span> user_id,[source,order_id,price]</span><br><span class="line">        <span class="keyword">else</span> :</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">reducer</span>(<span class="params">self,user_id,values</span>):</span><br><span class="line">        <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">        统计每个用户的订单数量和累计消费金额</span></span><br><span class="line"><span class="string">        :param user_id:</span></span><br><span class="line"><span class="string">        :param values:</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        &#x27;&#x27;&#x27;</span></span><br><span class="line">        values = [v <span class="keyword">for</span> v <span class="keyword">in</span> values]</span><br><span class="line">        user_name = <span class="literal">None</span></span><br><span class="line">        order_cnt = <span class="number">0</span></span><br><span class="line">        order_sum = <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(values)&gt;<span class="number">1</span>:</span><br><span class="line">            <span class="keyword">for</span> v <span class="keyword">in</span> values:</span><br><span class="line">                <span class="keyword">if</span> <span class="built_in">len</span>(v) ==  <span class="number">2</span> :</span><br><span class="line">                    user_name = v[<span class="number">1</span>]</span><br><span class="line">                <span class="keyword">elif</span> <span class="built_in">len</span>(v) == <span class="number">3</span>:</span><br><span class="line">                    order_cnt += <span class="number">1</span></span><br><span class="line">                    order_sum += <span class="built_in">int</span>(v[<span class="number">2</span>])</span><br><span class="line">            <span class="keyword">yield</span> <span class="string">&quot;:&quot;</span>.join([user_id,user_name]),(order_cnt,order_sum)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    UserOrderJoin().run()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    main()	</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>SoundMemories
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://soundmemories.github.io/2020/05/02/ML/05.ML-Hadoop/" title="ML-Hadoop">https://soundmemories.github.io/2020/05/02/ML/05.ML-Hadoop/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/ML/" rel="tag"><i class="fa fa-tag"></i> ML</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/04/30/ML/04.ML-Matplolib/" rel="prev" title="ML-Matplotlib">
+                  <i class="fa fa-chevron-left"></i> ML-Matplotlib
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/05/07/ML/06.ML-Hive%E3%80%81Hbase/" rel="next" title="ML-Hive、Hbase">
+                  ML-Hive、Hbase <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">SoundMemories</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"neutral"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.min.js","integrity":"sha256-JFptYy4KzJ5OQP+Q9fubNf3cxpPPmZKqUOovyEONKrQ="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://soundmemories.github.io/2020/05/02/ML/05.ML-Hadoop/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

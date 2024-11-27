@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"soundmemories.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.1","exturl":true,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="条件随机场 我们知道，分类问题可以分为硬分类和软分类两种。其中硬分类有 SVM（支持向量机），PLA（感知机算法），LDA（线性判别分析） 等。软分类问题大体上可以分为概率生成和概率判别模型，其中较为有名的判别模型有 Logistic 回归，生成模型有朴素贝叶斯模型。Logistic 回归模型的损失函数为交叉熵，这类模型也叫对数线性模型，一般地，又叫做最大熵模型，这类模型和指数族分布的概">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CRF">
+<meta property="og:url" content="https://soundmemories.github.io/2020/10/09/ML/31.CRF/index.html">
+<meta property="og:site_name" content="SoundMemories">
+<meta property="og:description" content="条件随机场 我们知道，分类问题可以分为硬分类和软分类两种。其中硬分类有 SVM（支持向量机），PLA（感知机算法），LDA（线性判别分析） 等。软分类问题大体上可以分为概率生成和概率判别模型，其中较为有名的判别模型有 Logistic 回归，生成模型有朴素贝叶斯模型。Logistic 回归模型的损失函数为交叉熵，这类模型也叫对数线性模型，一般地，又叫做最大熵模型，这类模型和指数族分布的概">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-10-08T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-26T11:09:55.624Z">
+<meta property="article:author" content="SoundMemories">
+<meta property="article:tag" content="ML">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://soundmemories.github.io/2020/10/09/ML/31.CRF/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://soundmemories.github.io/2020/10/09/ML/31.CRF/","path":"2020/10/09/ML/31.CRF/","title":"CRF"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>CRF | SoundMemories</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">SoundMemories</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">128</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E9%9A%8F%E6%9C%BA%E5%9C%BA"><span class="nav-number">1.</span> <span class="nav-text">条件随机场</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#crf-%E7%9A%84-pdf"><span class="nav-number">1.1.</span> <span class="nav-text">CRF 的 PDF</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E9%9A%8F%E6%9C%BA%E5%9C%BA%E7%9A%84%E7%AE%80%E5%8C%96"><span class="nav-number">1.1.1.</span> <span class="nav-text">条件随机场的简化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%AA%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.2.</span> <span class="nav-text">3个问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%B9%E7%BC%98%E6%A6%82%E7%8E%87"><span class="nav-number">1.2.</span> <span class="nav-text">边缘概率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1"><span class="nav-number">1.3.</span> <span class="nav-text">参数估计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%91%E7%A0%81"><span class="nav-number">1.4.</span> <span class="nav-text">译码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">1.5.</span> <span class="nav-text">参考文献</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SoundMemories"
+      src="/images/avstar.png">
+  <p class="site-author-name" itemprop="name">SoundMemories</p>
+  <div class="site-description" itemprop="description">今日事，今日毕</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">128</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NvdW5kbWVtb3JpZXM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;soundmemories"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNvdW5kbWVtb3JpZXNAMTYzLmNvbQ==" title="E-Mail → mailto:soundmemories@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+        <div class="pjax">
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/09/ML/31.CRF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="CRF | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CRF
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-09 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-09T00:00:00+08:00">2020-10-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>9 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="条件随机场">条件随机场</h1>
+<p>我们知道，分类问题可以分为<strong>硬分类</strong>和<strong>软分类</strong>两种。其中<strong>硬分类</strong>有
+SVM（支持向量机），PLA（感知机算法），LDA（线性判别分析）
+等。<strong>软分类</strong>问题大体上可以分为<strong>概率生成</strong>和<strong>概率判别</strong>模型，其中较为有名的<strong>判别模型</strong>有
+Logistic 回归，<strong>生成模型</strong>有朴素贝叶斯模型。Logistic
+回归模型的损失函数为交叉熵，这类模型也叫对数线性模型，一般地，又叫做最大熵模型，这类模型和指数族分布的概率假设是一致的。对朴素贝叶斯假设，如果将其中的单元素的条件独立性做推广到一系列的隐变量，那么，由此得到的模型又被称为动态模型，比较有代表性的如
+HMM（隐马尔可夫模型），从概率意义上，当HMM的发射矩阵服从高斯分布时，HMM也可以看成是
+GMM（高斯混合模型） 在时序上面的推广。</p>
+<p>我们看到，一般地，如果将<strong>最大熵模型</strong>（判别模型）和
+<strong>HMM</strong>（生成模型） 相结合，那么这种模型叫做<strong>最大熵
+Markov 模型</strong>（MEMM），严格讲它是概率判别模型：</p>
+<pre class="mermaid">
+graph LR
+	x4((x4))--&gt;y4
+	x2((x2))--&gt;y2
+	x1((x1))--&gt;y1
+	x3((x3))--&gt;y3
+	y1--&gt;y2;
+	y2--&gt;y3;
+y3--&gt;y4;
+</pre>
+<p>这个图就是将 HMM 的<strong>观测变量 <span
+class="math inline">\(x\)</span>
+方向反向</strong>且是有向图，应用在分类中，隐变量就是输出的分类。这样
+HMM 中的两个假设就不成立了，特别是观测之间不是完全独立的了。即与HMM的
+<span class="math inline">\(x_i\)</span> 只依赖 <span
+class="math inline">\(y_i\)</span> 不一样，MEMM当前隐藏状态 <span
+class="math inline">\(y_i\)</span> 应该是依赖当前时刻的观测节点 <span
+class="math inline">\(x_i\)</span> 和上一时刻的隐藏节点 <span
+class="math inline">\(y_{i-1}\)</span>，依次类推<span
+class="math inline">\(y_{i-1}\)</span>也和 <span
+class="math inline">\(x_{i-1}\)</span> 有关，所以 <span
+class="math inline">\(x_i\)</span> 和 <span
+class="math inline">\(x_{i-1}\)</span>
+有关，从而打破了观测独立假设。</p>
+<p>HMM 是一种<strong>生成式模型</strong>，其建模对象为 <span
+class="math inline">\(p(X,Y|\lambda)\)</span>，根据 HMM 的概率图，<span
+class="math inline">\(p(X,Y|\lambda)=\prod\limits_{t=1}^Tp(x_t,y_t|\lambda,y_{t-1})\)</span>。我们看到，观测独立性假设是一个很强的假设，如果我们有一个文本样本，那么观测独立性假设就假定了所有的单词之间没有关联。</p>
+<p>MEMM 是一种<strong>判别式模型</strong>，建模对象是 <span
+class="math inline">\(p(Y|X,\lambda)\)</span>，我们看概率图（有向图），给定
+<span class="math inline">\(y_t\)</span>，<span
+class="math inline">\(x_t,x_{t-1}\)</span>
+是不独立的，这样，观测独立假设就不成立了。根据概率图，<span
+class="math inline">\(p(Y|X,\lambda)=\prod\limits_{t=1}^Tp(y_t|y_{t-1},X,\lambda)\)</span>。</p>
+<p>MEMM 的缺陷是<strong>标注偏差问题</strong>（Label Bias
+Problem），其必须满足<strong>局域的概率归一化</strong>，我们看到，在上面的概率图中，<span
+class="math inline">\(p(y_t|y_{t-1},x_t)\)</span>， 这个概率，如果 <span
+class="math inline">\(p(y_t|y_{t-1})\)</span>
+非常接近1，那么事实上，观测变量 <span class="math inline">\(x\)</span>
+是什么都不会影响这个概率了，这样观测变量就没用了。</p>
+<p>对于这个问题，我们将 <span class="math inline">\(y\)</span>
+之间的箭头转为直线转为无向图（线性链条件随机场），这样就只要满足<strong>全局归一化了</strong>（破坏齐次
+Markov 假设）。</p>
+<pre class="mermaid">
+graph LR
+	x4((x4))--&gt;y4
+		x2((x2))--&gt;y2
+			x1((x1))--&gt;y1
+				x3((x3))--&gt;y3
+	y1---y2;
+	y2---y3;
+y3---y4;
+</pre>
+<h2 id="crf-的-pdf">CRF 的 PDF</h2>
+<p>线性链的 CRF 的 PDF 为 <span
+class="math inline">\(p(Y|X)=\dfrac{1}{Z}\exp\sum\limits_{t=1}^T(F_t(y_{t-1},y_t,x_{1:T}))\)</span>，两两形成了最大团，其中
+<span class="math inline">\(y_0\)</span>
+是随意外加的一个元素作为初始状态。作为第一个简化，我们假设每个团的势函数相同
+<span class="math inline">\(F_t=F\)</span>。</p>
+<p>对于这个 <span
+class="math inline">\(F\)</span>，我们进一步，可以将其写为
+$ F(y_{t-1},y_t,X)=<em>{y</em>{t-1},X}+<em>{y</em>{t},X}+<em>{y_t,y</em>{t-1},X}$这三个部分，前两个部分表示状态函数，最后一个表示转移函数，由于整体的求和，第一部分重复可以省略，可以简化为
+$
+F(y_{t-1},y_t,X)=<em>{y</em>{t},X}+<em>{y_t,y</em>{t-1},X}$，我们可以设计一个表达式将这两部分参数化：<br />
+<span class="math display">\[
+\begin{align}
+\Delta_{y_t,y_{t-1},X}&amp;=\sum\limits_{k=1}^K\lambda_kf_k(y_{t-1},y_t,X)\\
+\Delta_{y_{t},X}&amp;=\sum\limits_{l=1}^L\eta_lg_l(y_t,X)
+\end{align}
+\]</span><br />
+其中 $g,f $ 叫做特征函数，对于 <span class="math inline">\(y\)</span> 有
+<span class="math inline">\(S\)</span> 种元素，<span
+class="math inline">\(K\)</span> 和 <span
+class="math inline">\(y_{t-1}\)</span> 和 <span
+class="math inline">\(y_{t}\)</span> 有关，<span
+class="math inline">\(L\)</span> 和 <span
+class="math inline">\(y_t\)</span>有关，所以 <span
+class="math inline">\(K\le S^2,L\le S\)</span>。</p>
+<p>然后代入概率密度函数中：<br />
+<span class="math display">\[
+\begin{align}
+p(Y|X)=\frac{1}{Z}\exp\sum\limits_{t=1}^T[\sum\limits_{k=1}^K\lambda_kf_k(y_{t-1},y_t,X)+\sum\limits_{l=1}^L\eta_lg_l(y_t,X)]
+\end{align}
+\]</span></p>
+<h3 id="条件随机场的简化">条件随机场的简化</h3>
+<p>将其写成向量的形式：定义 <span
+class="math inline">\(y=(y_1,y_2,\cdots,y_T)^T,x=(x_1,x_2,\cdots,x_T)^T,\lambda=(\lambda_1,\lambda_2,\cdots,\lambda_K)^T,\eta=(\eta_1,\eta_2,\cdots,\eta_L)^T\)</span>，并且有
+<span
+class="math inline">\(f=(f_1,f_2,\cdots,f_K)^T,g=(g_1,g_2,\cdots,g_L)^T\)</span>，于是：<br />
+<span class="math display">\[
+\begin{align}
+p(Y=y|X=x)=\frac{1}{Z}\exp\sum\limits_{t=1}^T[\lambda^Tf(y_{t-1},y_t,x)+\eta^Tg(y_t,x)]
+\end{align}
+\]</span><br />
+不妨记：<span
+class="math inline">\(\theta=(\lambda,\eta)^T,H=(\sum\limits_{t=1}^Tf,\sum\limits_{t=1}^Tg)^T\)</span>，这俩都是
+<span class="math inline">\(K+L\)</span> 维度：<br />
+<span class="math display">\[
+\begin{align}
+p(Y=y|X=x)=\frac{1}{Z(x,\theta)}\exp[\theta^TH(y_t,y_{t-1},x)]
+\end{align}
+\]</span><br />
+上面这个式子是一个指数族分布，于是 <span
+class="math inline">\(Z\)</span> 是配分函数。</p>
+<h3 id="个问题">3个问题</h3>
+<p>CRF 需要解决下面几个问题：<br />
+1. Learning：参数估计问题，CRF是求 <span
+class="math inline">\(\theta\)</span> 参数。对 <span
+class="math inline">\(N\)</span> 个 <span
+class="math inline">\(T\)</span> 维样本，<span
+class="math inline">\(\hat{\theta}=\mathop{argmax}\limits_{\theta}\prod\limits_{i=1}^Np(y^i|x^i)\)</span>，这里用上标表示样本的编号。<br />
+2. Inference：<br />
+1. 边缘概率：<span class="math inline">\(p(y_t|x)\)</span><br />
+2. 条件概率：一般在生成模型中较为关注，CRF中不关注<br />
+3. MAP 推断(Decoding)：<span
+class="math inline">\(\hat{y}=\mathop{argmax}\limits_{y}p(y|x)\)</span>
+的序列 <span class="math inline">\(y\)</span></p>
+<p>总体来说3个基本问题：<strong>概率计算问题</strong>(边缘概率)、<strong>学习问题</strong>(参数估计)、<strong>预测问题</strong>(Decoding)。</p>
+<h2 id="边缘概率">边缘概率</h2>
+<p>边缘概率这个问题描述为，根据学习任务得到的参数，给定了 <span
+class="math inline">\(p(Y=y|X=x)\)</span>，求解 <span
+class="math inline">\(p(y_t=i|x)\)</span>。根据无向图可以给出：<br />
+<span class="math display">\[
+\begin{align}
+p(y_t=i|x)=\sum\limits_{y_{1:t-1},y_{t+1:T}}p(y|x)=\sum\limits_{y_{1:t-1}}\sum\limits_{y_{t+1:T}}\frac{1}{Z}\prod\limits_{t&#39;=1}^T\phi_{t&#39;}(y_{t&#39;-1},y_{t&#39;},x)
+\end{align}
+\]</span><br />
+我们看到上面的式子，直接计算的复杂度很高，这是由于求和的复杂度在 <span
+class="math inline">\(O(S^T)\)</span>，求积的复杂度在 <span
+class="math inline">\(O(T)\)</span>，所以整体复杂度为 <span
+class="math inline">\(O(TS^T)\)</span>。我们需要调整求和符号的顺序，从而降低复杂度。</p>
+<p>首先，将两个求和分为：<br />
+<span class="math display">\[
+\begin{align}&amp;p(y_t=i|x)=\frac{1}{Z}\Delta_l\Delta_r\\
+&amp;\Delta_l=\sum\limits_{y_{1:t-1}}\phi_{1}(y_0,y_1,x)\phi_2(y_1,y_2,x)\cdots\phi_{t-1}(y_{t-2},y_{t-1},x)\phi_t(y_{t-1},y_t=i,x)\\
+&amp;\Delta_r=\sum\limits_{y_{t+1:T}}\phi_{t+1}(y_t=i,y_{t+1},x)\phi_{t+2}(y_{t+1},y_{t+2},x)\cdots\phi_T(y_{T-1},y_T,x)
+\end{align}
+\]</span><br />
+对于 <span class="math inline">\(\Delta_l\)</span>：<span
+class="math inline">\(\phi_{t-1}(y_{t-2},y_{t-1},x)\phi_t(y_{t-1},y_t=i,x)\)</span>
+对 <span class="math inline">\(y_{t-1}\)</span> 积分得到 <span
+class="math inline">\(\sum\limits_{y_{t-1}}\phi_t(y_{t-1},y_t=i,x)\)</span>
+，那么从左向右，一步一步积分将 <span class="math inline">\(y_t\)</span>
+消掉：<br />
+<span class="math display">\[
+\begin{align}
+\Delta_l=\sum\limits_{y_{t-1}}\phi_t(y_{t-1},y_t=i,x)\sum\limits_{y_{t-2}}\phi_{t-1}(y_{t-2},y_{t-1},x)\cdots\sum\limits_{y_0}\phi_1(y_0,y_1,x)
+\end{align}
+\]</span><br />
+引入：<br />
+<span class="math display">\[
+\begin{align}
+\alpha_t(i)=\Delta_l
+\end{align}
+\]</span><br />
+这里 <span
+class="math inline">\(\alpha_t(i)=y_1y_2...y_{t-1}(y_t=i)\)</span>，依此类推
+<span
+class="math inline">\(\alpha_{t-1}(j)=y_1y_2...y_{t-2}(y_{t-1}=j)\)</span>，于是：<br />
+<span class="math display">\[
+\begin{align}
+\alpha_{t}(i)&amp;=\sum\limits_{y_{t-1}}\phi_t(y_{t-1}=j,y_t=i,x)\alpha_{t-1}(j)\\
+&amp;=\sum\limits_{j\in S}\phi_t(y_{t-1}=j,y_t=i,x)\alpha_{t-1}(j)
+\end{align}
+\]</span><br />
+这样我们得到了一个递推式。</p>
+<p>类似地，<span
+class="math inline">\(\Delta_r=\beta_t(i)=\sum\limits_{j\in
+S}\phi_{t+1}(y_t=i,y_{t+1}=j,x)\beta_{t+1}(j)\)</span>。这个方法和 HMM
+中的前向-后向算法类似，就是概率图模型中精确推断的变量消除算法（信念传播）。</p>
+<h2 id="参数估计">参数估计</h2>
+<p>在进行各种类型的推断之前，还需要对参数 <span
+class="math inline">\(\theta=(\lambda,\eta)\)</span> 进行学习：<br />
+<span class="math display">\[
+\begin{align}\hat{\theta}&amp;=\mathop{argmax}_{\theta}\prod\limits_{i=1}^Np(y^i|x^i)\\
+&amp;=\mathop{argmax}_\theta\sum\limits_{i=1}^N\log p(y^i|x^i)\\
+&amp;=\mathop{argmax}_\theta\sum\limits_{i=1}^N\log
+[\frac{1}{Z(x^i,\lambda,\eta)}\exp\sum\limits_{t=1}^T[\lambda^Tf(y_{t-1}^i,y_t^i,x^i)+\eta^Tg(y_t^i,x^i)]]\\
+&amp;=\mathop{argmax}_\theta\sum\limits_{i=1}^N[-\log
+Z(x^i,\lambda,\eta)+\sum\limits_{t=1}^T[\lambda^Tf(y_{t-1}^i,y_t^i,x^i)+\eta^Tg(y_t^i,x^i)]]\\
+&amp;=\mathop{argmax}_\theta L(\lambda,\eta,x^i)
+\end{align}
+\]</span><br />
+最优化 <span class="math inline">\(L\)</span> 函数，使用梯度上升法，求
+<span class="math inline">\(\nabla_\lambda L\)</span> 和 <span
+class="math inline">\(\nabla_\eta L\)</span>，下面以求 <span
+class="math inline">\(\nabla_\lambda L\)</span> 为例：<br />
+<span class="math display">\[
+\begin{align}
+\nabla_\lambda L= \sum\limits_{i=1}^N[-\nabla_\lambda \log
+Z(x^i,\lambda,\eta)+\sum\limits_{t=1}^T f(y_{t-1}^i,y_t^i,x^i)]
+\end{align}
+\]</span><br />
+上面的式子中，第一项是对数配分函数，根据指数族分布(log-partition
+function)的结论：<br />
+<span class="math display">\[
+\begin{align}
+\nabla_\lambda(\log
+Z(x^i,\lambda,\eta))=\mathbb{E}_{p(y^i|x^i)}[\sum\limits_{t=1}^Tf(y_{t-1},y_t,x^i)]
+\end{align}
+\]</span><br />
+其中，和 <span class="math inline">\(\eta\)</span>
+相关的项相当于一个常数。求解这个期望值：<br />
+<span class="math display">\[
+\begin{align}
+\mathbb{E}_{p(y^i|x^i)}[\sum\limits_{t=1}^Tf(y_{t-1},y_t,x^i)]=\sum\limits_{y}p(y|x^i)\sum\limits_{t=1}^Tf(y_{t-1},y_t,x^i)
+\end{align}
+\]</span><br />
+第一个求和号的复杂度为 <span
+class="math inline">\(O(S^T)\)</span>，重新排列求和符号：<br />
+<span class="math display">\[
+\begin{align}
+\mathbb{E}_{p(y^i|x^i)}[\sum\limits_{t=1}^Tf(y_{t-1},y_t,x^i)]&amp;=\sum\limits_{t=1}^T\sum\limits_{y_{1:t-2}}\sum\limits_{y_{t-1}}\sum\limits_{y_t}\sum\limits_{y_{t+1:T}}p(y|x^i)f(y_{t-1},y_t,x^i)\nonumber\\
+&amp;=\sum\limits_{t=1}^T\sum\limits_{y_{t-1}}\sum\limits_{y_t}(\sum\limits_{y_{1:t-2}}\sum\limits_{y_{t+1:T}}p(y|x^i)f(y_{t-1},y_t,x^i))\nonumber\\
+&amp;=\sum\limits_{t=1}^T\sum\limits_{y_{t-1}}\sum\limits_{y_t}p(y_{t-1},y_t|x^i)f(y_{t-1},y_t,x^i)
+\end{align}
+\]</span><br />
+和上面的求边缘概率 <span class="math inline">\(p(y_t|x)\)</span>
+类似，这里 <span class="math inline">\(p(y_{t-1},y_t|x^i)\)</span> 的
+<span class="math inline">\(y\)</span>
+是两个，也可以通过前向后向算法得到上面式子中的边缘概率。</p>
+<p>于是：<br />
+<span class="math display">\[
+\begin{align}
+\nabla_\lambda
+L=\sum\limits_{i=1}^N\sum\limits_{t=1}^T[f(y_{t-1},y_t,x^i)-\sum\limits_{y_{t-1}}\sum\limits_{y_t}p(y_{t-1},y_t|x^i)f(y_{t-1},y_t,x^i)]
+\end{align}
+\]</span><br />
+利用梯度上升算法可以求解。对于 <span class="math inline">\(\eta\)</span>
+也是类似的过程。</p>
+<h2 id="译码">译码</h2>
+<p>译码问题和 HMM 中的 Viterbi
+算法类似，同样采样动态规划的思想一层一层求解最大值。</p>
+<h2 id="参考文献">参考文献</h2>
+<p><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vcGluYXJkL3AvNzA0ODMzMy5odG1s">条件随机场CRF<i class="fa fa-external-link-alt"></i></span></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>SoundMemories
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://soundmemories.github.io/2020/10/09/ML/31.CRF/" title="CRF">https://soundmemories.github.io/2020/10/09/ML/31.CRF/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/ML/" rel="tag"><i class="fa fa-tag"></i> ML</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/10/08/ML/30.particleFilter/" rel="prev" title="particleFilter">
+                  <i class="fa fa-chevron-left"></i> particleFilter
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/10/10/ML/32.GaussianNetwork/" rel="next" title="GaussianNetwork">
+                  GaussianNetwork <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">SoundMemories</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"neutral"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.min.js","integrity":"sha256-JFptYy4KzJ5OQP+Q9fubNf3cxpPPmZKqUOovyEONKrQ="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://soundmemories.github.io/2020/10/09/ML/31.CRF/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>
