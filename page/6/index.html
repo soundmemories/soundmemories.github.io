@@ -87,7 +87,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">128</span></a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">129</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -152,7 +152,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">128</span>
+          <span class="site-state-item-count">129</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -193,6 +193,283 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/04/ML/26.VI/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/10/04/ML/26.VI/" class="post-title-link" itemprop="url">VI</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-04 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-04T00:00:00+08:00">2020-10-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="变分推断">变分推断</h1>
+<p>我们已经知道概率模型可以分为，频率派的优化问题和贝叶斯派的积分问题。从贝叶斯角度来看推断，对于
+<span class="math inline">\(\hat{x}\)</span>
+这样的新样本，需要得到：<br />
+<span class="math display">\[
+p(\hat{x}|X)=\int_\theta p(\hat{x},\theta|X)d\theta=\int_\theta
+p(\theta|X)p(\hat{x}|\theta,X)d\theta
+\]</span><br />
+如果新样本和数据集独立，那么推断就是概率分布依参数后验<span
+class="math inline">\(p(\theta|X)\)</span>分布的期望。</p>
+<p>我们看到，推断问题的中心是参数后验<span
+class="math inline">\(p(\theta|X)\)</span>分布的求解，推断分为：</p>
+<p>1、精确推断-解析解<br />
+2、近似推断：参数空间无法精确求解，如含有隐变量、参数空间复杂<br />
+（1）确定性近似，如：变分推断<br />
+（2）随机近似，如：MCMC，MH，Gibbs</p>
+<h2 id="基于平均场假设的变分推断">基于平均场假设的变分推断</h2>
+<p>我们记 <span class="math inline">\(Z\)</span>
+为隐变量和参数的集合，<span class="math inline">\(Z_i\)</span> 为第
+<span class="math inline">\(i\)</span> 维的参数，于是，回顾一下 EM
+中的推导：<br />
+<span class="math display">\[
+\log p(X)=\log p(X,Z)-\log
+p(Z|X)=\log\frac{p(X,Z)}{q(Z)}-\log\frac{p(Z|X)}{q(Z)}
+\]</span><br />
+左右两边分别积分：<br />
+<span class="math display">\[
+Left:\int_Zq(Z)\log p(X)dZ=\log p(X)
+\]</span><br />
+<span class="math display">\[
+Right:\int_Z[\log \frac{p(X,Z)}{q(Z)}-\log
+\frac{p(Z|X)}{q(Z)}]q(Z)dZ=ELBO+KL(q,p)
+\]</span><br />
+<span class="math inline">\(Right\)</span>
+可以写为<strong>变分</strong>和<strong>KL散度</strong>的和：<br />
+<span class="math display">\[
+Right:L(q)+KL(q,p)
+\]</span><br />
+由于这个式子是常数，于是寻找 <span class="math inline">\(q\simeq
+p\)</span> 的任务就相当于对 <span class="math inline">\(L(q)\)</span>
+取最大值。<br />
+<span class="math display">\[
+\hat{q}(Z)=\mathop{argmax}_{q(Z)}L(q)
+\]</span><br />
+假设 <span class="math inline">\(q(Z)\)</span> 可以划分为 <span
+class="math inline">\(M\)</span> 个组（平均场近似）：<br />
+<span class="math display">\[
+q(Z)=\prod\limits_{i=1}^Mq_i(Z_i)
+\]</span><br />
+因此，<span class="math inline">\(L(q)\)</span> 展开得：<br />
+<span class="math display">\[
+L(q)=\int_Zq(Z)\log p(X,Z)dZ-\int_Zq(Z)\log{q(Z)}
+\]</span><br />
+在 <span class="math inline">\(L(q)\)</span> 中，看其中某一个 <span
+class="math inline">\(p(Z_j)\)</span> ，则 <span
+class="math inline">\(L(q)\)</span> 第一项：<br />
+<span class="math display">\[
+\begin{aligned}\int_Zq(Z)\log
+p(X,Z)dZ&amp;=\int_Z\prod\limits_{i=1}^Mq_i(Z_i)\log p(X,Z)dZ\\
+&amp;=\int_{Z_j}q_j(Z_j)\int_{Z-Z_{j}}\prod\limits_{i\ne j}q_i(Z_i)\log
+p(X,Z)dZ\\
+&amp;=\int_{Z_j}q_j(Z_j)\mathbb{E}_{\prod\limits_{i\ne j}q_i(Z_i)}[\log
+p(X,Z)]dZ_j
+\end{aligned}
+\]</span></p>
+<p><span class="math inline">\(L(q)\)</span> 第二项：<br />
+<span class="math display">\[
+\int_Zq(Z)\log
+q(Z)dZ=\int_Z\prod\limits_{i=1}^Mq_i(Z_i)\sum\limits_{i=1}^M\log
+q_i(Z_i)dZ
+\]</span><br />
+<span class="math inline">\(L(q)\)</span>
+第二项展开求和项，其第一项为：<br />
+<span class="math display">\[
+\int_Z\prod\limits_{i=1}^Mq_i(Z_i)\log q_1(Z_1)dZ=\int_{Z_1}q_1(Z_1)\log
+q_1(Z_1)dZ_1+Const
+\]</span><br />
+<span class="math inline">\(L(q)\)</span>
+第二项根据这个规律，得到：<br />
+<span class="math display">\[
+\int_Zq(Z)\log q(Z)dZ=\sum\limits_{i=1}^M\int_{Z_i}q_i(Z_i)\log
+q_i(Z_i)dZ_i=\int_{Z_j}q_j(Z_j)\log q_j(Z_j)dZ_j+Const
+\]</span><br />
+<span class="math inline">\(L(q)\)</span> 两项相减，假设令 <span
+class="math inline">\(\mathbb{E}_{\prod\limits_{i\ne j}q_i(Z_i)}[\log
+p(X,Z)]=\log \hat{p}(X,Z_j)\)</span> 可以得到：<br />
+<span class="math display">\[
+\int_{Z_j}q_j(Z_j)\log\frac{\hat{p}(X,Z_j)}{q_j(Z_j)}dZ_j=-KL(q_j(Z_j)||\hat{p}(X,Z_j))\le
+0
+\]</span><br />
+于是最大的 <span class="math inline">\(q_j(Z_j)=\hat{p}(X,Z_j)\)</span>
+才能得到最大值。对每一个 <span
+class="math inline">\(q_j\)</span>，求这个值时都是固定其余的 <span
+class="math inline">\(q_i, \small i\ne
+j\)</span>，于是可以使用坐标上升的方法进行迭代求解，上面的推导针对单个样本，但是对数据集也是适用的。</p>
+<p>基于平均场假设的变分推断存在一些问题：<br />
+（1）假设太强，<span class="math inline">\(Z\)</span>
+非常复杂的情况下，假设不适用。<br />
+（2）期望中的积分，可能无法计算。</p>
+<h2 id="sgvi">SGVI</h2>
+<p>从 <span class="math inline">\(Z\)</span> 到 <span
+class="math inline">\(X\)</span>
+的过程叫做生成过程或译码（decoder），反过来的过程叫推断过程或编码（encoder），基于平均场的变分推断可以导出坐标上升的算法，但是这个假设在一些情况下假设太强，同时积分也不一定能算。我们知道，优化方法除了坐标上升，还有梯度上升的方式，我们希望通过梯度上升来得到变分推断的另一种算法。</p>
+<p>我们的目标函数：<br />
+<span class="math display">\[
+\hat{q}(Z)=\mathop{argmax}_{q(Z)}L(q)
+\]</span><br />
+假定 <span class="math inline">\(q(Z)=q_\phi(Z)\)</span>，<span
+class="math inline">\(q(Z)\)</span> 是关于 <span
+class="math inline">\(\phi\)</span> 这个参数的概率分布。于是：</p>
+<p><span class="math display">\[
+\mathop{argmax}_{q(Z)}L(q)=\mathop{argmax}_{\phi}L(\phi)=\mathop{argmax}_{\phi}\mathbb{E}_{q_\phi}[\log
+p_\theta(x^i,z)-\log q_\phi(z)]
+\]</span><br />
+这里 <span class="math inline">\(x^i\)</span> 表示第 <span
+class="math inline">\(i\)</span> 个样本。<br />
+根据梯度上升法，每一次更新为 <span
+class="math inline">\(\phi^{i+1}=\phi^{i}+\lambda \nabla_\phi
+L(\phi)\)</span> ，<span class="math inline">\(\lambda\)</span>
+为迭代步长，我们只求梯度：<br />
+<span class="math display">\[
+\begin{aligned}\nabla_\phi
+L(\phi)&amp;=\nabla_\phi\mathbb{E}_{q_\phi}[\log p_\theta(x^i,z)-\log
+q_\phi(z)]\\
+&amp;=\nabla_\phi\int q_\phi(z)[\log p_\theta(x^i,z)-\log q_\phi(z)]dz\\
+&amp;=\int\nabla_\phi q_\phi(z)[\log p_\theta(x^i,z)-\log
+q_\phi(z)]dz+\int q_\phi(z)\nabla_\phi [\log p_\theta(x^i,z)-\log
+q_\phi(z)]dz\\
+&amp;=\int\nabla_\phi q_\phi(z)[\log p_\theta(x^i,z)-\log
+q_\phi(z)]dz-\int q_\phi(z)\nabla_\phi \log q_\phi(z)dz\\
+&amp;=\int\nabla_\phi q_\phi(z)[\log p_\theta(x^i,z)-\log
+q_\phi(z)]dz-\int \nabla_\phi q_\phi(z)dz\\
+&amp;=\int\nabla_\phi q_\phi(z)[\log p_\theta(x^i,z)-\log q_\phi(z)]dz\\
+&amp;=\int q_\phi(\nabla_\phi\log q_\phi)(\log p_\theta(x^i,z)-\log
+q_\phi(z))dz\\
+&amp;=\mathbb{E}_{q_\phi}[(\nabla_\phi\log q_\phi)(\log
+p_\theta(x^i,z)-\log q_\phi(z))]
+\end{aligned}
+\]</span><br />
+这个期望可以通过<strong>蒙特卡洛采样</strong>来近似，从而得到梯度，然后利用梯度上升的方法来得到参数：<br />
+<span class="math display">\[
+z^l\sim q_\phi(z),\qquad l=1,2,...L
+\]</span><br />
+<span class="math display">\[
+\mathbb{E}_{q_\phi}[(\nabla_\phi\log q_\phi)(\log p_\theta(x^i,z)-\log
+q_\phi(z))]\sim \frac{1}{L}\sum\limits_{l=1}^L(\nabla_\phi\log
+q_\phi)(\log p_\theta(x^i,z)-\log q_\phi(z))
+\]</span><br />
+但是由于求和符号中存在一个对数项，当 <span
+class="math inline">\(q_\phi\)</span>
+在接近于零得部分变化时，每一点点变化都会使对数值变化很大，导致直接采样的方差很大，这就需要采样的样本非常多，<strong>蒙特卡洛采样</strong>法并不一定work。</p>
+<p>为了解决方差太大的问题，我们采用重参数化（Reparameterization）的技巧，在求梯度时：<br />
+<span class="math display">\[
+\nabla_\phi L(\phi)=\nabla_\phi\mathbb{E}_{q_\phi}[\log
+p_\theta(x^i,z)-\log q_\phi(z)]
+\]</span><br />
+考虑 <span class="math inline">\(\mathbb{E}_{q_\phi}\)</span> 中 <span
+class="math inline">\(q_\phi\)</span> 是一个确定得分布，和 <span
+class="math inline">\(\phi\)</span> 无关，此时求关于 <span
+class="math inline">\(\phi\)</span> 的梯度就很好计算了：<br />
+<span class="math display">\[
+\nabla_\phi\mathbb{E}_{q_\phi}[\log p_\theta(x^i,z)-\log
+q_\phi(z)]=\mathbb{E}_{q_\phi}\nabla_\phi[\log p_\theta(x^i,z)-\log
+q_\phi(z)]
+\]</span></p>
+<p>我们取：<span
+class="math inline">\(z=g_\phi(\varepsilon,x^i),\varepsilon\sim
+p(\varepsilon)\)</span>，于是对后验：<span class="math inline">\(z\sim
+q_\phi(z|x^i)\)</span>，有 <span
+class="math inline">\(|q_\phi(z|x^i)dz|=|p(\varepsilon)d\varepsilon|\)</span>。代入上面的梯度中：<br />
+<span class="math display">\[
+\begin{aligned}
+\nabla_\phi L(\phi)&amp;=\nabla_\phi\mathbb{E}_{q_\phi}[\log
+p_\theta(x^i,z)-\log q_\phi(z)]\\
+&amp;=\mathbb{E}_{q_\phi}\nabla_\phi[\log p_\theta(x^i,z)-\log
+q_\phi(z)]\\
+&amp;=\mathbb{E}_{p(\varepsilon)}[\nabla_\phi[\log p_\theta(x^i,z)-\log
+q_\phi(z)]]\\
+&amp;=\mathbb{E}_{p(\varepsilon)}[\nabla_z[\log p_\theta(x^i,z)-\log
+q_\phi(z)]\nabla_\phi z]\\
+&amp;=\mathbb{E}_{p(\varepsilon)}[\nabla_z[\log p_\theta(x^i,z)-\log
+q_\phi(z)]\nabla_\phi g_\phi(\varepsilon,x^i)]
+\end{aligned}
+\]</span><br />
+对这个式子进行蒙特卡洛采样，然后计算期望，得到梯度。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -2924,157 +3201,6 @@ class="math inline">\(p(z)=\mathcal{N}\begin{pmatrix}\mu\\A\mu+b\end{pmatrix},\b
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/09/20/ML/16.Introduction/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avstar.png">
-      <meta itemprop="name" content="SoundMemories">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SoundMemories">
-      <meta itemprop="description" content="今日事，今日毕">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | SoundMemories">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/09/20/ML/16.Introduction/" class="post-title-link" itemprop="url">Introduction</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-09-20 00:00:00" itemprop="dateCreated datePublished" datetime="2020-09-20T00:00:00+08:00">2020-09-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>657</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>对概率的诠释有两大学派，一种是频率派另一种是贝叶斯派。后面我们对观测集采用下面记号：<br />
-<span class="math display">\[
-X_{N\times
-p}=(x_{1},x_{2},\cdots,x_{N})^{T},x_{i}=(x_{i1},x_{i2},\cdots,x_{ip})^{T}
-\]</span><br />
-这个记号表示有 <span class="math inline">\(N\)</span>
-个样本，每个样本都是 <span class="math inline">\(p\)</span>
-维向量。其中每个观测都是由 <span
-class="math inline">\(p(x|\theta)\)</span> 生成的。</p>
-<h1 id="频率派的观点">频率派的观点</h1>
-<p>频率派认为 <span class="math inline">\(p(x|\theta)\)</span> 中的
-<span class="math inline">\(\theta\)</span> 是一个常量。对于 <span
-class="math inline">\(N\)</span> 个观测来说观测集的概率为 <span
-class="math inline">\(p(X|\theta)\mathop{=}\limits _{iid}\prod\limits
-_{i=1}^{N}p(x_{i}|\theta))\)</span> 。为了求 <span
-class="math inline">\(\theta\)</span>
-的大小，我们采用最大对数似然MLE的方法：</p>
-<p><span class="math display">\[
-\theta_{MLE}=\mathop{argmax}\limits _{\theta}\log
-p(X|\theta)\mathop{=}\limits _{iid}\mathop{argmax}\limits
-_{\theta}\sum\limits _{i=1}^{N}\log p(x_{i}|\theta)
-\]</span></p>
-<h1 id="贝叶斯派的观点">贝叶斯派的观点</h1>
-<p>贝叶斯派认为 <span class="math inline">\(p(x|\theta)\)</span> 中的
-<span class="math inline">\(\theta\)</span> 不是一个常量，而是和 <span
-class="math inline">\(x\)</span> 一样为一个变量。这个 <span
-class="math inline">\(\theta\)</span> 满足一个预设的先验的分布 <span
-class="math inline">\(\theta\sim p(\theta)\)</span>
-。于是根据贝叶斯定理依赖观测集参数的后验可以写成：</p>
-<p><span class="math display">\[
-p(\theta|X)=\frac{p(X|\theta)\cdot
-p(\theta)}{p(X)}=\frac{p(X|\theta)\cdot p(\theta)}{\int\limits
-_{\theta}p(X|\theta)\cdot p(\theta)d\theta}
-\]</span><br />
-为了求 <span class="math inline">\(\theta\)</span>
-的值，我们要最大化这个参数后验MAP：</p>
-<p><span class="math display">\[
-\theta_{MAP}=\mathop{argmax}\limits
-_{\theta}p(\theta|X)=\mathop{argmax}\limits _{\theta}p(X|\theta)\cdot
-p(\theta)
-\]</span><br />
-其中第二个等号是由于分母和 <span class="math inline">\(\theta\)</span>
-没有关系。求解这个 <span class="math inline">\(\theta\)</span>
-值后计算<span class="math inline">\(\frac{p(X|\theta)\cdot
-p(\theta)}{\int\limits _{\theta}p(X|\theta)\cdot
-p(\theta)d\theta}\)</span> ，就得到了参数的后验概率。其中 <span
-class="math inline">\(p(X|\theta)\)</span>
-叫似然，是我们的模型分布。得到了参数的后验分布后，我们可以将这个分布用于预测贝叶斯预测：<br />
-<span class="math display">\[
-p(x_{new}|X)=\int\limits _{\theta}p(x_{new}|\theta)\cdot
-p(\theta|X)d\theta
-\]</span><br />
-其中积分中的被乘数是模型，乘数是后验分布。</p>
-<h1 id="小结">小结</h1>
-<p>频率派和贝叶斯派分别给出了一系列的机器学习算法。频率派的观点导出了一系列的统计机器学习算法，而贝叶斯派导出了概率图理论。在应用频率派的
-MLE
-方法时最优化理论占有重要地位。而贝叶斯派的算法无论是后验概率的建模还是应用这个后验进行推断时积分占有重要地位。因此采样积分方法如
-MCMC 有很多应用。</p>
-<p>如果对此有疑问的，可以参考知乎这篇文章：<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMjQ4MDgxMA==">聊一聊机器学习的MLE和MAP：最大似然估计和最大后验估计<i class="fa fa-external-link-alt"></i></span>。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/7/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -3087,7 +3213,7 @@ MCMC 有很多应用。</p>
 
   <div class="copyright">
     &copy; 2019 – 
-    <span itemprop="copyrightYear">2024</span>
+    <span itemprop="copyrightYear">2025</span>
     <span class="with-love">
       <i class="fa fa-heart"></i>
     </span>

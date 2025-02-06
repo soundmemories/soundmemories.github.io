@@ -87,7 +87,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">128</span></a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">129</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -152,7 +152,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">128</span>
+          <span class="site-state-item-count">129</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -193,6 +193,217 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/14/ML/36.Spectral/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avstar.png">
+      <meta itemprop="name" content="SoundMemories">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SoundMemories">
+      <meta itemprop="description" content="今日事，今日毕">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | SoundMemories">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/10/14/ML/36.Spectral/" class="post-title-link" itemprop="url">Spectral</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-14 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-14T00:00:00+08:00">2020-10-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>792</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="谱聚类">谱聚类</h1>
+<p>聚类问题可以分为两种思路：</p>
+<ol type="1">
+<li>Compactness，这类有 K-means，GMM
+等，但是这类算法只能处理凸集，为了处理非凸的样本集，必须引入核技巧。</li>
+<li>Connectivity，这类以谱聚类为代表。</li>
+</ol>
+<p>谱聚类是一种基于无向带权图的聚类方法。这个图用 <span
+class="math inline">\(G=(V,E)\)</span> 表示，其中 <span
+class="math inline">\(V=\{1,2,\cdots,N\}\)</span>，<span
+class="math inline">\(E=\{w_{ij}\}\)</span>，这里 <span
+class="math inline">\(w_{ij}\)</span>
+就是边的权重，这里权重取为相似度，<span
+class="math inline">\(W=(w_{ij})\)</span>
+是相似度矩阵，定义相似度（径向核）：<br />
+<span class="math display">\[
+w_{ij}=k(x_i,x_j)=\exp(-\frac{||x_i-x_j||_2^2}{2\sigma^2}),(i,j)\in E\\
+w_{ij}=0,(i,j)\notin E
+\]</span><br />
+下面定义图的分割，这种分割就相当于聚类的结果。定义 <span
+class="math inline">\(w(A,B)\)</span>：<br />
+<span class="math display">\[
+A\subset V,B\subset V,A\cap B=\emptyset,w(A,B)=\sum\limits_{i\in A,j\in
+B}w_{ij}
+\]</span><br />
+假设一共有 <span class="math inline">\(K\)</span> 个类别，对这个图的分割
+<span
+class="math inline">\(CUT(V)=CUT(A_1,A_2,\cdots,A_K)=\sum\limits_{k=1}^Kw(A_k,\overline{A_k})=\sum\limits_{k=1}^K[w(A_k,V)-w(A_k,A_k)]\)</span></p>
+<p>于是，我们的目标就是 <span
+class="math inline">\(\min\limits_{A_k}CUT(V)\)</span>。</p>
+<p>为了平衡每一类内部的权重不同，我们做归一化的操作，定义每一个集合的度，首先，对单个节点的度定义：<br />
+<span class="math display">\[
+d_i=\sum\limits_{j=1}^Nw_{ij}
+\]</span><br />
+其次，每个集合：<br />
+<span class="math display">\[
+\Delta_k=degree(A_k)=\sum\limits_{i\in A_k}d_i
+\]</span><br />
+于是：<br />
+<span class="math display">\[
+N(CUT)=\sum\limits_{k=1}^K\frac{w(A_k,\overline{A_k})}{\sum\limits_{i\in
+A_k}d_i}
+\]</span><br />
+所以目标函数就是最小化这个式子。</p>
+<p>谱聚类的模型就是：<br />
+<span class="math display">\[
+\{\hat{A}_k\}_{k=1}^K=\mathop{argmin}_{A_k}N(CUT)
+\]</span><br />
+引入指示向量：<br />
+<span class="math display">\[
+\begin{cases}
+y_i\in \{0,1\}^K\\
+\sum\limits_{j=1}^Ky_{ij}=1
+\end{cases}
+\]</span><br />
+其中，<span class="math inline">\(y_{ij}\)</span> 表示第 <span
+class="math inline">\(i\)</span> 个样本属于 <span
+class="math inline">\(j\)</span> 个类别，记：<span
+class="math inline">\(Y=(y_1,y_2,\cdots,y_N)^T\)</span>。所以：<br />
+<span class="math display">\[
+\hat{Y}=\mathop{argmin}_YN(CUT)
+\]</span><br />
+将 <span class="math inline">\(N(CUT)\)</span>
+写成对角矩阵的形式，于是：<br />
+<span class="math display">\[
+\begin{align}N(CUT)&amp;=Trace[diag(\frac{w(A_1,\overline{A_1})}{\sum\limits_{i\in
+A_1}d_i},\frac{w(A_2,\overline{A_2})}{\sum\limits_{i\in
+A_2}d_i},\cdots,\frac{w(A_K,\overline{A_K})}{\sum\limits_{i\in
+A_K}d_i})]\nonumber\\
+&amp;=Trace[diag(w(A_1,\overline{A_1}),w(A_2,\overline{A_2}),\cdots,w(A_K,\overline{A_K}))\cdot
+diag(\sum\limits_{i\in A_1}d_i,\cdots,\sum\limits_{i\in
+A_K}d_i)^{-1}]\nonumber\\
+&amp;=Trace[O\cdot P^{-1}]
+\end{align}
+\]</span><br />
+我们已经知道 <span class="math inline">\(Y,w\)</span>
+这两个矩阵，我们希望求得 <span class="math inline">\(O,P\)</span>。</p>
+<p>由于：<br />
+<span class="math display">\[
+Y^TY=\sum\limits_{i=1}^Ny_iy_i^T
+\]</span><br />
+对于 <span class="math inline">\(y_iy_i^T\)</span>，只在对角线上的 <span
+class="math inline">\(k\times k\)</span> 处为 1，所以：<br />
+<span class="math display">\[
+Y^TY=diag(N_1,N_2,\cdots,N_K)
+\]</span><br />
+其中，<span class="math inline">\(N_i\)</span> 表示有 <span
+class="math inline">\(N_i\)</span> 个样本属于 <span
+class="math inline">\(i\)</span>，即 <span
+class="math inline">\(N_k=\sum\limits_{k\in A_k}1\)</span>。</p>
+<p>引入对角矩阵，根据 <span class="math inline">\(d_i\)</span> 的定义，
+<span
+class="math inline">\(D=diag(d_1,d_2,\cdots,d_N)=diag(w_{NN}\mathbb{I}_{N1})\)</span>，于是：<br />
+<span class="math display">\[
+P=Y^TDY
+\]</span><br />
+对另一项 <span
+class="math inline">\(O=diag(w(A_1,\overline{A_1}),w(A_2,\overline{A_2}),\cdots,w(A_K,\overline{A_K})\)</span>：<br />
+<span class="math display">\[
+O=diag(w(A_i,V))-diag(w(A_i,A_i))=diag(\sum\limits_{j\in
+A_i}d_j)-diag(w(A_i,A_i))
+\]</span><br />
+其中，第一项已知，第二项可以写成 <span
+class="math inline">\(Y^TwY\)</span>，这是由于：<br />
+<span class="math display">\[
+Y^TwY=\sum\limits_{i=1}^N\sum\limits_{j=1}^Ny_iy_j^Tw_{ij}
+\]</span><br />
+于是这个矩阵的第 <span class="math inline">\(lm\)</span>
+项可以写为：<br />
+<span class="math display">\[
+\sum\limits_{i\in A_l,j\in A_m}w_{ij}
+\]</span><br />
+这个矩阵的对角线上的项和 <span class="math inline">\(w(A_i,A_i)\)</span>
+相同，所以取迹后的取值不会变化。</p>
+<p>所以：<br />
+<span class="math display">\[
+N(CUT)=Trace[(Y^T(D-w))Y)\cdot(Y^TDY)^{-1}]
+\]</span><br />
+其中，$ L=D-w$ 叫做拉普拉斯矩阵。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -2244,283 +2455,6 @@ RBM 假设隐变量之间无关。<br />
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://soundmemories.github.io/2020/10/04/ML/26.VI/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avstar.png">
-      <meta itemprop="name" content="SoundMemories">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SoundMemories">
-      <meta itemprop="description" content="今日事，今日毕">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | SoundMemories">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/10/04/ML/26.VI/" class="post-title-link" itemprop="url">VI</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-10-04 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-04T00:00:00+08:00">2020-10-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.7k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>6 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="变分推断">变分推断</h1>
-<p>我们已经知道概率模型可以分为，频率派的优化问题和贝叶斯派的积分问题。从贝叶斯角度来看推断，对于
-<span class="math inline">\(\hat{x}\)</span>
-这样的新样本，需要得到：<br />
-<span class="math display">\[
-p(\hat{x}|X)=\int_\theta p(\hat{x},\theta|X)d\theta=\int_\theta
-p(\theta|X)p(\hat{x}|\theta,X)d\theta
-\]</span><br />
-如果新样本和数据集独立，那么推断就是概率分布依参数后验<span
-class="math inline">\(p(\theta|X)\)</span>分布的期望。</p>
-<p>我们看到，推断问题的中心是参数后验<span
-class="math inline">\(p(\theta|X)\)</span>分布的求解，推断分为：</p>
-<p>1、精确推断-解析解<br />
-2、近似推断：参数空间无法精确求解，如含有隐变量、参数空间复杂<br />
-（1）确定性近似，如：变分推断<br />
-（2）随机近似，如：MCMC，MH，Gibbs</p>
-<h2 id="基于平均场假设的变分推断">基于平均场假设的变分推断</h2>
-<p>我们记 <span class="math inline">\(Z\)</span>
-为隐变量和参数的集合，<span class="math inline">\(Z_i\)</span> 为第
-<span class="math inline">\(i\)</span> 维的参数，于是，回顾一下 EM
-中的推导：<br />
-<span class="math display">\[
-\log p(X)=\log p(X,Z)-\log
-p(Z|X)=\log\frac{p(X,Z)}{q(Z)}-\log\frac{p(Z|X)}{q(Z)}
-\]</span><br />
-左右两边分别积分：<br />
-<span class="math display">\[
-Left:\int_Zq(Z)\log p(X)dZ=\log p(X)
-\]</span><br />
-<span class="math display">\[
-Right:\int_Z[\log \frac{p(X,Z)}{q(Z)}-\log
-\frac{p(Z|X)}{q(Z)}]q(Z)dZ=ELBO+KL(q,p)
-\]</span><br />
-<span class="math inline">\(Right\)</span>
-可以写为<strong>变分</strong>和<strong>KL散度</strong>的和：<br />
-<span class="math display">\[
-Right:L(q)+KL(q,p)
-\]</span><br />
-由于这个式子是常数，于是寻找 <span class="math inline">\(q\simeq
-p\)</span> 的任务就相当于对 <span class="math inline">\(L(q)\)</span>
-取最大值。<br />
-<span class="math display">\[
-\hat{q}(Z)=\mathop{argmax}_{q(Z)}L(q)
-\]</span><br />
-假设 <span class="math inline">\(q(Z)\)</span> 可以划分为 <span
-class="math inline">\(M\)</span> 个组（平均场近似）：<br />
-<span class="math display">\[
-q(Z)=\prod\limits_{i=1}^Mq_i(Z_i)
-\]</span><br />
-因此，<span class="math inline">\(L(q)\)</span> 展开得：<br />
-<span class="math display">\[
-L(q)=\int_Zq(Z)\log p(X,Z)dZ-\int_Zq(Z)\log{q(Z)}
-\]</span><br />
-在 <span class="math inline">\(L(q)\)</span> 中，看其中某一个 <span
-class="math inline">\(p(Z_j)\)</span> ，则 <span
-class="math inline">\(L(q)\)</span> 第一项：<br />
-<span class="math display">\[
-\begin{aligned}\int_Zq(Z)\log
-p(X,Z)dZ&amp;=\int_Z\prod\limits_{i=1}^Mq_i(Z_i)\log p(X,Z)dZ\\
-&amp;=\int_{Z_j}q_j(Z_j)\int_{Z-Z_{j}}\prod\limits_{i\ne j}q_i(Z_i)\log
-p(X,Z)dZ\\
-&amp;=\int_{Z_j}q_j(Z_j)\mathbb{E}_{\prod\limits_{i\ne j}q_i(Z_i)}[\log
-p(X,Z)]dZ_j
-\end{aligned}
-\]</span></p>
-<p><span class="math inline">\(L(q)\)</span> 第二项：<br />
-<span class="math display">\[
-\int_Zq(Z)\log
-q(Z)dZ=\int_Z\prod\limits_{i=1}^Mq_i(Z_i)\sum\limits_{i=1}^M\log
-q_i(Z_i)dZ
-\]</span><br />
-<span class="math inline">\(L(q)\)</span>
-第二项展开求和项，其第一项为：<br />
-<span class="math display">\[
-\int_Z\prod\limits_{i=1}^Mq_i(Z_i)\log q_1(Z_1)dZ=\int_{Z_1}q_1(Z_1)\log
-q_1(Z_1)dZ_1+Const
-\]</span><br />
-<span class="math inline">\(L(q)\)</span>
-第二项根据这个规律，得到：<br />
-<span class="math display">\[
-\int_Zq(Z)\log q(Z)dZ=\sum\limits_{i=1}^M\int_{Z_i}q_i(Z_i)\log
-q_i(Z_i)dZ_i=\int_{Z_j}q_j(Z_j)\log q_j(Z_j)dZ_j+Const
-\]</span><br />
-<span class="math inline">\(L(q)\)</span> 两项相减，假设令 <span
-class="math inline">\(\mathbb{E}_{\prod\limits_{i\ne j}q_i(Z_i)}[\log
-p(X,Z)]=\log \hat{p}(X,Z_j)\)</span> 可以得到：<br />
-<span class="math display">\[
-\int_{Z_j}q_j(Z_j)\log\frac{\hat{p}(X,Z_j)}{q_j(Z_j)}dZ_j=-KL(q_j(Z_j)||\hat{p}(X,Z_j))\le
-0
-\]</span><br />
-于是最大的 <span class="math inline">\(q_j(Z_j)=\hat{p}(X,Z_j)\)</span>
-才能得到最大值。对每一个 <span
-class="math inline">\(q_j\)</span>，求这个值时都是固定其余的 <span
-class="math inline">\(q_i, \small i\ne
-j\)</span>，于是可以使用坐标上升的方法进行迭代求解，上面的推导针对单个样本，但是对数据集也是适用的。</p>
-<p>基于平均场假设的变分推断存在一些问题：<br />
-（1）假设太强，<span class="math inline">\(Z\)</span>
-非常复杂的情况下，假设不适用。<br />
-（2）期望中的积分，可能无法计算。</p>
-<h2 id="sgvi">SGVI</h2>
-<p>从 <span class="math inline">\(Z\)</span> 到 <span
-class="math inline">\(X\)</span>
-的过程叫做生成过程或译码（decoder），反过来的过程叫推断过程或编码（encoder），基于平均场的变分推断可以导出坐标上升的算法，但是这个假设在一些情况下假设太强，同时积分也不一定能算。我们知道，优化方法除了坐标上升，还有梯度上升的方式，我们希望通过梯度上升来得到变分推断的另一种算法。</p>
-<p>我们的目标函数：<br />
-<span class="math display">\[
-\hat{q}(Z)=\mathop{argmax}_{q(Z)}L(q)
-\]</span><br />
-假定 <span class="math inline">\(q(Z)=q_\phi(Z)\)</span>，<span
-class="math inline">\(q(Z)\)</span> 是关于 <span
-class="math inline">\(\phi\)</span> 这个参数的概率分布。于是：</p>
-<p><span class="math display">\[
-\mathop{argmax}_{q(Z)}L(q)=\mathop{argmax}_{\phi}L(\phi)=\mathop{argmax}_{\phi}\mathbb{E}_{q_\phi}[\log
-p_\theta(x^i,z)-\log q_\phi(z)]
-\]</span><br />
-这里 <span class="math inline">\(x^i\)</span> 表示第 <span
-class="math inline">\(i\)</span> 个样本。<br />
-根据梯度上升法，每一次更新为 <span
-class="math inline">\(\phi^{i+1}=\phi^{i}+\lambda \nabla_\phi
-L(\phi)\)</span> ，<span class="math inline">\(\lambda\)</span>
-为迭代步长，我们只求梯度：<br />
-<span class="math display">\[
-\begin{aligned}\nabla_\phi
-L(\phi)&amp;=\nabla_\phi\mathbb{E}_{q_\phi}[\log p_\theta(x^i,z)-\log
-q_\phi(z)]\\
-&amp;=\nabla_\phi\int q_\phi(z)[\log p_\theta(x^i,z)-\log q_\phi(z)]dz\\
-&amp;=\int\nabla_\phi q_\phi(z)[\log p_\theta(x^i,z)-\log
-q_\phi(z)]dz+\int q_\phi(z)\nabla_\phi [\log p_\theta(x^i,z)-\log
-q_\phi(z)]dz\\
-&amp;=\int\nabla_\phi q_\phi(z)[\log p_\theta(x^i,z)-\log
-q_\phi(z)]dz-\int q_\phi(z)\nabla_\phi \log q_\phi(z)dz\\
-&amp;=\int\nabla_\phi q_\phi(z)[\log p_\theta(x^i,z)-\log
-q_\phi(z)]dz-\int \nabla_\phi q_\phi(z)dz\\
-&amp;=\int\nabla_\phi q_\phi(z)[\log p_\theta(x^i,z)-\log q_\phi(z)]dz\\
-&amp;=\int q_\phi(\nabla_\phi\log q_\phi)(\log p_\theta(x^i,z)-\log
-q_\phi(z))dz\\
-&amp;=\mathbb{E}_{q_\phi}[(\nabla_\phi\log q_\phi)(\log
-p_\theta(x^i,z)-\log q_\phi(z))]
-\end{aligned}
-\]</span><br />
-这个期望可以通过<strong>蒙特卡洛采样</strong>来近似，从而得到梯度，然后利用梯度上升的方法来得到参数：<br />
-<span class="math display">\[
-z^l\sim q_\phi(z),\qquad l=1,2,...L
-\]</span><br />
-<span class="math display">\[
-\mathbb{E}_{q_\phi}[(\nabla_\phi\log q_\phi)(\log p_\theta(x^i,z)-\log
-q_\phi(z))]\sim \frac{1}{L}\sum\limits_{l=1}^L(\nabla_\phi\log
-q_\phi)(\log p_\theta(x^i,z)-\log q_\phi(z))
-\]</span><br />
-但是由于求和符号中存在一个对数项，当 <span
-class="math inline">\(q_\phi\)</span>
-在接近于零得部分变化时，每一点点变化都会使对数值变化很大，导致直接采样的方差很大，这就需要采样的样本非常多，<strong>蒙特卡洛采样</strong>法并不一定work。</p>
-<p>为了解决方差太大的问题，我们采用重参数化（Reparameterization）的技巧，在求梯度时：<br />
-<span class="math display">\[
-\nabla_\phi L(\phi)=\nabla_\phi\mathbb{E}_{q_\phi}[\log
-p_\theta(x^i,z)-\log q_\phi(z)]
-\]</span><br />
-考虑 <span class="math inline">\(\mathbb{E}_{q_\phi}\)</span> 中 <span
-class="math inline">\(q_\phi\)</span> 是一个确定得分布，和 <span
-class="math inline">\(\phi\)</span> 无关，此时求关于 <span
-class="math inline">\(\phi\)</span> 的梯度就很好计算了：<br />
-<span class="math display">\[
-\nabla_\phi\mathbb{E}_{q_\phi}[\log p_\theta(x^i,z)-\log
-q_\phi(z)]=\mathbb{E}_{q_\phi}\nabla_\phi[\log p_\theta(x^i,z)-\log
-q_\phi(z)]
-\]</span></p>
-<p>我们取：<span
-class="math inline">\(z=g_\phi(\varepsilon,x^i),\varepsilon\sim
-p(\varepsilon)\)</span>，于是对后验：<span class="math inline">\(z\sim
-q_\phi(z|x^i)\)</span>，有 <span
-class="math inline">\(|q_\phi(z|x^i)dz|=|p(\varepsilon)d\varepsilon|\)</span>。代入上面的梯度中：<br />
-<span class="math display">\[
-\begin{aligned}
-\nabla_\phi L(\phi)&amp;=\nabla_\phi\mathbb{E}_{q_\phi}[\log
-p_\theta(x^i,z)-\log q_\phi(z)]\\
-&amp;=\mathbb{E}_{q_\phi}\nabla_\phi[\log p_\theta(x^i,z)-\log
-q_\phi(z)]\\
-&amp;=\mathbb{E}_{p(\varepsilon)}[\nabla_\phi[\log p_\theta(x^i,z)-\log
-q_\phi(z)]]\\
-&amp;=\mathbb{E}_{p(\varepsilon)}[\nabla_z[\log p_\theta(x^i,z)-\log
-q_\phi(z)]\nabla_\phi z]\\
-&amp;=\mathbb{E}_{p(\varepsilon)}[\nabla_z[\log p_\theta(x^i,z)-\log
-q_\phi(z)]\nabla_\phi g_\phi(\varepsilon,x^i)]
-\end{aligned}
-\]</span><br />
-对这个式子进行蒙特卡洛采样，然后计算期望，得到梯度。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/6/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -2533,7 +2467,7 @@ q_\phi(z)]\nabla_\phi g_\phi(\varepsilon,x^i)]
 
   <div class="copyright">
     &copy; 2019 – 
-    <span itemprop="copyrightYear">2024</span>
+    <span itemprop="copyrightYear">2025</span>
     <span class="with-love">
       <i class="fa fa-heart"></i>
     </span>
